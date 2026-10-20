@@ -213,3 +213,8 @@ em{font-style:italic}
 .app-logo img{width:min(520px,110%);height:auto;filter:drop-shadow(0 10px 24px rgba(20,0,40,.35))}
 .app-sound{position:absolute;width:150px;right:6%;bottom:8%;transform:rotate(8deg);z-index:2;filter:drop-shadow(0 12px 20px rgba(20,0,40,.35));pointer-events:none}
 @media (max-width:820px){.app-sound{width:96px;right:2%;bottom:4%}.app-logo{margin:0}}
+/* mail button above the footer */
+.mail-cta{display:flex;flex-direction:column;align-items:center;gap:14px;padding-block:96px 24px;border-top:1px solid var(--line);margin-top:48px}
+.mail-btn{display:inline-flex;align-items:center;gap:14px;min-height:64px;padding:0 36px;border-radius:999px;background:var(--fg);color:var(--bg);font-family:var(--serif);font-size:clamp(26px,3vw,40px);line-height:1;transition:transform .25s}
+.mail-btn:hover{opacity:1;transform:scale(1.04)}
+.mail-cta .mail{color:var(--muted)}

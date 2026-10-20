@@ -43,7 +43,9 @@
       '</nav></header>';
   }
   function footer(site) {
-    return '<footer class="wrap site-foot"><span class="mail">' + esc(site.contact.email) + '</span>' + (site.contact.iolo ? '<a href="' + esc(site.contact.iolo) + '" target="_blank" rel="noopener">Also: iolo.paris — objects, art direction ↗</a>' : '') + '<span>© ' + new Date().getFullYear() + ' — Paris</span></footer>';
+    var m = site.contact.email;
+    return '<section class="wrap mail-cta"><a class="mail-btn" href="mailto:' + esc(m) + '?subject=' + encodeURIComponent('Hello Mathieu') + '">Write to me <span aria-hidden="true">→</span></a><span class="mail">' + esc(m) + '</span></section>' +
+      '<footer class="wrap site-foot"><span class="mail">' + esc(site.contact.email) + '</span>' + (site.contact.iolo ? '<a href="' + esc(site.contact.iolo) + '" target="_blank" rel="noopener">Also: iolo.paris — objects, art direction ↗</a>' : '') + '<span>© ' + new Date().getFullYear() + ' — Paris</span></footer>';
   }
 
   // ---------- lightbox ----------
