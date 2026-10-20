@@ -450,6 +450,7 @@
       (a.portrait ? '<img src="' + a.portrait + '" alt="Mathieu Missiaen" style="width:100%;aspect-ratio:4 / 5;object-fit:cover">' : '') + '</div>' +
       '<div style="display:flex;flex-direction:column;gap:28px;padding-top:12px"><p class="serif" style="margin:0;font-size:clamp(28px,2.6vw,40px);line-height:1.15">' + esc(a.short) + '</p>' +
       a.bio.map(function (b) { return '<p style="margin:0;font-size:13px;line-height:1.8;max-width:640px;opacity:.85">' + esc(b) + '</p>'; }).join('') + '</div></div></section>' +
+      (a.wide && a.wide.src ? '<section style="padding-bottom:120px"><a href="' + esc(a.wide.href || '#') + '" target="_blank" rel="noopener" style="display:block"><img src="' + esc(a.wide.src) + '" alt="' + esc(a.wide.alt || '') + '" style="display:block;width:100%;height:auto;aspect-ratio:' + esc(a.wide.ratio || '16 / 9') + ';object-fit:cover"></a></section>' : '') +
       '<section class="wrap" style="padding-bottom:120px"><div class="facts rule" style="padding-top:24px">' +
       '<div style="display:flex;flex-direction:column;gap:14px"><span class="muted">Path</span>' + list(a.path) + '</div>' +
       '<div style="display:flex;flex-direction:column;gap:14px"><span class="muted">Selected clients</span>' + list(a.clients) + '</div>' +

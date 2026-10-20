@@ -122,7 +122,13 @@
       "Motion control",
       "Hand-made sets",
       "Vibe coding"
-    ]
+    ],
+    "wide": {
+      "src": "images/iolo/bowl.jpg",
+      "ratio": "1264 / 842",
+      "href": "https://iolo.paris",
+      "alt": "iolo.paris"
+    }
   },
   "contact": {
     "email": "contact@mathieumissiaen.fr",

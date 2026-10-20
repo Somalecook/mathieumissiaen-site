@@ -209,6 +209,14 @@ content:
           - { name: short, label: "Phrase d'ouverture", type: text }
           - { name: bio, label: Paragraphes, type: text, list: true }
           - { name: portrait, label: Portrait, type: image }
+          - name: wide
+            label: "Image pleine page"
+            type: object
+            fields:
+              - { name: src, label: Image, type: image }
+              - { name: ratio, label: "Format (ex : 3 / 2)", type: string }
+              - { name: href, label: Lien, type: string }
+              - { name: alt, label: "Texte alternatif", type: string }
           - { name: path, label: Parcours, type: string, list: true }
           - { name: clients, label: Clients, type: string, list: true }
           - { name: press, label: Presse, type: string, list: true }
