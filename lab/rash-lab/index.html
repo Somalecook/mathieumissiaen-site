@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rash Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Stencil+One&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Anton&family=Archivo+Black&family=Permanent+Marker&family=Black+Han+Sans&display=swap">
+<style>
+/* Layout: mathieumissiaen.fr Lab page — gallery-wall grey, the garment pinned on the wall (front + back), controls as a catalogue column, tech sheet below. Single light look, like the site. */
+:root{
+  --bg:#E9E8E4; --panel:#F1F0EC; --stage:#DDDBD6; --ink:#161513; --muted:#5E5B55; --line:#C9C7C1;
+  --accent:#C8102E; --accent-ink:#FFFFFF; --focus:#1F4FBF;
+  --display:'Saira Stencil One','Arial Black',sans-serif; --serif:'Instrument Serif',Georgia,serif; --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--mono);font-size:13px;line-height:1.55}
+a{color:var(--ink);text-decoration:none}a:hover{color:#000}
+.wrap{max-width:1440px;margin:0 auto;padding-inline:32px;padding-block:0 32px;display:flex;flex-direction:column;gap:24px}
+@media (max-width:600px){.wrap{padding-inline:16px}}
+.site{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-block:24px 0;font-size:12px}
+.site nav{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.site nav a{min-height:44px;display:inline-flex;align-items:center;padding:0 10px}
+.site nav a[aria-current]{text-decoration:underline;text-underline-offset:4px}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;padding-block:72px 8px}
+.hero .eyebrow{color:var(--muted);font-size:12px;margin-bottom:14px;display:block}
+.hero h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(64px,10vw,150px);line-height:.85;letter-spacing:-.01em;text-wrap:balance}
+.hero p{margin:0;max-width:380px;font-size:12px;line-height:1.75;color:#3F3D39}
+.hero p em{font-family:var(--serif);font-size:16px}
+.belt{display:flex;height:8px;width:180px;margin-top:16px}
+.belt i{flex:1}
+.belt i.bar{flex:.55;background:var(--accent)}
+.main{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px;align-items:start;border-top:1px solid var(--ink);padding-top:24px}
+@media (max-width:900px){.main{grid-template-columns:minmax(0,1fr)}}
+.left{display:flex;flex-direction:column;gap:24px;min-width:0}
+.stage{background:var(--stage);padding:20px 16px 14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.view{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.view svg{width:100%;height:auto;display:block;max-width:420px}
+.view .lbl{font-size:12px;color:var(--muted)}
+.view .lbl b{color:var(--ink);font-weight:500}
+.panel{background:transparent}
+.controls{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.sec{padding:18px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:12px}
+.sec h2{margin:0;font-family:var(--serif);font-weight:400;font-size:28px;line-height:1;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sec h2 small{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--ink);flex-wrap:wrap}
+.seg button,.chip{font:inherit;font-size:12px;color:var(--ink);background:transparent;border:0;padding:0 12px;min-height:40px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.chip{border:1px solid var(--line);border-radius:999px;display:inline-flex;align-items:center;gap:8px}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.chip .sw{width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.25);flex:none}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.zones{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (max-width:480px){.zones{grid-template-columns:minmax(0,1fr)}}
+.zone{display:flex;align-items:center;gap:10px;border:1px solid var(--line);padding:6px 10px 6px 6px;cursor:pointer;min-width:0;background:var(--panel)}
+.zone.active{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.zone input[type=color]{width:36px;height:32px;border:0;padding:0;background:none;cursor:pointer;flex:none}
+.zone .zn{display:flex;flex-direction:column;min-width:0}
+.zone .zn b{font-weight:500;font-size:13px}
+.zone .zn code{font-size:11px;color:var(--muted);font-family:var(--mono)}
+.pal{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.pal span{font-size:11px;color:var(--muted);margin-right:4px}
+.pal button{width:28px;height:28px;border-radius:50%;border:1px solid rgba(0,0,0,.25);cursor:pointer;padding:0}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--muted);min-width:0;flex:1 1 140px}
+label.f input[type=text],label.f select{font:inherit;font-size:13px;color:var(--ink);background:var(--panel);border:1px solid var(--line);padding:8px 10px;min-height:40px;width:100%}
+label.f input[type=range]{width:100%;accent-color:var(--ink)}
+.inline{display:flex;align-items:center;gap:8px;font-size:12px}
+.inline input[type=color]{width:36px;height:32px;border:0;padding:0;background:none;cursor:pointer}
+.btn{font:inherit;font-size:12px;min-height:44px;padding:0 18px;border-radius:999px;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink);display:inline-flex;align-items:center}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn:disabled{opacity:.5;cursor:default}
+.status{font-size:12px;color:var(--muted);min-height:18px}
+.presets{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:480px){.presets{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.preset{font:inherit;font-size:12px;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:8px;cursor:pointer;display:flex;flex-direction:column;gap:8px;min-height:44px}
+.preset:hover{border-color:var(--ink)}
+.preset .bar{display:flex;height:28px;overflow:hidden}
+.preset .bar i{flex:1}
+.spec{display:flex;flex-direction:column;gap:14px;border-top:1px solid var(--ink);padding-top:16px}
+.spec-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.spec-head h2{margin:0;font-family:var(--serif);font-weight:400;font-size:28px;line-height:1}
+.spec dl{margin:0;display:grid;grid-template-columns:minmax(90px,max-content) minmax(0,1fr);gap:8px 20px;font-size:12px}
+.spec dt{color:var(--muted)}
+.spec dd{margin:0;min-width:0;overflow-wrap:anywhere;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.spec .sw{display:inline-block;width:12px;height:12px;border:1px solid rgba(0,0,0,.25);vertical-align:-1px}
+.logo-drop{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo-thumb{width:44px;height:44px;border:1px dashed var(--line);display:grid;place-items:center;overflow:hidden;background:var(--panel);font-size:10px;color:var(--muted)}
+.logo-thumb img{max-width:100%;max-height:100%}
+.file-btn{position:relative;overflow:hidden}
+.file-btn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.export{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+footer.site-foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:16px;margin-top:48px}
+footer .mail{user-select:all;color:var(--ink)}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="site">
+    <a href="../../index.html">Mathieu Missiaen</a>
+    <nav aria-label="Site">
+      <a href="../../index.html">Work</a>
+      <a href="../../project.html#tal">Tal</a>
+      <a href="../../gallery.html">Gallery</a>
+      <a href="../../film.html">Moving image</a>
+      <a href="#" aria-current="page">Lab</a>
+      <a href="../../about.html">About</a>
+      <a href="https://www.instagram.com/mathieumissiaen_2mss/">Instagram ↗</a>
+      <a href="https://iolo.paris" target="_blank" rel="noopener">iolo.paris ↗</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Lab — tool</span>
+      <h1>Rash Lab</h1>
+      <div class="belt" aria-hidden="true"><i style="background:#141414"></i><i style="background:#141414"></i><i class="bar"></i><i style="background:#141414"></i></div>
+    </div>
+    <p>A small tool from the Lab: design your own <em>jiu-jitsu</em> rashguard. Colours by panel, patterns, a belt-rank stripe, your name on the back, your logo on the chest. Export the sheet and send it to your maker.</p>
+  </section>
+
+  <div class="main">
+    <div class="left">
+      <div class="stage" aria-label="Rashguard preview">
+        <div class="view"><div id="front" style="width:100%;display:flex;justify-content:center"></div><span class="lbl"><b>Front</b></span></div>
+        <div class="view"><div id="back" style="width:100%;display:flex;justify-content:center"></div><span class="lbl"><b>Back</b></span></div>
+      </div>
+
+      <div class="export">
+        <button class="btn primary" id="exportPng" type="button">Export PNG</button>
+        <button class="btn" id="resetBtn" type="button">Reset</button>
+        <span class="status" id="status" role="status"></span>
+      </div>
+
+      <div class="spec">
+        <div class="spec-head">
+          <h2>Tech sheet</h2>
+          <button class="chip" id="copySpec" type="button">Copy sheet</button>
+        </div>
+        <dl id="specList"></dl>
+        <pre id="specText" hidden></pre>
+      </div>
+    </div>
+
+    <div class="panel controls">
+      <section class="sec">
+        <h2>Presets <small>starting points</small></h2>
+        <div class="presets" id="presets"></div>
+      </section>
+
+      <section class="sec">
+        <h2>Cut</h2>
+        <div class="row">
+          <div class="seg" id="sleeveSeg" role="group" aria-label="Sleeve length">
+            <button type="button" data-v="long">Long sleeves</button>
+            <button type="button" data-v="short">Short sleeves</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="seg" id="sizeSeg" role="group" aria-label="Size"></div>
+        </div>
+      </section>
+
+      <section class="sec">
+        <h2>Colours <small>pick a panel, then a tone</small></h2>
+        <div class="zones" id="zones"></div>
+        <div class="pal" id="palette"><span>Belts</span></div>
+      </section>
+
+      <section class="sec">
+        <h2>Pattern</h2>
+        <div class="row" id="patternChips"></div>
+        <div class="row">
+          <label class="inline" for="patColor"><input type="color" id="patColor"> Pattern colour</label>
+          <label class="inline" for="patSleeves"><input type="checkbox" id="patSleeves"> On sleeves too</label>
+        </div>
+        <div class="row">
+          <label class="f" for="patScale">Scale <input type="range" id="patScale" min="0.5" max="2.2" step="0.1"></label>
+          <label class="f" for="patText" id="patTextWrap">Pattern text <input type="text" id="patText" maxlength="24"></label>
+        </div>
+      </section>
+
+      <section class="sec">
+        <h2>Rank <small>belt-colour stripe</small></h2>
+        <div class="row" id="rankChips"></div>
+        <div class="seg" id="rankPosSeg" role="group" aria-label="Rank stripe position">
+          <button type="button" data-v="sides">Sides</button>
+          <button type="button" data-v="sleeves">Sleeves</button>
+          <button type="button" data-v="both">Both</button>
+        </div>
+      </section>
+
+      <section class="sec">
+        <h2>Lettering</h2>
+        <div class="row">
+          <label class="f" for="txtChest">Chest <input type="text" id="txtChest" maxlength="18"></label>
+          <label class="f" for="txtBack">Back — name <input type="text" id="txtBack" maxlength="16"></label>
+          <label class="f" for="txtSub">Back — line 2 <input type="text" id="txtSub" maxlength="24"></label>
+        </div>
+        <div class="row" id="fontChips"></div>
+        <div class="row">
+          <label class="inline" for="txtColor"><input type="color" id="txtColor"> Colour</label>
+          <label class="inline" for="txtOutline"><input type="checkbox" id="txtOutline"> Outline</label>
+          <label class="inline" for="txtOutlineColor"><input type="color" id="txtOutlineColor"> Outline colour</label>
+        </div>
+      </section>
+
+      <section class="sec">
+        <h2>Logo <small>PNG or SVG, transparent background</small></h2>
+        <div class="logo-drop">
+          <div class="logo-thumb" id="logoThumb">none</div>
+          <span class="btn file-btn" role="button">Upload<input type="file" id="logoFile" accept="image/png,image/svg+xml,image/jpeg,image/webp" aria-label="Upload a logo"></span>
+          <button class="chip" id="logoRemove" type="button">Remove</button>
+        </div>
+        <div class="row">
+          <label class="f" for="logoPos">Placement
+            <select id="logoPos">
+              <option value="chest-left">Left chest</option>
+              <option value="chest-center">Centre chest</option>
+              <option value="sleeve">Sleeve</option>
+              <option value="back">Back</option>
+            </select>
+          </label>
+          <label class="f" for="logoSize">Size <input type="range" id="logoSize" min="0.5" max="1.8" step="0.05"></label>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <footer class="site-foot">
+    <span class="mail">contact@mathieumissiaen.fr</span>
+    <span>© 2026 — Paris</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var BELTS = { white:'#F4F3EF', blue:'#1F4FBF', purple:'#6B2FA3', brown:'#6B4226', black:'#141414' };
+  var BELT_NAMES = { none:'None', white:'White', blue:'Blue', purple:'Purple', brown:'Brown', black:'Black' };
+  var RED_BAR = '#C8102E';
+  var FONTS = [
+    { id:'Anton', label:'Block', css:"'Anton', Impact, sans-serif" },
+    { id:'Archivo Black', label:'Heavy', css:"'Archivo Black', 'Arial Black', sans-serif" },
+    { id:'Permanent Marker', label:'Marker', css:"'Permanent Marker', 'Comic Sans MS', cursive" },
+    { id:'Black Han Sans', label:'Hangul', css:"'Black Han Sans', 'Apple SD Gothic Neo', sans-serif" }
+  ];
+  var PATTERNS = [
+    { id:'none', label:'Plain' }, { id:'stripes', label:'Stripes' }, { id:'camo', label:'Camo' },
+    { id:'gradient', label:'Fade' }, { id:'check', label:'Check' }, { id:'dots', label:'Dots' }, { id:'typo', label:'Type' }
+  ];
+  var ZONES = [
+    { id:'body', label:'Body' }, { id:'sleeves', label:'Sleeves' }, { id:'sides', label:'Side panels' },
+    { id:'collar', label:'Collar' }, { id:'cuffs', label:'Cuffs' }
+  ];
+  var SIZES = ['XS','S','M','L','XL','XXL'];
+
+  var PRESETS = [
+    { name:'탈 Tal', s:{ colors:{ body:'#B3261E', sleeves:'#141414', sides:'#141414', collar:'#F4F3EF', cuffs:'#F4F3EF' },
+      pattern:{ type:'typo', color:'#8E1D17', scale:1.1, sleeves:false, text:'탈 TAL' }, rank:'none', rankPos:'sides',
+      text:{ chest:'탈', back:'MISSIAEN', sub:'탈 — TAL', font:'Black Han Sans', color:'#F4F3EF', outline:true, outlineColor:'#141414' } } },
+    { name:'Black belt', s:{ colors:{ body:'#141414', sleeves:'#141414', sides:'#C8102E', collar:'#C8102E', cuffs:'#141414' },
+      pattern:{ type:'none', color:'#2A2A2A', scale:1, sleeves:false, text:'OSS' }, rank:'none', rankPos:'sides',
+      text:{ chest:'OSS', back:'MISSIAEN', sub:'PARIS', font:'Anton', color:'#F4F3EF', outline:false, outlineColor:'#C8102E' } } },
+    { name:'Ranked blue', s:{ colors:{ body:'#F4F3EF', sleeves:'#F4F3EF', sides:'#1F4FBF', collar:'#141414', cuffs:'#141414' },
+      pattern:{ type:'stripes', color:'#E2E1DC', scale:0.8, sleeves:false, text:'OSS' }, rank:'blue', rankPos:'both',
+      text:{ chest:'TEAM', back:'MISSIAEN', sub:'BLUE BELT', font:'Archivo Black', color:'#141414', outline:false, outlineColor:'#FFFFFF' } } },
+    { name:'Night camo', s:{ colors:{ body:'#1E2A24', sleeves:'#1E2A24', sides:'#0F1512', collar:'#0F1512', cuffs:'#0F1512' },
+      pattern:{ type:'camo', color:'#3D4C40', scale:1, sleeves:true, text:'OSS' }, rank:'none', rankPos:'sides',
+      text:{ chest:'NO GI', back:'MISSIAEN', sub:'PARIS', font:'Anton', color:'#C9D2C5', outline:false, outlineColor:'#000000' } } }
+  ];
+
+  function clone(o){ return JSON.parse(JSON.stringify(o)); }
+  function defaults(){
+    var s = clone(PRESETS[0].s);
+    s.sleeve = 'long'; s.size = 'M';
+    s.logo = { src:null, pos:'chest-left', size:1 };
+    return s;
+  }
+
+  var STORE = 'rashlab.v2';
+  var state = defaults();
+  try { var saved = localStorage.getItem(STORE); if (saved) { var p = JSON.parse(saved); if (p && p.colors && p.text) state = Object.assign(defaults(), p); } } catch (e) {}
+  var activeZone = 'body';
+
+  function save(){ try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} }
+
+  // ---------- colour helpers ----------
+  function hexToRgb(h){ h = h.replace('#',''); if (h.length===3) h = h.split('').map(function(c){return c+c;}).join(''); var n = parseInt(h,16); return [n>>16&255, n>>8&255, n&255]; }
+  function rgbToHex(r){ return '#' + r.map(function(v){ v = Math.max(0, Math.min(255, Math.round(v))); return (v<16?'0':'') + v.toString(16); }).join('').toUpperCase(); }
+  function mix(a,b,t){ var A = hexToRgb(a), B = hexToRgb(b); return rgbToHex([A[0]+(B[0]-A[0])*t, A[1]+(B[1]-A[1])*t, A[2]+(B[2]-A[2])*t]); }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  // ---------- geometry (garment drawn in a 400-wide space) ----------
+  var S=[118,72], CO=[58,330], A=[136,142], CI=[90,336];
+  function lerp(p,q,t){ return [p[0]+(q[0]-p[0])*t, p[1]+(q[1]-p[1])*t]; }
+  function quad(t0,t1,mirror){
+    var pts = [lerp(S,CO,t0), lerp(S,CO,t1), lerp(A,CI,t1), lerp(A,CI,t0)];
+    if (mirror) pts = pts.map(function(p){ return [400-p[0], p[1]]; });
+    return 'M' + pts.map(function(p){ return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' L') + ' Z';
+  }
+  function torso(back){ return 'M170 64 Q200 ' + (back?74:92) + ' 230 64 L282 72 L264 142 L262 440 Q200 448 138 440 L136 142 L118 72 Z'; }
+  var SIDE_L = 'M136 142 L156 145 L157 441.5 L138 440 Z';
+  var SIDE_R = 'M264 142 L244 145 L243 441.5 L262 440 Z';
+
+  function sleeveEnd(){ return state.sleeve === 'long' ? 1 : 0.3; }
+  function cuffStart(){ return state.sleeve === 'long' ? 0.93 : 0.25; }
+  function rankBand(){ return state.sleeve === 'long' ? [0.40, 0.52] : [0.11, 0.2]; }
+
+  // ---------- camo ----------
+  function rng(seed){ return function(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function camo(w, c1, c2){
+    var r = rng(11), out = '';
+    for (var k=0; k<12; k++){
+      var cx = r()*w, cy = r()*w, rad = w*(0.08 + r()*0.12), col = k%2 ? c1 : c2, pts = [];
+      for (var i=0; i<8; i++){ var a = i/8*Math.PI*2 + r()*0.3, rr = rad*(0.65 + r()*0.55); pts.push([Math.cos(a)*rr*1.4, Math.sin(a)*rr]); }
+      var d = '';
+      for (i=0; i<8; i++){ var p = pts[i], q = pts[(i+1)%8], m = [(p[0]+q[0])/2, (p[1]+q[1])/2];
+        if (i===0){ var pm = pts[7]; d += 'M' + ((pm[0]+p[0])/2).toFixed(1) + ' ' + ((pm[1]+p[1])/2).toFixed(1); }
+        d += ' Q' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + ' ' + m[0].toFixed(1) + ' ' + m[1].toFixed(1); }
+      d += ' Z';
+      for (var dx=-1; dx<=1; dx++) for (var dy=-1; dy<=1; dy++)
+        out += '<path d="' + d + '" transform="translate(' + (cx+dx*w).toFixed(1) + ' ' + (cy+dy*w).toFixed(1) + ')" fill="' + col + '"/>';
+    }
+    return out;
+  }
+
+  function patternDef(id){
+    var p = state.pattern, s = 24*p.scale, c = p.color;
+    switch (p.type){
+      case 'stripes': return '<pattern id="'+id+'" patternUnits="userSpaceOnUse" width="'+s+'" height="'+s+'" patternTransform="rotate(35)"><rect width="'+(s*0.42)+'" height="'+s+'" fill="'+c+'"/></pattern>';
+      case 'check': return '<pattern id="'+id+'" patternUnits="userSpaceOnUse" width="'+(s*1.2)+'" height="'+(s*1.2)+'"><rect width="'+(s*0.6)+'" height="'+(s*0.6)+'" fill="'+c+'"/><rect x="'+(s*0.6)+'" y="'+(s*0.6)+'" width="'+(s*0.6)+'" height="'+(s*0.6)+'" fill="'+c+'"/></pattern>';
+      case 'dots': return '<pattern id="'+id+'" patternUnits="userSpaceOnUse" width="'+(s*0.8)+'" height="'+(s*0.8)+'"><circle cx="'+(s*0.4)+'" cy="'+(s*0.4)+'" r="'+(s*0.15)+'" fill="'+c+'"/></pattern>';
+      case 'camo': { var w = 150*p.scale; return '<pattern id="'+id+'" patternUnits="userSpaceOnUse" width="'+w+'" height="'+w+'">'+camo(w, c, mix(c, state.colors.body, 0.5))+'</pattern>'; }
+      case 'gradient': return '<linearGradient id="'+id+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0.15" stop-color="'+c+'" stop-opacity="0"/><stop offset="1" stop-color="'+c+'" stop-opacity="1"/></linearGradient>';
+      case 'typo': {
+        var t = (p.text || 'OSS').trim() || 'OSS', fs = 15*p.scale, w2 = Math.max(48, t.length*fs*0.62 + fs*1.2), h = fs*1.35;
+        var font = "Impact, 'Arial Black', 'Apple SD Gothic Neo', sans-serif";
+        var tx = function(x,y){ return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" font-family="'+font+'" font-size="'+fs.toFixed(1)+'" fill="'+c+'">'+esc(t)+'</text>'; };
+        return '<pattern id="'+id+'" patternUnits="userSpaceOnUse" width="'+w2.toFixed(1)+'" height="'+(h*2).toFixed(1)+'" patternTransform="rotate(-12)">'+tx(0,fs)+tx(w2/2,fs+h)+tx(-w2/2,fs+h)+'</pattern>';
+      }
+    }
+    return '';
+  }
+
+  // ---------- text fitting ----------
+  var mctx = document.createElement('canvas').getContext('2d');
+  function fontCss(){ var f = FONTS.filter(function(x){ return x.id === state.text.font; })[0] || FONTS[0]; return f.css; }
+  function fit(text, base, maxW, ls){
+    if (!text) return base;
+    mctx.font = base + 'px ' + fontCss();
+    var w = mctx.measureText(text).width + (ls||0)*text.length;
+    return w > maxW ? base * maxW / w : base;
+  }
+  function textItems(view){
+    var t = state.text, items = [];
+    if (view === 'front' && t.chest) items.push({ x:200, y:207, size:fit(t.chest, 30, 104, 0), str:t.chest, ls:0 });
+    if (view === 'back'){
+      if (t.back) items.push({ x:200, y:150, size:fit(t.back, 40, 148, 0.5), str:t.back, ls:0.5 });
+      if (t.sub) items.push({ x:200, y:178, size:fit(t.sub, 13, 118, 3), str:t.sub, ls:3 });
+    }
+    return items;
+  }
+  function logoBox(view){
+    var L = state.logo; if (!L.src) return null;
+    var k = L.size, pos = L.pos;
+    if (view === 'front' && pos === 'chest-left') return { x:236, y:112, s:34*k };
+    if (view === 'front' && pos === 'chest-center') return { x:200, y:150, s:56*k };
+    if (view === 'front' && pos === 'sleeve'){ var t = state.sleeve === 'long' ? 0.2 : 0.14; var o = lerp(S,CO,t), i = lerp(A,CI,t); return { x:(o[0]+i[0])/2, y:(o[1]+i[1])/2 + 4, s:24*k }; }
+    if (view === 'back' && pos === 'back') return { x:200, y:255, s:92*k };
+    return null;
+  }
+
+  // ---------- SVG build ----------
+  function buildSVG(view, forExport){
+    var c = state.colors, back = view === 'back', sfx = view + (forExport ? '-x' : ''), id = 'pat-' + sfx;
+    var end = sleeveEnd(), cs = cuffStart();
+    var rankCol = state.rank !== 'none' ? BELTS[state.rank] : null;
+    var rankSides = rankCol && (state.rankPos === 'sides' || state.rankPos === 'both');
+    var rankSleeves = rankCol && (state.rankPos === 'sleeves' || state.rankPos === 'both');
+    var sideCol = rankSides ? rankCol : c.sides;
+    var hasPat = state.pattern.type !== 'none';
+    var defs = '<defs>' + (hasPat ? patternDef(id) : '') +
+      '<linearGradient id="shade-'+sfx+'" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity="0.22"/><stop offset="0.22" stop-color="#fff" stop-opacity="0.07"/><stop offset="0.5" stop-color="#fff" stop-opacity="0"/><stop offset="0.8" stop-color="#fff" stop-opacity="0.05"/><stop offset="1" stop-color="#000" stop-opacity="0.22"/></linearGradient></defs>';
+    var sh = 'url(#shade-'+sfx+')';
+    var pf = 'url(#' + id + ')';
+    var sL = quad(0,end,false), sR = quad(0,end,true), T = torso(back);
+    var g = '';
+    g += '<path d="'+sL+'" fill="'+c.sleeves+'"/><path d="'+sR+'" fill="'+c.sleeves+'"/>';
+    if (hasPat && state.pattern.sleeves) g += '<path d="'+sL+'" fill="'+pf+'"/><path d="'+sR+'" fill="'+pf+'"/>';
+    if (rankSleeves){ var rb = rankBand(); g += '<path d="'+quad(rb[0],rb[1],false)+'" fill="'+rankCol+'"/><path d="'+quad(rb[0],rb[1],true)+'" fill="'+rankCol+'"/>';
+      if (state.rank === 'black'){ var mid = (rb[0]+rb[1])/2, hw = (rb[1]-rb[0])*0.22; g += '<path d="'+quad(mid-hw,mid+hw,false)+'" fill="'+RED_BAR+'"/><path d="'+quad(mid-hw,mid+hw,true)+'" fill="'+RED_BAR+'"/>'; } }
+    g += '<path d="'+quad(cs,end,false)+'" fill="'+c.cuffs+'"/><path d="'+quad(cs,end,true)+'" fill="'+c.cuffs+'"/>';
+    g += '<path d="'+sL+'" fill="'+sh+'"/><path d="'+sR+'" fill="'+sh+'"/>';
+    g += '<path d="'+T+'" fill="'+c.body+'"/>';
+    if (hasPat) g += '<path d="'+T+'" fill="'+pf+'"/>';
+    g += '<path d="'+SIDE_L+'" fill="'+sideCol+'"/><path d="'+SIDE_R+'" fill="'+sideCol+'"/>';
+    if (rankSides && state.rank === 'black') g += '<rect x="138.5" y="396" width="18" height="26" fill="'+RED_BAR+'"/><rect x="243.5" y="396" width="18" height="26" fill="'+RED_BAR+'"/>';
+    g += '<path d="'+T+'" fill="'+sh+'"/>';
+    if (!back) g += '<path d="M170 64 Q200 74 230 64 Q200 92 170 64 Z" fill="'+mix(c.body,'#000000',0.45)+'"/>';
+    g += '<path d="M170 64 Q200 '+(back?74:92)+' 230 64" fill="none" stroke="'+c.collar+'" stroke-width="7" stroke-linecap="round"/>';
+    if (!back) g += '<path d="M171 64 Q200 74 229 64" fill="none" stroke="'+c.collar+'" stroke-width="4" stroke-linecap="round" opacity="0.85"/>';
+    var st = 'fill="none" stroke="#000" stroke-opacity="0.32" stroke-width="0.9" stroke-dasharray="3 2"';
+    var cl = lerp(S,CO,cs), ci = lerp(A,CI,cs);
+    g += '<path d="M118 72 L136 142 M282 72 L264 142 M156 146 L157 440 M244 146 L243 440 M'+cl[0].toFixed(1)+' '+cl[1].toFixed(1)+' L'+ci[0].toFixed(1)+' '+ci[1].toFixed(1)+' M'+(400-cl[0]).toFixed(1)+' '+cl[1].toFixed(1)+' L'+(400-ci[0]).toFixed(1)+' '+ci[1].toFixed(1)+' M140 433 Q200 441 260 433" '+st+'/>';
+    var ol = 'fill="none" stroke="#0E0F10" stroke-width="1.3" stroke-linejoin="round"';
+    g += '<path d="'+sL+'" '+ol+'/><path d="'+sR+'" '+ol+'/><path d="'+T+'" '+ol+'/>';
+    var lb = logoBox(view);
+    if (lb) g += '<image href="'+state.logo.src+'" x="'+(lb.x-lb.s/2).toFixed(1)+'" y="'+(lb.y-lb.s/2).toFixed(1)+'" width="'+lb.s.toFixed(1)+'" height="'+lb.s.toFixed(1)+'" preserveAspectRatio="xMidYMid meet"/>';
+    if (!forExport){
+      textItems(view).forEach(function(it){
+        g += '<text x="'+it.x+'" y="'+it.y+'" text-anchor="middle" font-family="'+esc(fontCss())+'" font-size="'+it.size.toFixed(1)+'" letter-spacing="'+it.ls+'" fill="'+state.text.color+'"' +
+          (state.text.outline ? ' stroke="'+state.text.outlineColor+'" stroke-width="'+(it.size*0.09).toFixed(2)+'" paint-order="stroke" stroke-linejoin="round"' : '') + '>'+esc(it.str)+'</text>';
+      });
+    }
+    var dims = forExport ? ' width="340" height="410"' : '';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="30 50 340 410"'+dims+' role="img" aria-label="Rashguard, '+(back?'back':'front')+' view">' + defs + g + '</svg>';
+  }
+
+  // ---------- UI ----------
+  var $ = function(id){ return document.getElementById(id); };
+  function setPressed(container, v){ Array.prototype.forEach.call(container.querySelectorAll('button'), function(b){ b.setAttribute('aria-pressed', String(b.dataset.v === v)); }); }
+
+  function buildStatic(){
+    $('presets').innerHTML = PRESETS.map(function(p, i){
+      var c = p.s.colors;
+      return '<button class="preset" type="button" data-i="'+i+'"><span class="bar"><i style="background:'+c.body+'"></i><i style="background:'+c.sleeves+'"></i><i style="background:'+c.sides+'"></i><i style="background:'+c.collar+'"></i></span><span>'+esc(p.name)+'</span></button>';
+    }).join('');
+    $('presets').addEventListener('click', function(e){
+      var b = e.target.closest('.preset'); if (!b) return;
+      var p = clone(PRESETS[+b.dataset.i].s);
+      state.colors = p.colors; state.pattern = p.pattern; state.rank = p.rank; state.rankPos = p.rankPos; state.text = p.text;
+      update(); flash(PRESETS[+b.dataset.i].name + ' applied. Your logo and size are kept.');
+    });
+    $('sizeSeg').innerHTML = SIZES.map(function(s){ return '<button type="button" data-v="'+s+'">'+s+'</button>'; }).join('');
+    $('sizeSeg').addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return; state.size = b.dataset.v; update(); });
+    $('sleeveSeg').addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return; state.sleeve = b.dataset.v; update(); });
+    $('zones').innerHTML = ZONES.map(function(z){
+      return '<label class="zone" data-z="'+z.id+'" for="zc-'+z.id+'"><input type="color" id="zc-'+z.id+'" data-z="'+z.id+'"><span class="zn"><b>'+z.label+'</b><code id="zh-'+z.id+'"></code></span></label>';
+    }).join('');
+    $('zones').addEventListener('input', function(e){ var z = e.target.dataset.z; if (!z) return; state.colors[z] = e.target.value.toUpperCase(); activeZone = z; update(); });
+    $('zones').addEventListener('click', function(e){ var l = e.target.closest('.zone'); if (!l) return; activeZone = l.dataset.z; syncZones(); });
+    var pal = Object.keys(BELTS).map(function(k){ return { name:BELT_NAMES[k] + ' belt', hex:BELTS[k] }; }).concat([{ name:'Black-belt red bar', hex:RED_BAR }]);
+    $('palette').insertAdjacentHTML('beforeend', pal.map(function(p){ return '<button type="button" title="'+p.name+'" aria-label="'+p.name+' on the selected panel" style="background:'+p.hex+'" data-hex="'+p.hex+'"></button>'; }).join(''));
+    $('palette').addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return; state.colors[activeZone] = b.dataset.hex; update(); });
+    $('patternChips').innerHTML = PATTERNS.map(function(p){ return '<button class="chip" type="button" data-v="'+p.id+'">'+p.label+'</button>'; }).join('');
+    $('patternChips').addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return; state.pattern.type = b.dataset.v; update(); });
+    $('patColor').addEventListener('input', function(e){ state.pattern.color = e.target.value.toUpperCase(); update(); });
+    $('patSleeves').addEventListener('change', function(e){ state.pattern.sleeves = e.target.checked; update(); });
+    $('patScale').addEventListener('input', function(e){ state.pattern.scale = +e.target.value; update(); });
+    $('patText').addEventListener('input', function(e){ state.pattern.text = e.target.value; update(); });
+    $('rankChips').innerHTML = ['none','white','blue','purple','brown','black'].map(function(k){
+      return '<button class="chip" type="button" data-v="'+k+'">'+(k==='none'?'':'<span class="sw" style="background:'+BELTS[k]+'"></span>')+BELT_NAMES[k]+'</button>';
+    }).join('');
+    $('rankChips').addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return; state.rank = b.dataset.v; update(); });
+    $('rankPosSeg').addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return; state.rankPos = b.dataset.v; update(); });
+    [['txtChest','chest'],['txtBack','back'],['txtSub','sub']].forEach(function(p){ $(p[0]).addEventListener('input', function(e){ state.text[p[1]] = e.target.value; update(); }); });
+    $('fontChips').innerHTML = FONTS.map(function(f){ return '<button class="chip" type="button" data-v="'+f.id+'" style="font-family:'+f.css.replace(/"/g,'&quot;')+';font-size:14px">'+f.label+'</button>'; }).join('');
+    $('fontChips').addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return; state.text.font = b.dataset.v; update(); });
+    $('txtColor').addEventListener('input', function(e){ state.text.color = e.target.value.toUpperCase(); update(); });
+    $('txtOutline').addEventListener('change', function(e){ state.text.outline = e.target.checked; update(); });
+    $('txtOutlineColor').addEventListener('input', function(e){ state.text.outlineColor = e.target.value.toUpperCase(); update(); });
+    $('logoFile').addEventListener('change', function(e){
+      var f = e.target.files && e.target.files[0]; if (!f) return;
+      if (f.size > 4*1024*1024){ flash('This file is over 4 MB. Export a lighter PNG or SVG.'); return; }
+      var r = new FileReader();
+      r.onload = function(){ state.logo.src = r.result; update(); flash('Logo added.'); };
+      r.onerror = function(){ flash('Could not read this file. Try a PNG or an SVG.'); };
+      r.readAsDataURL(f); e.target.value = '';
+    });
+    $('logoRemove').addEventListener('click', function(){ state.logo.src = null; update(); flash('Logo removed.'); });
+    $('logoPos').addEventListener('change', function(e){ state.logo.pos = e.target.value; update(); });
+    $('logoSize').addEventListener('input', function(e){ state.logo.size = +e.target.value; update(); });
+    $('resetBtn').addEventListener('click', function(){ state = defaults(); activeZone = 'body'; update(); flash('Back to the starting design.'); });
+    $('copySpec').addEventListener('click', copySpec);
+    $('exportPng').addEventListener('click', exportPng);
+  }
+
+  function syncZones(){
+    ZONES.forEach(function(z){
+      var inp = $('zc-'+z.id); if (inp.value.toUpperCase() !== state.colors[z.id]) inp.value = state.colors[z.id];
+      $('zh-'+z.id).textContent = state.colors[z.id];
+      document.querySelector('.zone[data-z="'+z.id+'"]').classList.toggle('active', z.id === activeZone);
+    });
+  }
+
+  function syncControls(){
+    setPressed($('sleeveSeg'), state.sleeve);
+    setPressed($('sizeSeg'), state.size);
+    syncZones();
+    setPressed($('patternChips'), state.pattern.type);
+    $('patColor').value = state.pattern.color; $('patSleeves').checked = !!state.pattern.sleeves; $('patScale').value = state.pattern.scale;
+    if (document.activeElement !== $('patText')) $('patText').value = state.pattern.text || '';
+    $('patTextWrap').hidden = state.pattern.type !== 'typo';
+    setPressed($('rankChips'), state.rank);
+    setPressed($('rankPosSeg'), state.rankPos);
+    $('rankPosSeg').style.opacity = state.rank === 'none' ? 0.5 : 1;
+    [['txtChest','chest'],['txtBack','back'],['txtSub','sub']].forEach(function(p){ if (document.activeElement !== $(p[0])) $(p[0]).value = state.text[p[1]] || ''; });
+    setPressed($('fontChips'), state.text.font);
+    $('txtColor').value = state.text.color; $('txtOutline').checked = !!state.text.outline; $('txtOutlineColor').value = state.text.outlineColor;
+    $('logoPos').value = state.logo.pos; $('logoSize').value = state.logo.size;
+    $('logoThumb').innerHTML = state.logo.src ? '<img alt="Uploaded logo" src="'+state.logo.src+'">' : 'none';
+    $('logoRemove').disabled = !state.logo.src;
+  }
+
+  function specRows(){
+    var c = state.colors, p = state.pattern, t = state.text;
+    var patLabel = (PATTERNS.filter(function(x){ return x.id === p.type; })[0] || {}).label;
+    var logoLabels = { 'chest-left':'Left chest', 'chest-center':'Centre chest', 'sleeve':'Sleeve', 'back':'Back' };
+    return [
+      ['Model', (state.sleeve === 'long' ? 'Long sleeves' : 'Short sleeves') + ' · Size ' + state.size],
+      ['Colours', ZONES.map(function(z){ return z.label + ' ' + c[z.id]; }).join(' · '), ZONES.map(function(z){ return c[z.id]; })],
+      ['Pattern', p.type === 'none' ? 'Plain' : patLabel + ' ' + p.color + ' · scale ' + p.scale.toFixed(1) + (p.sleeves ? ' · body + sleeves' : ' · body') + (p.type === 'typo' ? ' · "' + (p.text || 'OSS') + '"' : ''), p.type === 'none' ? null : [p.color]],
+      ['Rank', state.rank === 'none' ? 'None' : BELT_NAMES[state.rank] + ' · ' + ({sides:'side panels', sleeves:'sleeves', both:'side panels + sleeves'})[state.rankPos], state.rank === 'none' ? null : [BELTS[state.rank]]],
+      ['Lettering', [t.chest ? 'Chest "' + t.chest + '"' : '', t.back ? 'Back "' + t.back + '"' : '', t.sub ? '"' + t.sub + '"' : ''].filter(Boolean).join(' · ') + ' — ' + t.font + ' ' + t.color + (t.outline ? ', outline ' + t.outlineColor : ''), [t.color]],
+      ['Logo', state.logo.src ? logoLabels[state.logo.pos] + ' · ' + Math.round(state.logo.size*100) + '%' : 'None'],
+      ['Print', 'Full sublimation · flatlock seams']
+    ];
+  }
+
+  function renderSpec(){
+    var rows = specRows();
+    $('specList').innerHTML = rows.map(function(r){
+      var sw = r[2] ? r[2].map(function(h){ return '<span class="sw" style="background:'+h+'"></span>'; }).join('') + ' ' : '';
+      return '<dt>'+r[0]+'</dt><dd>'+sw+'<span>'+esc(r[1])+'</span></dd>';
+    }).join('');
+    $('specText').textContent = 'RASH LAB — tech sheet (mathieumissiaen.fr)\n' + rows.map(function(r){ return r[0] + ': ' + r[1]; }).join('\n');
+  }
+
+  function render(){
+    $('front').innerHTML = buildSVG('front', false);
+    $('back').innerHTML = buildSVG('back', false);
+  }
+
+  function update(){ render(); syncControls(); renderSpec(); save(); }
+
+  var flashT;
+  function flash(msg){ $('status').textContent = msg; clearTimeout(flashT); flashT = setTimeout(function(){ $('status').textContent = ''; }, 5000); }
+
+  function copySpec(){
+    var txt = $('specText').textContent;
+    var done = function(){ flash('Sheet copied.'); };
+    var fallback = function(){
+      var pre = $('specText'); pre.hidden = false;
+      var range = document.createRange(); range.selectNodeContents(pre);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      flash('Copy is blocked here: the text is selected, press Ctrl/Cmd + C.');
+    };
+    try { navigator.clipboard.writeText(txt).then(done, fallback); } catch (e) { fallback(); }
+  }
+
+  // ---------- export ----------
+  var downloads = null;
+  function initDownloads(){
+    if (!(window.claude && window.claude.use)) {
+      downloads = { save: function(o){ var u = URL.createObjectURL(o.data), a = document.createElement('a'); a.href = u; a.download = o.filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(u); }, 4000); return Promise.resolve(); } };
+      $('exportPng').hidden = false; return;
+    }
+    window.claude.use('downloads').then(function(d){ downloads = d; $('exportPng').hidden = !d; }, function(){ $('exportPng').hidden = true; });
+  }
+
+  function loadImg(src){ return new Promise(function(res, rej){ var i = new Image(); i.onload = function(){ res(i); }; i.onerror = rej; i.src = src; }); }
+
+  function exportPng(){
+    if (!downloads) { flash('Export is not available in this view.'); return; }
+    var btn = $('exportPng'); btn.disabled = true; flash('Preparing the image…');
+    var W = 1600, H = 1000, k = 2.0;
+    var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    var ctx = cv.getContext('2d');
+    var ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    ready.then(function(){
+      return Promise.all(['front','back'].map(function(v){ return loadImg('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(buildSVG(v, true))); }));
+    }).then(function(imgs){
+      ctx.fillStyle = '#E9E8E4'; ctx.fillRect(0, 0, W, H);
+      ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
+      ctx.fillStyle = '#161513'; ctx.font = "56px 'Saira Stencil One', 'Arial Black', sans-serif";
+      ctx.fillText('Rash Lab', 48, 78);
+      ctx.font = "20px 'IBM Plex Mono', monospace"; ctx.fillStyle = '#5E5B55';
+      ctx.fillText((state.text.back || 'Rashguard') + ' — ' + (state.sleeve === 'long' ? 'long sleeves' : 'short sleeves') + ' — size ' + state.size, 330, 72);
+      ctx.textAlign = 'right'; ctx.fillText('mathieumissiaen.fr', W - 48, 72);
+      var gw = 340*k, gh = 410*k, top = 110;
+      var spots = [{ v:'front', ox:(W/2 - gw)/2 }, { v:'back', ox:W/2 + (W/2 - gw)/2 }];
+      spots.forEach(function(s, i){
+        ctx.drawImage(imgs[i], s.ox, top, gw, gh);
+        textItems(s.v).forEach(function(it){
+          ctx.font = (it.size*k).toFixed(1) + 'px ' + fontCss();
+          ctx.textAlign = 'center';
+          if ('letterSpacing' in ctx) ctx.letterSpacing = (it.ls*k) + 'px';
+          var X = s.ox + (it.x - 30)*k, Y = top + (it.y - 50)*k;
+          if (state.text.outline){ ctx.lineJoin = 'round'; ctx.lineWidth = it.size*0.09*k; ctx.strokeStyle = state.text.outlineColor; ctx.strokeText(it.str, X, Y); }
+          ctx.fillStyle = state.text.color; ctx.fillText(it.str, X, Y);
+          if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+        });
+        ctx.font = "18px 'IBM Plex Mono', monospace"; ctx.fillStyle = '#5E5B55'; ctx.textAlign = 'center';
+        ctx.fillText(s.v === 'front' ? 'Front' : 'Back', s.ox + gw/2, top + gh + 34);
+      });
+      return new Promise(function(res){ cv.toBlob(res, 'image/png'); });
+    }).then(function(blob){
+      if (!blob) throw { code:'bad_request' };
+      var slug = (state.text.back || 'rashguard').toLowerCase().normalize('NFD').replace(/[^\w]+/g, '-').replace(/^-|-$/g, '') || 'rashguard';
+      return downloads.save({ filename: 'rashguard-' + slug + '.png', data: blob });
+    }).then(function(){ flash('Image saved.'); }, function(err){
+      var code = err && err.code;
+      if (code === 'declined') flash('Export cancelled.');
+      else if (code === 'rate_limited') flash('A save window is already open.');
+      else if (code === 'too_large') flash('The image is too heavy for this export.');
+      else flash('Export failed. Try again, or remove the logo if it is very large.');
+    }).then(function(){ btn.disabled = false; });
+  }
+
+  buildStatic();
+  update();
+  initDownloads();
+  if (document.fonts){ document.fonts.ready.then(render); if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', render); }
+})();
+</script>
+
+</body>
+</html>

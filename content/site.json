@@ -1,0 +1,135 @@
+{
+  "name": "Mathieu Missiaen",
+  "tagline": "Image IRL & CGI — Paris",
+  "seo": {
+    "title": "Mathieu Missiaen — Creative director, image IRL & CGI, Paris",
+    "description": "Paris-based creative director, photographer and CGI artist. Personal research on masks and matter, and films and images for Hermès, Loewe, Kenzo."
+  },
+  "home": {
+    "features": [
+      {
+        "type": "project",
+        "slug": "acne-paper",
+        "label": "",
+        "text": "",
+        "images": [
+          "images/acne-paper/window-5.jpg",
+          "images/acne-paper/detail.jpg"
+        ]
+      },
+      {
+        "type": "film",
+        "vimeo": "298188244",
+        "label": "",
+        "text": ""
+      },
+      {
+        "type": "project",
+        "slug": "anti",
+        "label": "",
+        "text": ""
+      },
+      {
+        "type": "project",
+        "slug": "kenzo-move",
+        "label": "",
+        "text": "",
+        "images": [
+          "images/kenzo-move/02-flowers-duo.jpg",
+          "images/kenzo-move/10-white-shoe.jpg"
+        ]
+      }
+    ],
+    "latest": {
+      "src": "images/tal/17-goyohan-bam.jpg",
+      "ratio": "1760 / 2200",
+      "title": "고요한 밤",
+      "label": "",
+      "text": "Mask built in Houdini, through a home-made lens shader, wrapped in a Korean poem.",
+      "href": "project.html#tal"
+    }
+  },
+  "panels": {
+    "research": "Personal series, without a brief.",
+    "commission": "For fashion, luxury and beauty houses."
+  },
+  "lab": {
+    "intro": "Studies, tests and unfinished things. Where the research happens before it becomes a series or a commission.",
+    "items": [
+      {
+        "title": "Rash Lab — rashguard tool",
+        "meta": "2026 · BJJ",
+        "href": "lab/rash-lab/index.html",
+        "image": ""
+      },
+      {
+        "title": "Plates — print tests",
+        "meta": "2024",
+        "href": "project.html#plates",
+        "image": "images/plates/02-plates.jpg"
+      },
+      {
+        "title": "Untitled studies",
+        "meta": "CGI",
+        "href": "project.html#studies",
+        "image": "images/studies/04-sphere-gold.jpg"
+      }
+    ],
+    "show": false
+  },
+  "info": "Images between what is shot and what is built. Paris.",
+  "about": {
+    "short": "Creative director, photographer, director and CGI artist, based in Paris.",
+    "bio": [
+      "Trained in painting and furniture design, he co-founded the set design studio Le Creative Sweatshop before moving into photography, film and CGI.",
+      "He works for houses such as Hermès, Kenzo, Loewe, Dior, Acne Paper, Suntory and Amazon Japan — and on long personal series, from the masks of TAL to Aichmophobia."
+    ],
+    "portrait": "",
+    "path": [
+      "Painting and furniture design",
+      "Three years in Canada — woodwork, graphic design",
+      "Co-founder, Le Creative Sweatshop / 5fruits",
+      "Bliss, solo show, Maison de la Photographie, Lille, 2014",
+      "Freelance creative director, Paris"
+    ],
+    "clients": [
+      "Hermès",
+      "Dior",
+      "Audemars Piguet",
+      "Kenzo",
+      "Loewe",
+      "Lanvin",
+      "Acne Paper",
+      "Rolls-Royce",
+      "La Prairie",
+      "Givenchy",
+      "Suntory",
+      "Amazon Japan",
+      "Wieden+Kennedy Tokyo (agency)",
+      "ānti",
+      "Nike"
+    ],
+    "press": [
+      "V Magazine",
+      "Marie Claire"
+    ],
+    "tools": [
+      "Houdini",
+      "Cinema 4D",
+      "Redshift",
+      "Motion control",
+      "Hand-made sets"
+    ]
+  },
+  "contact": {
+    "email": "contact@mathieumissiaen.fr",
+    "asia": "hello@soon.global",
+    "instagram": "https://www.instagram.com/mathieumissiaen_2mss/",
+    "instagramHandle": "@mathieumissiaen_2mss",
+    "vimeo": "https://vimeo.com/mathieumissiaen",
+    "tiktok": "",
+    "iolo": "https://iolo.paris",
+    "instagramFeed": "",
+    "instagramCount": 8
+  }
+}

@@ -1,0 +1,228 @@
+# Pages CMS (https://app.pagescms.org) — edit the site without touching code.
+media:
+  input: images
+  output: images
+content:
+  - name: projects
+    label: Projets (séries et commandes)
+    type: file
+    path: content/projects.json
+    format: json
+    fields:
+      - name: projects
+        label: Projets — l'ordre ici = l'ordre sur le site
+        type: object
+        list: true
+        fields:
+          - { name: slug, label: "Identifiant (url, sans espace)", type: string, required: true }
+          - { name: title, label: Titre, type: string, required: true }
+          - { name: display, label: "Titre affiché en grand (ex : 탈)", type: string }
+          - { name: displayLang, label: "Langue du titre affiché (ex : ko)", type: string }
+          - name: kind
+            label: Type
+            type: select
+            options: { values: [research, commission] }
+          - { name: feature, label: "Mettre en avant sur l'accueil", type: boolean }
+          - name: view
+            label: "Affichage des images (vide = mise en page normale, masonry = grille comme Gallery)"
+            type: select
+            options: { values: ["", masonry] }
+          - { name: galleryOnly, label: "Seulement dans la page Gallery (pas de page projet)", type: boolean }
+          - { name: tab, label: "Onglet à part dans le menu (nom de l'onglet, vide = non)", type: string }
+          - { name: client, label: Client, type: string }
+          - { name: year, label: Année, type: string }
+          - { name: kicker, label: "Sur-titre", type: string }
+          - { name: subtitle, label: "Sous-titre", type: string }
+          - { name: tagline, label: Accroche, type: string }
+          - { name: intro, label: Texte, type: text }
+          - { name: medium, label: Technique, type: string }
+          - { name: cover, label: "Image de couverture", type: image }
+          - name: theme
+            label: "Couleurs et police"
+            type: object
+            fields:
+              - { name: bg, label: Fond, type: string }
+              - { name: fg, label: Texte, type: string }
+              - { name: muted, label: "Texte secondaire", type: string }
+              - { name: line, label: Lignes, type: string }
+              - { name: accent, label: Accent, type: string }
+              - { name: font, label: "Police Google Fonts (ex : Cinzel:wght@400)", type: string }
+              - { name: fontCss, label: "Nom CSS de la police (ex : 'Cinzel', serif)", type: string }
+              - { name: titleItalic, label: "Titre en italique", type: boolean }
+              - { name: titleWeight, label: "Graisse du titre (100–900)", type: number }
+              - { name: titleTracking, label: "Interlettrage (ex : -.02em)", type: string }
+          - name: sections
+            label: "Sections d'images"
+            type: object
+            list: true
+            fields:
+              - name: layout
+                label: Mise en page
+                type: select
+                options: { values: [hero, sequence, grid, loop, video] }
+              - { name: columns, label: "Colonnes (grille)", type: number }
+              - { name: captions, label: "Afficher les légendes", type: boolean }
+              - { name: src, label: "Vidéo en boucle (mp4, si mise en page = loop)", type: file }
+              - { name: poster, label: "Image d'attente de la vidéo", type: image }
+              - { name: vimeo, label: "Numéro Vimeo (si mise en page = video)", type: string }
+              - { name: ratio, label: "Format de la vidéo (ex : 9 / 16)", type: string }
+              - { name: template, label: "Colonnes sur mesure (ex : 2fr 1fr)", type: string }
+              - { name: title, label: "Titre de section", type: string }
+              - { name: intro, label: "Texte de section", type: text }
+              - { name: bg, label: "Fond de section", type: string }
+              - { name: fg, label: "Texte de section", type: string }
+              - { name: muted, label: "Texte secondaire de section", type: string }
+              - name: images
+                label: Images
+                type: object
+                list: true
+                fields:
+                  - { name: src, label: Image, type: image, required: true }
+                  - { name: title, label: Titre, type: string }
+                  - { name: caption, label: Légende, type: text }
+                  - { name: tag, label: "Étiquette", type: string }
+                  - { name: ratio, label: "Format (ex : 4 / 5)", type: string }
+                  - { name: bg, label: "Couleur de fond", type: string }
+                  - { name: detail, label: "Détail animé (gif)", type: image }
+          - name: chapters
+            label: "Chapitres (bandeau texte)"
+            type: object
+            fields:
+              - { name: title, label: Titre, type: string }
+              - { name: intro, label: Texte, type: text }
+              - { name: bg, label: Fond, type: string }
+              - { name: fg, label: Texte, type: string }
+              - { name: muted, label: "Texte secondaire", type: string }
+              - { name: line, label: Lignes, type: string }
+              - name: items
+                label: Chapitres
+                type: object
+                list: true
+                fields:
+                  - { name: label, label: Numéro, type: string }
+                  - { name: title, label: Titre, type: string }
+                  - { name: text, label: Texte, type: text }
+          - name: essay
+            label: "Texte long"
+            type: object
+            fields:
+              - { name: label, label: "Étiquette", type: string }
+              - { name: lead, label: "Phrase d'ouverture", type: text }
+              - { name: text, label: Texte, type: text }
+          - name: credits
+            label: Crédits
+            type: object
+            list: true
+            fields:
+              - { name: role, label: Rôle, type: string }
+              - { name: name, label: Nom, type: string }
+      - name: home
+        label: "Accueil — blocs mis en avant (dans l'ordre, avant la grille)"
+        type: object
+        fields:
+          - name: latest
+            label: "Dernière image (tout en haut)"
+            type: object
+            fields:
+              - { name: src, label: Image, type: image }
+              - { name: ratio, label: "Format (ex : 4 / 5)", type: string }
+              - { name: label, label: "Petit titre", type: string }
+              - { name: title, label: Titre, type: string }
+              - { name: text, label: Texte, type: text }
+              - { name: href, label: Lien, type: string }
+          - name: features
+            label: Blocs
+            type: object
+            list: true
+            fields:
+              - name: type
+                label: "Type (project = galerie, film = vidéo)"
+                type: select
+                options: { values: [project, film] }
+              - { name: slug, label: "Identifiant du projet (si galerie, ex : acne-paper)", type: string }
+              - { name: vimeo, label: "Numéro Vimeo (si film)", type: string }
+              - { name: label, label: "Petit titre au-dessus", type: string }
+              - { name: text, label: "Texte (vide = texte du projet)", type: text }
+              - { name: images, label: "Images à montrer (vide = les 6 premières)", type: image, list: true }
+  - name: films
+    label: Films (Moving image)
+    type: file
+    path: content/films.json
+    format: json
+    fields:
+      - { name: intro, label: Introduction, type: text }
+      - { name: default, label: "Film affiché par défaut (numéro Vimeo)", type: string }
+      - name: films
+        label: Films
+        type: object
+        list: true
+        fields:
+          - { name: vimeo, label: "Numéro Vimeo (ex : 1015165387)", type: string, required: true }
+          - { name: thumb, label: Vignette, type: image }
+          - { name: poster, label: "Image HD (lien, optionnel)", type: string }
+          - { name: title, label: Titre, type: string }
+          - { name: client, label: Client, type: string }
+          - { name: year, label: Année, type: string }
+          - { name: duration, label: "Durée (secondes)", type: number }
+          - name: format
+            label: Format
+            type: select
+            options: { values: ["16:9", "4:5", "9:16", "1:1"] }
+          - name: kind
+            label: Type
+            type: select
+            options: { values: [commission, research] }
+          - { name: note, label: Texte, type: text }
+  - name: site
+    label: "Textes du site, About, contact"
+    type: file
+    path: content/site.json
+    format: json
+    fields:
+      - { name: name, label: Nom, type: string }
+      - { name: info, label: "Texte Info (accueil)", type: text }
+      - name: panels
+        label: "Panneaux Research / Commissions"
+        type: object
+        fields:
+          - { name: research, label: Research, type: text }
+          - { name: commission, label: Commissions, type: text }
+      - name: lab
+        label: Lab
+        type: object
+        fields:
+          - { name: show, label: "Afficher la section Lab sur l'accueil", type: boolean }
+          - { name: intro, label: Texte, type: text }
+          - name: items
+            label: Vignettes
+            type: object
+            list: true
+            fields:
+              - { name: title, label: Titre, type: string }
+              - { name: meta, label: Info, type: string }
+              - { name: href, label: Lien, type: string }
+              - { name: image, label: Image, type: image }
+      - name: about
+        label: About
+        type: object
+        fields:
+          - { name: short, label: "Phrase d'ouverture", type: text }
+          - { name: bio, label: Paragraphes, type: text, list: true }
+          - { name: portrait, label: Portrait, type: image }
+          - { name: path, label: Parcours, type: string, list: true }
+          - { name: clients, label: Clients, type: string, list: true }
+          - { name: press, label: Presse, type: string, list: true }
+          - { name: tools, label: Outils, type: string, list: true }
+      - name: contact
+        label: Contact
+        type: object
+        fields:
+          - { name: email, label: Email, type: string }
+          - { name: asia, label: "Email Asie", type: string }
+          - { name: instagram, label: "Lien Instagram", type: string }
+          - { name: instagramHandle, label: "Pseudo Instagram", type: string }
+          - { name: instagramFeed, label: "Lien du flux Instagram (JSON Behold)", type: string }
+          - { name: instagramCount, label: "Nombre de posts affichés", type: number }
+          - { name: vimeo, label: "Lien Vimeo", type: string }
+          - { name: tiktok, label: "Lien TikTok", type: string }
+          - { name: iolo, label: "Lien iolo.paris", type: string }

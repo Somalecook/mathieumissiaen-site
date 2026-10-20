@@ -1,0 +1,1907 @@
+{
+  "projects": [
+    {
+      "slug": "tal",
+      "title": "TAL",
+      "display": "탈",
+      "displayLang": "ko",
+      "kind": "research",
+      "feature": true,
+      "year": "Ongoing",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "An ongoing study of masks and the human face, rooted in Korean talchum. Built by hand, photographed, then rebuilt in Houdini or with vibe coding.",
+      "medium": "Plaster, clay, Houdini, COPs, type",
+      "cover": "images/tal/02-uv-map.jpg",
+      "theme": {
+        "bg": "#E9E8E4",
+        "fg": "#161513",
+        "muted": "#5E5B55",
+        "line": "#C9C7C1",
+        "font": "Gowun+Dodum",
+        "fontCss": "'Gowun Dodum', sans-serif",
+        "titleItalic": false,
+        "titleWeight": 400
+      },
+      "sections": [
+        {
+          "layout": "sequence",
+          "images": [
+            {
+              "src": "images/tal/17-goyohan-bam.jpg",
+              "title": "고요한 밤",
+              "caption": "",
+              "tag": "",
+              "ratio": "1760 / 2200",
+              "bg": "#EDEBE6"
+            },
+            {
+              "src": "images/tal/18-two-masks.jpg",
+              "title": "Two masks",
+              "caption": "",
+              "tag": "",
+              "ratio": "1760 / 2200",
+              "bg": "#0B0B0B"
+            },
+            {
+              "src": "images/tal/19-crumpled.jpg",
+              "title": "Crumpled",
+              "caption": "",
+              "tag": "",
+              "ratio": "2200 / 2200",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/tal/20-woven.jpg",
+              "title": "Woven",
+              "caption": "",
+              "tag": "",
+              "ratio": "1724 / 2200",
+              "bg": "#050505"
+            },
+            {
+              "src": "images/tal/21-blue-spines.jpg",
+              "title": "Blue spines",
+              "caption": "",
+              "tag": "",
+              "ratio": "1687 / 2200",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/tal/01-plaster.jpg",
+              "title": "Plaster",
+              "caption": "",
+              "tag": "",
+              "ratio": "2 / 3",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/tal/02-uv-map.jpg",
+              "title": "UV map",
+              "caption": "",
+              "tag": "",
+              "ratio": "3 / 4",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/tal/03-melt-1.jpg",
+              "title": "Melt I",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#EDEDED"
+            },
+            {
+              "src": "images/tal/04-painted-gauze.jpg",
+              "title": "Painted gauze",
+              "caption": "",
+              "tag": "",
+              "ratio": "2 / 3",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/tal/05-mane.jpg",
+              "title": "Mane",
+              "caption": "",
+              "tag": "",
+              "ratio": "1 / 1",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/tal/06-hangul.jpg",
+              "title": "흙 — Hangul",
+              "caption": "",
+              "tag": "",
+              "ratio": "6 / 7",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/tal/07-clay.jpg",
+              "title": "Clay",
+              "caption": "",
+              "tag": "",
+              "ratio": "2 / 3",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/tal/08-dots-and-numbers.jpg",
+              "title": "Dots and numbers",
+              "caption": "",
+              "tag": "",
+              "ratio": "3 / 4",
+              "bg": "#2F6B4C"
+            },
+            {
+              "src": "images/tal/09-melt-2.jpg",
+              "title": "Melt II",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#EDEDED"
+            },
+            {
+              "src": "images/tal/10-gim.jpg",
+              "title": "Gim",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/tal/11-skin.jpg",
+              "title": "Skin",
+              "caption": "",
+              "tag": "",
+              "ratio": "1 / 1",
+              "bg": "#E8E8E8"
+            },
+            {
+              "src": "images/tal/12-mane-three-quarter.jpg",
+              "title": "Mane, three-quarter",
+              "caption": "",
+              "tag": "",
+              "ratio": "1 / 1",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/tal/13-melt-3.jpg",
+              "title": "Melt III",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#EDEDED"
+            },
+            {
+              "src": "images/tal/14-black-face.jpg",
+              "title": "Black face",
+              "caption": "",
+              "tag": "",
+              "ratio": "3 / 4",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/tal/15-profile.jpg",
+              "title": "Profile",
+              "caption": "",
+              "tag": "",
+              "ratio": "8 / 7",
+              "bg": "#FFFFFF"
+            },
+            {
+              "src": "images/tal/16-red-field.jpg",
+              "title": "Red field",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#8A3414"
+            }
+          ]
+        }
+      ],
+      "chapters": null,
+      "essay": null,
+      "credits": [],
+      "tab": "Tal",
+      "view": "masonry",
+      "kicker": ""
+    },
+    {
+      "slug": "anti",
+      "title": "ānti",
+      "display": "ānti",
+      "kind": "commission",
+      "feature": true,
+      "client": "ānti",
+      "year": "2026",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Seven sculptures for the seven debut fragrances of ānti — one face, seven materials.",
+      "medium": "Photography, CGI",
+      "cover": "images/anti/06-le-jardinier.jpg",
+      "theme": {
+        "bg": "#0C0C0B",
+        "fg": "#ECE8E1",
+        "muted": "#8F8B83",
+        "line": "#4A4844",
+        "font": "Cinzel:wght@400",
+        "fontCss": "'Cinzel', serif",
+        "titleItalic": false,
+        "titleWeight": 400
+      },
+      "sections": [
+        {
+          "layout": "sequence",
+          "images": [
+            {
+              "src": "images/anti/01-bast.jpg",
+              "detail": "images/anti/01-bast-detail.webp",
+              "title": "Bast",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/anti/02-rosa-antiqua.jpg",
+              "detail": "images/anti/02-rosa-antiqua-detail.webp",
+              "title": "Rosa Antiqua",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/anti/03-nashi-toro.jpg",
+              "title": "Nashi Toro",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/anti/04-antinous.jpg",
+              "detail": "images/anti/04-antinous-detail.webp",
+              "title": "Antinoüs",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/anti/05-paura-dell-acqua.jpg",
+              "detail": "images/anti/05-paura-dell-acqua-detail.webp",
+              "title": "Paura Dell’Acqua",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/anti/06-le-jardinier.jpg",
+              "detail": "images/anti/06-le-jardinier-detail.webp",
+              "title": "Le Jardinier",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/anti/07-dukes-carpet.jpg",
+              "detail": "images/anti/07-dukes-carpet-detail.webp",
+              "title": "Dukes Carpet",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#000000"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "credits": [
+        {
+          "role": "Client",
+          "name": "ānti"
+        },
+        {
+          "role": "Art direction",
+          "name": "Cécile Paravina"
+        },
+        {
+          "role": "Photography & CGI",
+          "name": "Mathieu Missiaen"
+        },
+        {
+          "role": "3D sculpture",
+          "name": "Kamyukami"
+        },
+        {
+          "role": "Technical supervision",
+          "name": "The Big Dumb Object"
+        },
+        {
+          "role": "Music supervision",
+          "name": "Office PSR"
+        },
+        {
+          "role": "Composer",
+          "name": "Yaya Jalloux"
+        },
+        {
+          "role": "Edit",
+          "name": "Quentin J. Da"
+        }
+      ],
+      "kicker": "",
+      "chapters": null
+    },
+    {
+      "slug": "kenzo-move",
+      "title": "Move Revolution",
+      "display": "Move Revolution",
+      "kind": "commission",
+      "feature": false,
+      "client": "Kenzo",
+      "year": "2018",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Worldwide campaign for the Kenzo Move sneaker. Art direction and photography.",
+      "medium": "Art direction, photography, film",
+      "cover": "images/kenzo-move/01-stripes-duo.jpg",
+      "theme": {
+        "bg": "#E30020",
+        "fg": "#FFFFFF",
+        "muted": "#FFD0D5",
+        "line": "#FF5A6E",
+        "accent": "#FFFFFF",
+        "font": "Barlow+Condensed:ital,wght@1,900",
+        "fontCss": "'Barlow Condensed', sans-serif",
+        "titleItalic": true,
+        "titleWeight": 900,
+        "titleTracking": "-0.01em"
+      },
+      "sections": [
+        {
+          "layout": "video",
+          "vimeo": "250252341",
+          "ratio": "16 / 9",
+          "poster": "https://i.vimeocdn.com/video/676294583-30cb2f0286a928ced899ac464d7d62ff15c0ac2be4ede41f14e00a4fc6da3103-d_1280",
+          "fallback": "images/films/kenzo_move.jpg",
+          "images": []
+        },
+        {
+          "layout": "grid",
+          "template": "2fr 1fr",
+          "images": [
+            {
+              "src": "images/kenzo-move/01-stripes-duo.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#E30020"
+            },
+            {
+              "src": "images/kenzo-move/11-white-face.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#E30020"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "columns": 3,
+          "images": [
+            {
+              "src": "images/kenzo-move/02-flowers-duo.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#E30020"
+            },
+            {
+              "src": "images/kenzo-move/03-purple-duo.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#E30020"
+            },
+            {
+              "src": "images/kenzo-move/04-green-duo.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#E30020"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "1fr 2fr",
+          "images": [
+            {
+              "src": "images/kenzo-move/05-blue-shoe.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#E30020"
+            },
+            {
+              "src": "images/kenzo-move/12-striped-girl.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#E30020"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "2fr 1fr",
+          "images": [
+            {
+              "src": "images/kenzo-move/10-white-shoe.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#E30020"
+            },
+            {
+              "src": "images/kenzo-move/06-blue-hand.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#E30020"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "1fr 1fr",
+          "bg": "#F5341A",
+          "fg": "#FFFFFF",
+          "images": [
+            {
+              "src": "images/kenzo-move/07-yellow-sole.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1650 / 2200",
+              "bg": "#F5341A"
+            },
+            {
+              "src": "images/kenzo-move/09-red-shoe.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1830 / 2200",
+              "bg": "#F5341A"
+            }
+          ]
+        },
+        {
+          "layout": "hero",
+          "bg": "#F5341A",
+          "fg": "#FFFFFF",
+          "images": [
+            {
+              "src": "images/kenzo-move/08-pink-shoe.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1650 / 2200",
+              "bg": "#F5341A"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "credits": [
+        {
+          "role": "Client",
+          "name": "Kenzo"
+        },
+        {
+          "role": "Art direction & photography",
+          "name": "Mathieu Missiaen"
+        }
+      ],
+      "chapters": null
+    },
+    {
+      "slug": "aichmophobia",
+      "title": "Aichmophobia",
+      "display": "Aichmophobia",
+      "kind": "research",
+      "feature": true,
+      "year": "2024",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Forks bend into hands, hold a cigarette, carry shells and fruit. The fear of sharp things, in CGI.",
+      "medium": "CGI, Houdini",
+      "cover": "images/aichmophobia/01-smoker.jpg",
+      "theme": {
+        "bg": "#E9E8E4",
+        "fg": "#161513",
+        "muted": "#5E5B55",
+        "line": "#C9C7C1",
+        "font": "Italiana",
+        "fontCss": "'Italiana', serif",
+        "titleItalic": false,
+        "titleWeight": 400
+      },
+      "sections": [
+        {
+          "layout": "sequence",
+          "images": [
+            {
+              "src": "images/aichmophobia/01-smoker.jpg",
+              "title": "Smoker",
+              "caption": "",
+              "tag": "",
+              "ratio": "1 / 1",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/aichmophobia/02-bouquet.jpg",
+              "title": "Bouquet",
+              "caption": "",
+              "tag": "",
+              "ratio": "3 / 4",
+              "bg": "#A50000"
+            },
+            {
+              "src": "images/aichmophobia/03-smoker-white.jpg",
+              "title": "Smoker, white",
+              "caption": "",
+              "tag": "",
+              "ratio": "1 / 1",
+              "bg": "#FFFFFF"
+            },
+            {
+              "src": "images/aichmophobia/04-shells.jpg",
+              "title": "Shells",
+              "caption": "",
+              "tag": "",
+              "ratio": "3 / 4",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/aichmophobia/05-hanging-fruit.jpg",
+              "title": "Hanging fruit",
+              "caption": "",
+              "tag": "",
+              "ratio": "1 / 1",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/aichmophobia/06-poster-cena.jpg",
+              "title": "Allergy-Friendly Feast",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#F2F2F2"
+            }
+          ]
+        }
+      ],
+      "chapters": null,
+      "essay": null,
+      "credits": [],
+      "kicker": ""
+    },
+    {
+      "slug": "wine-stain-generator",
+      "title": "Wine stain generator",
+      "display": "Wine stain generator",
+      "kind": "research",
+      "feature": false,
+      "year": "2024",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Wine stains generated in Houdini, spilled on a typographic poster.",
+      "medium": "Houdini, procedural, type",
+      "cover": "images/wine-stain/wine-stain.jpg",
+      "theme": {
+        "bg": "#E3E4E6",
+        "fg": "#111111",
+        "muted": "#6B6C70",
+        "line": "#C6C7CB",
+        "accent": "#9E1B2C",
+        "font": "Archivo+Black",
+        "fontCss": "'Archivo Black', sans-serif",
+        "titleItalic": false,
+        "titleWeight": 400,
+        "titleTracking": "-0.03em"
+      },
+      "sections": [
+        {
+          "layout": "grid",
+          "columns": 1,
+          "images": [
+            {
+              "src": "images/wine-stain/wine-stain.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1464 / 1864",
+              "bg": "#E3E4E6"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "credits": [
+        {
+          "role": "3D & generator",
+          "name": "Mathieu Missiaen"
+        },
+        {
+          "role": "Graphic design",
+          "name": "TaG"
+        },
+        {
+          "role": "Cuisine",
+          "name": "Louis Chaulet"
+        }
+      ],
+      "galleryOnly": true,
+      "chapters": null
+    },
+    {
+      "slug": "acne-paper",
+      "title": "Acne Paper 30th anniversary",
+      "display": "Acne Paper",
+      "kind": "commission",
+      "feature": false,
+      "client": "Acne Paper",
+      "year": "2026",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Falling pages for the 30th anniversary of Acne Paper, shown in Acne Studios windows worldwide.",
+      "medium": "Photography, CGI",
+      "cover": "images/acne-paper/window-5.jpg",
+      "theme": {
+        "bg": "#F3F0EC",
+        "fg": "#1A1817",
+        "muted": "#6E6862",
+        "line": "#C9C3BC",
+        "accent": "#C9665A",
+        "font": "Familjen+Grotesk:wght@500;700",
+        "fontCss": "'Familjen Grotesk', sans-serif",
+        "titleItalic": false,
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
+      },
+      "sections": [
+        {
+          "layout": "hero",
+          "images": [
+            {
+              "src": "images/acne-paper/window-5.jpg",
+              "title": "Stockholm",
+              "caption": "",
+              "ratio": "4 / 5",
+              "bg": "#D9D4CE",
+              "tag": ""
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "columns": 3,
+          "images": [
+            {
+              "src": "images/acne-paper/window-tokyo.jpg",
+              "title": "Tokyo",
+              "caption": "",
+              "ratio": "4 / 5",
+              "bg": "#D9D4CE",
+              "tag": ""
+            },
+            {
+              "src": "images/acne-paper/kv-pink.jpg",
+              "title": "Key visual — pink",
+              "ratio": "4 / 5",
+              "bg": "#FFFFFF",
+              "caption": "",
+              "tag": ""
+            },
+            {
+              "src": "images/acne-paper/window-new-york.jpg",
+              "title": "New York",
+              "caption": "",
+              "ratio": "4 / 5",
+              "bg": "#D9D4CE",
+              "tag": ""
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "columns": 3,
+          "images": [
+            {
+              "src": "images/acne-paper/story-pink.jpg",
+              "title": "Story — 9:16",
+              "ratio": "9 / 16",
+              "bg": "#FFFFFF",
+              "caption": "",
+              "tag": ""
+            },
+            {
+              "src": "images/acne-paper/window-west-hollywood.jpg",
+              "title": "West Hollywood",
+              "caption": "",
+              "ratio": "4 / 5",
+              "bg": "#D9D4CE",
+              "tag": ""
+            },
+            {
+              "src": "images/acne-paper/detail.jpg",
+              "title": "Detail",
+              "ratio": "9 / 16",
+              "bg": "#E7B3AC",
+              "caption": "",
+              "tag": ""
+            }
+          ],
+          "captions": true
+        },
+        {
+          "layout": "grid",
+          "columns": 3,
+          "bg": "#EFA49B",
+          "fg": "#1A1817",
+          "muted": "#3E2A27",
+          "images": [
+            {
+              "src": "images/acne-paper/window-2.jpg",
+              "title": "Seoul",
+              "caption": "",
+              "ratio": "4 / 5",
+              "bg": "#D9D4CE",
+              "tag": ""
+            },
+            {
+              "src": "images/acne-paper/kv-white.jpg",
+              "title": "Key visual — white",
+              "ratio": "4 / 5",
+              "bg": "#FFFFFF",
+              "caption": "",
+              "tag": ""
+            },
+            {
+              "src": "images/acne-paper/window-6.jpg",
+              "title": "Bangkok",
+              "caption": "",
+              "ratio": "4 / 5",
+              "bg": "#D9D4CE",
+              "tag": ""
+            }
+          ],
+          "captions": true
+        }
+      ],
+      "essay": null,
+      "credits": [
+        {
+          "role": "Client",
+          "name": "Acne Paper"
+        },
+        {
+          "role": "Key visual",
+          "name": "Mathieu Missiaen"
+        }
+      ],
+      "chapters": null
+    },
+    {
+      "slug": "amazon-japan",
+      "title": "It’s on Prime",
+      "display": "It’s on Prime",
+      "kind": "commission",
+      "feature": false,
+      "client": "Amazon Japan",
+      "year": "2025",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Prime Video campaign across Tokyo stations with Wieden+Kennedy Tokyo. Each poster splits a word between a show and an object. Art direction and CGI.",
+      "medium": "Art direction, CGI",
+      "cover": "images/amazon-japan/01-station-corner.jpg",
+      "theme": {
+        "bg": "#0A6CF5",
+        "fg": "#FFFFFF",
+        "muted": "#CFE0FF",
+        "line": "#4F93FA",
+        "accent": "#FFFFFF",
+        "font": "Dela+Gothic+One",
+        "fontCss": "'Dela Gothic One', sans-serif",
+        "titleItalic": false,
+        "titleWeight": 400,
+        "titleTracking": "-0.02em"
+      },
+      "sections": [
+        {
+          "layout": "hero",
+          "images": [
+            {
+              "src": "images/amazon-japan/01-station-corner.jpg",
+              "title": "圧巻 — Shinjuku",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 800",
+              "bg": "#1B1B1B"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "2fr 1fr",
+          "captions": true,
+          "images": [
+            {
+              "src": "images/amazon-japan/02-station-pillar.jpg",
+              "title": "Shinjuku",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 800",
+              "bg": "#1B1B1B"
+            },
+            {
+              "src": "images/amazon-japan/03-curlers-close.jpg",
+              "title": "巻",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1500",
+              "bg": "#0A6CF5"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "1fr 2fr",
+          "captions": true,
+          "images": [
+            {
+              "src": "images/amazon-japan/06-dorayaki-close.jpg",
+              "title": "ドラ",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1500",
+              "bg": "#0A6CF5"
+            },
+            {
+              "src": "images/amazon-japan/05-station-dorayaki.jpg",
+              "title": "Shinjuku",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 800",
+              "bg": "#1B1B1B"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "2fr 1fr",
+          "captions": true,
+          "images": [
+            {
+              "src": "images/amazon-japan/07-shibuya-wall.jpg",
+              "title": "Shibuya",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 800",
+              "bg": "#1B1B1B"
+            },
+            {
+              "src": "images/amazon-japan/08-dorayaki.jpg",
+              "title": "ドラ",
+              "caption": "",
+              "tag": "",
+              "ratio": "600 / 849",
+              "bg": "#0A6CF5"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "1fr 2fr",
+          "captions": true,
+          "images": [
+            {
+              "src": "images/amazon-japan/10-target-close.jpg",
+              "title": "的",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1500",
+              "bg": "#0A6CF5"
+            },
+            {
+              "src": "images/amazon-japan/09-station-target.jpg",
+              "title": "Shinjuku",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 800",
+              "bg": "#1B1B1B"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "2fr 1fr",
+          "captions": true,
+          "images": [
+            {
+              "src": "images/amazon-japan/11-escalator.jpg",
+              "title": "魔力 & 刺激的",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 800",
+              "bg": "#1B1B1B"
+            },
+            {
+              "src": "images/amazon-japan/12-target.jpg",
+              "title": "的",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1563",
+              "bg": "#0A6CF5"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "columns": 3,
+          "captions": true,
+          "bg": "#FFFFFF",
+          "fg": "#111111",
+          "muted": "#5E5B55",
+          "images": [
+            {
+              "src": "images/amazon-japan/04-curlers.jpg",
+              "title": "巻",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1563",
+              "bg": "#0A6CF5"
+            },
+            {
+              "src": "images/amazon-japan/13-wand.jpg",
+              "title": "Magic wand",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1707",
+              "bg": "#0A6CF5"
+            },
+            {
+              "src": "images/amazon-japan/14-glitter-mirror.jpg",
+              "title": "Glitter mirror",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1707",
+              "bg": "#0A6CF5"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "columns": 3,
+          "captions": true,
+          "bg": "#FFFFFF",
+          "fg": "#111111",
+          "muted": "#5E5B55",
+          "images": [
+            {
+              "src": "images/amazon-japan/15-bath-bomb-close.jpg",
+              "title": "Bath bomb",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1501",
+              "bg": "#0A6CF5"
+            },
+            {
+              "src": "images/amazon-japan/16-bath-bomb.jpg",
+              "title": "Bath bomb",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1562",
+              "bg": "#0A6CF5"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "credits": [
+        {
+          "role": "Client",
+          "name": "Amazon Japan — Prime Video"
+        },
+        {
+          "role": "Agency",
+          "name": "Wieden+Kennedy Tokyo"
+        },
+        {
+          "role": "Art direction & CGI",
+          "name": "Mathieu Missiaen"
+        }
+      ],
+      "chapters": null
+    },
+    {
+      "slug": "suntory-196",
+      "title": "-196",
+      "display": "-196",
+      "kind": "commission",
+      "feature": false,
+      "client": "Suntory",
+      "year": "",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Global campaign for Suntory -196 with Wieden+Kennedy Tokyo. Whole lemons, frozen and shattered. Art direction and CGI.",
+      "medium": "Art direction, CGI",
+      "cover": "images/suntory/01-heart.jpg",
+      "theme": {
+        "bg": "#0A0A0A",
+        "fg": "#F4F1EA",
+        "muted": "#A8A296",
+        "line": "#2E2C28",
+        "accent": "#F5C400",
+        "font": "Rubik+Dirt",
+        "fontCss": "'Rubik Dirt', sans-serif",
+        "titleItalic": false,
+        "titleWeight": 400,
+        "titleTracking": "-0.01em"
+      },
+      "sections": [
+        {
+          "layout": "hero",
+          "images": [
+            {
+              "src": "images/suntory/01-heart.jpg",
+              "title": "Heart",
+              "caption": "",
+              "tag": "",
+              "ratio": "1920 / 1920",
+              "bg": "#111111"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "1fr 1fr",
+          "captions": true,
+          "images": [
+            {
+              "src": "images/suntory/02-heart-sticker.jpg",
+              "title": "Sticker",
+              "caption": "",
+              "tag": "",
+              "ratio": "1141 / 1014",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/suntory/03-lemons.webp",
+              "title": "Balance",
+              "caption": "",
+              "tag": "",
+              "ratio": "600 / 750",
+              "bg": "#000000"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "3fr 2fr",
+          "captions": true,
+          "images": [
+            {
+              "src": "images/suntory/04-freeze-close.jpg",
+              "title": "Freeze",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 939",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/suntory/05-freeze.jpg",
+              "title": "Freeze",
+              "caption": "",
+              "tag": "",
+              "ratio": "600 / 600",
+              "bg": "#000000"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "columns": 3,
+          "captions": true,
+          "images": [
+            {
+              "src": "images/suntory/06-shatter-1.jpg",
+              "title": "Shatter I",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1707",
+              "bg": "#555555"
+            },
+            {
+              "src": "images/suntory/07-shatter-2.jpg",
+              "title": "Shatter II",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1707",
+              "bg": "#555555"
+            },
+            {
+              "src": "images/suntory/08-burst.jpg",
+              "title": "Burst",
+              "caption": "",
+              "tag": "",
+              "ratio": "600 / 600",
+              "bg": "#555555"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "columns": 3,
+          "captions": true,
+          "images": [
+            {
+              "src": "images/suntory/09-ice-burst.jpg",
+              "title": "Ice burst",
+              "caption": "",
+              "tag": "",
+              "ratio": "600 / 600",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/suntory/10-ice-burst-detail.jpg",
+              "title": "Ice burst",
+              "caption": "",
+              "tag": "",
+              "ratio": "1181 / 1041",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/suntory/11-burst-detail.jpg",
+              "title": "Burst",
+              "caption": "",
+              "tag": "",
+              "ratio": "600 / 581",
+              "bg": "#000000"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "columns": 2,
+          "captions": true,
+          "images": [
+            {
+              "src": "images/suntory/12-lemon-type.jpg",
+              "title": "Lemon type",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1200",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/suntory/13-lemon-type-detail.jpg",
+              "title": "Lemon type",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1200",
+              "bg": "#000000"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "credits": [
+        {
+          "role": "Client",
+          "name": "Suntory — -196"
+        },
+        {
+          "role": "Agency",
+          "name": "Wieden+Kennedy Tokyo"
+        },
+        {
+          "role": "Art direction & CGI",
+          "name": "Mathieu Missiaen"
+        }
+      ],
+      "chapters": null
+    },
+    {
+      "slug": "la-prairie",
+      "title": "La Prairie — Art Basel",
+      "display": "La Prairie",
+      "kind": "commission",
+      "feature": false,
+      "client": "La Prairie",
+      "year": "",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Backlit images on water, light and matter for La Prairie, shown at Art Basel Shanghai, Miami Beach and Paris.",
+      "medium": "Photography, CGI, 3D print",
+      "cover": "images/la-prairie/03-eclipse.jpg",
+      "theme": {
+        "bg": "#05060A",
+        "fg": "#E6E8F0",
+        "muted": "#8C90A3",
+        "line": "#22253A",
+        "accent": "#C9A35A",
+        "font": "Cormorant+Garamond:wght@300",
+        "fontCss": "'Cormorant Garamond', serif",
+        "titleItalic": false,
+        "titleWeight": 300,
+        "titleTracking": "-0.02em"
+      },
+      "sections": [
+        {
+          "layout": "hero",
+          "images": [
+            {
+              "src": "images/la-prairie/01-exhibition.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1920 / 1410",
+              "bg": "#05060A"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "1fr 1fr 1fr",
+          "images": [
+            {
+              "src": "images/la-prairie/02-drops.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1649 / 2200",
+              "bg": "#05060A"
+            },
+            {
+              "src": "images/la-prairie/03-eclipse.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1568 / 2200",
+              "bg": "#05060A"
+            },
+            {
+              "src": "images/la-prairie/04-gold-sphere.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1649 / 2200",
+              "bg": "#05060A"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "3fr 2fr",
+          "images": [
+            {
+              "src": "images/la-prairie/05-cells.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1495 / 2200",
+              "bg": "#05060A"
+            },
+            {
+              "src": "images/la-prairie/06-cell-gold.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1710 / 2200",
+              "bg": "#05060A"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "2fr 3fr",
+          "images": [
+            {
+              "src": "images/la-prairie/07-cell-green.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1627 / 2200",
+              "bg": "#05060A"
+            },
+            {
+              "src": "images/la-prairie/09-relief-grid.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1497 / 2200",
+              "bg": "#05060A"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "1fr 1fr",
+          "images": [
+            {
+              "src": "images/la-prairie/08-relief.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1495 / 2200",
+              "bg": "#05060A"
+            },
+            {
+              "src": "images/la-prairie/10-relief-four.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1495 / 2200",
+              "bg": "#05060A"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "credits": [
+        {
+          "role": "Client",
+          "name": "La Prairie"
+        },
+        {
+          "role": "Images",
+          "name": "Mathieu Missiaen"
+        },
+        {
+          "role": "Shown at",
+          "name": "Art Basel — Shanghai, Miami Beach, Paris"
+        }
+      ],
+      "chapters": null
+    },
+    {
+      "slug": "rolls-royce",
+      "title": "Rolls-Royce Dawn",
+      "display": "Rolls-Royce",
+      "kind": "commission",
+      "feature": false,
+      "client": "Rolls-Royce",
+      "year": "",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Editorial series on the Rolls-Royce Dawn, detail by detail.",
+      "medium": "Photography",
+      "cover": "images/rolls-royce/01-dawn-top.jpg",
+      "theme": {
+        "bg": "#0B0D1A",
+        "fg": "#ECEBEF",
+        "muted": "#8E90A6",
+        "line": "#262A44",
+        "accent": "#E2361F",
+        "font": "Playfair+Display+SC:wght@400",
+        "fontCss": "'Playfair Display SC', serif",
+        "titleItalic": false,
+        "titleWeight": 400,
+        "titleTracking": "0.02em"
+      },
+      "sections": [
+        {
+          "layout": "hero",
+          "images": [
+            {
+              "src": "images/rolls-royce/01-dawn-top.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1178 / 1429",
+              "bg": "#0B0D1A"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "1fr 1fr",
+          "images": [
+            {
+              "src": "images/rolls-royce/02-headlight-tricolore.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1071 / 1429",
+              "bg": "#0B0D1A"
+            },
+            {
+              "src": "images/rolls-royce/03-spirit.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1072 / 1429",
+              "bg": "#0B0D1A"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "2fr 1fr",
+          "images": [
+            {
+              "src": "images/rolls-royce/05-side.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#0B0D1A"
+            },
+            {
+              "src": "images/rolls-royce/04-mirror-door.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1120 / 1429",
+              "bg": "#0B0D1A"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "1fr 2fr",
+          "images": [
+            {
+              "src": "images/rolls-royce/08-wheel.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1072 / 1429",
+              "bg": "#0B0D1A"
+            },
+            {
+              "src": "images/rolls-royce/06-pillar.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#0B0D1A"
+            }
+          ]
+        },
+        {
+          "layout": "hero",
+          "images": [
+            {
+              "src": "images/rolls-royce/07-seat.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1071 / 1429",
+              "bg": "#0B0D1A"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "credits": [
+        {
+          "role": "Client",
+          "name": "Rolls-Royce Motor Cars"
+        },
+        {
+          "role": "Photography",
+          "name": "Mathieu Missiaen"
+        }
+      ],
+      "chapters": null
+    },
+    {
+      "slug": "sept",
+      "title": "Sept",
+      "display": "Sept",
+      "kind": "research",
+      "feature": false,
+      "year": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "The seventh continent: plastic waste thrown into black water and caught mid-splash.",
+      "medium": "Photography, set design",
+      "cover": "images/sept/05-cones.jpg",
+      "theme": {
+        "bg": "#07090C",
+        "fg": "#DDE3EA",
+        "muted": "#8A93A0",
+        "line": "#262D36",
+        "font": "Fraunces:ital,opsz,wght@1,9..144,200",
+        "fontCss": "'Fraunces', serif",
+        "titleItalic": true,
+        "titleWeight": 200
+      },
+      "sections": [
+        {
+          "layout": "hero",
+          "images": [
+            {
+              "src": "images/sept/01-bags-1.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1920 / 1080",
+              "bg": "#07090C"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "1fr 1fr",
+          "images": [
+            {
+              "src": "images/sept/03-bins-1.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#07090C"
+            },
+            {
+              "src": "images/sept/04-bins-2.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#07090C"
+            }
+          ]
+        },
+        {
+          "layout": "hero",
+          "images": [
+            {
+              "src": "images/sept/02-bags-2.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1920 / 1080",
+              "bg": "#07090C"
+            }
+          ]
+        },
+        {
+          "layout": "hero",
+          "images": [
+            {
+              "src": "images/sept/05-cones.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "2400 / 1280",
+              "bg": "#07090C"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "1fr 1fr",
+          "images": [
+            {
+              "src": "images/sept/06-cones-close.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1200",
+              "bg": "#07090C"
+            },
+            {
+              "src": "images/sept/07-cone-detail.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1200",
+              "bg": "#07090C"
+            }
+          ]
+        },
+        {
+          "layout": "hero",
+          "images": [
+            {
+              "src": "images/sept/08-plastics.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "2400 / 1350",
+              "bg": "#07090C"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "2fr 1fr",
+          "images": [
+            {
+              "src": "images/sept/09-plastics-close.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "2400 / 1799",
+              "bg": "#07090C"
+            },
+            {
+              "src": "images/sept/11-splash.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1200",
+              "bg": "#07090C"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "1fr 1fr 1fr",
+          "images": [
+            {
+              "src": "images/sept/12-funnels.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#07090C"
+            },
+            {
+              "src": "images/sept/10-splash-red.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1200",
+              "bg": "#07090C"
+            },
+            {
+              "src": "images/sept/13-pipe.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 1600",
+              "bg": "#07090C"
+            }
+          ]
+        },
+        {
+          "layout": "hero",
+          "images": [
+            {
+              "src": "images/sept/14-dark.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "2400 / 1350",
+              "bg": "#07090C"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "credits": [],
+      "kicker": "",
+      "chapters": null
+    },
+    {
+      "slug": "fragrance-still-life",
+      "title": "Fragrance still life",
+      "display": "Fragrance still life",
+      "kind": "commission",
+      "feature": false,
+      "client": "",
+      "year": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Jimmy Choo, Mugler, Dior, YSL Beauté and Aēsop in water and light.",
+      "medium": "Photography",
+      "cover": "images/fragrance-still-life/03-ysl.jpg",
+      "theme": {
+        "bg": "#F4F4F2",
+        "fg": "#161513",
+        "muted": "#5E5B55",
+        "line": "#D0CEC8",
+        "font": "Instrument+Serif:ital@0;1",
+        "fontCss": "'Instrument Serif', serif",
+        "titleItalic": true,
+        "titleWeight": 400
+      },
+      "sections": [
+        {
+          "layout": "hero",
+          "images": [
+            {
+              "src": "images/fragrance-still-life/03-ysl.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1920 / 1281",
+              "bg": "#E8D3C6"
+            }
+          ]
+        },
+        {
+          "layout": "grid",
+          "template": "1fr 1fr",
+          "images": [
+            {
+              "src": "images/fragrance-still-life/01-fragrance.jpg",
+              "title": "",
+              "caption": "",
+              "ratio": "4 / 5",
+              "bg": "#FFFFFF",
+              "tag": ""
+            },
+            {
+              "src": "images/fragrance-still-life/04-aesop-tacit.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "600 / 976",
+              "bg": "#E8D3C6"
+            }
+          ]
+        },
+        {
+          "layout": "hero",
+          "images": [
+            {
+              "src": "images/fragrance-still-life/02-pearl.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1200 / 900",
+              "bg": "#E8D3C6"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "credits": [],
+      "kicker": "",
+      "chapters": null
+    },
+    {
+      "slug": "studies",
+      "title": "Untitled studies",
+      "display": "Untitled studies",
+      "kind": "research",
+      "feature": false,
+      "year": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Surface studies in Houdini: chrome, skin, spheres.",
+      "medium": "CGI, Houdini",
+      "cover": "images/studies/01-chrome.jpg",
+      "theme": {
+        "bg": "#E9E8E4",
+        "fg": "#161513",
+        "muted": "#5E5B55",
+        "line": "#C9C7C1",
+        "font": "Bodoni+Moda:ital,opsz,wght@1,6..96,400",
+        "fontCss": "'Bodoni Moda', serif",
+        "titleItalic": true,
+        "titleWeight": 400
+      },
+      "sections": [
+        {
+          "layout": "sequence",
+          "images": [
+            {
+              "src": "images/studies/01-chrome.jpg",
+              "title": "Chrome",
+              "caption": "",
+              "ratio": "1 / 1",
+              "bg": "#3A0410",
+              "tag": ""
+            },
+            {
+              "src": "images/studies/02-hand.jpg",
+              "title": "Hand",
+              "caption": "",
+              "ratio": "3 / 4",
+              "bg": "#2B32C4",
+              "tag": ""
+            },
+            {
+              "src": "images/studies/03-sphere-rose.jpg",
+              "title": "Sphere, rose",
+              "caption": "",
+              "ratio": "4 / 3",
+              "bg": "#E8CDBE",
+              "tag": ""
+            },
+            {
+              "src": "images/studies/04-sphere-gold.jpg",
+              "title": "Sphere, gold",
+              "caption": "",
+              "ratio": "3 / 4",
+              "bg": "#1A0D02",
+              "tag": ""
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "credits": [],
+      "kicker": "",
+      "chapters": null
+    },
+    {
+      "slug": "plates",
+      "title": "Plates",
+      "display": "Plates",
+      "kind": "research",
+      "feature": false,
+      "year": "2024",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Printed plates photographed in black and white.",
+      "medium": "Photography",
+      "cover": "images/plates/01-plates.jpg",
+      "theme": {
+        "bg": "#0E0E0E",
+        "fg": "#E6E6E6",
+        "muted": "#8C8C8C",
+        "line": "#333333",
+        "font": "Syne:wght@800",
+        "fontCss": "'Syne', sans-serif",
+        "titleItalic": false,
+        "titleWeight": 800,
+        "titleTracking": "-0.04em"
+      },
+      "sections": [
+        {
+          "layout": "sequence",
+          "images": [
+            {
+              "src": "images/plates/01-plates.jpg",
+              "title": "Plates I",
+              "caption": "",
+              "ratio": "2 / 3",
+              "bg": "#000000",
+              "tag": ""
+            },
+            {
+              "src": "images/plates/02-plates.jpg",
+              "title": "Plates II",
+              "caption": "",
+              "ratio": "2 / 3",
+              "bg": "#000000",
+              "tag": ""
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "credits": [],
+      "kicker": "",
+      "chapters": null
+    }
+  ]
+}

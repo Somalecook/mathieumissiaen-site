@@ -1,0 +1,128 @@
+{
+  "intro": "",
+  "default": "1015165387",
+  "films": [
+    {
+      "vimeo": "1075962797",
+      "thumb": "images/films/ghibli.jpg",
+      "title": "Loewe × Studio Ghibli",
+      "client": "Loewe",
+      "year": "",
+      "duration": 16,
+      "format": "4:5",
+      "kind": "commission",
+      "note": "Loewe × Studio Ghibli collaboration."
+    },
+    {
+      "vimeo": "1075962763",
+      "thumb": "images/films/loewe_runway.jpg",
+      "title": "Runway launch",
+      "client": "Loewe",
+      "year": "2022",
+      "duration": 15,
+      "format": "4:5",
+      "kind": "commission",
+      "note": "Launch film for a Loewe runway show."
+    },
+    {
+      "vimeo": "1075961022",
+      "thumb": "images/films/loewe_bag.jpg",
+      "title": "Bag commercial",
+      "client": "Loewe",
+      "year": "2023",
+      "duration": 15,
+      "format": "16:9",
+      "kind": "commission",
+      "note": "A pink sugar palace in CGI."
+    },
+    {
+      "vimeo": "1015165387",
+      "thumb": "images/films/fltr.jpg",
+      "title": "From Left to Right",
+      "client": "with Uncannyvalley Studio",
+      "year": "2024",
+      "duration": 79,
+      "format": "16:9",
+      "kind": "research",
+      "note": "A study of movement, with Uncannyvalley Studio. Sound by Minh."
+    },
+    {
+      "vimeo": "878810876",
+      "thumb": "images/films/loewe_mini.jpg",
+      "title": "Mini content",
+      "client": "Loewe",
+      "year": "2022",
+      "duration": 15,
+      "format": "4:5",
+      "kind": "commission",
+      "note": "Social content for Loewe."
+    },
+    {
+      "vimeo": "423209257",
+      "thumb": "images/films/kenzo_xmas.jpg",
+      "title": "Christmas",
+      "client": "Kenzo",
+      "year": "2019",
+      "duration": 53,
+      "format": "16:9",
+      "kind": "commission",
+      "note": "Christmas collection film."
+    },
+    {
+      "vimeo": "323130876",
+      "thumb": "images/films/nike.jpg",
+      "title": "La Requin",
+      "client": "Nike",
+      "year": "2019",
+      "duration": 33,
+      "format": "16:9",
+      "kind": "commission",
+      "note": "The TN La Requin at the market stall."
+    },
+    {
+      "vimeo": "298189197",
+      "thumb": "images/films/ap_openwork.jpg",
+      "title": "Royal Oak Openwork",
+      "client": "Audemars Piguet",
+      "year": "2018",
+      "duration": 42,
+      "format": "16:9",
+      "kind": "commission",
+      "note": "Light and motion control."
+    },
+    {
+      "vimeo": "298188244",
+      "thumb": "images/films/bolide.jpg",
+      "title": "Bolide",
+      "client": "Hermès",
+      "year": "2018",
+      "duration": 30,
+      "format": "16:9",
+      "kind": "commission",
+      "note": "The Bolide bag, leather in macro.",
+      "poster": "https://i.vimeocdn.com/video/736044353-a6a4695921037888230c625b26cd4c1ca8de556caead700cd64ae29ef6eefcb6-d_1280"
+    },
+    {
+      "vimeo": "250252341",
+      "thumb": "images/films/kenzo_move.jpg",
+      "title": "Move Revolution",
+      "client": "Kenzo",
+      "year": "2018",
+      "duration": 41,
+      "format": "16:9",
+      "kind": "commission",
+      "note": "Dance, shot and directed."
+    },
+    {
+      "vimeo": "240645178",
+      "thumb": "images/films/dior.jpg",
+      "title": "One Essential",
+      "client": "Dior",
+      "year": "2017",
+      "duration": 30,
+      "format": "16:9",
+      "kind": "commission",
+      "note": "Fluids, glass, CGI."
+    }
+  ]
+}
