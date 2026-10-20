@@ -73,7 +73,8 @@
         "images/stickoo/stickers-hero.jpg"
       ],
       "logo": "images/stickoo/logo.png",
-      "sound": "images/stickoo/sound.png"
+      "sound": "images/stickoo/sound.png",
+      "show": false
     }
   },
   "panels": {

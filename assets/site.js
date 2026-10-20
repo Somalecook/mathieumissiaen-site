@@ -196,7 +196,7 @@
           '<div class="car-view"><div class="car-track">' + cs.map(function (p) { return card(p, false); }).join('') + cs.slice(0, 3).map(function (p) { return card(p, true); }).join('') + '</div></div></div></section>';
       })() +
       (function () {
-        var A = site.home && site.home.app; if (!A) return '';
+        var A = site.home && site.home.app; if (!A || A.show === false) return '';
         loadFont('Fredoka:wght@500;700');
         return '<section class="app-sec"><div class="wrap"><div class="app-grid">' +
           '<div class="app-text"><span class="app-kicker">' + esc(A.meta || '') + '</span>' + (A.logo ? '<h2 class="app-logo"><img src="' + esc(A.logo) + '" alt="' + esc(A.title) + '"></h2>' : '<h2 class="app-title">' + esc(A.title) + '</h2>') +
