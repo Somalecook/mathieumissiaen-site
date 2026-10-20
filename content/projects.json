@@ -705,6 +705,51 @@
       "credits": []
     },
     {
+      "slug": "onitsuka-tiger",
+      "title": "Onitsuka Tiger Energy",
+      "display": "Onitsuka Tiger",
+      "kind": "commission",
+      "feature": false,
+      "galleryOnly": true,
+      "client": "Onitsuka Tiger",
+      "year": "",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "",
+      "medium": "CGI",
+      "cover": "images/onitsuka-tiger/energy.webp",
+      "theme": {
+        "bg": "#E9E8E4",
+        "fg": "#161513",
+        "muted": "#5E5B55",
+        "line": "#C9C7C1",
+        "font": "",
+        "fontCss": "var(--serif)",
+        "titleItalic": false,
+        "titleWeight": 400
+      },
+      "sections": [
+        {
+          "layout": "grid",
+          "columns": 1,
+          "images": [
+            {
+              "src": "images/onitsuka-tiger/energy.webp",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "480 / 854",
+              "bg": "#F5B800"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "chapters": null,
+      "credits": []
+    },
+    {
       "slug": "acne-paper",
       "title": "Acne Paper 30th anniversary",
       "display": "Acne Paper",
