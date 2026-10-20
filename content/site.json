@@ -79,10 +79,11 @@
   },
   "info": "Images between what is shot and what is built. Paris.",
   "about": {
-    "short": "Creative director, photographer, director and CGI artist, based in Paris.",
+    "short": "Creative director, photographer, director and CGI artist, based in Paris — and, more and more, a vibe coder.",
     "bio": [
       "Trained in painting and furniture design, he co-founded the set design studio Le Creative Sweatshop before moving into photography, film and CGI.",
-      "He works for houses such as Hermès, Kenzo, Loewe, Dior, Acne Paper, Suntory and Amazon Japan — and on long personal series, from the masks of TAL to Aichmophobia."
+      "He works for houses such as Hermès, Kenzo, Loewe, Dior, Acne Paper, Suntory and Amazon Japan — and on long personal series, from the masks of TAL to Aichmophobia.",
+      "He also vibe codes: building his own tools, generators and sites with AI, from Houdini setups to this website."
     ],
     "portrait": "",
     "path": [
@@ -118,7 +119,8 @@
       "Cinema 4D",
       "Redshift",
       "Motion control",
-      "Hand-made sets"
+      "Hand-made sets",
+      "Vibe coding"
     ]
   },
   "contact": {
