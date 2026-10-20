@@ -41,12 +41,23 @@
       }
     ],
     "latest": {
-      "src": "images/tal/17-goyohan-bam.jpg",
-      "ratio": "1760 / 2200",
-      "title": "고요한 밤",
-      "label": "",
-      "text": "Mask built in Houdini, through a home-made lens shader, wrapped in a Korean poem.",
-      "href": "project.html#tal"
+      "items": [
+        {
+          "src": "images/wine-stain/wine-stain.jpg",
+          "ratio": "1464 / 1864",
+          "title": "Une bouteille à la mer",
+          "text": "Poster — an invitation to a dinner, stained with wine generated in Houdini.",
+          "href": ""
+        },
+        {
+          "src": "images/tal/17-goyohan-bam.jpg",
+          "ratio": "1760 / 2200",
+          "title": "고요한 밤",
+          "lang": "ko",
+          "text": "Poster — a mask built in Houdini, wrapped in a Korean poem.",
+          "href": "project.html#tal"
+        }
+      ]
     }
   },
   "panels": {

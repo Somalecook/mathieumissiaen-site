@@ -169,14 +169,18 @@
       (function () {
         var L = site.home && site.home.latest;
         var title = '<div class="hero-wrap"><p class="hero-title">Image <em>IRL</em><br>&amp; <em>CGI</em></p><img class="sticker" src="images/sticker.png" alt="" width="108" height="132"></div>';
-        if (!L || !L.src) return '<section class="wrap" style="padding-block:112px 96px">' + title + '</section>';
+        var items = L && (L.items || (L.src ? [L] : []));
+        if (!items || !items.length) return '<section class="wrap" style="padding-block:112px 96px">' + title + '</section>';
         loadFont('Gowun+Dodum');
-        return '<section class="wrap latest"><div class="latest-text">' + title +
-          '<div class="latest-cap">' + (L.label ? '<span class="muted">' + esc(L.label) + '</span>' : '') +
-          '<span lang="ko" style="font-family:\'Gowun Dodum\',sans-serif;font-size:clamp(36px,3.6vw,56px);line-height:1">' + esc(L.title) + '</span>' +
-          (L.text ? '<p style="margin:0;max-width:360px;line-height:1.75">' + esc(L.text) + '</p>' : '') +
-          (L.href ? '<a class="pill" href="' + esc(L.href) + '">More masks →</a>' : '') + '</div></div>' +
-          '<a class="latest-img" href="' + esc(L.href || '#') + '" style="aspect-ratio:' + esc(L.ratio || '4 / 5') + '"><img src="' + esc(L.src) + '" alt="' + esc(L.title) + '"></a></section>';
+        return '<section class="wrap latest' + (items.length > 1 ? ' duo' : '') + '"><div class="latest-text">' + title +
+          '<div class="latest-cap">' + items.map(function (it) {
+            return '<div style="display:flex;flex-direction:column;gap:8px"><span' + (it.lang ? ' lang="' + esc(it.lang) + '"' : '') + ' style="font-family:' + (it.lang === 'ko' ? '\'Gowun Dodum\',sans-serif' : 'var(--serif)') + ';font-size:clamp(28px,2.6vw,42px);line-height:1">' + esc(it.title) + '</span>' +
+              (it.text ? '<p style="margin:0;max-width:360px;line-height:1.7">' + esc(it.text) + '</p>' : '') + '</div>';
+          }).join('') + '</div></div>' +
+          '<div class="latest-imgs">' + items.map(function (it) {
+            var tag = it.href ? 'a' : 'div';
+            return '<' + tag + ' class="latest-img"' + (it.href ? ' href="' + esc(it.href) + '"' : '') + ' style="aspect-ratio:' + esc(it.ratio || '4 / 5') + '"><img src="' + esc(it.src) + '" alt="' + esc(it.title) + '"></' + tag + '>';
+          }).join('') + '</div></section>';
       })() +
       features +
       (function () {

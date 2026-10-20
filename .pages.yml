@@ -121,15 +121,20 @@ content:
         type: object
         fields:
           - name: latest
-            label: "Dernière image (tout en haut)"
+            label: "Dernières images (tout en haut)"
             type: object
             fields:
-              - { name: src, label: Image, type: image }
-              - { name: ratio, label: "Format (ex : 4 / 5)", type: string }
-              - { name: label, label: "Petit titre", type: string }
-              - { name: title, label: Titre, type: string }
-              - { name: text, label: Texte, type: text }
-              - { name: href, label: Lien, type: string }
+              - name: items
+                label: Images
+                type: object
+                list: true
+                fields:
+                  - { name: src, label: Image, type: image }
+                  - { name: ratio, label: "Format (ex : 4 / 5)", type: string }
+                  - { name: title, label: Titre, type: string }
+                  - { name: lang, label: "Langue du titre (ko pour le coréen)", type: string }
+                  - { name: text, label: Texte, type: text }
+                  - { name: href, label: Lien, type: string }
           - name: features
             label: Blocs
             type: object
