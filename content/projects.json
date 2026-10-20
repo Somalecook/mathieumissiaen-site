@@ -661,6 +661,50 @@
       "chapters": null
     },
     {
+      "slug": "flower",
+      "title": "Flower",
+      "display": "Flower",
+      "kind": "research",
+      "feature": false,
+      "galleryOnly": true,
+      "year": "",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "",
+      "medium": "CGI",
+      "cover": "images/flower/flower.webp",
+      "theme": {
+        "bg": "#E9E8E4",
+        "fg": "#161513",
+        "muted": "#5E5B55",
+        "line": "#C9C7C1",
+        "font": "",
+        "fontCss": "var(--serif)",
+        "titleItalic": false,
+        "titleWeight": 400
+      },
+      "sections": [
+        {
+          "layout": "grid",
+          "columns": 1,
+          "images": [
+            {
+              "src": "images/flower/flower.webp",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "480 / 854",
+              "bg": "#5A0A14"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "chapters": null,
+      "credits": []
+    },
+    {
       "slug": "acne-paper",
       "title": "Acne Paper 30th anniversary",
       "display": "Acne Paper",
