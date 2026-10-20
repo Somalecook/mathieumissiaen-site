@@ -195,6 +195,17 @@
           '<span class="car-nav"><button type="button" class="tog car-prev" aria-label="Previous">←</button><button type="button" class="tog car-next" aria-label="Next">→</button></span></div>' +
           '<div class="car-view"><div class="car-track">' + cs.map(function (p) { return card(p, false); }).join('') + cs.slice(0, 3).map(function (p) { return card(p, true); }).join('') + '</div></div></div></section>';
       })() +
+      (function () {
+        var A = site.home && site.home.app; if (!A) return '';
+        loadFont('Fredoka:wght@500;700');
+        return '<section class="app-sec"><div class="wrap"><div class="app-grid">' +
+          '<div class="app-text"><span class="app-kicker">' + esc(A.meta || '') + '</span>' + (A.logo ? '<h2 class="app-logo"><img src="' + esc(A.logo) + '" alt="' + esc(A.title) + '"></h2>' : '<h2 class="app-title">' + esc(A.title) + '</h2>') +
+          (A.tagline ? '<p class="app-tag">' + esc(A.tagline) + '</p>' : '') + '<p class="app-desc">' + esc(A.text) + '</p></div>' +
+          '<div class="app-stage">' + (A.cloud ? '<img class="app-cloud" src="' + esc(A.cloud) + '" alt="">' : '') +
+          (A.sound ? '<img class="app-sound" src="' + esc(A.sound) + '" alt="">' : '') + '<video class="app-video" src="' + esc(A.video) + '" poster="' + esc(A.poster || '') + '" autoplay muted loop playsinline style="aspect-ratio:' + esc(A.ratio || '9 / 16') + '"></video></div></div>' +
+          (A.stickers && A.stickers.length ? '<div class="app-stickers">' + A.stickers.map(function (s) { return '<img loading="lazy" src="' + esc(s) + '" alt="Stickoo stickers">'; }).join('') + '</div>' : '') +
+          '</div></section>';
+      })() +
       '<section class="wrap" style="padding-top:120px"><div class="panels rule">' +
       '<button type="button" class="panel" data-kind="research"><span style="font-family:\'Bodoni Moda\',serif;font-style:italic;font-size:64px;line-height:1">Research</span><span style="line-height:1.7;max-width:440px">' + esc(site.panels.research) + '</span></button>' +
       '<button type="button" class="panel" data-kind="commission"><span style="font-family:\'Syne\',sans-serif;font-weight:800;font-size:54px;line-height:1;letter-spacing:-.04em">Commissions</span><span style="line-height:1.7;max-width:440px">' + esc(site.panels.commission) + '</span></button>' +

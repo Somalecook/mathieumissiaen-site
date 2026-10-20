@@ -58,6 +58,22 @@
           "href": "project.html#tal"
         }
       ]
+    },
+    "app": {
+      "title": "Stickoo",
+      "tagline": "Words you can collect.",
+      "text": "A language app for children, vibe coded from scratch. Each child picks a hero, hears a word — 엄마, maman, mother — and answers a little quiz by touching the right picture. Every right answer unlocks a sticker for their album; fill a page and new words arrive. Korean, French, English and Spanish, one word at a time, with characters that grow up alongside the player — from pyjamas to superpowers.",
+      "meta": "Vibe coding · App · iolo.paris",
+      "video": "images/stickoo/stickoo.mp4",
+      "poster": "images/stickoo/stickoo-poster.jpg",
+      "ratio": "628 / 900",
+      "cloud": "images/stickoo/cloud.png",
+      "stickers": [
+        "images/stickoo/stickers-girl.jpg",
+        "images/stickoo/stickers-hero.jpg"
+      ],
+      "logo": "images/stickoo/logo.png",
+      "sound": "images/stickoo/sound.png"
     }
   },
   "panels": {
