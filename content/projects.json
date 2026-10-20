@@ -750,6 +750,51 @@
       "credits": []
     },
     {
+      "slug": "helena-rubinstein",
+      "title": "Helena Rubinstein",
+      "display": "Helena Rubinstein",
+      "kind": "commission",
+      "feature": false,
+      "galleryOnly": true,
+      "client": "Helena Rubinstein",
+      "year": "",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "",
+      "medium": "CGI",
+      "cover": "images/helena-rubinstein/01-cell.jpg",
+      "theme": {
+        "bg": "#E9E8E4",
+        "fg": "#161513",
+        "muted": "#5E5B55",
+        "line": "#C9C7C1",
+        "font": "",
+        "fontCss": "var(--serif)",
+        "titleItalic": false,
+        "titleWeight": 400
+      },
+      "sections": [
+        {
+          "layout": "grid",
+          "columns": 1,
+          "images": [
+            {
+              "src": "images/helena-rubinstein/01-cell.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "2000 / 2000",
+              "bg": "#050807"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "chapters": null,
+      "credits": []
+    },
+    {
       "slug": "acne-paper",
       "title": "Acne Paper 30th anniversary",
       "display": "Acne Paper",
