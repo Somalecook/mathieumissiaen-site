@@ -295,6 +295,45 @@
               "bg": "#000000"
             }
           ]
+        },
+        {
+          "layout": "grid",
+          "template": "1fr 1fr 1fr 1fr",
+          "motion": true,
+          "images": [
+            {
+              "src": "images/anti/motion-01.webp",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "480 / 604",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/anti/motion-02.webp",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "480 / 604",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/anti/motion-03.webp",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "480 / 604",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/anti/motion-04.webp",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "480 / 604",
+              "bg": "#000000"
+            }
+          ]
         }
       ],
       "essay": null,
