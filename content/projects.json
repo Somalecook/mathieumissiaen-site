@@ -795,6 +795,51 @@
       "credits": []
     },
     {
+      "slug": "iolo",
+      "title": "iolo.paris",
+      "display": "iolo",
+      "kind": "commission",
+      "feature": false,
+      "galleryOnly": true,
+      "client": "Art direction",
+      "year": "",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "",
+      "medium": "Web, art direction",
+      "cover": "images/iolo/iolo.gif",
+      "theme": {
+        "bg": "#E9E8E4",
+        "fg": "#161513",
+        "muted": "#5E5B55",
+        "line": "#C9C7C1",
+        "font": "",
+        "fontCss": "var(--serif)",
+        "titleItalic": false,
+        "titleWeight": 400
+      },
+      "sections": [
+        {
+          "layout": "grid",
+          "columns": 1,
+          "images": [
+            {
+              "src": "images/iolo/iolo.gif",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "600 / 396",
+              "bg": "#F3F3F3"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "chapters": null,
+      "credits": []
+    },
+    {
       "slug": "acne-paper",
       "title": "Acne Paper 30th anniversary",
       "display": "Acne Paper",
