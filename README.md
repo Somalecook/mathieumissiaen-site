@@ -42,3 +42,7 @@ Demande simplement (« ajoute une série X avec ces images », « enlève Plates
 ## Vimeo
 
 Pour que le lecteur fonctionne sur le site : sur Vimeo, dans les réglages de confidentialité de chaque film (ou en masse), *Où cette vidéo peut-elle être intégrée* → *Partout*, ou *Domaines spécifiques* avec `mathieumissiaen.fr` et l'adresse `netlify.app`.
+
+## Mises à jour
+
+Le site est relié à Netlify : chaque modification envoyée sur la branche `main` est mise en ligne automatiquement.
