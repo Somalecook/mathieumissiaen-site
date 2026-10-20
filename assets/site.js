@@ -222,7 +222,7 @@
       '<div class="lab">' + lab + '</div></div></section>' : '') +
       '<section class="wrap ig" id="ig" style="padding-top:112px"><div class="ig-head"><span style="display:flex;flex-direction:column;gap:6px"><span class="muted">Live from Instagram</span><a href="' + esc(c.instagram) + '" target="_blank" rel="noopener" class="serif" style="font-size:clamp(32px,3.4vw,52px);line-height:1">' + esc(c.instagramHandle) + '</a></span><a class="pill" href="' + esc(c.instagram) + '" target="_blank" rel="noopener">Follow ↗</a></div><div class="ig-grid" id="igGrid"></div></section>' +
       '<section class="wrap" style="padding-block:120px 64px"><div class="split rule" style="padding-top:24px"><span></span><div style="display:flex;flex-direction:column;gap:24px">' +
-      '<p class="serif" style="margin:0;font-size:34px;line-height:1.15">' + esc(site.info) + '</p>' +
+      (site.info ? '<p class="serif" style="margin:0;font-size:34px;line-height:1.15">' + esc(site.info) + '</p>' : '') +
       '<a href="about.html" style="border-bottom:1px solid currentColor;align-self:flex-start">About →</a></div>' +
       '<div style="display:flex;flex-direction:column;gap:10px"><span class="mail">' + esc(c.email) + '</span><a href="' + esc(c.instagram) + '" target="_blank" rel="noopener">Instagram ' + esc(c.instagramHandle) + ' ↗</a>' + (c.vimeo ? '<a href="' + esc(c.vimeo) + '" target="_blank" rel="noopener">Vimeo ↗</a>' : '') + (c.iolo ? '<a href="' + esc(c.iolo) + '" target="_blank" rel="noopener">iolo.paris — objects ↗</a>' : '') + '</div></div></section>' +
       footer(site);
