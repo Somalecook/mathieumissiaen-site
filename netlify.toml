@@ -10,3 +10,13 @@
   for = "/content/*"
   [headers.values]
     Cache-Control = "no-cache"
+
+[[redirects]]
+  from = "/stickoo/app"
+  to = "/stickoo/app/"
+  status = 301
+
+[[headers]]
+  for = "/stickoo/app/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
