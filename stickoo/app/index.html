@@ -1594,6 +1594,9 @@ html:root[data-mode="kids"].kquiz[data-season="party"] body{background:linear-gr
 html.kquiz[data-season="party"] #kseasonfx{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'%3E%3Cpath d='M0 6 Q100 30 200 6 Q300 30 400 6' fill='none' stroke='%23ffffff' stroke-width='2' opacity='.8'/%3E%3Cg%3E%3Cpath d='M20 10 L36 14 L26 38Z' fill='%23ff6f9c'/%3E%3Cpath d='M60 18 L76 20 L66 46Z' fill='%23ffd34d'/%3E%3Cpath d='M100 22 L116 22 L108 50Z' fill='%235cc8ff'/%3E%3Cpath d='M140 19 L156 17 L148 45Z' fill='%238fd19e'/%3E%3Cpath d='M180 11 L196 9 L188 35Z' fill='%23b28cff'/%3E%3Cpath d='M220 10 L236 14 L226 38Z' fill='%23ff9f43'/%3E%3Cpath d='M260 18 L276 20 L266 46Z' fill='%23ff6f9c'/%3E%3Cpath d='M300 22 L316 22 L308 50Z' fill='%23ffd34d'/%3E%3Cpath d='M340 19 L356 17 L348 45Z' fill='%235cc8ff'/%3E%3Cpath d='M375 11 L391 9 L383 35Z' fill='%238fd19e'/%3E%3C/g%3E%3C/svg%3E") center 0/100% 64px repeat-x,radial-gradient(circle at 20% 30%,rgba(255,255,255,.35) 0 2px,transparent 3px) 0 0/34px 34px}
 #kseasonfx .kfx-conf{position:absolute;opacity:.9}
 #kseasonfx .kfx-gull{position:absolute;color:#3a4a6b;letter-spacing:-6px;font-style:normal;line-height:1;opacity:.75}
+
+.kfxburst{position:fixed;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);display:block;filter:drop-shadow(0 0 12px rgba(255,220,120,.7))}
+.ksparkle.kspimg{width:var(--sw);height:var(--sh);background:var(--sb)!important;font-size:0!important;text-shadow:none!important}
 </style>
 </head>
 <body>
@@ -4248,9 +4251,10 @@ function kSparkle(el, n = 14) {
   if (!el) return; if (reduced) n = Math.ceil(n / 2); const r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
   const glyphs = ['✦', '✧', '⋆', '✨', '♡', '·'], cols = ['#ffd34d', '#ff8fbf', '#9fd8ff', '#c9a4ff', '#fff4b0', '#ffffff'];
   for (let i = 0; i < n; i++) {
-    const sp = document.createElement('span'); sp.className = 'ksparkle'; sp.textContent = glyphs[i % glyphs.length];
+    const sp = document.createElement('span'); sp.className = 'ksparkle'; if (kfxReady()) { const q = KFX.p[Math.floor(Math.random() * KFX.p.length)], k = .4 + Math.random() * .35; sp.classList.add('kspimg'); sp._kv = `;--sw:${q[2] * k}px;--sh:${q[3] * k}px;--sb:url(${KFX_IMG.src}) -${q[0] * k}px -${q[1] * k}px/${KFX.W * k}px ${KFX.H * k}px no-repeat`; } else sp.textContent = glyphs[i % glyphs.length];
     const a = Math.random() * Math.PI * 2, d = 40 + Math.random() * Math.max(50, r.width * .7);
     sp.style.cssText = `left:${cx}px;top:${cy}px;color:${cols[i % cols.length]};font-size:${16 + Math.random() * 18}px;--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d}px;animation-delay:${Math.random() * .12}s`;
+    if (sp._kv) sp.style.cssText += sp._kv;
     document.body.appendChild(sp);
     try { if (sp.animate) { sp.style.animation = 'none'; const dx = Math.cos(a) * d, dy = Math.sin(a) * d, rot = (Math.random() - .5) * 220; sp.animate([{ opacity: 0, transform: 'translate(-50%,-50%) scale(.3)' }, { opacity: 1, transform: `translate(calc(-50% + ${dx * .3}px),calc(-50% + ${dy * .3}px)) scale(1.25)`, offset: .25 }, { opacity: 0, transform: `translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(.6) rotate(${rot}deg)` }], { duration: 850, delay: Math.random() * 120, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'both' }); } } catch (e) {}
     setTimeout(() => sp.remove(), 1100);
@@ -4907,7 +4911,18 @@ const sfx = {
 };
 
 /* confetti */
-function confettiAt(x, y, colors, amount) { confetti(colors, amount, x, y); }
+const KFX = {"p":[[19,12,26,39],[78,14,35,35],[145,3,30,58],[201,9,46,46],[267,10,42,43],[334,20,35,23],[400,16,31,31],[461,12,38,39],[517,3,53,58],[580,3,56,58],[647,3,49,58],[722,17,28,29],[785,17,30,30],[836,3,55,58],[912,3,32,58],[966,3,52,58],[1039,3,34,58],[1105,18,29,28],[1163,10,42,43],[1231,14,34,35],[9,73,45,45],[78,78,36,36],[139,75,42,41],[209,81,29,29],[270,67,35,58],[330,74,44,44],[395,75,41,42],[461,80,37,31],[515,72,58,47],[593,81,29,29],[653,80,37,31],[721,81,29,29],[781,80,38,31],[842,74,43,44],[914,81,28,30],[971,75,42,42],[1041,80,29,31],[1099,75,41,41],[1173,84,22,23],[1234,81,28,29],[10,137,44,46],[67,132,58,55],[144,147,32,25],[216,152,15,15],[262,142,52,35],[333,142,38,36],[407,151,17,17],[458,140,44,39],[515,143,58,34],[589,147,38,26],[656,131,31,58],[707,144,58,32],[779,138,41,43],[850,146,28,28],[899,134,58,52],[972,140,40,40],[1034,138,44,43],[1098,138,44,43],[1169,145,29,29],[1233,145,30,30],[9,195,45,58],[67,196,58,56],[141,209,38,30],[209,209,29,29],[270,206,36,36],[338,208,27,32],[402,195,28,58],[451,201,58,45],[534,213,19,21],[598,213,20,22],[658,209,28,29],[707,209,58,29],[784,208,31,31],[846,206,36,36],[906,202,44,43],[977,209,29,29],[1040,198,31,51],[1103,206,34,36],[1175,215,18,18],[1219,198,58,52],[20,276,23,24],[78,270,35,35],[145,274,29,28],[209,269,29,38],[341,277,21,21],[402,273,28,30],[468,276,23,23],[534,278,20,20],[590,269,35,37],[643,260,57,56],[728,280,15,15],[793,281,14,14],[840,263,48,50],[903,263,49,50],[979,280,26,15],[1046,279,19,18],[1107,275,25,25],[1170,275,28,26],[1238,278,20,19],[19,339,26,26],[82,336,27,32],[152,345,15,14],[214,342,20,20],[280,344,15,15],[341,341,21,21],[409,342,14,19],[471,343,18,18],[533,323,21,58],[580,323,56,58],[661,341,21,21],[726,342,20,20],[776,327,48,49],[845,333,37,37],[909,323,38,58],[984,344,15,15],[1045,341,22,22],[1100,339,39,25],[1176,343,15,18],[1227,336,42,32],[23,407,18,17],[88,408,15,16],[145,394,30,43],[195,396,58,40],[279,407,18,18],[336,404,31,23],[406,406,19,19],[468,404,23,23],[533,405,21,21],[598,407,19,18],[665,409,14,14],[707,401,58,30],[786,408,28,16],[836,399,55,34],[899,389,58,53],[982,393,19,45],[1048,408,15,16],[1106,387,28,58],[1171,403,25,25],[1229,397,37,37],[11,459,42,42],[81,464,30,31],[147,467,26,26],[207,460,34,40],[265,458,45,44],[328,456,47,48],[401,459,30,41],[464,462,32,35],[532,468,23,23],[593,466,30,28],[648,451,48,58],[710,451,52,57],[781,462,37,35],[850,452,28,55],[908,461,39,37],[979,467,26,26],[1027,455,58,50],[1091,453,58,54],[1164,460,40,40],[1227,451,42,58],[12,523,40,41],[80,523,32,41],[140,520,40,48],[210,530,27,27],[272,528,32,32],[330,522,43,43],[392,515,48,58],[471,530,17,27],[533,521,22,46],[585,515,45,58],[653,524,37,39],[718,524,35,39],[786,530,27,28],[851,530,26,27],[911,519,34,49],[978,524,27,39],[1034,522,43,44],[1102,525,36,37],[1167,523,33,42],[1224,523,48,42],[14,591,35,34],[78,590,36,36],[143,593,34,29],[207,589,33,38],[278,587,19,42],[330,590,44,35],[402,594,28,27],[464,595,32,26],[536,599,15,17],[587,588,41,40],[653,590,38,35],[714,587,44,42],[772,579,56,58],[847,591,34,33],[915,594,25,27],[970,586,43,43],[1043,601,25,14],[1105,594,29,27],[1170,594,27,27],[1235,591,25,33],[3,651,58,41],[83,659,26,26],[138,643,44,58],[211,659,26,26],[270,650,35,43],[333,650,38,43],[400,657,31,29],[461,654,37,36],[524,661,40,21],[584,657,48,29],[653,656,37,32],[719,654,33,36],[789,660,22,23],[848,656,31,31],[906,652,43,39],[978,656,27,32],[1047,659,17,26],[1100,652,39,39],[1164,652,39,40],[1231,654,33,35],[24,725,16,22],[82,707,27,57],[149,723,22,26],[198,707,52,58],[277,715,22,41],[335,720,34,32],[387,717,58,38],[451,711,58,49],[518,707,51,58],[587,716,41,40],[643,717,58,38],[719,726,34,20],[782,716,35,40],[835,707,58,58],[906,713,44,46],[977,717,29,38],[1040,720,32,32],[1111,727,17,17],[1175,727,17,17],[1239,727,18,18],[18,782,27,35],[78,785,35,29],[145,781,30,37],[216,792,16,16],[280,792,15,16],[326,772,51,55],[406,791,19,18],[454,776,51,47],[518,771,51,58],[579,772,58,56],[653,771,37,58],[708,771,56,58],[782,782,36,36],[836,771,56,58],[901,771,54,58],[970,771,43,58],[1031,778,50,44],[1091,784,58,32],[1155,777,58,45],[1231,786,33,27],[11,843,41,42],[68,835,56,58],[131,841,57,45],[197,835,54,58],[259,837,58,53],[338,846,28,35],[406,854,20,20],[462,846,36,36],[527,855,34,17],[598,854,19,20],[643,856,58,16],[727,856,17,16],[786,850,28,28],[856,857,15,14],[910,846,36,36],[963,837,58,54],[1046,854,19,19],[1109,853,21,22],[1155,840,58,48],[1235,850,25,28],[3,906,58,43],[67,907,58,41],[134,899,52,58],[203,899,41,58],[259,902,58,52],[339,915,26,26],[403,916,25,24],[469,917,22,22],[515,910,58,36],[598,918,20,20],[657,917,29,21],[729,916,14,23],[790,913,20,30],[839,908,50,39],[916,917,23,22],[981,918,22,19],[1037,909,37,37],[1102,910,36,36],[1175,918,18,19],[1241,917,14,21],[24,984,16,16],[87,983,17,18]],"b":[[11,1042,234,220],[301,1073,166,157],[522,1035,236,234],[776,1045,240,214]],"W":1280,"H":1280};
+const KFX_IMG = new Image(); KFX_IMG.decoding = 'async'; KFX_IMG.src = 'kid/sky/fxatlas.webp?v=1';
+const kfxReady = () => KFX_IMG.complete && KFX_IMG.naturalWidth > 0;
+// big cartoon burst flash at a point (from the effects sheet)
+function kBurstFlash(x, y, size = 220) {
+  if (!kfxReady()) return; const b = KFX.b[Math.floor(Math.random() * KFX.b.length)], el = document.createElement('i'), s = size / Math.max(b[2], b[3]);
+  el.className = 'kfxburst'; el.style.cssText = `left:${x}px;top:${y}px;width:${b[2] * s}px;height:${b[3] * s}px;background:url(${KFX_IMG.src}) -${b[0] * s}px -${b[1] * s}px/${KFX.W * s}px ${KFX.H * s}px no-repeat`;
+  document.body.appendChild(el);
+  try { el.animate([{ opacity: 0, transform: 'translate(-50%,-50%) scale(.2) rotate(-20deg)' }, { opacity: 1, transform: 'translate(-50%,-50%) scale(1.1) rotate(0deg)', offset: .25 }, { opacity: .9, transform: 'translate(-50%,-50%) scale(1) rotate(6deg)', offset: .6 }, { opacity: 0, transform: 'translate(-50%,-50%) scale(1.35) rotate(10deg)' }], { duration: 650, easing: 'ease-out' }); } catch (e) {}
+  setTimeout(() => el.remove(), 680);
+}
+function confettiAt(x, y, colors, amount) { try { kBurstFlash(x, y, Math.min(260, innerWidth * .6)); } catch (e) {} confetti(colors, amount, x, y); }
 function confetti(colors, amount = 140, ox, oy) {
   if (reduced) return;
   const cv = $('#confetti'); cv.hidden = false;
@@ -4916,13 +4931,14 @@ function confetti(colors, amount = 140, ox, oy) {
   const P = Array.from({ length: amount }, () => ({
     x: (ox ?? innerWidth / 2) + (Math.random() - .5) * 40, y: oy ?? innerHeight * .35,
     vx: (Math.random() - .5) * 13, vy: -Math.random() * 13 - 4, r: Math.random() * 6.28, vr: (Math.random() - .5) * .3,
-    w: 6 + Math.random() * 6, h: 4 + Math.random() * 5, c: colors[Math.floor(Math.random() * colors.length)] }));
+    w: 6 + Math.random() * 6, h: 4 + Math.random() * 5, c: colors[Math.floor(Math.random() * colors.length)], sp: KFX.p[Math.floor(Math.random() * KFX.p.length)], k: .45 + Math.random() * .45 }));
+  const useImg = kfxReady();
   const t0 = performance.now();
   (function frame(t) {
     ctx.clearRect(0, 0, innerWidth, innerHeight);
     const age = (t - t0) / 1000;
     P.forEach(p => { p.vy += .35; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
-      ctx.save(); ctx.globalAlpha = Math.max(0, 1 - age / 3.2); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore(); });
+      ctx.save(); ctx.globalAlpha = Math.max(0, 1 - age / 3.2); ctx.translate(p.x, p.y); ctx.rotate(p.r); if (useImg) { const s = p.sp, w = s[2] * p.k, hh = s[3] * p.k; ctx.drawImage(KFX_IMG, s[0], s[1], s[2], s[3], -w / 2, -hh / 2, w, hh); } else { ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); } ctx.restore(); });
     if (age < 3.2) requestAnimationFrame(frame); else { ctx.clearRect(0, 0, innerWidth, innerHeight); cv.hidden = true; }
   })(t0);
 }
