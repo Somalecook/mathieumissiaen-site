@@ -1494,6 +1494,26 @@ html.kwin-screen .kwin-title.kpuffy{font-size:min(4.2dvh,1.9rem)!important;line-
 .kachpop.kfr2pop .knw .kpic-sp,.kachpop.kfr2pop .knw .kpic-img{width:100%!important;max-width:86px;height:auto}
 .kachpop.kfr2pop .knw em{font-size:clamp(13px,4vw,19px)!important;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .kachpop.kfr2pop>small{position:absolute!important;left:15%;right:15%;top:79%;bottom:7%;display:grid!important;place-items:center;text-align:center;color:#c43c92!important;-webkit-text-stroke:0!important;text-shadow:0 1px 0 #fff!important;font-size:clamp(13px,3.8vw,17px)!important}
+
+/* trophy popup inside the gold frame */
+.kachpop.kachfr img{position:absolute!important;left:28%;width:38%!important;height:auto!important;top:35%;aspect-ratio:1/1;object-fit:contain}
+.kachpop.kachfr>small{overflow:hidden}
+.kachpop.kachfr>small .kfit{display:block;max-width:100%;font-size:clamp(15px,4.6vw,21px);line-height:1.15}
+/* glossy puffy lettering everywhere + tiny white highlights */
+:root{--kp-hl:radial-gradient(circle at 34% 30%,#fff 0 9%,rgba(255,255,255,0) 15%),linear-gradient(180deg,rgba(255,255,255,0) 0 12%,rgba(255,255,255,.55) 12% 30%,rgba(255,255,255,0) 31%);--kp-pink:linear-gradient(180deg,#ffffff 0%,#fff5fb 38%,#ffd0ea 54%,#ff9fd2 100%);--kp-inkf:linear-gradient(180deg,#ffc6e6 0%,#ff86c6 42%,#e2479f 58%,#b8327f 100%);--kp-goldf:linear-gradient(180deg,#fffdf0 0%,#ffe680 40%,#ffc02e 56%,#f08a0c 100%)}
+.kpuffy,html[data-mode="kids"] #kids .kpuffy,.kachpop b.kpuffy,
+html.khome-screen .khome .kbig>span,html[data-mode="kids"] .kwinbtns .kbig>span,html[data-mode="kids"] .ktuto-card>b,html[data-mode="kids"] .kset-t>span:last-child{
+ font-family:"Mochiy Pop One","Jua","Baloo 2","Fredoka",sans-serif!important;font-weight:400!important;
+ background-image:var(--kp-hl),var(--kp-fill,var(--kp-pink))!important;background-size:.62em 1.18em,100% 1.18em,100% 100%!important;background-repeat:repeat,repeat-y,no-repeat!important;background-position:.05em .02em,0 0,0 0!important;
+ -webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;-webkit-text-fill-color:transparent!important;-webkit-text-stroke:0!important;text-shadow:none!important;
+ filter:drop-shadow(2px 0 0 #7b2d8e) drop-shadow(-2px 0 0 #7b2d8e) drop-shadow(0 2px 0 #7b2d8e) drop-shadow(0 -2px 0 #7b2d8e) drop-shadow(0 4px 0 #4a1d66) drop-shadow(0 5px 6px rgba(30,0,50,.3));padding:0 .12em;line-height:1.18}
+.kpuffy.kp-ink,html[data-mode="kids"] #kids .kpuffy.kp-ink,html[data-mode="kids"] .ktuto-card>b{--kp-fill:var(--kp-inkf);filter:drop-shadow(1.6px 0 0 #8e2a72) drop-shadow(-1.6px 0 0 #8e2a72) drop-shadow(0 1.6px 0 #8e2a72) drop-shadow(0 -1.6px 0 #8e2a72) drop-shadow(0 3px 0 #5e1c4c) drop-shadow(0 0 4px rgba(255,255,255,.9))}
+.kpuffy.kp-gold,.kachpop b.kpuffy.kp-gold{--kp-fill:var(--kp-goldf);filter:drop-shadow(2px 0 0 #8a4a0a) drop-shadow(-2px 0 0 #8a4a0a) drop-shadow(0 2px 0 #8a4a0a) drop-shadow(0 -2px 0 #8a4a0a) drop-shadow(0 4px 0 #5a2c05)}
+.kwin-title{background-image:var(--kp-hl),linear-gradient(180deg,#fff7c2 0%,#ffd34d 45%,#ffad1f 55%,#ffcf4a 100%)!important;background-size:.62em 1.18em,100% 1.18em,100% 100%!important;background-repeat:repeat,repeat-y,no-repeat!important;-webkit-background-clip:text!important;background-clip:text!important}
+
+html[data-mode="kids"] body #kids .kpuffy,html[data-mode="kids"] body #kids .khome .kbig>span,html[data-mode="kids"] body #kids .kwinbtns .kbig>span,html[data-mode="kids"] body #kids .kset-t>span:last-child,html[data-mode="kids"] body .ktuto-card>b,html[data-mode="kids"] body .kachpop b.kpuffy,html[data-mode="kids"] body .kachpop .kpuffy,html[data-mode="kids"] body #kids .kwin-title{font-family:"Mochiy Pop One","Jua","Baloo 2","Fredoka",sans-serif!important;font-weight:400!important}
+html[data-mode="kids"] body .ktuto-card>b{text-wrap:balance;font-size:1.2rem!important}
+html.khome-screen .khome .kbig>span{font-size:min(2.6dvh,1.3rem)!important}
 </style>
 </head>
 <body>
@@ -3815,10 +3835,10 @@ function kidsCheckAch(k) {
 const achImg = a => { if (!a.img) return `fruits/${a.fruit}.png`; if (GENDER !== 'm') return a.img; const m = a.img.match(/^(friends\/a|princess\/q|princess2\/g|princess3\/d)(\d+)\.(?:png|webp)(?:\?v=\d+)?$/); if (!m) return a.img; const t = ['friends/a', 'princess/q', 'princess2/g', 'princess3/d'].indexOf(m[1]), arr = G_TIERS.m[t]; return kStickerSrc(arr[+m[2] % arr.length]); };
 function kidAchPopup(list) {
   list.forEach((a, i) => setTimeout(() => {
-    const el = document.createElement('div'); el.className = 'kachpop';
-    el.innerHTML = `<span class="krays"></span><img src="${achImg(a)}" alt=""><b>Nouveau succès !</b><small>${esc(a.name)}</small>`;
+    const el = document.createElement('div'); el.className = 'kachpop kfr2pop kachfr';
+    el.innerHTML = `<span class="krays"></span><img src="${achImg(a)}" alt=""><b class="kpuffy kp-gold">Nouveau succès !</b><small><span class="kpuffy kp-ink kfit">${esc(a.name)}</span></small>`;
     document.body.appendChild(el); sfx.badge(); try { confetti(['#ffd34d', '#ff8fb3', '#8fd19e'], 120); } catch (e) {}
-    say(SPL().ach);
+    say(SPL().ach); try { kFitText(); } catch (e) {}
     el.onclick = () => el.remove(); setTimeout(() => el.remove(), 3800);
   }, i * 4000));
 }
