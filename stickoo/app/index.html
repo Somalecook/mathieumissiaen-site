@@ -1459,6 +1459,10 @@ html.kquiz[data-season] #kseasonfx{display:block}
 .ktuto-btn:active,.klp-go:active{transform:scale(.95)}
 .klp-go:disabled{filter:grayscale(.6) opacity(.6)}
 .klp-go{display:flex!important;margin-left:auto!important;margin-right:auto!important}
+:root[data-mode="kids"]{background:#3a2158}
+:root[data-mode="kids"] body{margin:0}
+html.khome-screen .kfoot{padding-bottom:0!important}
+html.khome-screen .khome-foot{margin-top:6px!important}
 </style>
 </head>
 <body>
@@ -3457,7 +3461,10 @@ function kidsHome() {
 }
 
 const KSEASONS = ['', 'spring', 'summer', 'autumn', 'winter'], KSEASON_IC = { '': '🌙', spring: '🌸', summer: '☀️', autumn: '🍂', winter: '❄️' }, KSEASON_FX = { spring: ['🌸', '🌸', '🌼', '🦋'], summer: ['✨', '🌼', '✨', '🦋'], autumn: ['🍂', '🍁', '🍂', '🍁'], winter: ['❄️', '❄️', '❅', '❄️'] };
-function kSeason() { let s = ''; try { s = localStorage.getItem(SK('stickoo-season')) || ''; } catch (e) {} return KSEASONS.includes(s) ? s : ''; }
+const KMEM = {};
+function kMemGet(key, def) { if (key in KMEM) return KMEM[key]; let v = null; try { v = localStorage.getItem(key); } catch (e) {} KMEM[key] = v === null ? def : v; return KMEM[key]; }
+function kMemSet(key, v) { KMEM[key] = v; try { localStorage.setItem(key, v); } catch (e) {} }
+function kSeason() { const s = kMemGet(SK('stickoo-season'), ''); return KSEASONS.includes(s) ? s : ''; }
 function kSeasonApply() {
   const s = kSeason(), html = document.documentElement; if (s) html.dataset.season = s; else delete html.dataset.season;
   let fx = document.getElementById('kseasonfx'); if (!fx) { fx = document.createElement('div'); fx.id = 'kseasonfx'; fx.setAttribute('aria-hidden', 'true'); document.body.insertBefore(fx, document.body.firstChild); }
@@ -3479,7 +3486,7 @@ function kSeasonApply() {
 }
 function kSeasonNext(b) {
   const s = KSEASONS[(KSEASONS.indexOf(kSeason()) + 1) % KSEASONS.length];
-  try { localStorage.setItem(SK('stickoo-season'), s); } catch (e) {}
+  kMemSet(SK('stickoo-season'), s);
   kSeasonApply(); if (b) { b.textContent = KSEASON_IC[s]; try { kSparkle(b, 8); } catch (e) {} }
 }
 function kidsSettings() {
@@ -3488,7 +3495,6 @@ function kidsSettings() {
     <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>${esc(slotInfo(SLOT).nm || String(SLOT + 1))}</small></span></button>
     <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>${LNAME[UIL]} → ${LNAME[LL]}</small></span></button>
     <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>
-    <button class="kset-b" data-k="odds"><i>📊</i><span><b>Chances par mot</b></span></button>
   </div>`;
 }
 const KGEAR = `<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>`;
@@ -3603,7 +3609,7 @@ function kidsBook(id) {
   K.items = items;
 }
 function kidsStart(id) {
-  try { const cur = kSeason(), pool = ['spring', 'summer', 'autumn', 'winter'].filter(s => s !== cur); localStorage.setItem(SK('stickoo-season'), pool[Math.floor(Math.random() * pool.length)]); } catch (e) {}
+  try { const cur = kSeason(), pool = ['spring', 'summer', 'autumn', 'winter'].filter(s => s !== cur); kMemSet(SK('stickoo-season'), pool[Math.floor(Math.random() * pool.length)]); } catch (e) {}
   K.forcedNew = [];
   K.asker = kidFriend();
   const ks = kidsState(), un = kidUnlocked(ks);
@@ -3695,7 +3701,7 @@ function kidsQuestion() {
   document.documentElement.classList.toggle('knohelp', !kHelpOn());
   setTimeout(() => sayTarget(), 120);
 }
-function kHelpOn() { try { return localStorage.getItem(SK('stickoo-help')) !== 'off'; } catch (e) { return true; } }
+function kHelpOn() { return kMemGet(SK('stickoo-help'), 'on') !== 'off'; }
 function sayTarget() { const R = K.round; if (!R) return; say(tw(R.order[R.i])); $('#kids .kspeak')?.classList.add('talk'); setTimeout(() => $('#kids .kspeak')?.classList.remove('talk'), 1500); }
 function kidPraiseFx(text) {
   const el = document.createElement('div'); el.className = 'kpraise'; el.textContent = text;
@@ -4104,7 +4110,7 @@ function kidsClick(e) {
   if (d.k === 'lang') { K.lsel = null; return kidsLang(); }
   if (d.k === 'tuto') return kidTuto(true);
   if (d.k === 'odds') return kidOddsPanel();
-  if (d.k === 'helptg') { const on = !kHelpOn(); try { localStorage.setItem(SK('stickoo-help'), on ? 'on' : 'off'); } catch (er) {} b.classList.toggle('on', on); document.documentElement.classList.toggle('knohelp', !on); kSparkle(b, 8); tone(on ? 880 : 520, 0, .12, 'sine', .06); if (!on) document.querySelectorAll('#kids .kopt.kglow').forEach(x => x.classList.remove('kglow')); return; }
+  if (d.k === 'helptg') { const on = !kHelpOn(); kMemSet(SK('stickoo-help'), on ? 'on' : 'off'); b.classList.toggle('on', on); document.documentElement.classList.toggle('knohelp', !on); try { kSparkle(b, 8); tone(on ? 880 : 520, 0, .12, 'sine', .06); } catch (er) {} if (!on) document.querySelectorAll('#kids .kopt.kglow').forEach(x => x.classList.remove('kglow')); return; }
   if (d.kslot !== undefined) { const i = +d.kslot; if (!slotInfo(i).used) { K.naming = i; K.namingNew = true; K.namingG = 'f'; return kidsSlots(); } return selectSlot(i); }
   if (d.kslotname !== undefined) { K.naming = +d.kslotname; K.namingNew = false; K.namingG = slotGender(K.naming); return kidsSlots(); }
   if (d.kgender) { K.namingG = d.kgender; document.querySelectorAll('.kg-b').forEach(x => x.classList.toggle('on', x === b)); const av = document.getElementById('kslotAv'); if (av) av.src = kStickerSrc(d.kgender === 'm' ? G_TIERS.m[0][K.naming * 5] : SLOT_AV[K.naming]); kSparkle(b, 8); tone(880, 0, .08, 'sine', .06); return; }
