@@ -1554,6 +1554,15 @@ html.kquiz .kopts.three .kopt{width:min(48vw,22.5dvh,230px)!important}
 html.kquiz .kopts.three .kopt:first-child{margin-bottom:-2.5dvh!important}
 html.kquiz #kids:has(.kopts.three) .kspeak{margin:2px auto 3.5dvh!important}
 html.kquiz #kids:has(.kopts.three) .khint{min-height:3.2em}
+
+/* quiz layout v3: hint pinned just above the tips button, answers sized to the free space, no re-animation */
+html.kquiz .khint{position:fixed!important;left:0;right:0;bottom:calc(max(8px,env(safe-area-inset-bottom)) + 52px)!important;margin:0 auto!important;padding:0 20px!important;min-height:0!important;z-index:5;pointer-events:none}
+html.kquiz .kopts{padding-bottom:calc(max(8px,env(safe-area-inset-bottom)) + 52px + 3.4em)!important;justify-content:center;align-content:end!important}
+html.kquiz .kopts.three,html.kquiz .kopts.four{align-content:end!important;padding-top:0!important}
+html.kquiz .kopts.three .kopt,html.kquiz .kopts.four .kopt{width:var(--os,min(46vw,22dvh))!important;height:auto}
+html.kquiz .kopts.three .kopt:first-child{margin-bottom:calc(var(--os,180px) * -.14)!important}
+html.kquiz #kids:has(.kopts.three) .kspeak{margin:2px auto!important}
+html.kquiz .kopt,html.kquiz .kopt:nth-child(n){animation:none!important}
 </style>
 </head>
 <body>
@@ -3782,6 +3791,18 @@ function kidMelodyNote(i, last) {
   if (last) { const t0 = .8; tone(NOTE_HZ.C5, t0, .9, 'sine', .06); tone(NOTE_HZ.E5, t0 + .15, .9, 'sine', .06); tone(NOTE_HZ.G5, t0 + .3, 1, 'sine', .06); tone(NOTE_HZ.C6, t0 + .45, 1.5, 'sine', .07); }
 }
 // keep the speaker cloud exactly halfway between the middle of the star row and the top answer cloud
+// fixed answer-cloud size computed from the real free space (same size for every question)
+function kSizeOpts() {
+  const ko = document.querySelector('#kids .kopts'); if (!ko || K.screen !== 'quiz') return;
+  const n = ko.children.length, key = innerWidth + 'x' + innerHeight + 'x' + n;
+  if (K._osKey !== key) {
+    const r = ko.getBoundingClientRect(), cs = getComputedStyle(ko), avail = r.height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 8;
+    const rows = n === 3 ? 1.88 : n === 4 ? 2.04 : 1.02;
+    K._os = Math.max(90, Math.floor(Math.min(innerWidth * (n === 3 || n === 4 ? .46 : .32), avail / rows, 230))); K._osKey = key;
+  }
+  document.documentElement.style.setProperty('--os', K._os + 'px');
+}
+window.addEventListener('resize', () => { try { K._osKey = null; kSizeOpts(); kCenterSpk(); } catch (e) {} });
 function kCenterSpk() {
   const sp = document.querySelector('#kids .kspeak'), pr = document.querySelector('#kids .kprog'), op = document.querySelector('#kids .kopt');
   if (!sp || !pr || !op || K.screen !== 'quiz') return;
@@ -3808,7 +3829,7 @@ function kidsQuestion() {
     <div class="kopts ${opts.length === 4 ? 'four' : opts.length === 3 ? 'three' : ''}">${opts.map((o, i) => `<button class="kopt" data-ko="${i}" aria-label="${esc(gl(o))}" style="--ob:url(kid/sky/opt${i % 3}.webp?v=4)">${kidPic(o)}</button>`).join('')}</div>
     <p class="khint">Pour les parents : « ${esc(tw(target))} » = ${esc(gl(target))}</p><button class="khelp-tg ${kHelpOn() ? 'on' : ''}" data-k="helptg" aria-label="Aides">💡</button>`;
   document.documentElement.classList.toggle('knohelp', !kHelpOn());
-  kCenterSpk(); setTimeout(kCenterSpk, 60); setTimeout(kCenterSpk, 400);
+  kSizeOpts(); kCenterSpk(); setTimeout(() => { kSizeOpts(); kCenterSpk(); }, 60);
   setTimeout(() => sayTarget(), 120);
 }
 function kHelpToggle(b) { const on = !kHelpOn(); kMemSet(SK('stickoo-help'), on ? 'on' : 'off'); b.classList.toggle('on', on); document.documentElement.classList.toggle('knohelp', !on); try { kSparkle(b, 8); tone(on ? 880 : 520, 0, .12, 'sine', .06); } catch (er) {} if (!on) document.querySelectorAll('#kids .kopt.kglow').forEach(x => x.classList.remove('kglow')); }
