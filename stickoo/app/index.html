@@ -3683,7 +3683,7 @@ function kidMelodyNote(i, last) {
   if (last) { const t0 = .8; tone(NOTE_HZ.C5, t0, .9, 'sine', .06); tone(NOTE_HZ.E5, t0 + .15, .9, 'sine', .06); tone(NOTE_HZ.G5, t0 + .3, 1, 'sine', .06); tone(NOTE_HZ.C6, t0 + .45, 1.5, 'sine', .07); }
 }
 function kidsQuestion() {
-  const R = K.round; K.screen = 'quiz'; document.documentElement.classList.add('kquiz');
+  const R = K.round; K.screen = 'quiz'; document.documentElement.classList.add('kquiz'); try { window.scrollTo(0, 0); document.scrollingElement && (document.scrollingElement.scrollTop = 0); } catch (e) {}
   const target = R.order[R.i];
   let pool = R.items.filter(x => x.ko !== target.ko && x.fr !== target.fr);
   if (R.id === 'mix') { // distractors from other themes, one per theme
@@ -3701,6 +3701,10 @@ function kidsQuestion() {
   document.documentElement.classList.toggle('knohelp', !kHelpOn());
   setTimeout(() => sayTarget(), 120);
 }
+function kHelpToggle(b) { const on = !kHelpOn(); kMemSet(SK('stickoo-help'), on ? 'on' : 'off'); b.classList.toggle('on', on); document.documentElement.classList.toggle('knohelp', !on); try { kSparkle(b, 8); tone(on ? 880 : 520, 0, .12, 'sine', .06); } catch (er) {} if (!on) document.querySelectorAll('#kids .kopt.kglow').forEach(x => x.classList.remove('kglow')); }
+// the two small corner buttons react on pointerup directly (some Android WebViews drop the click on fixed elements); a tap never triggers twice
+function kCornerTap(b, fn) { const now = Date.now(); if (b._kt && now - b._kt < 700) return; b._kt = now; try { fn(b); } catch (er) { console.error(er); } }
+document.addEventListener('pointerup', e => { const b = e.target.closest && e.target.closest('.kseason-tg, .khelp-tg'); if (!b) return; kCornerTap(b, b.classList.contains('khelp-tg') ? kHelpToggle : kSeasonNext); }, true);
 function kHelpOn() { return kMemGet(SK('stickoo-help'), 'on') !== 'off'; }
 function sayTarget() { const R = K.round; if (!R) return; say(tw(R.order[R.i])); $('#kids .kspeak')?.classList.add('talk'); setTimeout(() => $('#kids .kspeak')?.classList.remove('talk'), 1500); }
 function kidPraiseFx(text) {
@@ -4104,13 +4108,13 @@ function kidsClick(e) {
   if (d.k === 'book') return kidsBook('mix');
   if (d.k === 'album') return kidsAlbum();
   if (d.k === 'settings') return kidsSettings();
-  if (d.k === 'season') return kSeasonNext(b);
+  if (d.k === 'season') return kCornerTap(b, kSeasonNext);
   if (d.k === 'ach') return kidsAch();
   if (d.k === 'board') return kidsBoard();
   if (d.k === 'lang') { K.lsel = null; return kidsLang(); }
   if (d.k === 'tuto') return kidTuto(true);
   if (d.k === 'odds') return kidOddsPanel();
-  if (d.k === 'helptg') { const on = !kHelpOn(); kMemSet(SK('stickoo-help'), on ? 'on' : 'off'); b.classList.toggle('on', on); document.documentElement.classList.toggle('knohelp', !on); try { kSparkle(b, 8); tone(on ? 880 : 520, 0, .12, 'sine', .06); } catch (er) {} if (!on) document.querySelectorAll('#kids .kopt.kglow').forEach(x => x.classList.remove('kglow')); return; }
+  if (d.k === 'helptg') return kCornerTap(b, kHelpToggle);
   if (d.kslot !== undefined) { const i = +d.kslot; if (!slotInfo(i).used) { K.naming = i; K.namingNew = true; K.namingG = 'f'; return kidsSlots(); } return selectSlot(i); }
   if (d.kslotname !== undefined) { K.naming = +d.kslotname; K.namingNew = false; K.namingG = slotGender(K.naming); return kidsSlots(); }
   if (d.kgender) { K.namingG = d.kgender; document.querySelectorAll('.kg-b').forEach(x => x.classList.toggle('on', x === b)); const av = document.getElementById('kslotAv'); if (av) av.src = kStickerSrc(d.kgender === 'm' ? G_TIERS.m[0][K.naming * 5] : SLOT_AV[K.naming]); kSparkle(b, 8); tone(880, 0, .08, 'sine', .06); return; }
