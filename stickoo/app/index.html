@@ -1514,6 +1514,17 @@ html.khome-screen .khome .kbig>span,html[data-mode="kids"] .kwinbtns .kbig>span,
 html[data-mode="kids"] body #kids .kpuffy,html[data-mode="kids"] body #kids .khome .kbig>span,html[data-mode="kids"] body #kids .kwinbtns .kbig>span,html[data-mode="kids"] body #kids .kset-t>span:last-child,html[data-mode="kids"] body .ktuto-card>b,html[data-mode="kids"] body .kachpop b.kpuffy,html[data-mode="kids"] body .kachpop .kpuffy,html[data-mode="kids"] body #kids .kwin-title{font-family:"Mochiy Pop One","Jua","Baloo 2","Fredoka",sans-serif!important;font-weight:400!important}
 html[data-mode="kids"] body .ktuto-card>b{text-wrap:balance;font-size:1.2rem!important}
 html.khome-screen .khome .kbig>span{font-size:min(2.6dvh,1.3rem)!important}
+
+/* clean popups, same look as the tutorial cards */
+html[data-mode="kids"] .kachpop.kclean{width:min(86vw,330px)!important;background:linear-gradient(180deg,#fff,#f6ecff)!important;border:4px solid #fff!important;border-radius:34px!important;box-shadow:0 8px 0 #c7aee6,0 24px 50px rgba(0,0,0,.35)!important;padding:20px 18px 20px!important;gap:8px}
+html[data-mode="kids"] .kachpop.kclean .krays{display:none!important}
+html[data-mode="kids"] .kachpop.kclean img{width:120px!important;height:120px!important}
+html[data-mode="kids"] .kachpop.kclean>b{font-size:1.45rem!important}
+html[data-mode="kids"] .kachpop.kclean>small{font:700 1rem/1.35 "Baloo 2","Fredoka","Jua",sans-serif!important;color:#5b2d7a!important;-webkit-text-stroke:0!important;text-shadow:none!important;-webkit-text-fill-color:#5b2d7a!important;text-align:center}
+html[data-mode="kids"] .kachpop.kclean .knw{gap:10px;flex-wrap:nowrap;max-width:100%}
+html[data-mode="kids"] .kachpop.kclean .knw>span{flex:0 1 31%;min-width:0}
+html[data-mode="kids"] .kachpop.kclean .knw .kpic-sp,html[data-mode="kids"] .kachpop.kclean .knw .kpic-img{width:min(76px,22vw)!important;height:min(76px,22vw)!important;max-width:none}
+html[data-mode="kids"] .kachpop.kclean .knw em{color:#c2477f!important;-webkit-text-stroke:0!important;text-shadow:none!important;-webkit-text-fill-color:#c2477f!important;font-size:1.15rem!important;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -3575,8 +3586,8 @@ function kidForcedNew(ks, items, newest) {
 function kidUnlocked(k) { const n = kidWordsN(k || kidsState()); return new Set(KID_SEQ.slice(0, n).map(([t, ko]) => t + '|' + ko)); }
 function kidNewWords(before, after) { return KID_SEQ.slice(before, after).map(([t, ko]) => { const it = (KIDS.find(x => x.id === t) || { items: [] }).items.find(i => i.ko === ko); return it ? { ...it, cat: t } : null; }).filter(x => x && (x.cat !== 'hangeul' || LL === 'ko')); }
 function kidGoldWordsPopup(list) {
-  const el = document.createElement('div'); el.className = 'kachpop knewwords kgoldpop kfr2pop';
-  el.innerHTML = `<span class="krays"></span><b class="kpuffy kp-gold">Mot en or !</b><div class="knw">${list.slice(0, 3).map(it => `<span>${kidPic(it)}<em>${esc(tw(it))}</em></span>`).join('')}</div><small><span class="kpuffy kp-ink">Tu le connais par cœur ✨</span></small>`;
+  const el = document.createElement('div'); el.className = 'kachpop knewwords kclean';
+  el.innerHTML = `<span class="krays"></span><b class="kpuffy kp-ink">Mot en or !</b><div class="knw">${list.slice(0, 3).map(it => `<span>${kidPic(it)}<em>${esc(tw(it))}</em></span>`).join('')}</div><small>Tu le connais par cœur ✨</small>`;
   document.body.appendChild(el); try { sfx.medal('or'); confetti(['#ffd34d', '#fff2a8', '#ffb84d'], 140); } catch (e) {}
   sayParts([SPL().wow, ...list.map(tw), SPL().best]);
   el.onclick = () => el.remove(); setTimeout(() => el.remove(), 4300);
@@ -3835,8 +3846,8 @@ function kidsCheckAch(k) {
 const achImg = a => { if (!a.img) return `fruits/${a.fruit}.png`; if (GENDER !== 'm') return a.img; const m = a.img.match(/^(friends\/a|princess\/q|princess2\/g|princess3\/d)(\d+)\.(?:png|webp)(?:\?v=\d+)?$/); if (!m) return a.img; const t = ['friends/a', 'princess/q', 'princess2/g', 'princess3/d'].indexOf(m[1]), arr = G_TIERS.m[t]; return kStickerSrc(arr[+m[2] % arr.length]); };
 function kidAchPopup(list) {
   list.forEach((a, i) => setTimeout(() => {
-    const el = document.createElement('div'); el.className = 'kachpop kfr2pop kachfr';
-    el.innerHTML = `<span class="krays"></span><img src="${achImg(a)}" alt=""><b class="kpuffy kp-gold">Nouveau succès !</b><small><span class="kpuffy kp-ink kfit">${esc(a.name)}</span></small>`;
+    const el = document.createElement('div'); el.className = 'kachpop kclean';
+    el.innerHTML = `<span class="krays"></span><img src="${achImg(a)}" alt=""><b class="kpuffy kp-ink">Nouveau succès !</b><small>${esc(a.name)}</small>`;
     document.body.appendChild(el); sfx.badge(); try { confetti(['#ffd34d', '#ff8fb3', '#8fd19e'], 120); } catch (e) {}
     say(SPL().ach); try { kFitText(); } catch (e) {}
     el.onclick = () => el.remove(); setTimeout(() => el.remove(), 3800);
