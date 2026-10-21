@@ -3781,6 +3781,16 @@ function kidMelodyNote(i, last) {
   tone(NOTE_HZ.C4 / 2, 0, .5, 'sine', .03);
   if (last) { const t0 = .8; tone(NOTE_HZ.C5, t0, .9, 'sine', .06); tone(NOTE_HZ.E5, t0 + .15, .9, 'sine', .06); tone(NOTE_HZ.G5, t0 + .3, 1, 'sine', .06); tone(NOTE_HZ.C6, t0 + .45, 1.5, 'sine', .07); }
 }
+// keep the speaker cloud exactly halfway between the middle of the star row and the top answer cloud
+function kCenterSpk() {
+  const sp = document.querySelector('#kids .kspeak'), pr = document.querySelector('#kids .kprog'), op = document.querySelector('#kids .kopt');
+  if (!sp || !pr || !op || K.screen !== 'quiz') return;
+  sp.style.translate = '0 0';
+  const st = [...pr.children].map(e => e.getBoundingClientRect()).filter(r => r.height), s = sp.getBoundingClientRect(), o = op.getBoundingClientRect();
+  const starsMid = st.length ? st.reduce((m, r) => m + r.top + r.height / 2, 0) / st.length : pr.getBoundingClientRect().top, target = (starsMid + o.top) / 2, cur = s.top + s.height / 2;
+  sp.style.translate = `0 ${Math.round(target - cur)}px`;
+}
+window.addEventListener('resize', () => { try { kCenterSpk(); } catch (e) {} });
 function kidsQuestion() {
   const R = K.round; K.screen = 'quiz'; document.documentElement.classList.add('kquiz'); try { window.scrollTo(0, 0); document.scrollingElement && (document.scrollingElement.scrollTop = 0); } catch (e) {}
   const target = R.order[R.i];
@@ -3798,6 +3808,7 @@ function kidsQuestion() {
     <div class="kopts ${opts.length === 4 ? 'four' : opts.length === 3 ? 'three' : ''}">${opts.map((o, i) => `<button class="kopt" data-ko="${i}" aria-label="${esc(gl(o))}" style="--ob:url(kid/sky/opt${i % 3}.webp?v=4)">${kidPic(o)}</button>`).join('')}</div>
     <p class="khint">Pour les parents : « ${esc(tw(target))} » = ${esc(gl(target))}</p><button class="khelp-tg ${kHelpOn() ? 'on' : ''}" data-k="helptg" aria-label="Aides">💡</button>`;
   document.documentElement.classList.toggle('knohelp', !kHelpOn());
+  kCenterSpk(); setTimeout(kCenterSpk, 60); setTimeout(kCenterSpk, 400);
   setTimeout(() => sayTarget(), 120);
 }
 function kHelpToggle(b) { const on = !kHelpOn(); kMemSet(SK('stickoo-help'), on ? 'on' : 'off'); b.classList.toggle('on', on); document.documentElement.classList.toggle('knohelp', !on); try { kSparkle(b, 8); tone(on ? 880 : 520, 0, .12, 'sine', .06); } catch (er) {} if (!on) document.querySelectorAll('#kids .kopt.kglow').forEach(x => x.classList.remove('kglow')); }
