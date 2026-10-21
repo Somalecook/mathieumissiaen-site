@@ -1564,6 +1564,24 @@ html.kquiz .kopts.three .kopt:first-child{margin-bottom:calc(var(--os,180px) * -
 html.kquiz #kids:has(.kopts.three) .kspeak{margin:2px auto!important}
 html.kquiz .kopt,html.kquiz .kopt:nth-child(n){animation:none!important}
 .kfoot{display:none!important}
+
+/* difficulty mode */
+.kmode .kmode-b.on{background:rgba(255,255,255,.32);border-color:#ffe08a;box-shadow:0 0 0 3px rgba(255,224,138,.45),0 4px 14px rgba(40,0,60,.2)}
+.kprog span.klost{animation:kshake .5s ease both;filter:grayscale(1) brightness(.8)}
+@keyframes kshake{0%,100%{translate:0 0}20%{translate:-4px 0}40%{translate:4px 0}60%{translate:-3px 0}80%{translate:3px 0}}
+.kminus{position:fixed;z-index:80;translate:-50% -50%;pointer-events:none;font:400 1.6rem "Mochiy Pop One","Jua",sans-serif;color:#fff;-webkit-text-stroke:4px #b8327f;paint-order:stroke fill;animation:kminus 1.1s ease-out both}
+@keyframes kminus{0%{opacity:0;transform:scale(.5)}20%{opacity:1;transform:scale(1.15)}100%{opacity:0;transform:translateY(-70px) scale(1)}}
+/* underwater environment */
+html:root[data-mode="kids"].kquiz[data-season="sea"] body{background:linear-gradient(180deg,#5fd0e6 0%,#2aa3c9 35%,#14709e 72%,#0c4f7a 100%) fixed!important}
+html.kquiz[data-season="sea"] #kseasonfx{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200' preserveAspectRatio='none'%3E%3Cpath d='M0 200 Q200 170 400 200Z' fill='%23e8d39a'/%3E%3Cg fill='none' stroke-linecap='round' stroke-width='9'%3E%3Cpath d='M30 200 C10 160 50 130 28 95 C10 70 40 50 30 25' stroke='%2334a37a'/%3E%3Cpath d='M70 200 C90 165 55 140 78 110 C95 88 70 70 82 52' stroke='%2346b98a'/%3E%3Cpath d='M300 200 C280 165 320 140 298 105 C282 80 310 60 300 40' stroke='%2334a37a'/%3E%3Cpath d='M345 200 C365 170 335 145 352 118' stroke='%23e07aa8'/%3E%3Cpath d='M375 200 C360 175 385 150 370 120 C360 100 380 85 372 66' stroke='%2346b98a'/%3E%3Cpath d='M120 200 C110 182 130 170 122 152' stroke='%23e07aa8'/%3E%3C/g%3E%3C/svg%3E") center bottom/100% 30% no-repeat,repeating-linear-gradient(100deg,rgba(255,255,255,.07) 0 40px,rgba(255,255,255,0) 40px 110px)}
+#kseasonfx .kfx-bub{position:absolute;border-radius:50%;background:radial-gradient(circle at 32% 30%,#fff 0 18%,rgba(255,255,255,.35) 22%,rgba(255,255,255,.08) 60%,rgba(255,255,255,.5) 100%);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.65)}
+#kseasonfx .kfx-fish{position:absolute;line-height:1;font-style:normal;filter:drop-shadow(0 2px 3px rgba(0,30,60,.3))}
+
+/* a little breathing room between the two languages */
+html.khome-screen .khome .kbig>small,html[data-mode="kids"] .kwinbtns .kbig>small{display:block;margin-top:max(7px,.8dvh)!important;line-height:1.15!important}
+html[data-mode="kids"] .kintro-w{margin-bottom:4px!important}
+html[data-mode="kids"] .kintro-gl{margin-top:2px!important}
+html[data-mode="kids"] .kachpop .knw em{margin-top:4px}
 </style>
 </head>
 <body>
@@ -3377,7 +3395,7 @@ function kidsHeader(back) {
   document.documentElement.classList.toggle('klang-screen', K.screen === 'lang');
   document.documentElement.classList.toggle('kwin-screen', K.screen === 'win');
   document.documentElement.classList.toggle('kslots-screen', K.screen === 'slots');
-  document.documentElement.classList.toggle('kset-screen', K.screen === 'settings');
+  document.documentElement.classList.toggle('kset-screen', K.screen === 'settings' || K.screen === 'mode');
   const k = kidsState();
   return `<div class="khead">
     ${back ? `<button class="kbtn kback" data-k="home" aria-label="Retour"><img class="khome-ic" src="kid/sky/home.webp?v=4" alt=""></button>` : `<span></span>`}
@@ -3444,7 +3462,7 @@ function saveSlotName(i) {
   if (i === SLOT) applyGender(K.namingG);
   const wasFree = K.namingNew; K.naming = null; K.namingNew = false;
   tone(784, 0, .15, 'sine', .06);
-  if (wasFree) return selectSlot(i);
+  if (wasFree) return kidsMode(i, true);
   kidsSlots();
 }
 function selectSlot(i) {
@@ -3463,7 +3481,7 @@ function deleteSlot(i, btn) {
     clearTimeout(K.rst); K.rst = setTimeout(() => { K.slotDel = null; btn.classList.remove('arm'); if (w) w.hidden = true; }, 5000); return;
   }
   clearTimeout(K.rst);
-  try { ['vocab-kids', 'stickoo-ui', 'stickoo-learn', 'stickoo-langs-ok', 'stickoo-name', 'stickoo-gender', 'stickoo-tuto', 'stickoo-intro', 'stickoo-help'].forEach(k => localStorage.removeItem(SK(k, i))); } catch (e) {}
+  try { ['vocab-kids', 'stickoo-mode', 'stickoo-ui', 'stickoo-learn', 'stickoo-langs-ok', 'stickoo-name', 'stickoo-gender', 'stickoo-tuto', 'stickoo-intro', 'stickoo-help'].forEach(k => localStorage.removeItem(SK(k, i))); } catch (e) {}
   S.profile = { ...S.profile, kidsSlots: { ...(S.profile.kidsSlots || {}), [i]: null }, ...(i === 0 ? { kids: null } : {}) };
   if (S.backend === 'db' && profileRef) { const body = { ...S.profile }; queue('__profile', () => profileRef.set(body)); }
   tone(523, 0, .2, 'sine', .06); tone(392, .12, .3, 'sine', .05);
@@ -3561,7 +3579,7 @@ function kidsHome() {
     <div class="khome-foot"><button class="kgear" data-k="settings" aria-label="Paramètres"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg></button></div>`;
 }
 
-const KSEASONS = ['', 'spring', 'summer', 'autumn', 'winter', 'forest', 'night', 'mountain'], KSEASON_IC = { '': '🌙', spring: '🌸', summer: '☀️', autumn: '🍂', winter: '❄️' }, KSEASON_FX = { spring: ['🌸', '🌸', '🌼', '🦋'], summer: ['✨', '🌼', '✨', '🦋'], autumn: ['🍂', '🍁', '🍂', '🍁'], winter: ['❄️', '❄️', '❅', '❄️'] };
+const KSEASONS = ['', 'spring', 'summer', 'autumn', 'winter', 'forest', 'night', 'mountain', 'sea'], KSEASON_IC = { '': '🌙', spring: '🌸', summer: '☀️', autumn: '🍂', winter: '❄️' }, KSEASON_FX = { spring: ['🌸', '🌸', '🌼', '🦋'], summer: ['✨', '🌼', '✨', '🦋'], autumn: ['🍂', '🍁', '🍂', '🍁'], winter: ['❄️', '❄️', '❅', '❄️'] };
 const KMEM = {};
 function kMemGet(key, def) { if (key in KMEM) return KMEM[key]; let v = null; try { v = localStorage.getItem(key); } catch (e) {} KMEM[key] = v === null ? def : v; return KMEM[key]; }
 function kMemSet(key, v) { KMEM[key] = v; try { localStorage.setItem(key, v); } catch (e) {} }
@@ -3574,6 +3592,14 @@ function kSeasonApply() {
   if (s === 'night') { // twinkling stars + a few fireflies, nothing falls
     for (let i = 0; i < 18; i++) { const el = document.createElement('b'); el.className = 'kfx-star'; el.textContent = i % 3 ? '✦' : '•'; el.style.cssText = `left:${(Math.random() * 96 + 2).toFixed(1)}%;top:${(Math.random() * 70 + 3).toFixed(1)}%;font-size:${(8 + Math.random() * 14).toFixed(0)}px`; fx.appendChild(el);
       try { const d = 1600 + Math.random() * 2400, a = el.animate([{ opacity: .15, transform: 'scale(.6)' }, { opacity: 1, transform: 'scale(1.1)' }, { opacity: .15, transform: 'scale(.6)' }], { duration: d, iterations: Infinity, easing: 'ease-in-out' }); a.currentTime = Math.random() * d; } catch (er) {} }
+    return;
+  }
+  if (s === 'sea') { // rising bubbles + little fish swimming across
+    for (let i = 0; i < 12; i++) { const el = document.createElement('b'), z = 6 + Math.random() * 16; el.className = 'kfx-bub'; el.style.cssText = `left:${(Math.random() * 96 + 2).toFixed(1)}%;bottom:-${z + 10}px;width:${z}px;height:${z}px`; fx.appendChild(el);
+      try { const d = 7000 + Math.random() * 7000, w = Math.round(Math.random() * 30 - 15), a = el.animate([{ transform: 'translate3d(0,0,0)', opacity: 0 }, { opacity: .9, offset: .1 }, { transform: `translate3d(${w}px,${-H * .5}px,0)`, offset: .5 }, { transform: `translate3d(${-w}px,${-H * 1.1}px,0)`, opacity: .2 }], { duration: d, iterations: Infinity, easing: 'linear' }); a.currentTime = Math.random() * d; } catch (er) {} }
+    const fish = ['🐟', '🐠', '🐡', '🐟', '🐠'];
+    for (let i = 0; i < 5; i++) { const el = document.createElement('b'), rtl = i % 2 === 1, sz = 22 + Math.random() * 14; el.className = 'kfx-fish'; el.textContent = fish[i]; el.style.cssText = `top:${(14 + i * 15 + Math.random() * 6).toFixed(1)}%;font-size:${sz.toFixed(0)}px;${rtl ? `right:-50px` : `left:-50px;transform:scaleX(-1)`}`; fx.appendChild(el);
+      try { const d = 16000 + Math.random() * 10000, dx = (W + 100) * (rtl ? -1 : 1), a = el.animate([{ translate: '0 0' }, { translate: `${dx * .33}px -14px`, offset: .33 }, { translate: `${dx * .66}px 10px`, offset: .66 }, { translate: `${dx}px 0` }], { duration: d, iterations: Infinity, easing: 'linear' }); a.currentTime = Math.random() * d; } catch (er) {} }
     return;
   }
   const CFG = { spring: [0, 1, 'sway'], summer: [1, 3, 'float'], autumn: [2, 0, 'fall'], winter: [3, 0, 'fall'], forest: [1, 2, 'sway'], mountain: [1, 1, 'drift'] }[s];
@@ -3598,11 +3624,27 @@ function kSeasonNext(b) {
   kMemSet(SK('stickoo-season'), s);
   kSeasonApply(); if (b) { b.textContent = KSEASON_IC[s]; try { kSparkle(b, 8); } catch (e) {} }
 }
+const kMode = (i = SLOT) => { try { return localStorage.getItem(SK('stickoo-mode', i)) === 'hard' ? 'hard' : 'easy'; } catch (e) { return 'easy'; } };
+function kidsMode(i, fromCreate) {
+  K.screen = 'mode'; K.modeSlot = i; K.modeCreate = !!fromCreate;
+  const m = kMode(i);
+  $('#kids').innerHTML = kidsHeader(true) + `<div class="kset kmode"><h2 class="kset-t"><span>Choisis ton mode</span></h2>
+    <button class="kset-b kmode-b ${m === 'easy' ? 'on' : ''}" data-kmode="easy"><i>🧸</i><span><b>Facile</b><small>Pour les enfants · pas de pénalité</small></span></button>
+    <button class="kset-b kmode-b ${m === 'hard' ? 'on' : ''}" data-kmode="hard"><i>🎓</i><span><b>Difficile</b><small>Ados & parents · une erreur = une étoile perdue</small></span></button>
+  </div>`;
+}
+function setMode(mode) {
+  const i = K.modeSlot ?? SLOT; try { localStorage.setItem(SK('stickoo-mode', i), mode); } catch (e) {}
+  tone(784, 0, .15, 'sine', .06);
+  if (K.modeCreate) { K.modeCreate = false; return selectSlot(i); }
+  return kidsSettings();
+}
 function kidsSettings() {
   K.screen = 'settings';
   $('#kids').innerHTML = kidsHeader(true) + `<div class="kset"><h2 class="kset-t"><span class="kset-gear">${KGEAR}</span><span>Paramètres</span></h2>
     <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>${esc(slotInfo(SLOT).nm || String(SLOT + 1))}</small></span></button>
     <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>${LNAME[UIL]} → ${LNAME[LL]}</small></span></button>
+    <button class="kset-b" data-k="mode"><i>${kMode() === 'hard' ? '🎓' : '🧸'}</i><span><b>Mode</b><small>${kMode() === 'hard' ? 'Difficile' : 'Facile'}</small></span></button>
     <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>
   </div>`;
 }
@@ -3690,6 +3732,12 @@ Object.assign(UI_D.pt || (UI_D.pt = {}), {"Paramètres": "Definições", "Joueur
 Object.assign(UI_D.ko || (UI_D.ko = {}), {"Paramètres": "설정", "Joueur": "플레이어", "Langues": "언어", "Revoir le tutoriel": "튜토리얼 다시 보기", "Chances par mot": "단어별 확률"});
 Object.assign(UI_D.ja || (UI_D.ja = {}), {"Paramètres": "せってい", "Joueur": "プレイヤー", "Langues": "ことば", "Revoir le tutoriel": "チュートリアルをもういちど", "Chances par mot": "ことばごとのかくりつ"});
 Object.assign(UI_D.zh || (UI_D.zh = {}), {"Paramètres": "设置", "Joueur": "玩家", "Langues": "语言", "Revoir le tutoriel": "再看一遍教程", "Chances par mot": "每个词的出现几率"});
+Object.assign(UI_D.en || (UI_D.en = {}), {"Choisis ton mode": "Choose your mode", "Facile": "Easy", "Pour les enfants · pas de pénalité": "For kids · no penalty", "Difficile": "Hard", "Ados & parents · une erreur = une étoile perdue": "Teens & parents · a mistake = one star lost", "Mode": "Mode"});
+Object.assign(UI_D.es || (UI_D.es = {}), {"Choisis ton mode": "Elige tu modo", "Facile": "Fácil", "Pour les enfants · pas de pénalité": "Para niños · sin penalización", "Difficile": "Difícil", "Ados & parents · une erreur = une étoile perdue": "Adolescentes y padres · un error = una estrella menos", "Mode": "Modo"});
+Object.assign(UI_D.ko || (UI_D.ko = {}), {"Choisis ton mode": "모드를 골라요", "Facile": "쉬움", "Pour les enfants · pas de pénalité": "어린이용 · 벌점 없음", "Difficile": "어려움", "Ados & parents · une erreur = une étoile perdue": "청소년·부모용 · 틀리면 별 하나 잃어요", "Mode": "모드"});
+Object.assign(UI_D.ja || (UI_D.ja = {}), {"Choisis ton mode": "モードをえらぼう", "Facile": "かんたん", "Pour les enfants · pas de pénalité": "こども向け · ペナルティなし", "Difficile": "むずかしい", "Ados & parents · une erreur = une étoile perdue": "ティーン・おとな向け · まちがえると星がひとつへる", "Mode": "モード"});
+Object.assign(UI_D.zh || (UI_D.zh = {}), {"Choisis ton mode": "选择模式", "Facile": "简单", "Pour les enfants · pas de pénalité": "适合孩子 · 不扣分", "Difficile": "困难", "Ados & parents · une erreur = une étoile perdue": "青少年和家长 · 答错扣一颗星", "Mode": "模式"});
+Object.assign(UI_D.pt || (UI_D.pt = {}), {"Choisis ton mode": "Escolhe o teu modo", "Facile": "Fácil", "Pour les enfants · pas de pénalité": "Para crianças · sem penalização", "Difficile": "Difícil", "Ados & parents · une erreur = une étoile perdue": "Adolescentes e pais · um erro = uma estrela a menos", "Mode": "Modo"});
 function uiTrText(t) {
   if (!t) return t;
   if (UIL === 'fr') return gText(t);
@@ -3718,7 +3766,7 @@ function kidsBook(id) {
   K.items = items;
 }
 function kidsStart(id) {
-  try { const cur = kSeason(), pool = ['spring', 'summer', 'autumn', 'winter', 'forest', 'night', 'mountain'].filter(s => s !== cur); kMemSet(SK('stickoo-season'), pool[Math.floor(Math.random() * pool.length)]); } catch (e) {}
+  try { const cur = kSeason(), pool = ['spring', 'summer', 'autumn', 'winter', 'forest', 'night', 'mountain', 'sea'].filter(s => s !== cur); kMemSet(SK('stickoo-season'), pool[Math.floor(Math.random() * pool.length)]); } catch (e) {}
   K.forcedNew = [];
   K.asker = kidFriend();
   const ks = kidsState(), un = kidUnlocked(ks);
@@ -3845,6 +3893,12 @@ function kidPraiseFx(text) {
   for (let i = 0; i < 6; i++) { const sp = document.createElement('span'); sp.textContent = deco[i % 5]; sp.style.cssText = `--a:${i * 60}deg;--d:${i * .05}s`; el.appendChild(sp); }
   document.body.appendChild(el); setTimeout(() => el.remove(), 1900);
 }
+function kLoseStar(R, btn) {
+  const k = kidsState(); if ((k.stars || 0) > 0) { k.stars--; putKids(k); const sb = $('#kids .kstars b'); if (sb) sb.textContent = k.stars; }
+  if (R.done > 0) { R.done--; const sp = document.querySelectorAll('#kids .kprog span')[R.done]; if (sp) { sp.classList.remove('on', 'pop'); sp.classList.add('klost'); setTimeout(() => sp.classList.remove('klost'), 600); } }
+  try { tone(330, 0, .14, 'triangle', .06); tone(247, .12, .2, 'triangle', .05); } catch (e) {}
+  const fx = document.createElement('div'); fx.className = 'kminus'; fx.textContent = '−1 ⭐'; const r = btn.getBoundingClientRect(); fx.style.left = (r.left + r.width / 2) + 'px'; fx.style.top = (r.top + r.height * .3) + 'px'; document.body.appendChild(fx); setTimeout(() => fx.remove(), 1100);
+}
 function kidsPick(btn, i) {
   const R = K.round; if (!R || R.lock) return;
   const o = R.opts[i], t = R.order[R.i];
@@ -3859,6 +3913,7 @@ function kidsPick(btn, i) {
     setTimeout(() => { if (K.round !== R) return; R.i++; try { if (R.i >= (R.n || KID_ROUND)) kidsWin(); else kidsQuestion(); } catch (er) { console.error(er); kidsSafeWin(); } }, last ? 900 : 420);
   } else {
     R.tries++; R.mistakes = (R.mistakes || 0) + 1;
+    if (kMode() === 'hard') kLoseStar(R, btn);
     btn.classList.add('kwrong'); setTimeout(() => btn.classList.remove('kwrong'), 500); const am = $('#kids .kspeak'); am?.classList.remove('sad'); void am?.offsetWidth; am?.classList.add('sad');
     /* quiz: pops only */
     setTimeout(() => { if (K.round === R && !R.lock) say(tw(t)); }, 450);
@@ -4241,6 +4296,8 @@ function kidsClick(e) {
   if (d.k === 'book') return kidsBook('mix');
   if (d.k === 'album') return kidsAlbum();
   if (d.k === 'settings') return kidsSettings();
+  if (d.k === 'mode') return kidsMode(SLOT, false);
+  if (d.kmode) return setMode(d.kmode);
   if (d.k === 'season') return kCornerTap(b, kSeasonNext);
   if (d.k === 'ach') return kidsAch();
   if (d.k === 'board') return kidsBoard();
