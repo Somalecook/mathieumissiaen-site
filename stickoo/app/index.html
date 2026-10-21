@@ -4118,7 +4118,7 @@ function kidsWin() {
   const t0 = (rareWin ? 9000 : 4600) + (freshWords.length ? 4600 : 0) + ((Rw.goldNew || []).length ? 4600 : 0);
   const tw = rareWin ? 9000 : 4400;
   if (rareWin) setTimeout(() => kidRarePopup(rareWin), 4400);
-  const afterWords = start => { let t = start; if ((Rw.goldNew || []).length) { setTimeout(() => kidGoldWordsPopup(Rw.goldNew), t); t += 4600; } if (freshAch.length) setTimeout(() => kidAchPopup(freshAch), t); if (tierUp) setTimeout(() => kidTierPopup(tierUp), t + freshAch.length * 4000); };
+  const afterWords = start => { let t = start; if (freshAch.length) setTimeout(() => kidAchPopup(freshAch), t); if (tierUp) setTimeout(() => kidTierPopup(tierUp), t + freshAch.length * 4000); };
   if (freshWords.length) setTimeout(() => { if (K.screen === 'win') kidNewWordsPopup(freshWords, () => afterWords(350)); else afterWords(0); }, tw); else afterWords(tw);
   K.lastTheme = K.lastTheme;
 }
