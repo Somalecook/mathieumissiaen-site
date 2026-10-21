@@ -1586,6 +1586,14 @@ html[data-mode="kids"] .kachpop .knw em{margin-top:4px}
 html[data-mode="kids"] .kframe2 .kprize{left:48.25%!important;top:48.25%!important;translate:-50% -50%!important;width:50%!important;height:auto!important;aspect-ratio:1/1!important;right:auto!important;bottom:auto!important;margin:0!important;max-width:none!important}
 html[data-mode="kids"] .kframe2 .kprize>img{position:absolute!important;inset:0!important;margin:auto!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:50% 50%!important}
 html[data-mode="kids"] .kframe2 .kprize .kgift{inset:6% 12%!important;background-position:50% 50%!important;background-size:contain!important}
+
+/* beach + birthday party */
+html:root[data-mode="kids"].kquiz[data-season="beach"] body{background:linear-gradient(180deg,#7fd4f5 0%,#a8e3f7 40%,#d6f3fb 70%,#fff3d6 100%) fixed!important}
+html.kquiz[data-season="beach"] #kseasonfx{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 260' preserveAspectRatio='none'%3E%3Cpath d='M0 70 Q50 58 100 70 T200 70 T300 70 T400 70 L400 260 L0 260Z' fill='%2333b5d6'/%3E%3Cpath d='M0 95 Q50 83 100 95 T200 95 T300 95 T400 95 L400 260 L0 260Z' fill='%2357cbe3'/%3E%3Cpath d='M0 120 Q60 108 120 122 T240 118 T400 124 L400 260 L0 260Z' fill='%23ffffff' opacity='.85'/%3E%3Cpath d='M0 128 Q60 116 120 130 T240 126 T400 132 L400 260 L0 260Z' fill='%23f7dca0'/%3E%3Cpath d='M0 175 Q120 160 250 172 T400 168 L400 260 L0 260Z' fill='%23f0c983'/%3E%3C/svg%3E") center bottom/100% 30% no-repeat,radial-gradient(circle at 84% 12%,#fff6b8 0 30px,rgba(255,240,150,.45) 31px 46px,rgba(255,240,150,0) 80px)}
+html:root[data-mode="kids"].kquiz[data-season="party"] body{background:linear-gradient(180deg,#ff9ccc 0%,#ffc2dc 40%,#ffe2b8 75%,#fff3d6 100%) fixed!important}
+html.kquiz[data-season="party"] #kseasonfx{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'%3E%3Cpath d='M0 6 Q100 30 200 6 Q300 30 400 6' fill='none' stroke='%23ffffff' stroke-width='2' opacity='.8'/%3E%3Cg%3E%3Cpath d='M20 10 L36 14 L26 38Z' fill='%23ff6f9c'/%3E%3Cpath d='M60 18 L76 20 L66 46Z' fill='%23ffd34d'/%3E%3Cpath d='M100 22 L116 22 L108 50Z' fill='%235cc8ff'/%3E%3Cpath d='M140 19 L156 17 L148 45Z' fill='%238fd19e'/%3E%3Cpath d='M180 11 L196 9 L188 35Z' fill='%23b28cff'/%3E%3Cpath d='M220 10 L236 14 L226 38Z' fill='%23ff9f43'/%3E%3Cpath d='M260 18 L276 20 L266 46Z' fill='%23ff6f9c'/%3E%3Cpath d='M300 22 L316 22 L308 50Z' fill='%23ffd34d'/%3E%3Cpath d='M340 19 L356 17 L348 45Z' fill='%235cc8ff'/%3E%3Cpath d='M375 11 L391 9 L383 35Z' fill='%238fd19e'/%3E%3C/g%3E%3C/svg%3E") center 0/100% 64px repeat-x,radial-gradient(circle at 20% 30%,rgba(255,255,255,.35) 0 2px,transparent 3px) 0 0/34px 34px}
+#kseasonfx .kfx-conf{position:absolute;opacity:.9}
+#kseasonfx .kfx-gull{position:absolute;color:#3a4a6b;letter-spacing:-6px;font-style:normal;line-height:1;opacity:.75}
 </style>
 </head>
 <body>
@@ -3583,7 +3591,7 @@ function kidsHome() {
     <div class="khome-foot"><button class="kgear" data-k="settings" aria-label="Paramètres"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg></button></div>`;
 }
 
-const KSEASONS = ['', 'spring', 'summer', 'autumn', 'winter', 'forest', 'night', 'mountain', 'sea'], KSEASON_IC = { '': '🌙', spring: '🌸', summer: '☀️', autumn: '🍂', winter: '❄️' }, KSEASON_FX = { spring: ['🌸', '🌸', '🌼', '🦋'], summer: ['✨', '🌼', '✨', '🦋'], autumn: ['🍂', '🍁', '🍂', '🍁'], winter: ['❄️', '❄️', '❅', '❄️'] };
+const KSEASONS = ['', 'spring', 'summer', 'autumn', 'winter', 'forest', 'night', 'mountain', 'sea', 'beach', 'party'], KSEASON_IC = { '': '🌙', spring: '🌸', summer: '☀️', autumn: '🍂', winter: '❄️' }, KSEASON_FX = { spring: ['🌸', '🌸', '🌼', '🦋'], summer: ['✨', '🌼', '✨', '🦋'], autumn: ['🍂', '🍁', '🍂', '🍁'], winter: ['❄️', '❄️', '❅', '❄️'] };
 const KMEM = {};
 function kMemGet(key, def) { if (key in KMEM) return KMEM[key]; let v = null; try { v = localStorage.getItem(key); } catch (e) {} KMEM[key] = v === null ? def : v; return KMEM[key]; }
 function kMemSet(key, v) { KMEM[key] = v; try { localStorage.setItem(key, v); } catch (e) {} }
@@ -3596,6 +3604,23 @@ function kSeasonApply() {
   if (s === 'night') { // twinkling stars + a few fireflies, nothing falls
     for (let i = 0; i < 18; i++) { const el = document.createElement('b'); el.className = 'kfx-star'; el.textContent = i % 3 ? '✦' : '•'; el.style.cssText = `left:${(Math.random() * 96 + 2).toFixed(1)}%;top:${(Math.random() * 70 + 3).toFixed(1)}%;font-size:${(8 + Math.random() * 14).toFixed(0)}px`; fx.appendChild(el);
       try { const d = 1600 + Math.random() * 2400, a = el.animate([{ opacity: .15, transform: 'scale(.6)' }, { opacity: 1, transform: 'scale(1.1)' }, { opacity: .15, transform: 'scale(.6)' }], { duration: d, iterations: Infinity, easing: 'ease-in-out' }); a.currentTime = Math.random() * d; } catch (er) {} }
+    return;
+  }
+  if (s === 'party') { // confetti + balloons rising
+    const cols = ['#ff6f9c', '#ffd34d', '#5cc8ff', '#8fd19e', '#b28cff', '#ff9f43'];
+    for (let i = 0; i < 16; i++) { const el = document.createElement('b'), w = 6 + Math.random() * 6; el.className = 'kfx-conf'; el.style.cssText = `left:${(Math.random() * 98).toFixed(1)}%;top:-20px;width:${w.toFixed(0)}px;height:${(w * 1.6).toFixed(0)}px;background:${cols[i % cols.length]};border-radius:${i % 3 ? 2 : 50}px`; fx.appendChild(el);
+      try { const d = 9000 + Math.random() * 7000, x = Math.round(Math.random() * 80 - 40), a = el.animate([{ transform: 'translate3d(0,0,0) rotate(0deg)' }, { transform: `translate3d(${x}px,${H * .55}px,0) rotate(${300 + Math.random() * 300}deg)`, offset: .5 }, { transform: `translate3d(${-x / 2}px,${H * 1.1}px,0) rotate(720deg)` }], { duration: d, iterations: Infinity, easing: 'linear' }); a.currentTime = Math.random() * d; } catch (er) {} }
+    const bal = ['🎈', '🎈', '🎈', '🎉'];
+    for (let i = 0; i < 4; i++) { const el = document.createElement('b'), sz = 30 + Math.random() * 14; el.className = 'kfx-fish'; el.textContent = bal[i]; el.style.cssText = `left:${(8 + i * 24 + Math.random() * 6).toFixed(1)}%;bottom:-60px;font-size:${sz.toFixed(0)}px`; fx.appendChild(el);
+      try { const d = 15000 + Math.random() * 8000, a = el.animate([{ transform: 'translate3d(0,0,0) rotate(-6deg)' }, { transform: `translate3d(16px,${-H * .55}px,0) rotate(6deg)`, offset: .5 }, { transform: `translate3d(-8px,${-H * 1.15}px,0) rotate(-6deg)` }], { duration: d, iterations: Infinity, easing: 'linear' }); a.currentTime = Math.random() * d; } catch (er) {} }
+    return;
+  }
+  if (s === 'beach') { // seagulls gliding + a few shells / starfish drifting in the waves
+    for (let i = 0; i < 3; i++) { const el = document.createElement('b'); el.className = 'kfx-gull'; el.textContent = '︶︶'; el.style.cssText = `top:${(8 + i * 9).toFixed(1)}%;left:-60px;font-size:${(16 + i * 4)}px`; fx.appendChild(el);
+      try { const d = 20000 + i * 6000, a = el.animate([{ translate: '0 0' }, { translate: `${(W + 120) * .5}px -12px`, offset: .5 }, { translate: `${W + 120}px 0` }], { duration: d, iterations: Infinity, easing: 'linear' }); a.currentTime = Math.random() * d; } catch (er) {} }
+    const deco = ['🐚', '⭐', '🦀'];
+    for (let i = 0; i < 3; i++) { const el = document.createElement('b'); el.className = 'kfx-fish'; el.textContent = deco[i]; el.style.cssText = `left:${(12 + i * 32).toFixed(1)}%;bottom:${(3 + (i % 2) * 4)}%;font-size:${24 + i * 3}px`; fx.appendChild(el);
+      try { const d = 3000 + i * 700, a = el.animate([{ transform: 'translateY(0) rotate(-6deg)' }, { transform: 'translateY(-6px) rotate(6deg)' }, { transform: 'translateY(0) rotate(-6deg)' }], { duration: d, iterations: Infinity, easing: 'ease-in-out' }); a.currentTime = Math.random() * d; } catch (er) {} }
     return;
   }
   if (s === 'sea') { // rising bubbles + little fish swimming across
@@ -3770,7 +3795,7 @@ function kidsBook(id) {
   K.items = items;
 }
 function kidsStart(id) {
-  try { const cur = kSeason(), pool = ['spring', 'summer', 'autumn', 'winter', 'forest', 'night', 'mountain', 'sea'].filter(s => s !== cur); kMemSet(SK('stickoo-season'), pool[Math.floor(Math.random() * pool.length)]); } catch (e) {}
+  try { const cur = kSeason(), pool = ['spring', 'summer', 'autumn', 'winter', 'forest', 'night', 'mountain', 'sea', 'beach', 'party'].filter(s => s !== cur); kMemSet(SK('stickoo-season'), pool[Math.floor(Math.random() * pool.length)]); } catch (e) {}
   K.forcedNew = [];
   K.asker = kidFriend();
   const ks = kidsState(), un = kidUnlocked(ks);
