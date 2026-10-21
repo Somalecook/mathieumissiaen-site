@@ -218,3 +218,22 @@ em{font-style:italic}
 .mail-btn{display:inline-flex;align-items:center;gap:14px;min-height:64px;padding:0 36px;border-radius:999px;background:var(--fg);color:var(--bg);font-family:var(--serif);font-size:clamp(26px,3vw,40px);line-height:1;transition:transform .25s}
 .mail-btn:hover{opacity:1;transform:scale(1.04)}
 .mail-cta .mail{color:var(--muted)}
+/* phone safety: never scroll sideways */
+html,body{overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
+.wrap,.wrap *{min-width:0}
+h1,h2,.p-title,.hero-title,.app-title{overflow-wrap:break-word}
+img,video,iframe{max-width:100%}
+@media (max-width:480px){
+  .car-head{gap:8px}
+  .car-nav .tog{padding:0 6px}
+  .panel{padding:18px 16px 24px;min-height:0}
+  .hero-title{font-size:clamp(48px,15vw,72px)}
+  .p-title{font-size:clamp(44px,14vw,96px)}
+}
+@media (max-width:600px){
+  .site-head{padding-block:14px;gap:6px}
+  .site-head nav{gap:0}
+  .navlink{min-height:36px;padding:0 7px;font-size:11px}
+  .site-head .sep{margin:0 2px}
+}

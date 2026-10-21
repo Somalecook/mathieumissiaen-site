@@ -193,7 +193,7 @@
           return '<a class="car-card" href="project.html#' + p.slug + '"' + (clone ? ' aria-hidden="true" tabindex="-1"' : '') + '><div class="car-ph"><img loading="lazy" src="' + cover + '" alt=""></div>' +
             '<span class="car-name">' + esc(p.title) + '</span></a>';
         };
-        return '<section class="car" aria-label="Commissions"><div class="wrap"><div class="car-head"><span style="font-family:\'Syne\',sans-serif;font-weight:800;font-size:clamp(32px,3.4vw,48px);letter-spacing:-.04em;line-height:1">Commissions</span>' +
+        return '<section class="car" aria-label="Commissions"><div class="wrap"><div class="car-head"><span style="font-family:\'Syne\',sans-serif;font-weight:800;font-size:clamp(28px,3.4vw,48px);letter-spacing:-.04em;line-height:1">Commissions</span>' +
           '<span class="car-nav"><button type="button" class="tog car-prev" aria-label="Previous">←</button><button type="button" class="tog car-next" aria-label="Next">→</button></span></div>' +
           '<div class="car-view"><div class="car-track">' + cs.map(function (p) { return card(p, false); }).join('') + cs.slice(0, 3).map(function (p) { return card(p, true); }).join('') + '</div></div></div></section>';
       })() +
@@ -209,8 +209,8 @@
           '</div></section>';
       })() +
       '<section class="wrap" style="padding-top:120px"><div class="panels rule">' +
-      '<button type="button" class="panel" data-kind="research"><span style="font-family:\'Bodoni Moda\',serif;font-style:italic;font-size:64px;line-height:1">Research</span><span style="line-height:1.7;max-width:440px">' + esc(site.panels.research) + '</span></button>' +
-      '<button type="button" class="panel" data-kind="commission"><span style="font-family:\'Syne\',sans-serif;font-weight:800;font-size:54px;line-height:1;letter-spacing:-.04em">Commissions</span><span style="line-height:1.7;max-width:440px">' + esc(site.panels.commission) + '</span></button>' +
+      '<button type="button" class="panel" data-kind="research"><span style="font-family:\'Bodoni Moda\',serif;font-style:italic;font-size:clamp(40px,11vw,64px);line-height:1">Research</span><span style="line-height:1.7;max-width:440px">' + esc(site.panels.research) + '</span></button>' +
+      '<button type="button" class="panel" data-kind="commission"><span style="font-family:\'Syne\',sans-serif;font-weight:800;font-size:clamp(26px,8vw,54px);line-height:1;letter-spacing:-.04em">Commissions</span><span style="line-height:1.7;max-width:440px">' + esc(site.panels.commission) + '</span></button>' +
       '</div></section>' +
       '<section class="wrap" id="work" style="padding-top:104px;padding-bottom:24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center">' +
       '<span class="muted" id="wallHead"></span><span style="display:flex;gap:2px;flex-wrap:wrap">' +
