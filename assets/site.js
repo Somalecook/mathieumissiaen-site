@@ -131,9 +131,9 @@
       var t = p.theme, imgs = f.images && f.images.length ? f.images.map(function (src) { return allImages(p).filter(function (im) { return im.src === src; })[0] || { src: src, title: '' }; }) : allImages(p).slice(0, 6);
       loadFont(t.font);
       var label = f.label || (p.kind === 'research' ? 'Series in focus — A / Research' : 'Commission in focus — B / Commissions');
-      return '<section class="feature" style="background:' + t.bg + ';color:' + t.fg + '"><div class="wrap"><div class="feature-grid' + (i % 2 ? ' flip' : '') + '">' +
-        '<div class="f-text">' + (f.label ? '<span style="color:' + t.muted + '">' + esc(f.label) + '</span>' : '') +
-        (p.kicker ? '<span style="font-family:' + esc(t.fontCss) + ';font-size:22px;color:' + (t.accent || t.muted) + '">' + esc(p.kicker) + '</span>' : '') +
+      return '<section class="feature"><div class="wrap"><div class="feature-grid' + (i % 2 ? ' flip' : '') + '">' +
+        '<div class="f-text">' + (f.label ? '<span class="muted">' + esc(f.label) + '</span>' : '') +
+        (p.kicker ? '<span style="font-family:' + esc(t.fontCss) + ';font-size:22px" class="muted">' + esc(p.kicker) + '</span>' : '') +
         '<a href="project.html#' + p.slug + '" ' + (p.displayLang ? 'lang="' + p.displayLang + '" ' : '') + 'style="font-family:' + esc(t.fontCss) + ';font-weight:' + t.titleWeight + ';font-style:' + (t.titleItalic ? 'italic' : 'normal') + ';font-size:' + (p.display.length > 6 ? 'clamp(44px,4.6vw,84px)' : 'clamp(56px,7vw,120px)') + ';line-height:.9;letter-spacing:' + (t.titleTracking || '-.02em') + ';overflow-wrap:break-word">' + esc(p.display) + '</a>' +
         (p.subtitle ? '<span class="serif" style="font-size:24px;line-height:1.15">' + (p.slug === 'tal' ? 'TAL — ' : '') + rich(p.subtitle) + '</span>' : '') +
         '<p style="margin:0;line-height:1.75;max-width:400px;opacity:.85">' + esc(f.text || p.intro) + '</p>' +
@@ -145,8 +145,8 @@
     function filmFeature(fm, i, f) {
       loadFont('Big+Shoulders+Display:wght@300;800');
       var poster = fm.poster || fm.thumb, ratio = fm.format === '4:5' ? '4 / 5' : '16 / 9';
-      return '<section class="feature" style="background:#33221A;color:#EFE9E1"><div class="wrap"><div class="feature-grid' + (i % 2 ? ' flip' : '') + '">' +
-        '<div class="f-text">' + (f.label ? '<span style="color:#B8A99A">' + esc(f.label) + '</span>' : '') +
+      return '<section class="feature"><div class="wrap"><div class="feature-grid' + (i % 2 ? ' flip' : '') + '">' +
+        '<div class="f-text">' + (f.label ? '<span class="muted">' + esc(f.label) + '</span>' : '') +
         '<span class="serif it" style="font-size:24px">' + esc(fm.client) + '</span>' +
         '<a href="film.html" style="font-family:\'Big Shoulders Display\',sans-serif;font-weight:800;font-size:clamp(64px,8vw,136px);line-height:.82;text-transform:uppercase">' + esc(fm.title) + '</a>' +
         '<p style="margin:0;line-height:1.75;max-width:400px;opacity:.85">' + esc(f.text || fm.note) + '</p>' +
@@ -325,38 +325,47 @@
         inner = '<div style="display:flex;justify-content:center"><video src="' + esc(s.src) + '" poster="' + esc(s.poster || '') + '" autoplay muted loop playsinline style="display:block;height:min(88vh,1100px);max-width:100%;aspect-ratio:' + (s.ratio || '16 / 9') + ';background:#000"></video></div>';
       } else if (s.layout === 'video') {
         inner = '<div class="player" data-film="' + esc(s.vimeo) + '" style="aspect-ratio:' + (s.ratio || '16 / 9') + ';width:100%"><img src="' + esc(s.poster || s.fallback || '') + '" data-fallback="' + esc(s.fallback || '') + '" alt="" style="opacity:.85"><button type="button" class="playbtn" aria-label="Play the film"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111110" stroke-width="2" stroke-linejoin="round"><path d="M7 4l13 8-13 8z"></path></svg></button></div>';
-      } else if (s.layout === 'hero') {
-        inner = s.images.map(function (im, i) {
-          return (ratioNum(im.ratio) > 1.2 ? '<figure style="margin:0;display:flex;flex-direction:column;gap:16px" class="hero-fig"><div style="width:100%;aspect-ratio:' + im.ratio + ';' : '<figure style="margin:0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end" class="hero-fig"><div style="height:min(92vh,1100px);aspect-ratio:' + im.ratio + ';max-width:100%;') + 'background:' + (im.bg || '#000') + ';overflow:hidden"><img data-zoom="' + (base + i) + '" src="' + im.src + '" alt="' + esc(plain(im.title)) + '" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in"></div>' +
-            (im.title ? '<figcaption class="cap" style="max-width:300px"><span class="t">' + rich(im.title) + '</span>' + (SHOW_CAP && im.caption ? '<span style="opacity:.8;line-height:1.7">' + rich(im.caption) + '</span>' : '') + (SHOW_CAP && im.tag ? '<span class="muted">' + esc(im.tag) + '</span>' : '') + '</figcaption>' : '') + '</figure>';
-        }).join('');
-      } else if (s.layout === 'sequence' && view === 'seq') {
-        inner = '<div style="display:flex;flex-direction:column;gap:120px">' + s.images.map(function (im, i) {
-          var idx = base + i, flip = i % 2 === 1, r = ratioNum(im.ratio), wide = r > 1.2;
-          var no = '<span class="no">' + pad(idx + 1) + '</span>';
-          var cap = '<div class="cap">' + no + '<span class="t">' + rich(im.title) + '</span>' + (SHOW_CAP && im.caption ? '<span style="opacity:.8;line-height:1.7">' + rich(im.caption) + '</span>' : '') + (SHOW_CAP && im.tag ? '<span class="muted">' + esc(im.tag) + '</span>' : '') + '</div>';
-          var frame = function (h) { return '<div class="frame" style="' + h + ';background:' + (im.bg || '#000') + '"><img loading="lazy" data-zoom="' + idx + '" src="' + im.src + '" alt="' + esc(plain(im.title)) + '"></div>'; };
-          if (im.detail) {
-            return '<article class="seq">' +
-              '<div style="grid-column:' + (flip ? '7' : '1') + ' / span 6;grid-row:1">' + frame('aspect-ratio:' + im.ratio + ';width:100%') + '</div>' +
-              '<div style="grid-column:' + (flip ? '4' : '7') + ' / span 3;grid-row:1"><div class="frame" style="aspect-ratio:404 / 600;background:#000"><img loading="lazy" src="' + im.detail + '" alt="' + esc(plain(im.title)) + ' — detail in motion" style="object-fit:cover;cursor:default"></div></div>' +
-              '<div style="grid-column:' + (flip ? '1 / span 3' : '10 / span 3') + ';grid-row:1">' + cap + '</div></article>';
-          }
-          if (wide) return '<article class="seq"><div style="grid-column:1 / span 9;grid-row:1">' + frame('aspect-ratio:' + im.ratio + ';width:100%') + '</div><div style="grid-column:10 / span 3;grid-row:1">' + cap + '</div></article>';
-          return '<article class="seq"><div style="grid-column:' + (flip ? '6 / span 7' : '1 / span 7') + ';grid-row:1">' + frame('height:min(78vh,760px);aspect-ratio:' + im.ratio + (flip ? ';margin-left:auto' : '')) + '</div>' +
-            '<div style="grid-column:' + (flip ? '1 / span 4' : '9 / span 4') + ';grid-row:1">' + cap + '</div></article>';
-        }).join('') + '</div>';
       } else {
-        var cols = s.layout === 'sequence' ? 3 : (s.columns || 3);
-        inner = '<div class="grid" style="grid-template-columns:' + (s.template && view !== 'grid' ? s.template.split(' ').map(function (x) { return 'minmax(0,' + x + ')'; }).join(' ') : 'repeat(' + cols + ',minmax(0,1fr))') + ';align-items:end">' + s.images.map(function (im, i) {
-          var r = s.layout === 'sequence' ? '4 / 5' : im.ratio;
-          return '<figure><div style="aspect-ratio:' + r + ';overflow:hidden;background:' + (im.bg || '#000') + '"><img loading="lazy" data-zoom="' + (base + i) + '" src="' + im.src + '" alt="' + esc(plain(im.title)) + '" style="width:100%;height:100%;object-fit:' + (s.layout === 'sequence' ? 'cover' : 'cover') + '"></div>' +
-            (im.title ? '<figcaption style="display:flex;justify-content:space-between;gap:12px"><span' + (s.title || s.captions ? ' style="font-family:var(--title-font);font-size:20px"' : '') + '>' + rich(im.title) + '</span><span class="muted">' + rich(SHOW_CAP && im.caption && (s.title || s.captions) ? im.caption : '') + '</span></figcaption>' : '') + '</figure>';
-        }).join('') + '</div>';
+        var fig = function (im, idx, ratio) {
+          return '<figure class="pf"><div class="pf-ph" style="aspect-ratio:' + (ratio || im.ratio || '4 / 5') + ';background:' + (im.bg || '#000') + '"><img loading="lazy"' + (idx == null ? '' : ' data-zoom="' + idx + '"') + ' src="' + im.src + '" alt="' + esc(plain(im.title || '')) + '"></div>' +
+            (im.title ? '<figcaption class="w-cap"><span>' + rich(im.title) + '</span></figcaption>' : '') + '</figure>';
+        };
+        // one structured row: every image the same height, widths from the column fractions
+        var row = function (items, fr) {
+          // justified row: column widths follow each image's own ratio, so nothing is cropped
+          fr = items.map(function (it) { return ratioNum(it.im.ratio); });
+          var m = 0, rm = fr[0];
+          return '<div class="pf-row" style="grid-template-columns:' + fr.map(function (f) { return 'minmax(0,' + f + 'fr)'; }).join(' ') + '">' +
+            items.map(function (it, n) { return fig(it.im, it.idx, (rm * fr[n] / fr[m]).toFixed(4) + ' / 1'); }).join('') + '</div>';
+        };
+        if (s.layout === 'hero') {
+          inner = s.images.map(function (im, i) {
+            var wide = ratioNum(im.ratio) > 1.05;
+            return '<div class="pf-hero' + (wide ? ' wide' : '') + '">' + fig(im, base + i) + '</div>';
+          }).join('');
+        } else if (s.layout === 'sequence' && view === 'seq') {
+          var rows = [], buf = [];
+          var flush = function () { if (buf.length) rows.push(row(buf)); buf = []; };
+          s.images.forEach(function (im, i) {
+            var it = { im: im, idx: base + i };
+            if (im.detail) { flush(); rows.push(row([it, { im: { src: im.detail, ratio: '404 / 600', bg: '#000' }, idx: null }], [2, 1])); return; }
+            if (ratioNum(im.ratio) > 1.2) { flush(); rows.push(row([it])); return; }
+            buf.push(it); if (buf.length === 2) flush();
+          });
+          flush();
+          inner = rows.join('');
+        } else {
+          var cols = s.layout === 'sequence' ? 3 : (s.columns || 3);
+          var fr = s.template && view !== 'grid' ? s.template.split(' ').map(function (x) { return parseFloat(x) || 1; }) : null;
+          var items = s.images.map(function (im, i) { return { im: s.layout === 'sequence' ? Object.assign({}, im, { ratio: '4 / 5' }) : im, idx: base + i }; });
+          var per = fr ? fr.length : cols, out = [];
+          for (var q = 0; q < items.length; q += per) { var chunk = items.slice(q, q + per); out.push(row(chunk, fr ? fr.slice(0, chunk.length) : null)); }
+          inner = out.join('');
+        }
       }
       var head = s.title ? '<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:48px"><h2 style="margin:0;font-family:var(--title-font);font-weight:var(--title-weight);font-style:var(--title-style);letter-spacing:var(--title-tracking);font-size:clamp(48px,6vw,96px);line-height:.9">' + rich(s.title) + '</h2>' + (s.intro ? '<p style="margin:0;max-width:380px;line-height:1.75">' + rich(s.intro) + '</p>' : '') + '</div>' : '';
-      if (s.bg) return '<section style="background:' + s.bg + ';color:' + (s.fg || 'inherit') + '"><div class="wrap" style="padding-block:88px 104px">' + head + inner + '</div></section>';
-      return '<section class="wrap" style="padding-block:24px 96px">' + head + inner + '</section>';
+      if (s.bg) return '<section class="pf-sec" style="background:' + s.bg + ';color:' + (s.fg || 'inherit') + '"><div class="wrap" style="padding-block:10px">' + head + inner + '</div></section>';
+      return '<section class="wrap pf-sec">' + head + inner + '</section>';
     }
 
     function draw() {
@@ -375,10 +384,10 @@
       var credits = (p.credits && p.credits.length) ? '<section class="wrap" style="padding-block:64px 48px"><div class="rule" style="padding-top:20px;display:flex;flex-direction:column;gap:28px"><span class="serif" style="font-size:34px">Credits</span><div class="credits">' + p.credits.map(function (c) { return '<div><span class="muted">' + esc(c.role) + '</span><span>' + esc(c.name) + '</span></div>'; }).join('') + '</div></div></section>' : '';
       var t3 = p.kind === 'commission' ? (p.client ? ['Client', p.client] : ['Type', 'Commission']) : ['Status', p.year === 'Ongoing' ? 'Ongoing — updated often' : 'Personal research'];
       document.getElementById('app').innerHTML = header(p.tab ? 'tab-' + p.slug : 'work', site) +
-        '<section class="wrap" style="padding-block:56px 72px"><div class="crumb"><a href="index.html">← Work</a></div>' +
+        '<section class="wrap p-head"><div class="crumb"><a href="index.html">← Work</a></div>' +
         (p.kicker ? '<div style="font-family:var(--title-font);font-size:clamp(22px,2.2vw,32px);color:' + (t.accent || 'var(--muted)') + ';margin-bottom:14px">' + esc(p.kicker) + '</div>' : '') +
         '<h1 class="p-title"' + (p.displayLang ? ' lang="' + p.displayLang + '"' : '') + '>' + esc(p.display) + '</h1>' +
-        '<div class="p-intro" style="margin-top:40px"><div style="display:flex;flex-direction:column;gap:14px">' +
+        '<div class="p-intro"><div style="display:flex;flex-direction:column;gap:14px">' +
         (p.subtitle ? '<p class="serif" style="margin:0;font-size:clamp(28px,3vw,44px);line-height:1.05">' + (p.slug === 'tal' ? 'TAL — ' : '') + rich(p.subtitle) + '</p>' : '') +
         (p.tagline ? '<p class="serif it" style="margin:0;font-size:22px;opacity:.8">' + rich(p.tagline) + '</p>' : '') + '</div>' +
         '<p style="margin:0;font-size:14px;line-height:1.7;max-width:560px">' + rich(p.intro) + (p.year && p.year !== 'Ongoing' ? ' <span class="muted">' + esc(p.year) + '</span>' : '') + '</p></div>' +
