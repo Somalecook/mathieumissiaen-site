@@ -1525,6 +1525,20 @@ html[data-mode="kids"] .kachpop.kclean .knw{gap:10px;flex-wrap:nowrap;max-width:
 html[data-mode="kids"] .kachpop.kclean .knw>span{flex:0 1 31%;min-width:0}
 html[data-mode="kids"] .kachpop.kclean .knw .kpic-sp,html[data-mode="kids"] .kachpop.kclean .knw .kpic-img{width:min(76px,22vw)!important;height:min(76px,22vw)!important;max-width:none}
 html[data-mode="kids"] .kachpop.kclean .knw em{color:#c2477f!important;-webkit-text-stroke:0!important;text-shadow:none!important;-webkit-text-fill-color:#c2477f!important;font-size:1.15rem!important;white-space:nowrap}
+
+/* new environments */
+html:root[data-mode="kids"].kquiz[data-season="forest"] body{background:linear-gradient(180deg,#1f5a3c 0%,#3f8f5a 38%,#8fcf8a 72%,#d9f2c4 100%) fixed!important}
+html:root[data-mode="kids"].kquiz[data-season="night"] body{background:linear-gradient(180deg,#0d1033 0%,#1f2466 40%,#3a3f8f 75%,#6d5fb0 100%) fixed!important}
+html:root[data-mode="kids"].kquiz[data-season="mountain"] body{background:linear-gradient(180deg,#6fa8e6 0%,#a9c8f0 40%,#e3d6f2 75%,#f7e9f3 100%) fixed!important}
+html.kquiz[data-season="mountain"] #kseasonfx{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 220' preserveAspectRatio='none'%3E%3Cpath d='M0 150 L60 70 L110 125 L170 40 L230 120 L290 60 L350 115 L400 80 L400 220 L0 220Z' fill='%239fb3e2'/%3E%3Cpath d='M170 40 L190 68 L178 66 L165 78 L150 62Z M290 60 L307 84 L296 82 L285 92 L274 80Z M60 70 L74 88 L64 87 L55 96 L47 86Z' fill='%23ffffff' opacity='.9'/%3E%3Cpath d='M0 190 L50 120 L95 165 L150 100 L210 170 L270 110 L330 175 L400 125 L400 220 L0 220Z' fill='%237d93cf'/%3E%3C/svg%3E") center bottom/100% 38% no-repeat}
+html.kquiz[data-season="forest"] #kseasonfx{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 220' preserveAspectRatio='none'%3E%3Cg fill='%232f7a52'%3E%3Cpath d='M20 220 L45 90 L70 220Z M85 220 L115 60 L145 220Z M170 220 L195 100 L220 220Z M240 220 L272 50 L304 220Z M320 220 L348 85 L376 220Z'/%3E%3C/g%3E%3Cg fill='%231f5e3e'%3E%3Cpath d='M-10 220 L18 130 L46 220Z M50 220 L80 110 L110 220Z M130 220 L158 120 L186 220Z M205 220 L238 100 L271 220Z M285 220 L312 125 L339 220Z M350 220 L382 105 L414 220Z'/%3E%3C/g%3E%3C/svg%3E") center bottom/100% 34% no-repeat}
+html.kquiz[data-season="night"] #kseasonfx{background:radial-gradient(circle at 82% 11%,#fffbe6 0 26px,rgba(255,250,220,.35) 27px 34px,rgba(255,250,220,0) 60px)}
+#kseasonfx .kfx-star{position:absolute;color:#fff7c8;text-shadow:0 0 6px rgba(255,240,180,.9);font-style:normal;line-height:1}
+/* tips button: bottom centre */
+html.kquiz .khelp-tg{left:50%!important;right:auto!important;translate:-50% 0;bottom:max(8px,env(safe-area-inset-bottom))!important}
+html.kquiz .khint{padding-bottom:calc(max(10px,env(safe-area-inset-bottom)) + 50px)!important}
+html.kquiz .kseason-tg{display:none!important}
+html.kquiz .kfoot{visibility:hidden}
 </style>
 </head>
 <body>
@@ -3522,7 +3536,7 @@ function kidsHome() {
     <div class="khome-foot"><button class="kgear" data-k="settings" aria-label="Paramètres"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg></button></div>`;
 }
 
-const KSEASONS = ['', 'spring', 'summer', 'autumn', 'winter'], KSEASON_IC = { '': '🌙', spring: '🌸', summer: '☀️', autumn: '🍂', winter: '❄️' }, KSEASON_FX = { spring: ['🌸', '🌸', '🌼', '🦋'], summer: ['✨', '🌼', '✨', '🦋'], autumn: ['🍂', '🍁', '🍂', '🍁'], winter: ['❄️', '❄️', '❅', '❄️'] };
+const KSEASONS = ['', 'spring', 'summer', 'autumn', 'winter', 'forest', 'night', 'mountain'], KSEASON_IC = { '': '🌙', spring: '🌸', summer: '☀️', autumn: '🍂', winter: '❄️' }, KSEASON_FX = { spring: ['🌸', '🌸', '🌼', '🦋'], summer: ['✨', '🌼', '✨', '🦋'], autumn: ['🍂', '🍁', '🍂', '🍁'], winter: ['❄️', '❄️', '❅', '❄️'] };
 const KMEM = {};
 function kMemGet(key, def) { if (key in KMEM) return KMEM[key]; let v = null; try { v = localStorage.getItem(key); } catch (e) {} KMEM[key] = v === null ? def : v; return KMEM[key]; }
 function kMemSet(key, v) { KMEM[key] = v; try { localStorage.setItem(key, v); } catch (e) {} }
@@ -3530,18 +3544,26 @@ function kSeason() { const s = kMemGet(SK('stickoo-season'), ''); return KSEASON
 function kSeasonApply() {
   const s = kSeason(), html = document.documentElement; if (s) html.dataset.season = s; else delete html.dataset.season;
   let fx = document.getElementById('kseasonfx'); if (!fx) { fx = document.createElement('div'); fx.id = 'kseasonfx'; fx.setAttribute('aria-hidden', 'true'); document.body.insertBefore(fx, document.body.firstChild); }
-  if (fx.dataset.s === s) return; fx.dataset.s = s;
-  const row = { spring: 0, summer: 1, autumn: 2, winter: 3 }[s]; fx.innerHTML = '';
-  if (row === undefined) return;
-  const H = Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0, 600);
+  if (fx.dataset.s === s) return; fx.dataset.s = s; fx.innerHTML = '';
+  const H = Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0, 600), W = Math.max(window.innerWidth || 0, 320);
+  if (s === 'night') { // twinkling stars + a few fireflies, nothing falls
+    for (let i = 0; i < 18; i++) { const el = document.createElement('b'); el.className = 'kfx-star'; el.textContent = i % 3 ? '✦' : '•'; el.style.cssText = `left:${(Math.random() * 96 + 2).toFixed(1)}%;top:${(Math.random() * 70 + 3).toFixed(1)}%;font-size:${(8 + Math.random() * 14).toFixed(0)}px`; fx.appendChild(el);
+      try { const d = 1600 + Math.random() * 2400, a = el.animate([{ opacity: .15, transform: 'scale(.6)' }, { opacity: 1, transform: 'scale(1.1)' }, { opacity: .15, transform: 'scale(.6)' }], { duration: d, iterations: Infinity, easing: 'ease-in-out' }); a.currentTime = Math.random() * d; } catch (er) {} }
+    return;
+  }
+  const CFG = { spring: [0, 1, 'sway'], summer: [1, 3, 'float'], autumn: [2, 0, 'fall'], winter: [3, 0, 'fall'], forest: [1, 2, 'sway'], mountain: [1, 1, 'drift'] }[s];
+  if (!CFG) return;
+  const [row, col, mode] = CFG;
   for (let i = 0; i < 7; i++) {
     const el = document.createElement('i'), z = 0.75 + Math.random() * 0.6, sz = Math.round(38 * z), x = Math.round(Math.random() * 60 - 30), dur = (18 + Math.random() * 10) * 1000;
-    el.style.cssText = `left:${(i * 14 + Math.random() * 8).toFixed(1)}%;top:-${sz + 10}px;width:${sz}px;height:${sz}px;background-position:${[1, 3, 0, 4][row] * 25}% ${(row * 100 / 3).toFixed(3)}%`;
+    el.style.cssText = mode === 'drift' ? `left:-${sz + 10}px;top:${(8 + i * 11 + Math.random() * 5).toFixed(1)}%;width:${sz}px;height:${sz}px;background-position:${col * 25}% ${(row * 100 / 3).toFixed(3)}%`
+      : `left:${(i * 14 + Math.random() * 8).toFixed(1)}%;top:-${sz + 10}px;width:${sz}px;height:${sz}px;background-position:${col * 25}% ${(row * 100 / 3).toFixed(3)}%`;
     fx.appendChild(el);
-    const T = (dx, dy, r) => ({ transform: `translate3d(${dx}px,${Math.round(dy)}px,0) rotate(${r}deg)` });
+    const T = (dx, dy, r) => ({ transform: `translate3d(${Math.round(dx)}px,${Math.round(dy)}px,0) rotate(${r}deg)` });
     let kf;
-    if (s === 'summer') kf = [{ ...T(0, H * 1.15, -8), opacity: 0 }, { ...T(x / 2, H * 1.0, 0), opacity: .95, offset: .1 }, { ...T(x, H * .75, 8), offset: .35 }, { ...T(-x, H * .35, -8), offset: .65 }, { ...T(x / 2, H * .1, 0), opacity: .95, offset: .9 }, { ...T(x, -H * .1, 8), opacity: 0 }];
-    else if (s === 'spring') kf = [T(0, 0, -12), { ...T(x, H * .28, 12), offset: .25 }, { ...T(0, H * .56, -12), offset: .5 }, { ...T(x, H * .84, 12), offset: .75 }, T(0, H * 1.18, -12)];
+    if (mode === 'float') kf = [{ ...T(0, H * 1.15, -8), opacity: 0 }, { ...T(x / 2, H * 1.0, 0), opacity: .95, offset: .1 }, { ...T(x, H * .75, 8), offset: .35 }, { ...T(-x, H * .35, -8), offset: .65 }, { ...T(x / 2, H * .1, 0), opacity: .95, offset: .9 }, { ...T(x, -H * .1, 8), opacity: 0 }];
+    else if (mode === 'sway') kf = [T(0, 0, -12), { ...T(x, H * .28, 12), offset: .25 }, { ...T(0, H * .56, -12), offset: .5 }, { ...T(x, H * .84, 12), offset: .75 }, T(0, H * 1.18, -12)];
+    else if (mode === 'drift') kf = [T(0, 0, -6), { ...T(W * .3, -24, 6), offset: .25 }, { ...T(W * .6, 10, -6), offset: .5 }, { ...T(W * .9, -18, 6), offset: .75 }, T(W * 1.25, 0, -6)];
     else kf = [T(0, 0, 0), { ...T(x, H * .55, 180), offset: .5 }, T(0, H * 1.18, 360)];
     try { const a = el.animate(kf, { duration: dur, iterations: Infinity, easing: 'linear' }); a.currentTime = Math.random() * dur; } catch (er) {}
   }
@@ -3671,7 +3693,7 @@ function kidsBook(id) {
   K.items = items;
 }
 function kidsStart(id) {
-  try { const cur = kSeason(), pool = ['spring', 'summer', 'autumn', 'winter'].filter(s => s !== cur); kMemSet(SK('stickoo-season'), pool[Math.floor(Math.random() * pool.length)]); } catch (e) {}
+  try { const cur = kSeason(), pool = ['spring', 'summer', 'autumn', 'winter', 'forest', 'night', 'mountain'].filter(s => s !== cur); kMemSet(SK('stickoo-season'), pool[Math.floor(Math.random() * pool.length)]); } catch (e) {}
   K.forcedNew = [];
   K.asker = kidFriend();
   const ks = kidsState(), un = kidUnlocked(ks);
@@ -3759,7 +3781,7 @@ function kidsQuestion() {
     ${R.tier ? `<span class="ktier">${KID_TIERS[R.tier].label}</span>` : ''}<div class="kprog ${(R.n || KID_ROUND) > 7 ? 'many' : ''}">${Array.from({ length: R.n || KID_ROUND }, (_, i, _a, N = (R.n || KID_ROUND)) => `<span class="${i < R.done ? 'on' : ''}" style="--arc:${(Math.pow((i - (N - 1) / 2) / ((N - 1) / 2 || 1), 2) * 22).toFixed(1)}px"><img class="kst-ic" src="kid/nature/nature02.png" alt=""></span>`).join('')}</div>
     <button class="kspeak" data-k="again" aria-label="Réécouter"><img class="ksky-spk" src="kid/sky/speaker.webp?v=4" alt=""><span class="kbubble big" hidden><svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><path d="M10 24h10l14-12v40L20 40H10z" fill="#f7e6ff"/><path d="M42 22c4 3 6 6 6 10s-2 7-6 10M48 15c6 5 9 11 9 17s-3 12-9 17" fill="none" stroke="#f7e6ff" stroke-width="4.5" stroke-linecap="round"/></svg></span></button>
     <div class="kopts ${opts.length === 4 ? 'four' : ''}">${opts.map((o, i) => `<button class="kopt" data-ko="${i}" aria-label="${esc(gl(o))}" style="--ob:url(kid/sky/opt${i % 3}.webp?v=4)">${kidPic(o)}</button>`).join('')}</div>
-    <p class="khint">Pour les parents : « ${esc(tw(target))} » = ${esc(gl(target))}</p><button class="khelp-tg ${kHelpOn() ? 'on' : ''}" data-k="helptg" aria-label="Aides">💡</button><button class="kseason-tg" data-k="season" aria-label="Saison">${KSEASON_IC[kSeason()]}</button>`;
+    <p class="khint">Pour les parents : « ${esc(tw(target))} » = ${esc(gl(target))}</p><button class="khelp-tg ${kHelpOn() ? 'on' : ''}" data-k="helptg" aria-label="Aides">💡</button>`;
   document.documentElement.classList.toggle('knohelp', !kHelpOn());
   setTimeout(() => sayTarget(), 120);
 }
