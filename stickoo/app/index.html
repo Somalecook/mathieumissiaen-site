@@ -1086,6 +1086,8 @@ html.kslots-screen #kids{flex:1;min-height:0;display:flex;flex-direction:column;
 html.kslots-screen .kfoot{flex:none;margin:0!important}
 
 .kslots .kslot-pen{width:38px!important;height:38px!important;font-size:.95rem}
+.kslots .kslot-fire{filter:grayscale(1);opacity:.55;transition:filter .2s,opacity .2s,background .2s}
+.kslots .kslot-fire.on{filter:none;opacity:1;background:linear-gradient(180deg,#ffb347,#ff5e3a)!important;border-color:#fff!important;box-shadow:0 0 12px rgba(255,120,40,.7)!important}
 .kslot-edit{cursor:default}
 .kslot-in{flex:1;min-width:0;border:0;border-bottom:3px dashed #b88fd6;background:transparent;font:800 min(3dvh,1.3rem) "Baloo 2","Fredoka","Jua",sans-serif;color:#4a1a4f;padding:4px 2px;outline:none}
 .kslot-in::placeholder{color:#a984c4}
@@ -3468,7 +3470,7 @@ function kidsSlots() {
   K.screen = 'slots'; K.slotDel = null; if (K.naming == null) K.naming = null;
   const T = SLOT_TXT[UIL] || SLOT_TXT.fr;
   $('#kids').innerHTML = kidsHeader(true) + `<div class="kslots"><h2 class="kslots-t">${esc(T.who)}</h2>${Array.from({ length: N_SLOTS }, (_, i) => { const f = slotInfo(i); if (K.naming === i) { const g = K.namingG || 'f'; const av = f.used && tierOf(f.av) > 0 && (f.g === g) ? f.av : (g === 'm' ? G_TIERS.m[0][i * 5] : SLOT_AV[i]); return `<div class="knamewrap"><div class="kslot-row kused knaming"><div class="kslot-btn kslot-edit"><img class="kslot-av" id="kslotAv" src="${kStickerSrc(av)}" alt=""><input class="kslot-in" id="kslotIn" maxlength="14" autocomplete="off" placeholder="${esc(T.name)}" value="${esc(f.nm)}"></div><button class="kslot-ok" data-kslotok="${i}" aria-label="OK">OK</button></div><div class="kgender"><button class="kg-b ${g === 'f' ? 'on' : ''}" data-kgender="f"><img src="${kStickerSrc('friends/a10')}" alt="${esc(T.girl)}"></button><button class="kg-b ${g === 'm' ? 'on' : ''}" data-kgender="m"><img src="${kStickerSrc('boy/b1/x05')}" alt="${esc(T.boy)}"></button></div></div>`; }
-    return `<div class="kslot-row ${f.used ? 'kused' : 'kfree'}" style="--d:${i * -.7}s"><button class="kslot-btn" data-kslot="${i}">${f.used ? `<img class="kslot-av" src="${kStickerSrc(f.av)}" alt=""><span class="kslot-info"><b>${esc(f.nm || T.p + ' ' + (i + 1))}</b><small><img src="kid/nature/nature02.png" alt="">${f.stars} · ${LNAME[f.ui]} → ${LNAME[f.ll]}</small></span>` : `<span class="kslot-plus">+</span><span class="kslot-info"><b>${esc(T.new)}</b><small>${esc(T.p)} ${i + 1}</small></span>`}</button>${f.used ? `<button class="kslot-del kslot-pen" data-kslotname="${i}" aria-label="Name">✏️</button><button class="kslot-del" data-kslotdel="${i}" aria-label="Delete">🗑️</button>` : ''}</div>`; }).join('')}<p class="kslot-warn" hidden></p></div>`;
+    return `<div class="kslot-row ${f.used ? 'kused' : 'kfree'}" style="--d:${i * -.7}s"><button class="kslot-btn" data-kslot="${i}">${f.used ? `<img class="kslot-av" src="${kStickerSrc(f.av)}" alt=""><span class="kslot-info"><b>${esc(f.nm || T.p + ' ' + (i + 1))}</b><small><img src="kid/nature/nature02.png" alt="">${f.stars} · ${LNAME[f.ui]} → ${LNAME[f.ll]}</small></span>` : `<span class="kslot-plus">+</span><span class="kslot-info"><b>${esc(T.new)}</b><small>${esc(T.p)} ${i + 1}</small></span>`}</button>${f.used ? `<button class="kslot-del kslot-pen" data-kslotname="${i}" aria-label="Name">✏️</button><button class="kslot-del kslot-pen kslot-fire${kMode(i) === 'hard' ? ' on' : ''}" data-kslotfire="${i}" aria-label="Hard mode">🔥</button><button class="kslot-del" data-kslotdel="${i}" aria-label="Delete">🗑️</button>` : ''}</div>`; }).join('')}<p class="kslot-warn" hidden></p></div>`;
   const inp = document.getElementById('kslotIn'); if (inp) { setTimeout(() => { try { inp.focus(); } catch (e) {} }, 60); inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); saveSlotName(K.naming); } }); }
 }
 function saveSlotName(i) {
@@ -3477,7 +3479,7 @@ function saveSlotName(i) {
   if (i === SLOT) applyGender(K.namingG);
   const wasFree = K.namingNew; K.naming = null; K.namingNew = false;
   tone(784, 0, .15, 'sine', .06);
-  if (wasFree) return kidsMode(i, true);
+  if (wasFree) { try { localStorage.setItem(SK('stickoo-mode', i), 'easy'); } catch (e) {} return selectSlot(i); }
   kidsSlots();
 }
 function selectSlot(i) {
@@ -3657,6 +3659,7 @@ function kSeasonNext(b) {
   kSeasonApply(); if (b) { b.textContent = KSEASON_IC[s]; try { kSparkle(b, 8); } catch (e) {} }
 }
 const kMode = (i = SLOT) => { try { return localStorage.getItem(SK('stickoo-mode', i)) === 'hard' ? 'hard' : 'easy'; } catch (e) { return 'easy'; } };
+const MODE_TXT = { fr: ['🔥 Mode difficile : une erreur = une étoile perdue', '🧸 Mode facile'], en: ['🔥 Hard mode: one mistake = one star lost', '🧸 Easy mode'], es: ['🔥 Modo difícil: un error = una estrella perdida', '🧸 Modo fácil'], ko: ['🔥 어려움 모드: 틀리면 별 하나를 잃어요', '🧸 쉬움 모드'], zh: ['🔥 困难模式：答错一次失去一颗星', '🧸 简单模式'] };
 function kidsMode(i, fromCreate) {
   K.screen = 'mode'; K.modeSlot = i; K.modeCreate = !!fromCreate;
   const m = kMode(i);
@@ -3676,7 +3679,6 @@ function kidsSettings() {
   $('#kids').innerHTML = kidsHeader(true) + `<div class="kset"><h2 class="kset-t"><span class="kset-gear">${KGEAR}</span><span>Paramètres</span></h2>
     <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>${esc(slotInfo(SLOT).nm || String(SLOT + 1))}</small></span></button>
     <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>${LNAME[UIL]} → ${LNAME[LL]}</small></span></button>
-    <button class="kset-b" data-k="mode"><i>${kMode() === 'hard' ? '🎓' : '🧸'}</i><span><b>Mode</b><small>${kMode() === 'hard' ? 'Difficile' : 'Facile'}</small></span></button>
     <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>
   </div>`;
 }
@@ -4349,6 +4351,7 @@ function kidsClick(e) {
   if (d.kslotname !== undefined) { K.naming = +d.kslotname; K.namingNew = false; K.namingG = slotGender(K.naming); return kidsSlots(); }
   if (d.kgender) { K.namingG = d.kgender; document.querySelectorAll('.kg-b').forEach(x => x.classList.toggle('on', x === b)); const av = document.getElementById('kslotAv'); if (av) av.src = kStickerSrc(d.kgender === 'm' ? G_TIERS.m[0][K.naming * 5] : SLOT_AV[K.naming]); kSparkle(b, 8); tone(880, 0, .08, 'sine', .06); return; }
   if (d.kslotok !== undefined) return saveSlotName(+d.kslotok);
+  if (d.kslotfire !== undefined) { const i = +d.kslotfire, hard = kMode(i) !== 'hard'; try { localStorage.setItem(SK('stickoo-mode', i), hard ? 'hard' : 'easy'); } catch (e) {} b.classList.toggle('on', hard); if (hard) { tone(523, 0, .12, 'triangle', .07); tone(784, .07, .12, 'triangle', .07); tone(1046, .14, .2, 'triangle', .07); try { kSparkle(b, 10); } catch (e) {} } else tone(392, 0, .18, 'sine', .06); const w = document.querySelector('.kslot-warn'); if (w) { w.textContent = hard ? (MODE_TXT[UIL] || MODE_TXT.fr)[0] : (MODE_TXT[UIL] || MODE_TXT.fr)[1]; w.hidden = false; clearTimeout(K.mwt); K.mwt = setTimeout(() => { w.hidden = true; }, 3000); } return; }
   if (d.kslotdel !== undefined) return deleteSlot(+d.kslotdel, b);
   if (d.k === 'slots') { K.slotChosen = false; return kidsSlots(); }
   if (d.k === 'reset') {
