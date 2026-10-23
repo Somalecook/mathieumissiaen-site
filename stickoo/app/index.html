@@ -3714,7 +3714,7 @@ function kidsSettings() {
     <p class="kset-ver">Stickoo · v${APP_VER}</p>
   </div>`;
 }
-const APP_VER = '1.0.33';
+const APP_VER = '1.0.34';
 const KGEAR = `<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>`;
 function kidsThemes(next) {
   K.screen = 'themes'; K.next = next;
@@ -4841,7 +4841,7 @@ function audioBus() {
 let _lips = null, _lipsLoading = false, _lipLast = -1;
 const LIP_SLOT = .15, LIP_N = 3;
 let _victory = null;
-const MENU_CLIPS = [[0, .48], [.53, .21], [.79, .42], [1.26, .14], [1.45, .455], [1.955, .145], [2.15, .245], [2.445, .34]]; let _menuLast = -1;
+const MENU_CLIPS = [[0, .2], [.28, .2], [.56, .24], [.88, .15], [1.11, .2], [1.39, .18]]; let _menuLast = -1;
 function playMenu(vol = .5) {
   if (!soundOn || !_sndBuf.menu) return false;
   try { audioBus(); if (actx.state === 'suspended') actx.resume(); let i; do { i = Math.floor(Math.random() * MENU_CLIPS.length); } while (i === _menuLast); _menuLast = i; const [o, d] = MENU_CLIPS[i]; const src = actx.createBufferSource(), g = actx.createGain(); src.buffer = _sndBuf.menu; g.gain.value = vol; src.connect(g); g.connect(actx.destination); src.start(0, o, d); return true; } catch (e) { return false; }
@@ -4854,7 +4854,7 @@ function playSnd(name, vol = .6) {
 function loadLips() {
   if (_lips || _lipsLoading) return; _lipsLoading = true;
   loadSnd('rare', 'snd/rare.mp3');
-  loadSnd('menu', 'snd/menu.wav');
+  loadSnd('menu', 'snd/keys.mp3');
   loadVoices(LL); if (UIL !== LL) loadVoices(UIL);
   try { audioBus(); fetch('snd/victory.mp3').then(r => r.arrayBuffer()).then(a => new Promise((ok, ko) => actx.decodeAudioData(a, ok, ko))).then(b => { _victory = b; }).catch(() => {}); } catch (e) {}
   try { audioBus(); fetch('snd/pops3b.wav').then(r => r.arrayBuffer()).then(a => new Promise((ok, ko) => actx.decodeAudioData(a, ok, ko))).then(b => { _lips = b; }).catch(() => { _lipsLoading = false; }); } catch (e) { _lipsLoading = false; }
