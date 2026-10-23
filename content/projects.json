@@ -1917,6 +1917,19 @@
               "bg": "#0B0D1A"
             }
           ]
+        },
+        {
+          "layout": "hero",
+          "images": [
+            {
+              "src": "images/rolls-royce/09-seats.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1500 / 2000",
+              "bg": "#000"
+            }
+          ]
         }
       ],
       "essay": null,
@@ -2316,6 +2329,266 @@
       "credits": [],
       "kicker": "",
       "chapters": null
+    },
+    {
+      "slug": "loewe-films",
+      "title": "Loewe",
+      "display": "Loewe",
+      "kind": "commission",
+      "feature": false,
+      "galleryOnly": true,
+      "client": "Loewe",
+      "year": "",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "",
+      "medium": "",
+      "cover": "images/loewe/love-is-real.webp",
+      "theme": {
+        "bg": "#E9E8E4",
+        "fg": "#161513",
+        "muted": "#5E5B55",
+        "line": "#C9C7C1",
+        "font": "",
+        "fontCss": "var(--serif)",
+        "titleItalic": false,
+        "titleWeight": 400
+      },
+      "sections": [
+        {
+          "layout": "grid",
+          "columns": 1,
+          "images": [
+            {
+              "src": "images/loewe/love-is-real.webp",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "480 / 600",
+              "bg": "#111"
+            },
+            {
+              "src": "images/loewe/s22-invitation.webp",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "480 / 600",
+              "bg": "#111"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "chapters": null,
+      "credits": []
+    },
+    {
+      "slug": "dheygere",
+      "title": "D'heygere",
+      "display": "D'heygere",
+      "kind": "commission",
+      "feature": false,
+      "galleryOnly": true,
+      "client": "D'heygere",
+      "year": "",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "",
+      "medium": "",
+      "cover": "images/dheygere/dheygere.webp",
+      "theme": {
+        "bg": "#E9E8E4",
+        "fg": "#161513",
+        "muted": "#5E5B55",
+        "line": "#C9C7C1",
+        "font": "",
+        "fontCss": "var(--serif)",
+        "titleItalic": false,
+        "titleWeight": 400
+      },
+      "sections": [
+        {
+          "layout": "grid",
+          "columns": 1,
+          "images": [
+            {
+              "src": "images/dheygere/dheygere.webp",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "480 / 480",
+              "bg": "#fff"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "chapters": null,
+      "credits": []
+    },
+    {
+      "slug": "blacknut",
+      "title": "Blacknut",
+      "display": "Blacknut",
+      "kind": "commission",
+      "feature": false,
+      "galleryOnly": true,
+      "client": "Blacknut",
+      "year": "",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "",
+      "medium": "",
+      "cover": "images/blacknut/blacknut.jpg",
+      "theme": {
+        "bg": "#E9E8E4",
+        "fg": "#161513",
+        "muted": "#5E5B55",
+        "line": "#C9C7C1",
+        "font": "",
+        "fontCss": "var(--serif)",
+        "titleItalic": false,
+        "titleWeight": 400
+      },
+      "sections": [
+        {
+          "layout": "grid",
+          "columns": 1,
+          "images": [
+            {
+              "src": "images/blacknut/blacknut.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1060 / 1500",
+              "bg": "#777"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "chapters": null,
+      "credits": []
+    },
+    {
+      "slug": "tests",
+      "title": "Tests",
+      "display": "Tests",
+      "kind": "research",
+      "feature": false,
+      "galleryOnly": true,
+      "client": "",
+      "year": "",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "",
+      "medium": "",
+      "cover": "images/tests/mussel.jpg",
+      "theme": {
+        "bg": "#E9E8E4",
+        "fg": "#161513",
+        "muted": "#5E5B55",
+        "line": "#C9C7C1",
+        "font": "",
+        "fontCss": "var(--serif)",
+        "titleItalic": false,
+        "titleWeight": 400
+      },
+      "sections": [
+        {
+          "layout": "grid",
+          "columns": 1,
+          "images": [
+            {
+              "src": "images/tests/mussel.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "2000 / 2000",
+              "bg": "#111"
+            },
+            {
+              "src": "images/tests/letter-a.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1333 / 2000",
+              "bg": "#111"
+            },
+            {
+              "src": "images/tests/flower-pink.webp",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "420 / 598",
+              "bg": "#111"
+            },
+            {
+              "src": "images/tests/braid.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1488 / 2000",
+              "bg": "#111"
+            },
+            {
+              "src": "images/tests/seven-years.webp",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "480 / 480",
+              "bg": "#111"
+            },
+            {
+              "src": "images/tests/bouquet.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1500 / 2000",
+              "bg": "#111"
+            },
+            {
+              "src": "images/tests/knife-light.webp",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "640 / 360",
+              "bg": "#111"
+            },
+            {
+              "src": "images/tests/red-branch.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1500 / 2000",
+              "bg": "#111"
+            },
+            {
+              "src": "images/tests/flower-blue.webp",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "420 / 598",
+              "bg": "#111"
+            },
+            {
+              "src": "images/tests/cream.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1499 / 2000",
+              "bg": "#111"
+            }
+          ]
+        }
+      ],
+      "essay": null,
+      "chapters": null,
+      "credits": []
     }
   ]
 }
