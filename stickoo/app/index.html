@@ -177,7 +177,7 @@ h2{font-family:var(--f-display);font-weight:400;font-size:1.35rem;margin:0 0 10p
 .nb .ic,.badge .ic{width:46px;height:46px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:1.5rem;background:var(--soft)}
 .nb small{display:block;color:var(--muted)}
 .nb .tag{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);font-weight:700}
-#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:30}
+#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9997}
 
 .progress{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:18px;display:grid;gap:10px}
 .progress .top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
@@ -4014,7 +4014,7 @@ function kidAchPopup(list) {
   list.forEach((a, i) => setTimeout(() => {
     const el = document.createElement('div'); el.className = 'kachpop kclean';
     el.innerHTML = `<span class="krays"></span><img src="${achImg(a)}" alt=""><b class="kpuffy kp-ink">Nouveau succès !</b><small>${esc(a.name)}</small>`;
-    document.body.appendChild(el); sfx.badge(); try { confetti(['#ffd34d', '#ff8fb3', '#8fd19e'], 120); } catch (e) {}
+    document.body.appendChild(el); sfx.badge(); try { kPopBoom(el, ['#ffd34d', '#ff8fb3', '#8fd19e'], 120); } catch (e) {}
     say(SPL().ach); try { kFitText(); } catch (e) {}
     el.onclick = () => el.remove(); setTimeout(() => el.remove(), 3800);
   }, i * 4000));
@@ -4245,7 +4245,7 @@ function kidRarePopup(f) {
   const el = document.createElement('div'); el.className = 'kachpop krarepop ' + ri.cls;
   el.innerHTML = `<span class="krays"></span><em class="krare-badge">${ri.star} ${ri.name}</em><img src="${kStickerSrc(f)}" alt=""><b>Animal rare !</b><small>${esc(nm)}</small>`;
   document.body.appendChild(el);
-  try { if (!playSnd('rare', .6)) sfx.levelUp(); confetti(ri.cls === 'r3' ? ['#ffd34d', '#fff2a8', '#ff8fbf', '#9fd8ff'] : ['#c9a4ff', '#9fd8ff', '#ff8fbf'], ri.cls === 'r3' ? 260 : 150); } catch (e) {}
+  try { if (!playSnd('rare', .6)) sfx.levelUp(); kPopBoom(el, ri.cls === 'r3' ? ['#ffd34d', '#fff2a8', '#ff8fbf', '#9fd8ff'] : ['#c9a4ff', '#9fd8ff', '#ff8fbf'], ri.cls === 'r3' ? 220 : 140); } catch (e) {}
   setTimeout(() => (VOICE_IDX[LL] ? sayParts([SPL().wow, SPL().rare]) : say(LL === 'ko' ? `우와! ${ri.ko} 동물! ${nm}!` : SPL().wow + ' ' + SPL().rare)), _sndBuf.rare ? 1300 : 0);
   el.onclick = () => el.remove(); setTimeout(() => el.remove(), 4300);
 }
@@ -4306,7 +4306,7 @@ function kidTierPopup(t) {
   if (t === 4) { el.innerHTML = `<span class="krays"></span><img src="${kStickerSrc(KID_DIAM[0])}" alt=""><b>Niveau princesse licorne diamant !</b><small>Maintenant il faut 18 étoiles pour gagner une princesse licorne.</small>`; document.body.appendChild(el); try { sfx.levelUp(); confetti(['#b9f2ff', '#ffffff', '#d7b8ff', '#ff9fd0'], 240); } catch (e) {} say(GENDER === 'm' ? '우와! 이제 황금 영웅이야!' : '우와! 이제 다이아몬드 유니콘 공주님이야!'); el.onclick = () => el.remove(); setTimeout(() => el.remove(), 4500); return; }
   if (t === 3) { el.innerHTML = `<span class="krays"></span><img src="${kStickerSrc(KID_GOLD[0])}" alt=""><b>Niveau princesse dorée !</b><small>Maintenant il faut 15 étoiles pour gagner une princesse dorée.</small>`; document.body.appendChild(el); try { sfx.levelUp(); confetti(['#ffd34d', '#fff2a8', '#ff8fb3'], 200); } catch (e) {} say(GENDER === 'm' ? '우와! 이제 로봇 영웅이야!' : '우와! 이제 황금 공주님이야!'); el.onclick = () => el.remove(); setTimeout(() => el.remove(), 4500); return; }
   el.innerHTML = `<span class="krays"></span><img src="${kStickerSrc(KID_PRINCESS[t === 2 ? Math.floor(KID_PRINCESS.length / 2) : 0])}" alt=""><b>${t === 2 ? 'Niveau grande princesse !' : 'Niveau princesse !'}</b><small>${t === 2 ? 'Encore plus de mots difficiles, et l’aide arrive plus tard.' : 'Maintenant 4 images et des mots plus difficiles. Tu peux le faire !'}</small>`;
-  document.body.appendChild(el); try { sfx.levelUp(); confetti(['#ffd34d', '#ff8fb3', '#c9a4ff'], 160); } catch (e) {}
+  document.body.appendChild(el); try { sfx.levelUp(); kPopBoom(el, ['#ffd34d', '#ff8fb3', '#c9a4ff'], 150); } catch (e) {}
   if (GENDER === 'm' && clipFor(LL, 'E06B')) sayParts(['E06B']); else say(GENDER === 'm' ? (LL === 'ko' ? '우와! 이제 영웅이야!' : SPL().wow + ' ' + SPL().best) : LL !== 'ko' ? SPL().lvl : t === 2 ? '우와! 이제 큰 공주님이야!' : '우와! 이제 공주님이야! 조금 더 어려워!');
   el.onclick = () => el.remove(); setTimeout(() => el.remove(), 4500);
 }
@@ -4918,32 +4918,62 @@ const KFX = {"p":[[19,12,26,39],[78,14,35,35],[145,3,30,58],[201,9,46,46],[267,1
 const KFX_IMG = new Image(); KFX_IMG.decoding = 'async'; KFX_IMG.src = 'kid/sky/fxatlas.webp?v=1';
 const kfxReady = () => KFX_IMG.complete && KFX_IMG.naturalWidth > 0;
 // big cartoon burst flash at a point (from the effects sheet)
-function kBurstFlash(x, y, size = 220) {
+function kBurstFlash(x, y, size = 220, z = 9998, dur = 650) {
   if (!kfxReady()) return; const b = KFX.b[Math.floor(Math.random() * KFX.b.length)], el = document.createElement('i'), s = size / Math.max(b[2], b[3]);
-  el.className = 'kfxburst'; el.style.cssText = `left:${x}px;top:${y}px;width:${b[2] * s}px;height:${b[3] * s}px;background:url(${KFX_IMG.src}) -${b[0] * s}px -${b[1] * s}px/${KFX.W * s}px ${KFX.H * s}px no-repeat`;
+  el.className = 'kfxburst'; el.style.cssText = `z-index:${z};left:${x}px;top:${y}px;width:${b[2] * s}px;height:${b[3] * s}px;background:url(${KFX_IMG.src}) -${b[0] * s}px -${b[1] * s}px/${KFX.W * s}px ${KFX.H * s}px no-repeat`;
   document.body.appendChild(el);
-  try { el.animate([{ opacity: 0, transform: 'translate(-50%,-50%) scale(.2) rotate(-20deg)' }, { opacity: 1, transform: 'translate(-50%,-50%) scale(1.1) rotate(0deg)', offset: .25 }, { opacity: .9, transform: 'translate(-50%,-50%) scale(1) rotate(6deg)', offset: .6 }, { opacity: 0, transform: 'translate(-50%,-50%) scale(1.35) rotate(10deg)' }], { duration: 650, easing: 'ease-out' }); } catch (e) {}
-  setTimeout(() => el.remove(), 680);
+  try { el.animate([{ opacity: 0, transform: 'translate(-50%,-50%) scale(.2) rotate(-20deg)' }, { opacity: 1, transform: 'translate(-50%,-50%) scale(1.1) rotate(0deg)', offset: .25 }, { opacity: .9, transform: 'translate(-50%,-50%) scale(1) rotate(6deg)', offset: .6 }, { opacity: 0, transform: 'translate(-50%,-50%) scale(1.35) rotate(10deg)' }], { duration: dur, easing: 'ease-out', fill: 'forwards' }); } catch (e) {}
+  setTimeout(() => el.remove(), dur + 40);
 }
 function confettiAt(x, y, colors, amount) { try { kBurstFlash(x, y, Math.min(260, innerWidth * .6)); } catch (e) {} confetti(colors, amount, x, y); }
-function confetti(colors, amount = 140, ox, oy) {
+const KCF = { P: [], run: false };
+function confetti(colors, amount = 140, ox, oy, opt = {}) {
   if (reduced) return;
-  const cv = $('#confetti'); cv.hidden = false;
-  const ctx = cv.getContext('2d'), dpr = window.devicePixelRatio || 1;
-  cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; ctx.scale(dpr, dpr);
-  const P = Array.from({ length: amount }, () => ({
-    x: (ox ?? innerWidth / 2) + (Math.random() - .5) * 40, y: oy ?? innerHeight * .35,
-    vx: (Math.random() - .5) * 13, vy: -Math.random() * 13 - 4, r: Math.random() * 6.28, vr: (Math.random() - .5) * .3,
-    w: 6 + Math.random() * 6, h: 4 + Math.random() * 5, c: colors[Math.floor(Math.random() * colors.length)], sp: KFX.p[Math.floor(Math.random() * KFX.p.length)], k: .45 + Math.random() * .45 }));
-  const useImg = kfxReady();
-  const t0 = performance.now();
+  const cv = $('#confetti'); if (!cv) return;
+  const x0 = ox ?? innerWidth / 2, y0 = oy ?? innerHeight * .38, now = performance.now(), img = kfxReady();
+  const pow = opt.power || Math.min(1.25, Math.max(.8, innerWidth / 420));
+  for (let n = 0; n < amount; n++) {
+    const a = Math.random() * Math.PI * 2, sp = (3 + Math.random() * 9) * pow;
+    const rr = opt.ring ? opt.ring * (.85 + Math.random() * .3) : 8;
+    KCF.P.push({ x: x0 + Math.cos(a) * rr, y: y0 + Math.sin(a) * rr * .8, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp * .85 - 3 - Math.random() * 4,
+      r: Math.random() * 6.28, vr: (Math.random() - .5) * .35, t0: now + Math.random() * 90, life: 2000 + Math.random() * 1400,
+      w: 6 + Math.random() * 6, h: 4 + Math.random() * 5, c: colors[Math.floor(Math.random() * colors.length)],
+      sp: img ? KFX.p[Math.floor(Math.random() * KFX.p.length)] : null, k: .42 + Math.random() * .5, wob: Math.random() * 6.28 });
+  }
+  if (KCF.P.length > 700) KCF.P.splice(0, KCF.P.length - 700);
+  if (KCF.run) return; KCF.run = true; cv.hidden = false;
+  const ctx = cv.getContext('2d'); let last = now;
+  const fit = () => { const dpr = Math.min(2, window.devicePixelRatio || 1), W = Math.round(innerWidth * dpr), H = Math.round(innerHeight * dpr); if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; } ctx.setTransform(dpr, 0, 0, dpr, 0, 0); };
   (function frame(t) {
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
-    const age = (t - t0) / 1000;
-    P.forEach(p => { p.vy += .35; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
-      ctx.save(); ctx.globalAlpha = Math.max(0, 1 - age / 3.2); ctx.translate(p.x, p.y); ctx.rotate(p.r); if (useImg) { const s = p.sp, w = s[2] * p.k, hh = s[3] * p.k; ctx.drawImage(KFX_IMG, s[0], s[1], s[2], s[3], -w / 2, -hh / 2, w, hh); } else { ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); } ctx.restore(); });
-    if (age < 3.2) requestAnimationFrame(frame); else { ctx.clearRect(0, 0, innerWidth, innerHeight); cv.hidden = true; }
-  })(t0);
+    fit(); ctx.clearRect(0, 0, innerWidth, innerHeight);
+    const f = Math.min(2.5, (t - last) / 16.67); last = t;
+    KCF.P = KCF.P.filter(p => t - p.t0 < p.life && p.y < innerHeight + 80);
+    for (const p of KCF.P) {
+      const age = t - p.t0; if (age < 0) continue;
+      p.vy += .2 * f; p.vx *= Math.pow(.962, f); p.vy *= Math.pow(.975, f); p.wob += .12 * f;
+      p.x += (p.vx + Math.sin(p.wob) * .6) * f; p.y += p.vy * f; p.r += p.vr * f;
+      const u = age / p.life, pop = age < 140 ? .3 + .9 * (age / 140) + (age > 100 ? .15 * Math.sin((age - 100) / 40 * Math.PI) : 0) : 1;
+      ctx.globalAlpha = u > .65 ? Math.max(0, 1 - (u - .65) / .35) : 1;
+      ctx.setTransform(1, 0, 0, 1, 0, 0); const dpr = cv.width / innerWidth; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.translate(p.x, p.y); ctx.rotate(p.r);
+      if (p.sp) { const s = p.sp, w = s[2] * p.k * pop, hh = s[3] * p.k * pop; ctx.drawImage(KFX_IMG, s[0], s[1], s[2], s[3], -w / 2, -hh / 2, w, hh); }
+      else { ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2 * pop, -p.h / 2 * pop, p.w * pop, p.h * pop); }
+    }
+    ctx.globalAlpha = 1;
+    if (KCF.P.length) requestAnimationFrame(frame); else { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height); cv.hidden = true; KCF.run = false; }
+  })(now);
+}
+// explosion for a popup: starburst behind the card + particles bursting out from its picture
+function kPopBoom(el, colors, amount = 110) {
+  setTimeout(() => { try {
+    const im = el.querySelector('img') || el, r = im.getBoundingClientRect(), c = el.getBoundingClientRect();
+    const x = r.left + r.width / 2 || innerWidth / 2, y = r.top + r.height / 2 || innerHeight / 2;
+    const cx = c.left + c.width / 2, cy = c.top + c.height / 2, ring = Math.max(60, Math.min(c.width, c.height) * .42);
+    kBurstFlash(cx, cy, Math.min(innerWidth * 1.25, Math.max(380, c.width * 1.6)), 44, 1150);
+    setTimeout(() => kBurstFlash(cx, cy, Math.min(innerWidth * 1.1, Math.max(320, c.width * 1.35)), 44, 900), 180);
+    confetti(colors, amount, cx, y, { ring });
+    setTimeout(() => confetti(colors, Math.round(amount * .5), cx, cy, { ring: ring * 1.2, power: .8 }), 320);
+  } catch (e) { confetti(colors, amount); } }, 140);
 }
 
 const FRUIT_IMG = { bronze: 'beojji', argent: 'ttalgi', or: 'boksunga', platine: 'subak' };
