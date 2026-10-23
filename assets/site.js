@@ -138,7 +138,7 @@
         (p.subtitle ? '<span class="serif" style="font-size:24px;line-height:1.15">' + (p.slug === 'tal' ? 'TAL — ' : '') + rich(p.subtitle) + '</span>' : '') +
         '<p style="margin:0;line-height:1.75;max-width:400px;opacity:.85">' + esc(f.text || p.intro) + '</p>' +
         '<a class="pill" href="project.html#' + p.slug + '">' + (p.kind === 'research' ? 'Enter the series →' : 'See the project →') + '</a></div>' +
-        '<a class="f-imgs' + (imgs.length === 2 ? ' duo' : '') + '" href="project.html#' + p.slug + '" aria-label="' + esc(p.title) + '">' + imgs.map(function (im) {
+        '<a class="f-imgs' + (imgs.length === 2 ? ' duo' : imgs.length === 4 ? ' quad' : '') + '" href="project.html#' + p.slug + '" aria-label="' + esc(p.title) + '">' + imgs.map(function (im) {
           return '<img loading="lazy" src="' + im.src + '" alt="' + esc(plain(im.title)) + '" style="background:' + (im.bg || '#000') + '">';
         }).join('') + '</a></div></div></section>';
     }
