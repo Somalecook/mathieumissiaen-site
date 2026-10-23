@@ -1073,6 +1073,7 @@ html.kslots-screen .brand .sky-logo{height:min(16dvh,150px);width:auto;max-width
 .kslot-info small img{width:18px;height:18px}
 .kslot-del{flex:none;width:44px;height:44px;border-radius:50%;border:2px solid rgba(255,255,255,.5);background:rgba(255,255,255,.12);font-size:1.15rem;cursor:pointer}
 .kslot-del.arm{background:#ff7fae;border-color:#fff;animation:kpulse .6s ease-in-out infinite alternate}
+.kset-ver{margin:14px 0 0;text-align:center;font:700 .8rem/1.2 "Baloo 2","Fredoka",sans-serif;color:rgba(255,255,255,.75);letter-spacing:.04em;text-shadow:0 1px 2px rgba(40,10,60,.35)}
 .kslot-warn{margin:2px auto 0;padding:8px 14px;border-radius:16px;background:#fff;color:#c2477f;font:800 .82rem/1.3 "Baloo 2","Fredoka","Jua",sans-serif;text-align:center;box-shadow:0 6px 14px rgba(20,0,40,.3)}
 .kplayer{padding-inline:10px!important;white-space:nowrap;flex:none}
 
@@ -3710,8 +3711,10 @@ function kidsSettings() {
     <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>${esc(slotInfo(SLOT).nm || String(SLOT + 1))}</small></span></button>
     <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>${LNAME[UIL]} → ${LNAME[LL]}</small></span></button>
     <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>
+    <p class="kset-ver">Stickoo · v${APP_VER}</p>
   </div>`;
 }
+const APP_VER = '1.0.33';
 const KGEAR = `<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>`;
 function kidsThemes(next) {
   K.screen = 'themes'; K.next = next;
