@@ -1787,7 +1787,7 @@ html.kquiz[data-season="party"] #kseasonfx{background:url("data:image/svg+xml,%3
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
 <script>
-(() => { try { window.__homePre = ['kid/sky/title2.webp?v=6','kid/home/play2.webp','kid/home/book2.webp','kid/home/stickers2.webp','kid/home/ach2.webp','kid/home/cahier2.webp','kid/sky/header.webp?v=4','kid/sky/langpage.webp?v=2','kid/nature/nature02.png','kid/sky/home.webp?v=4','kid/sky/starsc.webp?v=4'].map(u => { const i = new Image(); i.fetchPriority = 'high'; i.decoding = 'async'; i.src = u; if (i.decode) i.decode().catch(() => {}); return i; }); } catch (e) {} })();
+(() => { try { window.__homePre = ['kid/sky/title2.webp?v=6','kid/home/play2.webp','kid/home/book2.webp','kid/home/stickers2.webp','kid/home/ach2.webp','kid/home/cahier2.webp','kid/sky/header.webp?v=4','kid/sky/langpage.webp?v=2','kid/nature/nature02.png','kid/sky/back.webp?v=2','kid/sky/starsc.webp?v=4'].map(u => { const i = new Image(); i.fetchPriority = 'high'; i.decoding = 'async'; i.src = u; if (i.decode) i.decode().catch(() => {}); return i; }); } catch (e) {} })();
 (() => {
 try { window.__menuImgs = ['kid/sky/title2.webp?v=6', 'kid/home/play2.webp', 'kid/home/book2.webp', 'kid/home/stickers2.webp', 'kid/home/ach2.webp', 'kid/home/cahier2.webp'].map(u => { const im = new Image(); im.fetchPriority = 'high'; im.src = u; im.decode && im.decode().catch(() => {}); return im; }); } catch (e) {}
 const $ = s => document.querySelector(s);
@@ -3714,7 +3714,7 @@ function kidsSettings() {
     <p class="kset-ver">Stickoo · v${APP_VER}</p>
   </div>`;
 }
-const APP_VER = '1.0.36';
+const APP_VER = '1.0.37';
 const KGEAR = `<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>`;
 function kidsThemes(next) {
   K.screen = 'themes'; K.next = next;
@@ -4047,7 +4047,7 @@ function kidAchPopup(list) {
   list.forEach((a, i) => setTimeout(() => {
     const el = document.createElement('div'); el.className = 'kachpop kclean';
     el.innerHTML = `<span class="krays"></span><img src="${achImg(a)}" alt=""><b class="kpuffy kp-ink">Nouveau succès !</b><small>${esc(a.name)}</small>`;
-    document.body.appendChild(el); sfx.badge(); try { kPopBoom(el, ['#ffd34d', '#ff8fb3', '#8fd19e'], 120); } catch (e) {}
+    document.body.appendChild(el); if (!playUi('chime', .55)) sfx.badge(); try { kPopBoom(el, ['#ffd34d', '#ff8fb3', '#8fd19e'], 120); } catch (e) {}
     say(SPL().ach); try { kFitText(); } catch (e) {}
     el.onclick = () => el.remove(); setTimeout(() => el.remove(), 3800);
   }, i * 4000));
@@ -4075,7 +4075,7 @@ function kidsAch() {
   const k = kidsState(); k.ach = k.ach || {};
   const n = KID_ACH.filter(a => k.ach[a.id]).length;
   $('#kids').innerHTML = kidsHeader(true) + `<div class="kalbum-head"><b>Mes succès</b> · ${n} / ${KID_ACH.length}</div>
-    <div class="kach kach2" id="kach">${KID_ACH.map((a, i) => { const on = !!k.ach[a.id], [v, m] = a.p(k); const nm = !a.img ? (FRUIT_KO[a.fruit.replace('gold/', '')] || '') : stickerName(a.img.replace(/\.(png|webp).*$/, '')); const BR = ['54% 46% 50% 50% / 46% 54% 46% 54%', '48% 52% 46% 54% / 54% 46% 54% 46%', '52% 48% 54% 46% / 48% 52% 48% 52%'][i % 3]; return `<button class="kachc ${on ? 'on' : 'locked'}" data-kf="${on && !a.img ? a.fruit : ''}" style="--br:${BR};--d:${(i % 5) * -.6}s">${on ? '<span class="kach-glint"></span>' : ''}<img src="${achImg(a)}" alt=""><small>${esc(a.name)}</small>${on ? '' : `<i class="kbar"><i style="width:${Math.max(4, Math.min(100, v / m * 100))}%"></i></i>`}</button>`; }).join('')}<svg class="kach-vine" aria-hidden="true"></svg></div>`;
+    <div class="kach kach2" id="kach">${KID_ACH.map((a, i) => { const on = !!k.ach[a.id], [v, m] = a.p(k); const nm = !a.img ? (FRUIT_KO[a.fruit.replace('gold/', '')] || '') : stickerName(a.img.replace(/\.(png|webp).*$/, '')); const BR = ['54% 46% 50% 50% / 46% 54% 46% 54%', '48% 52% 46% 54% / 54% 46% 54% 46%', '52% 48% 54% 46% / 48% 52% 48% 52%'][i % 3]; return `<button class="kachc ${on ? 'on' : 'locked'}" data-kf="${on && !a.img ? a.fruit : ''}" data-kac="${on ? 1 : ''}" style="--br:${BR};--d:${(i % 5) * -.6}s">${on ? '<span class="kach-glint"></span>' : ''}<img src="${achImg(a)}" alt=""><small>${esc(a.name)}</small>${on ? '' : `<i class="kbar"><i style="width:${Math.max(4, Math.min(100, v / m * 100))}%"></i></i>`}</button>`; }).join('')}<svg class="kach-vine" aria-hidden="true"></svg></div>`;
   requestAnimationFrame(drawAchVine);
 }
 const KG_PACKS = { princess: ['b02', 'b06', 'b08', 'b09', 'b10'], princess2: ['b00', 'b01', 'b04', 'b05'], princess3: ['b03', 'b07', 'b11'] };
@@ -4149,7 +4149,7 @@ function kidsWin() {
   setTimeout(() => say(winLine), 300);
   // gift shakes, then opens
   setTimeout(() => { const g = $('#kprize'); if (!g) return; g.classList.add('shaking'); tone(523, 0, .1, 'square', .03); tone(659, .15, .1, 'square', .03); tone(784, .3, .1, 'square', .03); }, 900);
-  setTimeout(() => { const g = $('#kprize'); if (!g) return; g.classList.remove('shaking', 'closed'); g.classList.add('open'); setTimeout(() => kSparkle(g, 22), 250); try { tone(NOTE_HZ.G5, 0, .5, 'sine', .04); tone(NOTE_HZ.C6, .08, .7, 'sine', .04); const r = g.getBoundingClientRect(); confettiAt(r.left + r.width / 2, r.top + r.height / 2, ['#ffd34d', '#ff6f9c', '#ffffff', '#9b7bff'], 180); } catch (er) {} { const pn = stickerName(prize); say(pn ? `우와! ${pn}!` : '우와! 스티커다!'); } }, 1900);
+  setTimeout(() => { const g = $('#kprize'); if (!g) return; g.classList.remove('shaking', 'closed'); g.classList.add('open'); setTimeout(() => kSparkle(g, 22), 250); try { if (!playUi('chime', .6)) { tone(NOTE_HZ.G5, 0, .5, 'sine', .04); tone(NOTE_HZ.C6, .08, .7, 'sine', .04); } const r = g.getBoundingClientRect(); confettiAt(r.left + r.width / 2, r.top + r.height / 2, ['#ffd34d', '#ff6f9c', '#ffffff', '#9b7bff'], 180); } catch (er) {} { const pn = stickerName(prize); say(pn ? `우와! ${pn}!` : '우와! 스티커다!'); } }, 1900);
   const t0 = (rareWin ? 9000 : 4600) + (freshWords.length ? 4600 : 0) + ((Rw.goldNew || []).length ? 4600 : 0);
   const tw = rareWin ? 9000 : 4400;
   if (rareWin) setTimeout(() => kidRarePopup(rareWin), 4400);
@@ -4204,7 +4204,7 @@ function bindBoard() {
     K.bsel = i; el.querySelectorAll('.kbs').forEach(m => m.classList.toggle('sel', m === n));
     $('#kbtools').hidden = false;
     try { n.setPointerCapture(e.pointerId); } catch (er) {}
-    n.classList.add('lift'); if (!playSnd('bubble', .55)) tone(880, 0, .06, 'sine', .05); kSparkle(n, 8);
+    n.classList.add('lift'); if (!playUi('bubble', .55)) tone(880, 0, .06, 'sine', .05); kSparkle(n, 8);
   });
   el.addEventListener('pointermove', e => {
     if (!drag) return;
@@ -4215,7 +4215,7 @@ function bindBoard() {
   });
   const end = () => {
     if (!drag) return; const d = drag; drag = null; d.node.classList.remove('lift');
-    if (d.moved) { saveBoard(pg => { if (pg[d.i]) { pg[d.i].x = d.x; pg[d.i].y = d.y; } }); if (!playSnd('stick', .5)) { tone(523, 0, .08, 'triangle', .06); tone(392, .05, .1, 'triangle', .05); } }
+    if (d.moved) { saveBoard(pg => { if (pg[d.i]) { pg[d.i].x = d.x; pg[d.i].y = d.y; } }); if (!playUi('stick', .5)) { tone(523, 0, .08, 'triangle', .06); tone(392, .05, .1, 'triangle', .05); } }
   };
   el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
   const tray = document.querySelector('#kids .kbtray');
@@ -4250,12 +4250,12 @@ function boardAction(a) {
     if (a === 'front') { pg.push(pg.splice(i, 1)[0]); K.bsel = pg.length - 1; }
     if (a === 'del') { pg.splice(i, 1); K.bsel = null; }
   });
-  if (!playSnd('bubble', .5)) sfx.tap();
+  if (!playUi('bubble', .5)) sfx.tap();
 }
 function boardAdd(f, x, y) {
   setTimeout(() => kSparkle(document.querySelector('#kboard .kbs:last-child'), 12), 30);
   saveBoard(pg => { pg.push({ f, x: x ?? 35 + Math.random() * 30, y: y ?? 30 + Math.random() * 35, s: 26, r: Math.round(Math.random() * 24 - 12) }); K.bsel = pg.length - 1; });
-  if (!playSnd('stick', .55)) { tone(660, 0, .08, 'sine', .08); tone(990, .07, .12, 'sine', .07); }
+  if (!playUi('stick', .55)) { tone(660, 0, .08, 'sine', .08); tone(990, .07, .12, 'sine', .07); }
   const nm = LL === 'ko' && stickerName(f); if (nm) say(nm);
 }
 const KID_RARE = Array.from({ length: 92 }, (_, i) => 'rare/r' + String(i).padStart(2, '0'));
@@ -4402,8 +4402,9 @@ function kidsClick(e) {
   if (d.k === 'replay') return kidsStart(K.lastTheme || 'mix');
   if (d.kt) { K.lastTheme = d.kt; return K.next === 'book' ? kidsBook(d.kt) : kidsStart(d.kt); }
   if (d.ko !== undefined) return kidsPick(b, +d.ko);
-  if (d.kw !== undefined) { const it = K.items[+d.kw]; b.classList.remove('kflip'); void b.offsetWidth; b.classList.add('kflip'); kSparkle(b, 10); say(tw(it)); const k = kidsState(); k.heard = (k.heard || 0) + 1; const f = kidsCheckAch(k); putKids(k); if (f.length) setTimeout(() => kidAchPopup(f), 900); return; }
-  if (d.kf) { kSparkle(b); b.classList.remove('kflip'); void b.offsetWidth; b.classList.add('kflip'); try { tone(784, 0, .12, 'sine', .06); tone(1175, .07, .18, 'sine', .05); } catch (er) {} return; }
+  if (d.kw !== undefined) { const it = K.items[+d.kw]; try { playUi('ping', .3); } catch (er) {} b.classList.remove('kflip'); void b.offsetWidth; b.classList.add('kflip'); kSparkle(b, 10); say(tw(it)); const k = kidsState(); k.heard = (k.heard || 0) + 1; const f = kidsCheckAch(k); putKids(k); if (f.length) setTimeout(() => kidAchPopup(f), 900); return; }
+  if (d.kac) { kSparkle(b, 10); b.classList.remove('kflip'); void b.offsetWidth; b.classList.add('kflip'); try { if (!playUi('ping', .5)) sfx.badge(); } catch (er) {} return; }
+  if (d.kf) { kSparkle(b); b.classList.remove('kflip'); void b.offsetWidth; b.classList.add('kflip'); try { if (!playUi('ping', .5)) { tone(784, 0, .12, 'sine', .06); tone(1175, .07, .18, 'sine', .05); } } catch (er) {} return; }
 }
 
 /* ---------- game engine ---------- */
@@ -4411,7 +4412,7 @@ let game = null;
 const G = () => $('#game');
 document.addEventListener('pointerdown', e => {
   const b = e.target.closest('button, .tile, [data-tile]'); if (!b || b.disabled) return;
-  try { if (!b.closest('.kbtray, #kbtools')) sfx.tap(); } catch (er) {}
+  try { if (!b.closest('.kbtray, #kbtools') && !b.matches('.kst.on, .kachc.on, [data-kw]')) sfx.tap(); } catch (er) {}
   if (b.closest('#game, #kids, .modes, #play') || b.matches('.opt, .tile, .kopt, .kbig, .ktheme, .mode, [data-mode]')) { b.classList.remove('tapfx'); void b.offsetWidth; b.classList.add('tapfx'); }
 }, { passive: true });
 
@@ -4847,6 +4848,11 @@ function playMenu(vol = .5) {
   try { audioBus(); if (actx.state === 'suspended') actx.resume(); let i; do { i = Math.floor(Math.random() * MENU_CLIPS.length); } while (i === _menuLast); _menuLast = i; const [o, d] = MENU_CLIPS[i]; const src = actx.createBufferSource(), g = actx.createGain(); src.buffer = _sndBuf.menu; g.gain.value = vol; src.connect(g); g.connect(actx.destination); src.start(0, o, d); return true; } catch (e) { return false; }
 } const _sndBuf = {};
 function loadSnd(name, url) { try { audioBus(); fetch(url).then(r => r.arrayBuffer()).then(a => new Promise((ok, ko) => actx.decodeAudioData(a, ok, ko))).then(b => { _sndBuf[name] = b; }).catch(() => {}); } catch (e) {} }
+const UI_CLIPS = { stick: [0, .083], bubble: [.203, .577], chime: [.9, 1.95], ping: [2.971, .766] };
+function playUi(name, vol = .5) {
+  const c = UI_CLIPS[name]; if (!soundOn || !_sndBuf.ui || !c) return false;
+  try { audioBus(); if (actx.state === 'suspended') actx.resume(); const src = actx.createBufferSource(), g = actx.createGain(); src.buffer = _sndBuf.ui; g.gain.value = vol; src.connect(g); g.connect(actx.destination); src.start(0, c[0], c[1]); return true; } catch (e) { return false; }
+}
 function playSnd(name, vol = .6) {
   if (!soundOn || !_sndBuf[name]) return false;
   try { audioBus(); if (actx.state === 'suspended') actx.resume(); const src = actx.createBufferSource(), g = actx.createGain(); src.buffer = _sndBuf[name]; g.gain.value = vol; src.connect(g); g.connect(actx.destination); src.start(); return true; } catch (e) { return false; }
@@ -4854,7 +4860,7 @@ function playSnd(name, vol = .6) {
 function loadLips() {
   if (_lips || _lipsLoading) return; _lipsLoading = true;
   loadSnd('rare', 'snd/rare.mp3');
-  loadSnd('menu', 'snd/keys.mp3'); loadSnd('stick', 'snd/stick.mp3'); loadSnd('bubble', 'snd/bubble.mp3');
+  loadSnd('menu', 'snd/keys.mp3'); loadSnd('ui', 'snd/ui.mp3');
   loadVoices(LL); if (UIL !== LL) loadVoices(UIL);
   try { audioBus(); fetch('snd/victory.mp3').then(r => r.arrayBuffer()).then(a => new Promise((ok, ko) => actx.decodeAudioData(a, ok, ko))).then(b => { _victory = b; }).catch(() => {}); } catch (e) {}
   try { audioBus(); fetch('snd/pops3b.wav').then(r => r.arrayBuffer()).then(a => new Promise((ok, ko) => actx.decodeAudioData(a, ok, ko))).then(b => { _lips = b; }).catch(() => { _lipsLoading = false; }); } catch (e) { _lipsLoading = false; }
