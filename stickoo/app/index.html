@@ -1598,7 +1598,12 @@ html.kquiz[data-season="beach"] #kseasonfx{background:url("data:image/svg+xml,%3
 html:root[data-mode="kids"].kquiz[data-season="party"] body{background:linear-gradient(180deg,#ff9ccc 0%,#ffc2dc 40%,#ffe2b8 75%,#fff3d6 100%) fixed!important}
 html.kquiz[data-season="party"] #kseasonfx{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'%3E%3Cpath d='M0 6 Q100 30 200 6 Q300 30 400 6' fill='none' stroke='%23ffffff' stroke-width='2' opacity='.8'/%3E%3Cg%3E%3Cpath d='M20 10 L36 14 L26 38Z' fill='%23ff6f9c'/%3E%3Cpath d='M60 18 L76 20 L66 46Z' fill='%23ffd34d'/%3E%3Cpath d='M100 22 L116 22 L108 50Z' fill='%235cc8ff'/%3E%3Cpath d='M140 19 L156 17 L148 45Z' fill='%238fd19e'/%3E%3Cpath d='M180 11 L196 9 L188 35Z' fill='%23b28cff'/%3E%3Cpath d='M220 10 L236 14 L226 38Z' fill='%23ff9f43'/%3E%3Cpath d='M260 18 L276 20 L266 46Z' fill='%23ff6f9c'/%3E%3Cpath d='M300 22 L316 22 L308 50Z' fill='%23ffd34d'/%3E%3Cpath d='M340 19 L356 17 L348 45Z' fill='%235cc8ff'/%3E%3Cpath d='M375 11 L391 9 L383 35Z' fill='%238fd19e'/%3E%3C/g%3E%3C/svg%3E") center 0/100% 64px repeat-x,radial-gradient(circle at 20% 30%,rgba(255,255,255,.35) 0 2px,transparent 3px) 0 0/34px 34px}
 #kseasonfx .kfx-conf{position:absolute;opacity:.9}
-#kseasonfx .kfx-gull{position:absolute;color:#3a4a6b;letter-spacing:-6px;font-style:normal;line-height:1;opacity:.75}
+#kseasonfx .kfx-gull{position:absolute;display:block;line-height:0;filter:drop-shadow(0 3px 3px rgba(40,70,110,.18))}
+#kseasonfx .kfx-gull svg{width:100%;height:auto;display:block;overflow:visible;animation:kGullBob 2.4s ease-in-out infinite}
+#kseasonfx .kfx-gull .gw{transform-origin:31px 25px;animation:kGullFlap var(--fl,.45s) ease-in-out infinite alternate;animation-delay:var(--fd,0s)}
+#kseasonfx .kfx-gull .gwb{animation-direction:alternate-reverse;opacity:.9}
+@keyframes kGullFlap{0%{transform:rotate(-4deg) scaleY(1)}100%{transform:rotate(10deg) scaleY(-.45)}}
+@keyframes kGullBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-5px) rotate(3deg)}}
 
 .kfxburst{position:fixed;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);display:block;filter:drop-shadow(0 0 12px rgba(255,220,120,.7))}
 .ksparkle.kspimg{width:var(--sw);height:var(--sh);background:var(--sb)!important;font-size:0!important;text-shadow:none!important}
@@ -3623,8 +3628,9 @@ function kSeasonApply() {
       try { const d = 15000 + Math.random() * 8000, a = el.animate([{ transform: 'translate3d(0,0,0) rotate(-6deg)' }, { transform: `translate3d(16px,${-H * .55}px,0) rotate(6deg)`, offset: .5 }, { transform: `translate3d(-8px,${-H * 1.15}px,0) rotate(-6deg)` }], { duration: d, iterations: Infinity, easing: 'linear' }); a.currentTime = Math.random() * d; } catch (er) {} }
     return;
   }
+  const KGULL = `<svg viewBox=\"0 0 64 44\" xmlns=\"http://www.w3.org/2000/svg\"><g stroke=\"#5a6c90\" stroke-width=\"1.4\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path class=\"gw gwb\" d=\"M26 26 C22 18 18 11 13 6 C22 7 32 14 38 24 Z\" fill=\"#dde6f3\"/><path d=\"M19 28 C14 25 11 24 7 23 C9 27 10 30 9 33 C13 32 16 31 20 31 Z\" fill=\"#fff\"/><ellipse cx=\"30\" cy=\"29\" rx=\"13.5\" ry=\"9\" fill=\"#fff\"/><circle cx=\"43\" cy=\"22\" r=\"8.5\" fill=\"#fff\"/><path d=\"M50 21 Q56 21.5 59 23.5 Q56 25.5 50 25.5 Z\" fill=\"#ffbd3d\" stroke=\"#e8901a\"/><path class=\"gw gwf\" d=\"M22 28 C16 20 12 12 6 5 C20 5 32 13 38 26 Z\" fill=\"#fff\"/><path class=\"gw gwf\" d=\"M6 5 C9 5 12 5.4 15 6.2 C14 8 13 9.5 12.3 11 C10 9 8 7 6 5 Z\" fill=\"#7d8fb3\" stroke=\"none\"/></g><circle cx=\"45.5\" cy=\"20.5\" r=\"2\" fill=\"#2a2f45\"/><circle cx=\"46.2\" cy=\"19.7\" r=\".75\" fill=\"#fff\"/><ellipse cx=\"43.6\" cy=\"25.2\" rx=\"2.2\" ry=\"1.4\" fill=\"#ffb3c7\" opacity=\".85\"/><path d=\"M22 32 Q30 36 38 32\" stroke=\"#d3dff0\" stroke-width=\"1.4\" fill=\"none\" stroke-linecap=\"round\"/></svg>`;
   if (s === 'beach') { // seagulls gliding + a few shells / starfish drifting in the waves
-    for (let i = 0; i < 3; i++) { const el = document.createElement('b'); el.className = 'kfx-gull'; el.textContent = '︶︶'; el.style.cssText = `top:${(8 + i * 9).toFixed(1)}%;left:-60px;font-size:${(16 + i * 4)}px`; fx.appendChild(el);
+    for (let i = 0; i < 3; i++) { const el = document.createElement('b'); el.className = 'kfx-gull'; el.innerHTML = KGULL; el.style.cssText = `top:${(7 + i * 10).toFixed(1)}%;left:-70px;width:${(38 + i * 9)}px;--fl:${(.42 + i * .07).toFixed(2)}s;--fd:${(-Math.random()).toFixed(2)}s`; fx.appendChild(el);
       try { const d = 20000 + i * 6000, a = el.animate([{ translate: '0 0' }, { translate: `${(W + 120) * .5}px -12px`, offset: .5 }, { translate: `${W + 120}px 0` }], { duration: d, iterations: Infinity, easing: 'linear' }); a.currentTime = Math.random() * d; } catch (er) {} }
     const deco = ['🐚', '⭐', '🦀'];
     for (let i = 0; i < 3; i++) { const el = document.createElement('b'); el.className = 'kfx-fish'; el.textContent = deco[i]; el.style.cssText = `left:${(12 + i * 32).toFixed(1)}%;bottom:${(3 + (i % 2) * 4)}%;font-size:${24 + i * 3}px`; fx.appendChild(el);
@@ -4373,7 +4379,7 @@ function kidsClick(e) {
   if (d.kt) { K.lastTheme = d.kt; return K.next === 'book' ? kidsBook(d.kt) : kidsStart(d.kt); }
   if (d.ko !== undefined) return kidsPick(b, +d.ko);
   if (d.kw !== undefined) { const it = K.items[+d.kw]; b.classList.remove('kflip'); void b.offsetWidth; b.classList.add('kflip'); kSparkle(b, 10); say(tw(it)); const k = kidsState(); k.heard = (k.heard || 0) + 1; const f = kidsCheckAch(k); putKids(k); if (f.length) setTimeout(() => kidAchPopup(f), 900); return; }
-  if (d.kf) { kSparkle(b); b.classList.remove('kflip'); void b.offsetWidth; b.classList.add('kflip'); const nm = LL === 'ko' && stickerName(d.kf); if (!nm && LL !== 'ko') return; if (nm) { stickerBubble(b, nm); try { speechSynthesis.cancel(); } catch (er) {} return say(nm); } return say(FRUIT_KO[d.kf.replace('gold/', '')] || ''); }
+  if (d.kf) { kSparkle(b); b.classList.remove('kflip'); void b.offsetWidth; b.classList.add('kflip'); try { tone(784, 0, .12, 'sine', .06); tone(1175, .07, .18, 'sine', .05); } catch (er) {} return; }
 }
 
 /* ---------- game engine ---------- */
