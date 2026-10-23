@@ -3714,7 +3714,7 @@ function kidsSettings() {
     <p class="kset-ver">Stickoo · v${APP_VER}</p>
   </div>`;
 }
-const APP_VER = '1.0.37';
+const APP_VER = '1.0.38';
 const KGEAR = `<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>`;
 function kidsThemes(next) {
   K.screen = 'themes'; K.next = next;
@@ -4404,7 +4404,7 @@ function kidsClick(e) {
   if (d.ko !== undefined) return kidsPick(b, +d.ko);
   if (d.kw !== undefined) { const it = K.items[+d.kw]; try { playUi('ping', .3); } catch (er) {} b.classList.remove('kflip'); void b.offsetWidth; b.classList.add('kflip'); kSparkle(b, 10); say(tw(it)); const k = kidsState(); k.heard = (k.heard || 0) + 1; const f = kidsCheckAch(k); putKids(k); if (f.length) setTimeout(() => kidAchPopup(f), 900); return; }
   if (d.kac) { kSparkle(b, 10); b.classList.remove('kflip'); void b.offsetWidth; b.classList.add('kflip'); try { if (!playUi('ping', .5)) sfx.badge(); } catch (er) {} return; }
-  if (d.kf) { kSparkle(b); b.classList.remove('kflip'); void b.offsetWidth; b.classList.add('kflip'); try { if (!playUi('ping', .5)) { tone(784, 0, .12, 'sine', .06); tone(1175, .07, .18, 'sine', .05); } } catch (er) {} return; }
+  if (d.kf) { kSparkle(b); b.classList.remove('kflip'); void b.offsetWidth; b.classList.add('kflip'); try { if (!playUi(Math.random() < .5 ? 'stick' : 'bubble', .55)) { tone(784, 0, .12, 'sine', .06); tone(1175, .07, .18, 'sine', .05); } } catch (er) {} return; }
 }
 
 /* ---------- game engine ---------- */
