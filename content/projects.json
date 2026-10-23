@@ -2520,14 +2520,6 @@
               "bg": "#111"
             },
             {
-              "src": "images/tests/flower-pink.webp",
-              "title": "",
-              "caption": "",
-              "tag": "",
-              "ratio": "420 / 598",
-              "bg": "#111"
-            },
-            {
               "src": "images/tests/braid.jpg",
               "title": "",
               "caption": "",
@@ -2565,14 +2557,6 @@
               "caption": "",
               "tag": "",
               "ratio": "1500 / 2000",
-              "bg": "#111"
-            },
-            {
-              "src": "images/tests/flower-blue.webp",
-              "title": "",
-              "caption": "",
-              "tag": "",
-              "ratio": "420 / 598",
               "bg": "#111"
             },
             {
