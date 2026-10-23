@@ -3714,7 +3714,7 @@ function kidsSettings() {
     <p class="kset-ver">Stickoo · v${APP_VER}</p>
   </div>`;
 }
-const APP_VER = '1.0.35';
+const APP_VER = '1.0.36';
 const KGEAR = `<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>`;
 function kidsThemes(next) {
   K.screen = 'themes'; K.next = next;
@@ -4204,7 +4204,7 @@ function bindBoard() {
     K.bsel = i; el.querySelectorAll('.kbs').forEach(m => m.classList.toggle('sel', m === n));
     $('#kbtools').hidden = false;
     try { n.setPointerCapture(e.pointerId); } catch (er) {}
-    n.classList.add('lift'); tone(880, 0, .06, 'sine', .05); kSparkle(n, 8);
+    n.classList.add('lift'); if (!playSnd('bubble', .55)) tone(880, 0, .06, 'sine', .05); kSparkle(n, 8);
   });
   el.addEventListener('pointermove', e => {
     if (!drag) return;
@@ -4215,7 +4215,7 @@ function bindBoard() {
   });
   const end = () => {
     if (!drag) return; const d = drag; drag = null; d.node.classList.remove('lift');
-    if (d.moved) { saveBoard(pg => { if (pg[d.i]) { pg[d.i].x = d.x; pg[d.i].y = d.y; } }); tone(523, 0, .08, 'triangle', .06); tone(392, .05, .1, 'triangle', .05); }
+    if (d.moved) { saveBoard(pg => { if (pg[d.i]) { pg[d.i].x = d.x; pg[d.i].y = d.y; } }); if (!playSnd('stick', .5)) { tone(523, 0, .08, 'triangle', .06); tone(392, .05, .1, 'triangle', .05); } }
   };
   el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
   const tray = document.querySelector('#kids .kbtray');
@@ -4250,12 +4250,12 @@ function boardAction(a) {
     if (a === 'front') { pg.push(pg.splice(i, 1)[0]); K.bsel = pg.length - 1; }
     if (a === 'del') { pg.splice(i, 1); K.bsel = null; }
   });
-  sfx.tap();
+  if (!playSnd('bubble', .5)) sfx.tap();
 }
 function boardAdd(f, x, y) {
   setTimeout(() => kSparkle(document.querySelector('#kboard .kbs:last-child'), 12), 30);
   saveBoard(pg => { pg.push({ f, x: x ?? 35 + Math.random() * 30, y: y ?? 30 + Math.random() * 35, s: 26, r: Math.round(Math.random() * 24 - 12) }); K.bsel = pg.length - 1; });
-  tone(660, 0, .08, 'sine', .08); tone(990, .07, .12, 'sine', .07);
+  if (!playSnd('stick', .55)) { tone(660, 0, .08, 'sine', .08); tone(990, .07, .12, 'sine', .07); }
   const nm = LL === 'ko' && stickerName(f); if (nm) say(nm);
 }
 const KID_RARE = Array.from({ length: 92 }, (_, i) => 'rare/r' + String(i).padStart(2, '0'));
@@ -4411,7 +4411,7 @@ let game = null;
 const G = () => $('#game');
 document.addEventListener('pointerdown', e => {
   const b = e.target.closest('button, .tile, [data-tile]'); if (!b || b.disabled) return;
-  try { sfx.tap(); } catch (er) {}
+  try { if (!b.closest('.kbtray, #kbtools')) sfx.tap(); } catch (er) {}
   if (b.closest('#game, #kids, .modes, #play') || b.matches('.opt, .tile, .kopt, .kbig, .ktheme, .mode, [data-mode]')) { b.classList.remove('tapfx'); void b.offsetWidth; b.classList.add('tapfx'); }
 }, { passive: true });
 
@@ -4854,7 +4854,7 @@ function playSnd(name, vol = .6) {
 function loadLips() {
   if (_lips || _lipsLoading) return; _lipsLoading = true;
   loadSnd('rare', 'snd/rare.mp3');
-  loadSnd('menu', 'snd/keys.mp3');
+  loadSnd('menu', 'snd/keys.mp3'); loadSnd('stick', 'snd/stick.mp3'); loadSnd('bubble', 'snd/bubble.mp3');
   loadVoices(LL); if (UIL !== LL) loadVoices(UIL);
   try { audioBus(); fetch('snd/victory.mp3').then(r => r.arrayBuffer()).then(a => new Promise((ok, ko) => actx.decodeAudioData(a, ok, ko))).then(b => { _victory = b; }).catch(() => {}); } catch (e) {}
   try { audioBus(); fetch('snd/pops3b.wav').then(r => r.arrayBuffer()).then(a => new Promise((ok, ko) => actx.decodeAudioData(a, ok, ko))).then(b => { _lips = b; }).catch(() => { _lipsLoading = false; }); } catch (e) { _lipsLoading = false; }
