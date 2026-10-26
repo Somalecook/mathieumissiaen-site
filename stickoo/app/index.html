@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="theme-color" content="#3a2158">
-<link rel="preload" as="image" href="kid/sky/logo.webp?v=1" fetchpriority="high"><link rel="preload" as="image" href="kid/sky/logo.webp?v=1" fetchpriority="high"><link rel="preload" as="image" href="kid/home/play2.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/book2.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/stickers2.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/ach2.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/cahier2.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/sky/langpage.webp?v=2" fetchpriority="high">
+<link rel="preload" as="image" href="kid/sky/logo.webp?v=1" fetchpriority="high"><link rel="preload" as="image" href="kid/sky/logo.webp?v=1" fetchpriority="high"><link rel="preload" as="image" href="kid/home/play3.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/book3.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/stickers3.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/ach3.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/cahier3.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/sky/langpage.webp?v=2" fetchpriority="high">
 <title>Stickoo Hanee</title>
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
@@ -1473,6 +1473,8 @@ html.kslots-screen .brand .sky-logo{height:min(22dvh,210px)!important}
 :root[data-mode="kids"] body{margin:0}
 html.khome-screen .kfoot{padding-bottom:0!important}
 html.khome-screen .khome-foot{margin-top:6px!important}
+html body .kgear{width:64px!important;height:64px!important;border:0!important;background:none!important;box-shadow:none!important;border-radius:0!important}
+.kgear-ic{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(20,0,40,.35))}
 
 /* new gold frame (win screen) */
 .kframe2{position:relative;width:min(84vw,calc(min(40dvh,400px) * .9055));aspect-ratio:1952/2156;margin:0 auto!important;padding:0!important;display:block!important;animation:kfrBob 4s ease-in-out infinite}
@@ -1794,9 +1796,9 @@ html.kquiz[data-season="party"] #kseasonfx{background:url("data:image/svg+xml,%3
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
 <script>
-(() => { try { window.__homePre = ['kid/sky/logo_anim.webp?v=1','kid/home/play2.webp','kid/home/book2.webp','kid/home/stickers2.webp','kid/home/ach2.webp','kid/home/cahier2.webp','kid/sky/logo.webp?v=1','kid/sky/langpage.webp?v=2','kid/nature/nature02.png','kid/sky/back.webp?v=3','kid/sky/starsc.webp?v=4'].map(u => { const i = new Image(); i.fetchPriority = 'high'; i.decoding = 'async'; i.src = u; if (i.decode) i.decode().catch(() => {}); return i; }); } catch (e) {} })();
+(() => { try { window.__homePre = ['kid/sky/logo_anim.webp?v=1','kid/home/play3.webp','kid/home/book3.webp','kid/home/stickers3.webp','kid/home/ach3.webp','kid/home/cahier3.webp','kid/sky/logo.webp?v=1','kid/sky/langpage.webp?v=2','kid/nature/nature02.png','kid/sky/back.webp?v=3','kid/sky/starsc.webp?v=4'].map(u => { const i = new Image(); i.fetchPriority = 'high'; i.decoding = 'async'; i.src = u; if (i.decode) i.decode().catch(() => {}); return i; }); } catch (e) {} })();
 (() => {
-try { window.__menuImgs = ['kid/sky/logo_anim.webp?v=1', 'kid/home/play2.webp', 'kid/home/book2.webp', 'kid/home/stickers2.webp', 'kid/home/ach2.webp', 'kid/home/cahier2.webp'].map(u => { const im = new Image(); im.fetchPriority = 'high'; im.src = u; im.decode && im.decode().catch(() => {}); return im; }); } catch (e) {}
+try { window.__menuImgs = ['kid/sky/logo_anim.webp?v=1', 'kid/home/play3.webp', 'kid/home/book3.webp', 'kid/home/stickers3.webp', 'kid/home/ach3.webp', 'kid/home/cahier3.webp'].map(u => { const im = new Image(); im.fetchPriority = 'high'; im.src = u; im.decode && im.decode().catch(() => {}); return im; }); } catch (e) {}
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -3525,7 +3527,7 @@ function deleteSlot(i, btn) {
 }
 const TUTO = {"fr": {"next": "Suivant", "go": "C’est parti !", "s": [["Bienvenue dans Stickoo !", "Écoute le mot et touche la bonne image. Chaque bonne réponse te donne une étoile ⭐"], ["Gagne des stickers", "Quand tu finis une partie, tu ouvres un cadeau avec un nouveau sticker. Parfois un animal rare se cache dedans !"], ["Débloque des mots", "Plus tu joues, plus de nouveaux mots arrivent. Reconnais un mot 6 fois et il devient doré ✨"], ["Ta collection", "Retrouve tous tes stickers dans « Mes stickers », tes mots dans l’« Imagier » et tes trophées dans « Mes succès »."], ["Ton cahier", "Colle tes stickers où tu veux dans « Mon cahier ». Continue à jouer pour tout collectionner !"]]}, "en": {"next": "Next", "go": "Let’s go!", "s": [["Welcome to Stickoo!", "Listen to the word and tap the right picture. Every right answer gives you a star ⭐"], ["Win stickers", "When you finish a game, you open a gift with a new sticker. Sometimes a rare animal is hiding inside!"], ["Unlock words", "The more you play, the more new words arrive. Find a word 6 times and it turns golden ✨"], ["Your collection", "See all your stickers in “My stickers”, your words in the “Picture book” and your trophies in “My trophies”."], ["Your notebook", "Stick your stickers anywhere in “My notebook”. Keep playing to collect them all!"]]}, "it": {"next": "Avanti", "go": "Andiamo!", "s": [["Benvenuto in Stickoo!", "Ascolta la parola e tocca l’immagine giusta. Ogni risposta giusta ti dà una stella ⭐"], ["Vinci adesivi", "Alla fine di una partita apri un regalo con un nuovo adesivo. A volte dentro c’è un animale raro!"], ["Sblocca parole", "Più giochi, più parole nuove arrivano. Trova una parola 6 volte e diventa dorata ✨"], ["La tua collezione", "Trovi i tuoi adesivi in «I miei adesivi», le parole nel «Libro di immagini» e i trofei in «I miei trofei»."], ["Il tuo quaderno", "Attacca gli adesivi dove vuoi nel «Mio quaderno». Continua a giocare per collezionarli tutti!"]]}, "es": {"next": "Siguiente", "go": "¡Vamos!", "s": [["¡Bienvenido a Stickoo!", "Escucha la palabra y toca la imagen correcta. Cada respuesta correcta te da una estrella ⭐"], ["Gana pegatinas", "Al terminar una partida abres un regalo con una pegatina nueva. ¡A veces hay un animal raro dentro!"], ["Desbloquea palabras", "Cuanto más juegas, más palabras nuevas llegan. Encuentra una palabra 6 veces y se vuelve dorada ✨"], ["Tu colección", "Mira tus pegatinas en «Mis pegatinas», tus palabras en el «Libro de imágenes» y tus trofeos en «Mis trofeos»."], ["Tu cuaderno", "Pega tus pegatinas donde quieras en «Mi cuaderno». ¡Sigue jugando para coleccionarlas todas!"]]}, "ko": {"next": "다음", "go": "시작!", "s": [["스티코에 온 걸 환영해요!", "단어를 듣고 맞는 그림을 눌러요. 맞히면 별을 받아요 ⭐"], ["스티커를 모아요", "게임을 끝내면 선물 상자에서 새 스티커가 나와요. 가끔 희귀 동물도 숨어 있어요!"], ["새 단어가 열려요", "많이 할수록 새 단어가 생겨요. 같은 단어를 6번 맞히면 황금 단어가 돼요 ✨"], ["나의 컬렉션", "스티커는 「내 스티커」, 단어는 「그림책」, 트로피는 「내 트로피」에서 볼 수 있어요."], ["나의 공책", "「내 공책」에 스티커를 마음대로 붙여요. 계속 놀면서 모두 모아 봐요!"]]}, "ja": {"next": "つぎへ", "go": "はじめよう！", "s": [["スティックーへようこそ！", "ことばをきいて、ただしいえをタッチしてね。せいかいするとほしがもらえるよ ⭐"], ["シールをあつめよう", "ゲームがおわるとプレゼントからあたらしいシールがでてくるよ。めずらしいどうぶつがいることも！"], ["ことばがふえるよ", "あそぶほどあたらしいことばがふえるよ。6かいせいかいするときんのことばになるよ ✨"], ["きみのコレクション", "シールは「わたしのシール」、ことばは「えほん」、トロフィーは「わたしのトロフィー」でみられるよ。"], ["きみのノート", "「わたしのノート」にシールをすきなところにはってね。あそびつづけてぜんぶあつめよう！"]]}};
 TUTO.zh = {"next": "下一步", "go": "开始吧！", "s": [["欢迎来到 Stickoo！", "听一听词语，点一下正确的图片。每答对一次就得到一颗星星 ⭐"], ["赢取贴纸", "每玩完一局，你就能打开礼物，得到一张新贴纸。有时里面还藏着稀有动物哦！"], ["解锁词语", "玩得越多，新词语就越多。一个词认对6次，它就会变成金色 ✨"], ["你的收藏", "在“我的贴纸”里看所有贴纸，在“图画书”里看词语，在“我的奖杯”里看奖杯。"], ["你的本子", "在“我的本子”里把贴纸贴在你喜欢的地方。继续玩，把它们全部收集起来吧！"]]}; delete TUTO.it;
-const TUTO_IMG = ['kid/home/play2.webp', 'kid/gift/g00.png', 'kid/home/book2.webp', 'kid/home/stickers2.webp', 'kid/home/cahier2.webp'];
+const TUTO_IMG = ['kid/home/play3.webp', 'kid/gift/g00.png', 'kid/home/book3.webp', 'kid/home/stickers3.webp', 'kid/home/cahier3.webp'];
 function kidTuto(force) {
   let seen = null; try { seen = localStorage.getItem(SK('stickoo-tuto')); } catch (e) {}
   if (seen && !force) return; document.querySelector('.ktuto')?.remove();
@@ -3606,13 +3608,13 @@ function kidsHome() {
   const home = []; for (let i = 0; i < 3; i++) home.push(kidFriend(home));
   $('#kids').innerHTML = kidsHeader(false) + `<div class="khtitle"><i class="khtw" style="left:9%;top:30%;--d:0s;--s:10px"></i><i class="khtw" style="left:30%;top:8%;--d:-0.9s;--s:8px"></i><i class="khtw" style="left:55%;top:4%;--d:-1.7s;--s:9px"></i><i class="khtw" style="left:71%;top:12%;--d:-0.4s;--s:7px"></i><i class="khtw" style="left:96%;top:40%;--d:-2.2s;--s:9px"></i><i class="khtw" style="left:18%;top:72%;--d:-1.3s;--s:8px"></i><i class="khtw" style="left:62%;top:86%;--d:-2.6s;--s:7px"></i><i class="khtw" style="left:88%;top:70%;--d:-0.7s;--s:8px"></i><img src="kid/sky/logo_anim.webp?v=1" alt="Stickoo" draggable="false"><button class="khstars" data-k="album" aria-label="Mes étoiles"><img src="kid/nature/nature02.png" alt=""><b>${kidsState().stars}</b></button></div>
     <div class="kplay khome">
-      <button class="kbig" data-k="listen"><img class="khome-st" src="kid/home/play2.webp" alt=""><span>Jouer !</span><small lang="${LL}">${SPL().sub[0]}</small></button>
-      <button class="kbig" data-k="book"><img class="khome-st" src="kid/home/book2.webp" alt=""><span>Imagier</span><small lang="${LL}">${SPL().sub[1]}</small></button>
-      <button class="kbig" data-k="album"><img class="khome-st" src="kid/home/stickers2.webp" alt=""><span>Mes stickers</span><small lang="${LL}">${SPL().sub[2]}</small></button>
-      <button class="kbig" data-k="ach"><img class="khome-st" src="kid/home/ach2.webp" alt=""><span>Mes succès</span><small lang="${LL}">${SPL().sub[3]}</small></button>
-      <button class="kbig kwide" data-k="board"><img class="khome-st" src="kid/home/cahier2.webp" alt=""><span>Mon cahier</span><small lang="${LL}">${SPL().sub[4]}</small></button>
+      <button class="kbig" data-k="listen"><img class="khome-st" src="kid/home/play3.webp" alt=""><span>Jouer !</span><small lang="${LL}">${SPL().sub[0]}</small></button>
+      <button class="kbig" data-k="book"><img class="khome-st" src="kid/home/book3.webp" alt=""><span>Imagier</span><small lang="${LL}">${SPL().sub[1]}</small></button>
+      <button class="kbig" data-k="album"><img class="khome-st" src="kid/home/stickers3.webp" alt=""><span>Mes stickers</span><small lang="${LL}">${SPL().sub[2]}</small></button>
+      <button class="kbig" data-k="ach"><img class="khome-st" src="kid/home/ach3.webp" alt=""><span>Mes succès</span><small lang="${LL}">${SPL().sub[3]}</small></button>
+      <button class="kbig kwide" data-k="board"><img class="khome-st" src="kid/home/cahier3.webp" alt=""><span>Mon cahier</span><small lang="${LL}">${SPL().sub[4]}</small></button>
     </div>
-    <div class="khome-foot"><button class="kgear" data-k="settings" aria-label="Paramètres"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg></button></div>`;
+    <div class="khome-foot"><button class="kgear" data-k="settings" aria-label="Paramètres"><img class="kgear-ic" src="kid/home/gear3.webp" alt="" draggable="false"></button></div>`;
 }
 
 const KSEASONS = ['', 'spring', 'summer', 'autumn', 'winter', 'forest', 'night', 'mountain', 'sea', 'beach', 'party'], KSEASON_IC = { '': '🌙', spring: '🌸', summer: '☀️', autumn: '🍂', winter: '❄️' }, KSEASON_FX = { spring: ['🌸', '🌸', '🌼', '🦋'], summer: ['✨', '🌼', '✨', '🦋'], autumn: ['🍂', '🍁', '🍂', '🍁'], winter: ['❄️', '❄️', '❅', '❄️'] };
@@ -3722,7 +3724,7 @@ function kidsSettings() {
     <p class="kset-ver">Stickoo · v${APP_VER}</p>
   </div>`;
 }
-const APP_VER = '1.0.44';
+const APP_VER = '1.0.45';
 const KGEAR = `<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>`;
 function kidsThemes(next) {
   K.screen = 'themes'; K.next = next;
@@ -4007,7 +4009,7 @@ function kidFireworks() {
 function kidsSafeWin() {
   K.round = null; K.screen = 'win';
   $('#kids').innerHTML = kidsHeader(true) + `<div class="kwin"><div class="kwin-stars">⭐⭐⭐⭐⭐</div><div class="kwin-title">참 잘했어요!</div>
-    <div class="kplay row2 khome kwinbtns"><button class="kbig" data-k="replay"><img class="khome-st" src="kid/home/play2.webp" alt=""><span>Encore !</span></button><button class="kbig alt2" data-k="home"><img class="khome-st" src="kid/home/cahier2.webp" alt=""><span>Menu</span></button></div></div>`;
+    <div class="kplay row2 khome kwinbtns"><button class="kbig" data-k="replay"><img class="khome-st" src="kid/home/play3.webp" alt=""><span>Encore !</span></button><button class="kbig alt2" data-k="home"><img class="khome-st" src="kid/home/cahier3.webp" alt=""><span>Menu</span></button></div></div>`;
 }
 const KID_ACH = [
   { id: 'r1', img: 'food/f00.webp', name: 'Première victoire', t: k => k.rounds >= 1, p: k => [k.rounds, 1] },
@@ -4149,8 +4151,8 @@ function kidsWin() {
     ${!Rw.mistakes ? `<div class="kwc kwc-lab">${cloudSvg('lab')}<span>Sans aucune erreur !</span></div>` : ''}
     <div class="kwc-prize kframe2"><div class="kf2-in"><span class="kf2-rays"></span></div><img class="kf2-img" src="kid/sky/frame2.webp?v=1" alt="" draggable="false"><div class="kprize closed" id="kprize"><span class="krays"></span><span class="kgift ${kGiftFor(prize).pack ? 'kpack' : ''}" style="background-image:url(${kGiftFor(prize).src})"></span><img src="${kStickerSrc(prize)}" alt="" draggable="false"></div><p class="kf2-lab"><span class="kpuffy kp-ink kfit">${tierOf(prize) === 3 ? 'Une princesse licorne diamant 🦄💎 pour ton album !' : tierOf(prize) === 2 ? 'Une princesse dorée ✨👑 pour ton album !' : tierOf(prize) === 1 ? 'Une nouvelle princesse 👑 pour ton album !' : prize.startsWith('gold/') ? 'Un sticker en or ✨ pour ton album !' : tierOf(prize) === 0 ? 'Une nouvelle amie pour ton album !' : 'Un nouveau sticker pour ton album !'}</span></p></div>
     <div class="kplay row2 khome kwinbtns">
-      <button class="kbig" data-k="replay"><img class="khome-st" src="kid/home/play2.webp" alt=""><span>Encore !</span></button>
-      <button class="kbig alt2" data-k="album"><img class="khome-st" src="kid/home/stickers2.webp" alt=""><span>Mon album</span></button>
+      <button class="kbig" data-k="replay"><img class="khome-st" src="kid/home/play3.webp" alt=""><span>Encore !</span></button>
+      <button class="kbig alt2" data-k="album"><img class="khome-st" src="kid/home/stickers3.webp" alt=""><span>Mon album</span></button>
     </div></div>`;
   try { kFitText(); setTimeout(kFitText, 400); } catch (er) {}
   try { kidVictoryTune(); kidFireworks(); } catch (er) {}
@@ -4311,7 +4313,7 @@ function kidsAlbum() {
   const cell = (f, i) => { const on = k.album.includes(f); const rc = f.startsWith('rare/') ? ' ' + RARITY_INFO[RARITY(i)].cls : ''; return `<button class="kst${rc} ${on ? 'on' : 'locked'} ${tierOf(f) === 2 ? 'gold' : ''} ${tierOf(f) === 3 ? 'diam' : ''}" data-kf="${on ? f : ''}" style="--r:${rot(f, i)}deg" aria-label="${on ? 'Sticker' : 'Emplacement vide'}">${on ? `<img src="${kStickerSrc(f)}" alt="" draggable="false">` : `<img class="ksil" src="${kStickerSrc(f)}" alt="" draggable="false" loading="lazy"><span class="ksil-n">${i + 1}</span>`}</button>`; };
   const page = (title, sub, list, cls = '') => { const n = list.filter(f => k.album.includes(f)).length; return `<section class="kpage ${cls}"><div class="krings" aria-hidden="true">${'<i></i>'.repeat(6)}</div><h3 class="ktape">${title}</h3><p class="kpage-sub">${sub ? sub + ' · ' : ''}${n} / ${list.length}</p><div class="kalbum friends">${list.map(cell).join('')}</div><span class="kpage-no" aria-hidden="true"></span></section>`; };
   const total = k.album.filter(f => KS().includes(f)).length;
-  $('#kids').innerHTML = kidsHeader(true) + `<button class="kfab-play" data-k="listen" aria-label="Jouer"><img src="kid/home/play2.webp" alt=""><span>Jouer !</span></button><div class="kbook-cover"><span class="kcover-gem">💖</span><b>Mon livre de stickers</b><small>나의 스티커북 · ${total} / ${KS().length}</small></div>
+  $('#kids').innerHTML = kidsHeader(true) + `<button class="kfab-play" data-k="listen" aria-label="Jouer"><img src="kid/home/play3.webp" alt=""><span>Jouer !</span></button><div class="kbook-cover"><span class="kcover-gem">💖</span><b>Mon livre de stickers</b><small>나의 스티커북 · ${total} / ${KS().length}</small></div>
     ${page('💖 Mes amies', '', KID_FRIENDS)}
     ${page('👑 Les princesses', 'niveau plus difficile', KID_PRINCESS)}
     ${page('✨ Les princesses dorées', '15 étoiles par partie', KID_GOLD, 'gold')}
