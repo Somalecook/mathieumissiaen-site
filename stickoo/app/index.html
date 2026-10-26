@@ -1794,7 +1794,7 @@ html.kquiz[data-season="party"] #kseasonfx{background:url("data:image/svg+xml,%3
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
 <script>
-(() => { try { window.__homePre = ['kid/sky/logo_anim.webp?v=1','kid/home/play2.webp','kid/home/book2.webp','kid/home/stickers2.webp','kid/home/ach2.webp','kid/home/cahier2.webp','kid/sky/logo.webp?v=1','kid/sky/langpage.webp?v=2','kid/nature/nature02.png','kid/sky/back.webp?v=2','kid/sky/starsc.webp?v=4'].map(u => { const i = new Image(); i.fetchPriority = 'high'; i.decoding = 'async'; i.src = u; if (i.decode) i.decode().catch(() => {}); return i; }); } catch (e) {} })();
+(() => { try { window.__homePre = ['kid/sky/logo_anim.webp?v=1','kid/home/play2.webp','kid/home/book2.webp','kid/home/stickers2.webp','kid/home/ach2.webp','kid/home/cahier2.webp','kid/sky/logo.webp?v=1','kid/sky/langpage.webp?v=2','kid/nature/nature02.png','kid/sky/back.webp?v=3','kid/sky/starsc.webp?v=4'].map(u => { const i = new Image(); i.fetchPriority = 'high'; i.decoding = 'async'; i.src = u; if (i.decode) i.decode().catch(() => {}); return i; }); } catch (e) {} })();
 (() => {
 try { window.__menuImgs = ['kid/sky/logo_anim.webp?v=1', 'kid/home/play2.webp', 'kid/home/book2.webp', 'kid/home/stickers2.webp', 'kid/home/ach2.webp', 'kid/home/cahier2.webp'].map(u => { const im = new Image(); im.fetchPriority = 'high'; im.src = u; im.decode && im.decode().catch(() => {}); return im; }); } catch (e) {}
 const $ = s => document.querySelector(s);
@@ -3434,7 +3434,7 @@ function kidsHeader(back) {
   document.documentElement.classList.toggle('kset-screen', K.screen === 'settings' || K.screen === 'mode');
   const k = kidsState();
   return `<div class="khead">
-    ${back ? `<button class="kbtn kback" data-k="home" aria-label="Retour"><img class="khome-ic karrow" src="kid/sky/back.webp?v=2" alt=""></button>` : `<span></span>`}
+    ${back ? `<button class="kbtn kback" data-k="home" aria-label="Retour"><img class="khome-ic karrow" src="kid/sky/back.webp?v=3" alt=""></button>` : `<span></span>`}
     <button class="kstars" data-k="album" aria-label="Mon album"><b>${k.stars}</b></button>
   </div>`;
 }
@@ -3722,7 +3722,7 @@ function kidsSettings() {
     <p class="kset-ver">Stickoo · v${APP_VER}</p>
   </div>`;
 }
-const APP_VER = '1.0.42';
+const APP_VER = '1.0.43';
 const KGEAR = `<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>`;
 function kidsThemes(next) {
   K.screen = 'themes'; K.next = next;
