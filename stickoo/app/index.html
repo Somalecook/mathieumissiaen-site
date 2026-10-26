@@ -3722,7 +3722,7 @@ function kidsSettings() {
     <p class="kset-ver">Stickoo · v${APP_VER}</p>
   </div>`;
 }
-const APP_VER = '1.0.43';
+const APP_VER = '1.0.44';
 const KGEAR = `<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>`;
 function kidsThemes(next) {
   K.screen = 'themes'; K.next = next;
@@ -4017,7 +4017,7 @@ const KID_ACH = [
   { id: 'r50', img: 'food/f04.webp', name: '50 parties gagnées', t: k => k.rounds >= 50, p: k => [k.rounds, 50] },
   { id: 'r100', img: 'food/f05.webp', name: '100 parties gagnées', t: k => (k.rounds) >= 100, p: k => [k.rounds, 100] },
   { id: 'r200', img: 'food/f06.webp', name: '200 parties gagnées', t: k => (k.rounds) >= 200, p: k => [k.rounds, 200] },
-  { id: 'p1', img: 'food/f07.webp', name: 'Une partie sans erreur', t: k => (k.perfect || 0) >= 1, p: k => [k.perfect || 0, 1] },
+  { id: 'p1', img: 'food/f07.webp', name: '3 parties sans erreur', t: k => (k.perfect || 0) >= 3, p: k => [k.perfect || 0, 3] },
   { id: 'p5', img: 'food/f08.webp', name: '5 parties sans erreur', t: k => (k.perfect || 0) >= 5, p: k => [k.perfect || 0, 5] },
   { id: 'p10', img: 'food/f09.webp', name: '10 parties sans erreur', t: k => (k.perfect || 0) >= 10, p: k => [k.perfect || 0, 10] },
   { id: 'p25', img: 'food/f10.webp', name: '25 parties sans erreur', t: k => (k.perfect || 0) >= 25, p: k => [k.perfect || 0, 25] },
