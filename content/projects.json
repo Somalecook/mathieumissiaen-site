@@ -1647,16 +1647,16 @@
     },
     {
       "slug": "la-prairie",
-      "title": "La Prairie — Art Basel",
+      "title": "La Prairie — The Art of Caviar",
       "display": "La Prairie",
       "kind": "commission",
       "feature": false,
       "client": "La Prairie",
-      "year": "",
+      "year": "2017",
       "kicker": "",
       "subtitle": "",
       "tagline": "",
-      "intro": "Backlit images on water, light and matter for La Prairie, shown at Art Basel Shanghai, Miami Beach and Paris.",
+      "intro": "The Art of Caviar — a travelling exhibition for La Prairie, celebrating 30 years of its Skin Caviar line. It opened at Art Basel in June 2017, then toured Paris, New York, Hong Kong and Shanghai, alongside works by Paul Coudamy, Bonjour Lab and TremensS. Our studio, 5fruits, made a series of backlit images exploring the science of the skin through matter and light: water drops gathered into a blue glow, a black sun crowned with electric discharge, a golden sphere sinking into rings of water, cells blown in glass, relief maps printed in 3D like veins of skin.",
       "medium": "Photography, CGI, 3D print",
       "cover": "images/la-prairie/03-eclipse.jpg",
       "theme": {
@@ -1789,12 +1789,20 @@
           "name": "La Prairie"
         },
         {
+          "role": "Exhibition",
+          "name": "The Art of Caviar — 30 years of Skin Caviar"
+        },
+        {
           "role": "Images",
-          "name": "Mathieu Missiaen"
+          "name": "Mathieu Missiaen / 5fruits"
         },
         {
           "role": "Shown at",
-          "name": "Art Basel — Shanghai, Miami Beach, Paris"
+          "name": "Art Basel, Paris, New York, Hong Kong, Shanghai — 2017"
+        },
+        {
+          "role": "With",
+          "name": "Paul Coudamy, Bonjour Lab, TremensS"
         }
       ],
       "chapters": null
