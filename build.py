@@ -24,6 +24,7 @@ def load(name):
 
 
 site, projects, films = load('site'), load('projects')['projects'], load('films')
+SERVICES = load('services')['services'] if os.path.exists(os.path.join(ROOT, 'content', 'services.json')) else []
 NAME = site['name']
 C = site['contact']
 e = lambda s: html.escape(str(s or ''), quote=True)
@@ -54,11 +55,15 @@ def og_image(src):
 
 PERSON = {
     '@type': 'Person', '@id': SITE_URL + '/#person', 'name': NAME, 'url': SITE_URL + '/',
-    'jobTitle': 'Creative director, photographer, director and CGI artist',
+    'jobTitle': 'Creative director, CGI artist, photographer and director',
+    'description': site['about']['short'],
+    'hasOccupation': [{'@type': 'Occupation', 'name': n, 'occupationLocation': {'@type': 'City', 'name': 'Paris'}} for n in
+                      ['Creative director', 'CGI artist', '3D artist', 'Photographer', 'Film director']],
     'email': 'mailto:' + C.get('email', ''),
     'address': {'@type': 'PostalAddress', 'addressLocality': 'Paris', 'addressCountry': 'FR'},
     'sameAs': [u for u in [C.get('instagram'), C.get('vimeo'), C.get('tiktok'), C.get('iolo')] if u],
-    'knowsAbout': ['Art direction', 'Photography', 'CGI', 'Houdini', '3D', 'Film direction', 'Vibe coding'],
+    'knowsAbout': ['Art direction', 'CGI', '3D', 'Houdini', 'Cinema 4D', 'Still life photography', 'Campaign photography',
+                   'Film direction', 'Motion design', 'Generative AI', 'AI image making', 'Vibe coding', 'Creative coding'],
 }
 
 FONT_LINKS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
@@ -75,9 +80,13 @@ def nav_html():
             % (e(NAME), ''.join('<a class="navlink" href="%s">%s</a>' % (h, e(t)) for h, t in links)))
 
 
+def services_html():
+    return ''.join('<a href="/services/%s/">%s</a>' % (s['slug'], e(s['label'])) for s in SERVICES)
+
+
 def foot_html():
-    return ('<footer class="wrap site-foot"><a href="mailto:%s">%s</a> · <a href="%s" rel="me">Instagram</a> · '
-            '<a href="%s" rel="me">Vimeo</a> · Paris</footer>' % (e(C['email']), e(C['email']), e(C.get('instagram')), e(C.get('vimeo'))))
+    return ('<footer class="wrap site-foot"><nav class="svc-links" aria-label="Services">%s</nav><a href="mailto:%s">%s</a> · <a href="%s" rel="me">Instagram</a> · '
+            '<a href="%s" rel="me">Vimeo</a> · Paris</footer>' % (services_html(), e(C['email']), e(C['email']), e(C.get('instagram')), e(C.get('vimeo'))))
 
 
 def page(path, title, desc, body_attrs, content, image, jsonld, og_type='website', robots='index, follow'):
@@ -136,8 +145,8 @@ pages = []
 home_desc = site.get('seo', {}).get('description') or site['about']['short']
 lst = ''.join('<li><a href="/work/%s/">%s</a>%s%s</li>' % (
     p['slug'], e(p['title']), (' — ' + e(p['client'])) if p.get('client') else '', (' — ' + e(p['year'])) if p.get('year') else '') for p in visible)
-home_content = ('<h1>%s — Image IRL &amp; CGI</h1><p>%s</p><h2>Selected work</h2><ul>%s</ul>'
-                '<p>Clients: %s.</p>' % (e(NAME), e(home_desc), lst, e(', '.join(site['about']['clients']))))
+home_content = ('<h1>%s — Image IRL &amp; CGI</h1><p>%s</p><h2>Services</h2><ul>%s</ul><h2>Selected work</h2><ul>%s</ul>'
+                '<p>Clients: %s.</p>' % (e(NAME), e(home_desc), ''.join('<li><a href="/services/%s/">%s</a></li>' % (s['slug'], e(s['title'])) for s in SERVICES), lst, e(', '.join(site['about']['clients']))))
 home_ld = {'@context': 'https://schema.org', '@graph': [
     PERSON,
     {'@type': 'WebSite', '@id': SITE_URL + '/#website', 'url': SITE_URL + '/', 'name': NAME, 'inLanguage': 'en', 'publisher': {'@id': SITE_URL + '/#person'}},
@@ -150,10 +159,12 @@ pages.append(('', '1.0'))
 for i, p in enumerate(visible):
     imgs = [im for im in all_images(p) if is_image(im['src'])]
     still = next((im['src'] for im in imgs if im['src'].lower().endswith(('.jpg', '.jpeg', '.png'))), p.get('cover'))
-    title = '%s — %s%s' % (plain(p['title']), (p['client'] + ' — ') if p.get('client') and p['client'] not in p['title'] else '', NAME)
+    who = (p['client'] + ' ') if p.get('client') and p['client'] not in p['title'] else ''
+    what = (who + ('campaign' if p['kind'] == 'commission' else 'personal series')).strip()
+    title = '%s — %s%s | %s' % (plain(p['title']), what, (', ' + ' &'.join(p['medium'].rsplit(',', 1))) if p.get('medium') else '', NAME)
     desc = plain(p.get('intro')) or ('%s by %s, %s.' % (p['title'], NAME, 'personal research' if p['kind'] == 'research' else 'commission'))
     figs = ''.join('<figure><img src="%s" alt="%s" width="%d" height="%d" loading="lazy"></figure>' % (
-        e(im['src']), e(plain(im.get('title')) or plain(p['title'])), *ratio_wh(im.get('ratio'))) for im in imgs[:24])
+        e(im['src']), e('%s — %s%s by %s' % (plain(im.get('title')) or plain(p['title']), (p['client'] + ', ') if p.get('client') else '', (p.get('medium') or 'image').lower(), NAME)), *ratio_wh(im.get('ratio'))) for im in imgs[:24])
     credits = ''.join('<li>%s: %s</li>' % (e(c['role']), e(c['name'])) for c in p.get('credits') or [])
     content = ('<p><a href="/">Work</a> / %s</p><h1>%s</h1><p>%s</p>%s%s%s' % (
         'Research' if p['kind'] == 'research' else 'Commissions', e(plain(p['title'])), e(desc),
@@ -198,6 +209,34 @@ ab = '<h1>About %s</h1><p>%s</p>%s<h2>Selected clients</h2><p>%s</p><h2>Contact<
 write('about.html', page('about.html', 'About — ' + NAME, A['short'], 'data-page="about"', ab, default_img,
                          {'@context': 'https://schema.org', '@type': 'ProfilePage', 'url': SITE_URL + '/about.html', 'mainEntity': PERSON}))
 pages.append(('about.html', '0.6'))
+
+# ---------- service pages (keyword landing pages) ----------
+byslug = {p['slug']: p for p in visible}
+for s in SERVICES:
+    ps = [byslug[x] for x in s.get('projects', []) if x in byslug]
+    cards = ''.join('<a class="svc-card" href="/work/%s/"><img src="%s" alt="%s" loading="lazy"><span>%s%s</span></a>' % (
+        p['slug'], e(p['cover']), e('%s — %s by %s' % (plain(p['title']), (p.get('medium') or s['label']).lower(), NAME)), e(plain(p['title'])),
+        (' <em>' + e(p['client']) + '</em>') if p.get('client') and p['client'].lower() not in plain(p['title']).lower() else '') for p in ps)
+    fl2 = ''.join('<li><a href="/film.html">%s — %s</a>%s</li>' % (e(f['client']), e(f['title']), (' (' + e(f['year']) + ')') if f.get('year') else '') for f in F) if s.get('films') else ''
+    links = ''.join('<li><a href="%s">%s</a></li>' % (e(k['href']), e(k['label'])) for k in s.get('links', []))
+    others = ''.join('<a href="/services/%s/">%s</a>' % (o['slug'], e(o['label'])) for o in SERVICES if o is not s)
+    content = ('<p class="svc-kicker">%s · Paris</p><h1>%s</h1><p class="svc-lead">%s</p>%s<p lang="fr" class="svc-fr">%s</p>'
+               '%s%s%s<p><a class="pill" href="mailto:%s?subject=%s">Start a project →</a></p><p class="svc-others">Also: %s</p>') % (
+        e(s['label']), e(s['title']), e(s['intro']), ''.join('<p>%s</p>' % e(x) for x in s.get('body', [])), e(s.get('fr', '')),
+        ('<h2>Selected work</h2><div class="svc-grid">%s</div>' % cards) if cards else '',
+        ('<h2>Films</h2><ul>%s</ul>' % fl2) if fl2 else '', ('<ul>%s</ul>' % links) if links else '',
+        e(C['email']), e(s['label']), others)
+    ld = {'@context': 'https://schema.org', '@graph': [
+        {'@type': 'Service', 'name': s['title'], 'serviceType': s['label'], 'description': s['description'],
+         'provider': {'@id': SITE_URL + '/#person'}, 'areaServed': ['Paris', 'France', 'Europe', 'Worldwide'],
+         'url': '%s/services/%s/' % (SITE_URL, s['slug'])},
+        {'@type': 'BreadcrumbList', 'itemListElement': [
+            {'@type': 'ListItem', 'position': 1, 'name': NAME, 'item': SITE_URL + '/'},
+            {'@type': 'ListItem', 'position': 2, 'name': s['label'], 'item': '%s/services/%s/' % (SITE_URL, s['slug'])}]},
+        PERSON]}
+    img = ps[0]['cover'] if ps else default_img
+    write('services/%s/index.html' % s['slug'], page('services/%s/' % s['slug'], s['metaTitle'], s['description'], 'data-page="service"', content, img, ld))
+    pages.append(('services/%s/' % s['slug'], '0.9'))
 
 # ---------- legacy project.html#slug → /work/slug/ ----------
 write('project.html', """<!doctype html><html lang="en"><head><meta charset="utf-8"><title>%s</title>

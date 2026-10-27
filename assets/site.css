@@ -298,3 +298,22 @@ img,video,iframe{max-width:100%}
 .f-imgs.quad .f-car img{object-fit:cover}
 .f-imgs.quad .f-car{background:transparent}
 @media (max-width:820px){.f-imgs.quad[style*="--r"]{aspect-ratio:auto}.f-imgs.quad .f-car{aspect-ratio:var(--r) / 1}}
+/* services: footer links + landing pages */
+.svc-links{display:flex;flex-wrap:wrap;gap:6px 22px;justify-content:center;padding-block:28px 0;color:var(--muted)}
+.svc-links a:hover{color:var(--fg)}
+.site-foot .svc-links{width:100%;justify-content:flex-start;padding:0 0 12px}
+.seo-pre.svc{max-width:none;padding-block:56px 40px;gap:18px}
+.svc .svc-kicker{margin:0;color:var(--muted)}
+.svc h1{font-size:clamp(40px,7vw,104px);line-height:.95;max-width:1100px;letter-spacing:-.02em}
+.svc .svc-lead{margin:8px 0 0;font-family:var(--serif);font-size:clamp(22px,2.4vw,34px);line-height:1.2;max-width:900px}
+.svc p{max-width:640px;line-height:1.75;margin:0;font-size:13px}
+.svc .svc-fr{color:var(--muted);font-style:italic}
+.svc h2{margin-top:36px;font-size:30px}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:8px}
+.svc-card{position:relative;display:block;aspect-ratio:4/5;overflow:hidden;background:var(--panel)}
+.svc-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.svc-card:hover img{transform:scale(1.03)}
+.svc-card span{position:absolute;left:0;right:0;bottom:0;padding:24px 10px 9px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.55));font-size:12px}
+.svc-card em{font-family:var(--serif);font-size:15px}
+.svc .pill{margin-top:20px}
+.svc .svc-others a{border-bottom:1px solid currentColor;margin-right:12px}

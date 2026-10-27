@@ -45,6 +45,7 @@
   function footer(site) {
     var m = site.contact.email;
     return '<section class="wrap mail-cta"><a class="mail-btn" href="mailto:' + esc(m) + '?subject=' + encodeURIComponent('Hello Mathieu') + '">Write to me <span aria-hidden="true">→</span></a><span class="mail">' + esc(m) + '</span></section>' +
+      (window.__SERVICES && window.__SERVICES.length ? '<nav class="wrap svc-links" aria-label="Services">' + window.__SERVICES.map(function (v) { return '<a href="services/' + v.slug + '/">' + esc(v.label) + '</a>'; }).join('') + '</nav>' : '') +
       '<footer class="wrap site-foot"><span class="mail">' + esc(site.contact.email) + '</span>' + (site.contact.iolo ? '<a href="' + esc(site.contact.iolo) + '" target="_blank" rel="noopener">Also: iolo.paris — objects, art direction ↗</a>' : '') + '<span>© ' + new Date().getFullYear() + ' — Paris</span></footer>';
   }
 
@@ -528,7 +529,8 @@
   // ---------- boot ----------
   var page = document.body.getAttribute('data-page');
   var need = { home: ['site', 'projects', 'films'], project: ['site', 'projects'], gallery: ['site', 'projects'], film: ['site', 'films', 'projects'], about: ['site', 'projects'] }[page] || ['site', 'projects'];
-  Promise.all(need.map(getJSON)).then(function (r) {
+  var svcP = fetch('content/services.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : { services: [] }; }).then(function (d) { window.__SERVICES = d.services || []; }, function () { window.__SERVICES = []; });
+  Promise.all(need.map(getJSON).concat([svcP])).then(function (r) {
     var site = r[0], data = r[1];
     var projs = (r[need.indexOf('projects')] || {}).projects || [];
     window.__TABS = projs.filter(function (p) { return p.tab; });
@@ -538,6 +540,11 @@
     else if (page === 'gallery') renderGallery(site, data);
     else if (page === 'film') renderFilm(site, data);
     else if (page === 'about') renderAbout(site);
+    else if (page === 'service') {
+      // service pages are written by build.py: keep their content, swap in the live header and footer
+      var app = document.getElementById('app'), pre = app.querySelector('.seo-pre');
+      app.innerHTML = header('services', site) + '<div class="wrap seo-pre svc">' + (pre ? pre.innerHTML : '') + '</div>' + footer(site);
+    }
   }).catch(function (e) {
     document.getElementById('app').innerHTML = '<p class="wrap" style="padding-block:80px">The content could not be loaded (' + esc(e.message) + ').</p>';
   });

@@ -264,3 +264,31 @@ content:
           - { name: vimeo, label: "Lien Vimeo", type: string }
           - { name: tiktok, label: "Lien TikTok", type: string }
           - { name: iolo, label: "Lien iolo.paris", type: string }
+  - name: services
+    label: "Pages Services (référencement)"
+    type: file
+    path: content/services.json
+    format: json
+    fields:
+      - name: services
+        label: Services
+        type: object
+        list: true
+        fields:
+          - { name: slug, label: "Identifiant (url /services/…/)", type: string, required: true }
+          - { name: label, label: "Nom court (menu)", type: string }
+          - { name: title, label: "Titre de la page (H1)", type: string }
+          - { name: metaTitle, label: "Titre Google (≈ 60 caractères)", type: string }
+          - { name: description, label: "Description Google (≈ 155 caractères)", type: text }
+          - { name: intro, label: "Introduction", type: text }
+          - { name: body, label: Paragraphes, type: text, list: true }
+          - { name: fr, label: "Résumé en français", type: text }
+          - { name: projects, label: "Projets liés (identifiants)", type: string, list: true }
+          - { name: films, label: "Afficher la liste des films", type: boolean }
+          - name: links
+            label: Liens
+            type: object
+            list: true
+            fields:
+              - { name: label, label: Texte, type: string }
+              - { name: href, label: Lien, type: string }

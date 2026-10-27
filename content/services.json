@@ -1,0 +1,107 @@
+{
+  "services": [
+    {
+      "slug": "cgi",
+      "label": "CGI & 3D",
+      "title": "CGI artist & 3D art director in Paris",
+      "metaTitle": "CGI Artist & 3D Art Director in Paris — Houdini, Cinema 4D | Mathieu Missiaen",
+      "description": "Paris-based CGI artist and 3D art director. Photoreal CGI, product visuals and campaigns in Houdini and Cinema 4D for Amazon Japan, Suntory, La Prairie, Loewe.",
+      "intro": "Mathieu Missiaen is a Paris-based CGI artist and 3D art director. He builds photoreal images, objects and simulations in Houdini and Cinema 4D — liquids, glass, frozen fruit, materials that behave like the real thing — and takes them from first sketch to final render.",
+      "body": [
+        "Recent CGI work includes global campaigns with Wieden+Kennedy Tokyo for Amazon Japan / Prime Video and Suntory -196, backlit images shown at Art Basel for La Prairie, and product content for Loewe.",
+        "The same tools drive his personal research: masks rebuilt in Houdini, procedural generators, custom lens shaders. Commissions get both the art direction and the hands-on CGI execution."
+      ],
+      "fr": "Artiste 3D / CGI et directeur artistique à Paris : images de synthèse photoréalistes, packshots, simulations et campagnes réalisés sous Houdini et Cinema 4D, de la direction artistique au rendu final.",
+      "projects": [
+        "amazon-japan",
+        "suntory-196",
+        "la-prairie",
+        "anti",
+        "aichmophobia",
+        "tal",
+        "studies"
+      ]
+    },
+    {
+      "slug": "photography",
+      "label": "Photography",
+      "title": "Still life & campaign photographer in Paris",
+      "metaTitle": "Still Life & Campaign Photographer in Paris — Fashion, Luxury, Beauty | Mathieu Missiaen",
+      "description": "Paris still life and campaign photographer and art director. Photography for Kenzo, Rolls-Royce, Acne Paper and beauty houses, from set design to final image.",
+      "intro": "Mathieu Missiaen is a still life and campaign photographer based in Paris. Trained in set design, he builds what he shoots: objects, liquids, flowers and products lit like portraits.",
+      "body": [
+        "He art-directed and photographed the worldwide Kenzo Move campaign, an editorial series on the Rolls-Royce Dawn, fragrance and beauty still lifes, and the Acne Paper 30th anniversary images shown in Acne Studios windows worldwide.",
+        "Photography and CGI often meet in the same image: a real set, extended or rebuilt in 3D."
+      ],
+      "fr": "Photographe nature morte et campagne à Paris : mode, luxe, beauté, parfum. Direction artistique, décor et prise de vue pour Kenzo, Rolls-Royce, Acne Paper.",
+      "projects": [
+        "kenzo-move",
+        "acne-paper",
+        "rolls-royce",
+        "fragrance-still-life",
+        "sept",
+        "plates"
+      ]
+    },
+    {
+      "slug": "film",
+      "label": "Film & motion",
+      "title": "Director — fashion, luxury & beauty films",
+      "metaTitle": "Director in Paris — Fashion, Luxury & Beauty Films, Motion & CGI | Mathieu Missiaen",
+      "description": "Paris-based director of fashion and luxury films, motion design and CGI animation for Hermès, Dior, Loewe, Kenzo, Audemars Piguet and Nike.",
+      "intro": "Mathieu Missiaen directs short films for fashion, luxury and beauty houses — shot with motion control, simulated in CGI, or both.",
+      "body": [
+        "Films include the Hermès Bolide campaign, Dior One Essential, Audemars Piguet Royal Oak Openwork, Kenzo Move Revolution, Nike TN La Requin and several pieces for Loewe, from runway launches to the Loewe × Studio Ghibli collaboration.",
+        "Every film is available on the Moving image page."
+      ],
+      "fr": "Réalisateur à Paris : films de mode, de luxe et de beauté, motion control, motion design et animation 3D pour Hermès, Dior, Loewe, Kenzo, Audemars Piguet, Nike.",
+      "projects": [
+        "kenzo-move",
+        "anti",
+        "la-prairie"
+      ],
+      "films": true
+    },
+    {
+      "slug": "ai",
+      "label": "AI images",
+      "title": "AI image making & generative workflows",
+      "metaTitle": "AI Image Making & Generative Workflows for Brands — Paris | Mathieu Missiaen",
+      "description": "Generative AI, node-based workflows and Houdini combined into a hands-on image practice for brands and personal research, by a Paris creative director.",
+      "intro": "Mathieu Missiaen uses generative AI the way he uses a camera or Houdini: as one more tool in a controlled, art-directed pipeline. Node-based workflows, his own references and 3D scans keep the result specific instead of generic.",
+      "body": [
+        "His research on masks mixes hand-made sculpture, photography, Houdini and generative tools, and he explores models trained on his own images. For brands, AI is used for exploration, look development and moving tests — always finished with real craft."
+      ],
+      "fr": "IA générative et workflows nodaux au service de l'image : recherche, look development, tests animés, toujours combinés à la photo et à la 3D pour un résultat sur mesure.",
+      "projects": [
+        "tal",
+        "aichmophobia",
+        "studies"
+      ]
+    },
+    {
+      "slug": "vibe-coding",
+      "label": "Vibe coding",
+      "title": "Vibe coding — apps, tools & websites built with AI",
+      "metaTitle": "Vibe Coding — Apps, Creative Tools & Websites Built with AI | Mathieu Missiaen",
+      "description": "A creative director who vibe codes: Stickoo, a language app for children, interactive tools and this portfolio website, built with AI.",
+      "intro": "Mathieu Missiaen vibe codes: he designs and ships software by working with AI, the way an art director works with a team. The result is real, published work.",
+      "body": [
+        "Stickoo is his language-learning app for children — words collected as stickers, in English, French, Spanish, Korean, Japanese and Chinese. He also built this portfolio website, a rashguard customiser and other small creative tools.",
+        "For brands, the same approach makes interactive campaign pieces, prototypes and microsites fast to try and easy to change."
+      ],
+      "fr": "Vibe coding : applications, outils créatifs et sites web conçus avec l'IA — dont Stickoo, une app pour apprendre les langues aux enfants, et ce site.",
+      "projects": [],
+      "links": [
+        {
+          "label": "Stickoo — the app",
+          "href": "/stickoo/"
+        },
+        {
+          "label": "Rash Lab — rashguard tool",
+          "href": "/lab/rash-lab/index.html"
+        }
+      ]
+    }
+  ]
+}
