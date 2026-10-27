@@ -69,7 +69,8 @@ FONT_LINKS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
 def nav_html():
     tabs = [p for p in projects if p.get('tab')]
     links = [('/', 'Work')] + [('/work/%s/' % p['slug'], p['tab']) for p in tabs] + \
-            [('/gallery.html', 'Gallery'), ('/film.html', 'Moving image'), ('/about.html', 'About')]
+            [('/gallery.html', 'Gallery'), ('/film.html', 'Moving image'), ('/about.html', 'About')] + \
+            [('/' + k['href'].lstrip('/'), k['label']) for k in site.get('links', [])]
     return ('<header class="wrap site-head"><a href="/">%s</a><nav aria-label="Site">%s</nav></header>'
             % (e(NAME), ''.join('<a class="navlink" href="%s">%s</a>' % (h, e(t)) for h, t in links)))
 

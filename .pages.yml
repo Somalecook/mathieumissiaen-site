@@ -116,6 +116,13 @@ content:
             fields:
               - { name: role, label: Rôle, type: string }
               - { name: name, label: Nom, type: string }
+      - name: links
+        label: "Liens en plus dans le menu"
+        type: object
+        list: true
+        fields:
+          - { name: label, label: Texte, type: string }
+          - { name: href, label: "Lien (ex : stickoo/)", type: string }
       - name: seo
         label: "Référencement (Google)"
         type: object

@@ -257,5 +257,11 @@
     "iolo": "https://iolo.paris",
     "instagramFeed": "",
     "instagramCount": 8
-  }
+  },
+  "links": [
+    {
+      "label": "Stickoo",
+      "href": "stickoo/"
+    }
+  ]
 }
