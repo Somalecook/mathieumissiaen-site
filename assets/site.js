@@ -34,7 +34,7 @@
     var c = site.contact;
     function l(href, label, key) { return '<a class="navlink" href="' + href + '"' + (active === key ? ' aria-current="page"' : '') + '>' + label + '</a>'; }
     return '<header class="wrap site-head"><a href="index.html">' + esc(site.name) + '</a><nav aria-label="Site">' +
-      l('index.html', 'Work', 'work') + (window.__TABS || []).map(function (t) { return l('project.html#' + t.slug, esc(t.tab), 'tab-' + t.slug); }).join('') + l('gallery.html', 'Gallery', 'gallery') + l('film.html', 'Moving image', 'film') + l('about.html', 'About', 'about') +
+      l('index.html', 'Work', 'work') + (window.__TABS || []).map(function (t) { return l('work/' + t.slug + '/', esc(t.tab), 'tab-' + t.slug); }).join('') + l('gallery.html', 'Gallery', 'gallery') + l('film.html', 'Moving image', 'film') + l('about.html', 'About', 'about') +
       '<span class="sep" aria-hidden="true"></span>' +
       '<a class="navlink" href="' + esc(c.instagram) + '" target="_blank" rel="noopener">Instagram ↗</a>' +
       (c.vimeo ? '<a class="navlink" href="' + esc(c.vimeo) + '" target="_blank" rel="noopener">Vimeo ↗</a>' : '') +
@@ -134,12 +134,12 @@
       return '<section class="feature"><div class="wrap"><div class="feature-grid' + (i % 2 ? ' flip' : '') + '">' +
         '<div class="f-text">' + (f.label ? '<span class="muted">' + esc(f.label) + '</span>' : '') +
         (p.kicker ? '<span style="font-family:' + esc(t.fontCss) + ';font-size:22px" class="muted">' + esc(p.kicker) + '</span>' : '') +
-        '<a href="project.html#' + p.slug + '" ' + (p.displayLang ? 'lang="' + p.displayLang + '" ' : '') + 'style="font-family:' + esc(t.fontCss) + ';font-weight:' + t.titleWeight + ';font-style:' + (t.titleItalic ? 'italic' : 'normal') + ';font-size:' + (p.display.length > 6 ? 'clamp(44px,4.6vw,84px)' : 'clamp(56px,7vw,120px)') + ';line-height:.9;letter-spacing:' + (t.titleTracking || '-.02em') + ';overflow-wrap:break-word">' + esc(p.display) + '</a>' +
+        '<a href="work/' + p.slug + '/" ' + (p.displayLang ? 'lang="' + p.displayLang + '" ' : '') + 'style="font-family:' + esc(t.fontCss) + ';font-weight:' + t.titleWeight + ';font-style:' + (t.titleItalic ? 'italic' : 'normal') + ';font-size:' + (p.display.length > 6 ? 'clamp(44px,4.6vw,84px)' : 'clamp(56px,7vw,120px)') + ';line-height:.9;letter-spacing:' + (t.titleTracking || '-.02em') + ';overflow-wrap:break-word">' + esc(p.display) + '</a>' +
         (p.subtitle ? '<span class="serif" style="font-size:24px;line-height:1.15">' + (p.slug === 'tal' ? 'TAL — ' : '') + rich(p.subtitle) + '</span>' : '') +
         '<p style="margin:0;line-height:1.75;max-width:400px;opacity:.85">' + esc(f.text || p.intro) + '</p>' +
-        '<a class="pill" href="project.html#' + p.slug + '">' + (p.kind === 'research' ? 'Enter the series →' : 'See the project →') + '</a></div>' +
-        '<a class="f-imgs' + (imgs.length === 2 ? ' duo' : imgs.length === 4 ? ' quad' : '') + '" href="project.html#' + p.slug + '" aria-label="' + esc(p.title) + '">' + imgs.map(function (im) {
-          return '<img loading="lazy" src="' + im.src + '" alt="' + esc(plain(im.title)) + '" style="background:' + (im.bg || '#000') + '">';
+        '<a class="pill" href="work/' + p.slug + '/">' + (p.kind === 'research' ? 'Enter the series →' : 'See the project →') + '</a></div>' +
+        '<a class="f-imgs' + (imgs.length === 2 ? ' duo' : imgs.length === 4 ? ' quad' : '') + '" href="work/' + p.slug + '/" aria-label="' + esc(p.title) + '">' + imgs.map(function (im) {
+          return '<img loading="lazy" src="' + im.src + '" alt="' + esc(plain(im.title) || plain(p.title)) + '" style="background:' + (im.bg || '#000') + '">';
         }).join('') + '</a></div></div></section>';
     }
     function filmFeature(fm, i, f) {
@@ -170,7 +170,7 @@
     document.getElementById('app').innerHTML = header('work', site) +
       (function () {
         var L = site.home && site.home.latest;
-        var title = '<div class="hero-wrap"><p class="hero-title">Image <em>IRL</em><br>&amp; <em>CGI</em></p><img class="sticker" src="images/sticker.png" alt="" width="108" height="132"></div>';
+        var title = '<div class="hero-wrap"><h1 class="hero-title">Image <em>IRL</em><br>&amp; <em>CGI</em></h1><img class="sticker" src="images/sticker.png" alt="" width="108" height="132"></div>';
         var items = L && (L.items || (L.src ? [L] : []));
         if (!items || !items.length) return '<section class="wrap" style="padding-block:112px 96px">' + title + '</section>';
         loadFont('Gowun+Dodum');
@@ -190,7 +190,7 @@
         if (!cs.length) return '';
         var card = function (p, clone) {
           var cover = p.cover || (allImages(p)[0] || {}).src;
-          return '<a class="car-card" href="project.html#' + p.slug + '"' + (clone ? ' aria-hidden="true" tabindex="-1"' : '') + '><div class="car-ph"><img loading="lazy" src="' + cover + '" alt=""></div>' +
+          return '<a class="car-card" href="work/' + p.slug + '/"' + (clone ? ' aria-hidden="true" tabindex="-1"' : '') + '><div class="car-ph"><img loading="lazy" src="' + cover + '" alt=""></div>' +
             '<span class="car-name">' + esc(p.title) + '</span></a>';
         };
         return '<section class="car" aria-label="Commissions"><div class="wrap"><div class="car-head"><span style="font-family:\'Syne\',sans-serif;font-weight:800;font-size:clamp(28px,3.4vw,48px);letter-spacing:-.04em;line-height:1">Commissions</span>' +
@@ -240,12 +240,12 @@
         }, []));
         box.innerHTML = '<div class="wall">' + ims.map(function (x) {
           var p = x.p, tag = p.galleryOnly ? 'div' : 'a';
-          return '<' + tag + ' class="w"' + (p.galleryOnly ? '' : ' href="project.html#' + p.slug + '"') + '><div class="ph" style="aspect-ratio:' + (x.ratio || '4 / 5') + ';background:' + (x.bg || '#D2D0CA') + '"><img loading="lazy" src="' + x.src + '" alt="' + esc(p.title) + '"></div>' +
+          return '<' + tag + ' class="w"' + (p.galleryOnly ? '' : ' href="work/' + p.slug + '/"') + '><div class="ph" style="aspect-ratio:' + (x.ratio || '4 / 5') + ';background:' + (x.bg || '#D2D0CA') + '"><img loading="lazy" src="' + x.src + '" alt="' + esc(p.title) + '"></div>' +
             '<span class="w-cap"><span>' + esc(p.title) + '</span>' + (p.client && p.kind === 'commission' ? '<span class="serif it">' + esc(p.client) + '</span>' : '') + '</span></' + tag + '>';
         }).join('') + '</div>';
       } else {
         box.innerHTML = '<div class="rule">' + list.map(function (p, i) {
-          return '<a class="idx-row" href="project.html#' + p.slug + '"><span style="width:40px" class="muted">' + pad(i + 1) + '</span><span class="serif" style="flex:1 1 360px;font-size:34px;line-height:1.05">' + esc(p.title) + (p.client && p.kind === 'commission' ? ', <span class="it">for ' + esc(p.client) + '</span>' : '') + '</span><span style="width:70px;text-align:right">' + esc(p.year) + '</span></a>';
+          return '<a class="idx-row" href="work/' + p.slug + '/"><span style="width:40px" class="muted">' + pad(i + 1) + '</span><span class="serif" style="flex:1 1 360px;font-size:34px;line-height:1.05">' + esc(p.title) + (p.client && p.kind === 'commission' ? ', <span class="it">for ' + esc(p.client) + '</span>' : '') + '</span><span style="width:70px;text-align:right">' + esc(p.year) + '</span></a>';
         }).join('') + '</div>';
       }
     }
@@ -303,7 +303,7 @@
   // ---------- PROJECT ----------
   function renderProject(site, data) {
     var P = data.projects;
-    var slug = decodeURIComponent(location.hash.slice(1)) || P[0].slug;
+    var slug = document.body.getAttribute('data-slug') || decodeURIComponent(location.hash.slice(1)) || P[0].slug;
     var p = P.filter(function (x) { return x.slug === slug; })[0];
     if (!p) { document.getElementById('app').innerHTML = header('work', site) + '<section class="wrap" style="padding-block:120px"><p class="serif" style="font-size:40px">This project does not exist (anymore).</p><a class="pill" href="index.html">← All work</a></section>' + footer(site); return; }
     var t = p.theme, root = document.documentElement;
@@ -312,7 +312,7 @@
     root.style.setProperty('--panel', t.line);
     root.style.setProperty('--title-font', t.fontCss); root.style.setProperty('--title-weight', t.titleWeight || 400);
     root.style.setProperty('--title-style', t.titleItalic ? 'italic' : 'normal'); root.style.setProperty('--title-tracking', t.titleTracking || '-.02em');
-    document.title = plain(p.title) + ' — ' + site.name;
+    if (!document.body.getAttribute('data-slug')) document.title = plain(p.title) + ' — ' + site.name;
     var view = 'seq', imgs = allImages(p);
     var hasSeq = (p.sections || []).some(function (s) { return s.layout === 'sequence'; });
     var same = P.filter(function (x) { return x.kind === p.kind && !x.galleryOnly && (!x.tab || x === p); });
@@ -327,7 +327,7 @@
         inner = '<div class="player" data-film="' + esc(s.vimeo) + '" style="aspect-ratio:' + (s.ratio || '16 / 9') + ';width:100%"><img src="' + esc(s.poster || s.fallback || '') + '" data-fallback="' + esc(s.fallback || '') + '" alt="" style="opacity:.85"><button type="button" class="playbtn" aria-label="Play the film"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111110" stroke-width="2" stroke-linejoin="round"><path d="M7 4l13 8-13 8z"></path></svg></button></div>';
       } else {
         var fig = function (im, idx, ratio) {
-          return '<figure class="pf"><div class="pf-ph" style="aspect-ratio:' + (ratio || im.ratio || '4 / 5') + ';background:' + (im.bg || '#000') + '"><img loading="lazy"' + (idx == null ? '' : ' data-zoom="' + idx + '"') + ' src="' + im.src + '" alt="' + esc(plain(im.title || '')) + '"></div>' +
+          return '<figure class="pf"><div class="pf-ph" style="aspect-ratio:' + (ratio || im.ratio || '4 / 5') + ';background:' + (im.bg || '#000') + '"><img loading="lazy"' + (idx == null ? '' : ' data-zoom="' + idx + '"') + ' src="' + im.src + '" alt="' + esc(plain(im.title || '') || plain(p.title)) + '"></div>' +
             (im.title ? '<figcaption class="w-cap"><span>' + rich(im.title) + '</span></figcaption>' : '') + '</figure>';
         };
         // one structured row: every image the same height, widths from the column fractions
@@ -372,7 +372,7 @@
       var base = 0;
       var sections = (p.sections || []).map(function (s) { var h = sectionHTML(s, base); base += s.images.length; return h; }).join('');
       if (p.view === 'masonry') sections = '<section class="wrap" style="padding-bottom:120px"><div class="masonry">' + imgs.map(function (im, i) {
-        return '<figure class="tile"><button type="button" data-zoom="' + i + '" aria-label="Open ' + esc(plain(im.title) || p.title) + '" style="background:' + (im.bg || 'var(--panel)') + '"><img loading="lazy" src="' + im.src + '" alt="' + esc(plain(im.title)) + '"></button></figure>';
+        return '<figure class="tile"><button type="button" data-zoom="' + i + '" aria-label="Open ' + esc(plain(im.title) || p.title) + '" style="background:' + (im.bg || 'var(--panel)') + '"><img loading="lazy" src="' + im.src + '" alt="' + esc(plain(im.title) || plain(p.title)) + '"></button></figure>';
       }).join('') + '</div></section>';
       var ch = p.chapters;
       var chapters = ch ? '<section style="background:' + ch.bg + ';color:' + ch.fg + ';--ch-line:' + ch.line + '"><div class="wrap" style="padding-block:96px 104px">' +
@@ -395,7 +395,7 @@
         (hasSeq && p.view !== 'masonry' ? '<section class="wrap" style="padding-bottom:32px"><div class="rule-soft" style="padding-top:10px;display:flex;justify-content:flex-end;gap:2px"><button type="button" class="tog" data-view="seq" aria-pressed="' + (view === 'seq') + '">Sequence</button><button type="button" class="tog" data-view="grid" aria-pressed="' + (view === 'grid') + '">Grid</button></div></section>' : '') +
         sections + chapters + essay + credits +
         '<section class="wrap" style="padding-block:24px 0"><div class="rule" style="padding-top:20px;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap"><a class="navlink" href="index.html" style="padding:0">← All work</a>' +
-        '<a href="project.html#' + next.slug + '" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px"><span class="serif" style="font-size:clamp(36px,4vw,60px);line-height:1">' + esc(next.display) + ' →</span></a></div></section>' +
+        '<a href="work/' + next.slug + '/" style="display:flex;flex-direction:column;align-items:flex-end;gap:8px"><span class="serif" style="font-size:clamp(36px,4vw,60px);line-height:1">' + esc(next.display) + ' →</span></a></div></section>' +
         footer(site);
       $$('.tog[data-view]').forEach(function (b) { b.onclick = function () { view = b.dataset.view; draw(); }; });
       bindZoom(document.getElementById('app'), imgs);
@@ -421,7 +421,7 @@
         '</span></div></section>' +
         '<section class="wrap" style="padding-bottom:120px"><div class="masonry">' + list.map(function (x, i) {
           return '<figure class="tile"><button type="button" data-zoom="' + i + '" aria-label="Open ' + esc(x.title) + '"><img loading="lazy" src="' + x.src + '" alt="' + esc(x.title + ' — ' + x.sub) + '"></button>' +
-            '<figcaption class="w-cap">' + (x.only ? '<span>' + esc(x.title) + '</span>' : '<a href="project.html#' + x.slug + '">' + esc(x.title) + '</a>') + '</figcaption></figure>';
+            '<figcaption class="w-cap">' + (x.only ? '<span>' + esc(x.title) + '</span>' : '<a href="work/' + x.slug + '/">' + esc(x.title) + '</a>') + '</figcaption></figure>';
         }).join('') + '</div></section>' + footer(site);
       $$('.tog[data-k]').forEach(function (b) { b.onclick = function () { st.k = b.dataset.k; draw(); }; });
       bindZoom(document.getElementById('app'), list.map(function (x) { return { src: x.src, title: x.title + ' — ' + x.sub, caption: x.caption }; }));

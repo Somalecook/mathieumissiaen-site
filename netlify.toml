@@ -1,5 +1,7 @@
 [build]
   publish = "."
+  # regenerates the SEO pages (work/*, sitemap.xml…) from content/*.json on every deploy
+  command = "python3 build.py"
 
 [[headers]]
   for = "/images/*"

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /stickoo/app/
+
+Sitemap: https://mathieumissiaen.fr/sitemap.xml

@@ -116,6 +116,12 @@ content:
             fields:
               - { name: role, label: Rôle, type: string }
               - { name: name, label: Nom, type: string }
+      - name: seo
+        label: "Référencement (Google)"
+        type: object
+        fields:
+          - { name: title, label: "Titre de la page d'accueil", type: string }
+          - { name: description, label: "Description (≈ 155 caractères)", type: text }
       - name: home
         label: "Accueil — blocs mis en avant (dans l'ordre, avant la grille)"
         type: object

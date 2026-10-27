@@ -46,3 +46,12 @@ Pour que le lecteur fonctionne sur le site : sur Vimeo, dans les réglages de co
 ## Mises à jour
 
 Le site est relié à Netlify : chaque modification envoyée sur la branche `main` est mise en ligne automatiquement.
+
+## Référencement (SEO)
+
+`build.py` est lancé automatiquement par Netlify à chaque mise en ligne. À partir des fichiers `content/*.json`, il génère :
+- une vraie page par projet : `/work/<identifiant>/` (titre, description, image de partage, données structurées) ;
+- les pages `index.html`, `gallery.html`, `film.html`, `about.html`, `404.html` avec leurs balises ;
+- `sitemap.xml` et `robots.txt`.
+
+Ne modifie pas ces fichiers à la main : change le contenu dans Pages CMS (ou les JSON), ils seront régénérés.
