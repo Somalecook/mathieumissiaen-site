@@ -1670,6 +1670,17 @@ html.klang-screen .klp.klp2-card{width:min(94vw,500px)!important;margin:0 auto;p
 .klp2-c.on span{color:#fff;text-shadow:0 2px 0 #7b2d8e}
 .klp2-c.off{opacity:.35;filter:grayscale(.6)}
 .klp2-c:active{transform:scale(.92)}
+
+/* language page — readability & composition */
+.klp2{gap:14px!important}
+html.klang-screen .klp.klp2-card{gap:22px!important;padding:22px 14px 24px!important}
+.klp2-row{gap:13px!important}
+html body .klp2-t{font:800 clamp(1.45rem,6.4vw,1.85rem)/1.1 "Baloo 2","Jua","Noto Sans KR",sans-serif!important;color:#fff!important;letter-spacing:.02em;text-shadow:2px 0 0 #7b2d8e,-2px 0 0 #7b2d8e,0 2px 0 #7b2d8e,0 -2px 0 #7b2d8e,1.5px 1.5px 0 #7b2d8e,-1.5px 1.5px 0 #7b2d8e,1.5px -1.5px 0 #7b2d8e,-1.5px -1.5px 0 #7b2d8e,0 4px 0 #4a1d66!important}
+.klp2-chips{gap:min(2.6vw,13px)!important}
+html.klang-screen .klp-row{flex-direction:column;gap:12px;margin:22px auto 6px}
+html.klang-screen .klp-row .klp-go{min-width:min(64vw,260px)!important;padding:0 20% 3% 8%!important;justify-content:center}
+html.klang-screen .klp-go{font:800 clamp(1.35rem,6vw,1.7rem)/1 "Baloo 2","Jua","Noto Sans KR",sans-serif!important;color:#fff!important;letter-spacing:.02em;text-shadow:2px 0 0 #b0337f,-2px 0 0 #b0337f,0 2px 0 #b0337f,0 -2px 0 #b0337f,1.5px 1.5px 0 #b0337f,-1.5px 1.5px 0 #b0337f,1.5px -1.5px 0 #b0337f,-1.5px -1.5px 0 #b0337f,0 4px 0 #7b2d8e}
+html.klang-screen .klp-row .kreset{width:auto;min-width:0;height:34px;padding:0 14px;font:700 .85rem "Baloo 2","Fredoka",sans-serif}
 </style>
 </head>
 <body>
@@ -5365,8 +5376,8 @@ html.klang-screen .klp.klp2-card{width:min(94vw,500px)!important;margin:0 auto;p
     const S2 = K.lsel, ready = S2.n && S2.l && S2.n !== S2.l;
     const LBL = { fr: "FR", en: "EN", zh: "中", es: "ES", ko: "한", ja: "日" }, RT = LANGROW_TXT[S2.n] || LANGROW_TXT.en;
     const btn = (row2, c) => '<button class="klp2-c '.concat(S2[row2] === c ? "on" : "", " ").concat(row2 === "l" && S2.n === c || row2 === "n" && S2.l === c ? "off" : "", '" data-klp="').concat(row2, ":").concat(c, '" aria-label="').concat(c, '"><span>').concat(LBL[c], "</span></button>");
-    const row = (r) => '<div class="klp2-row"><b class="kpuffy kp-ink">'.concat(r === "n" ? RT[0] : RT[1], '</b><div class="klp2-chips">').concat(Object.keys(LANG_X).map((c) => btn(r, c)).join(""), "</div></div>");
-    $("#kids").innerHTML = kidsHeader(true) + '<div class="klp2"><img class="klp2-logo" src="kid/sky/logo_kids.webp?v=1" alt="Stickoo" draggable="false"><div class="klp klp2-card">'.concat(row("n")).concat(row("l"), '</div></div>\n    <div class="klp-row"><button class="klp-go').concat(ready ? "" : " kdim", '" data-k="langgo">').concat(GO_TXT[S2.n || UIL] || GO_TXT.en, ' <span>▶</span></button><button class="kreset" data-k="slots" aria-label="Players">👤</button></div>');
+    const row = (r) => '<div class="klp2-row"><b class="klp2-t">'.concat(r === "n" ? RT[0] : RT[1], '</b><div class="klp2-chips">').concat(Object.keys(LANG_X).map((c) => btn(r, c)).join(""), "</div></div>");
+    $("#kids").innerHTML = kidsHeader(true) + '<div class="klp2"><img class="klp2-logo" src="kid/sky/logo_kids.webp?v=1" alt="Stickoo" draggable="false"><div class="klp klp2-card">'.concat(row("n")).concat(row("l"), '</div></div>\n    <div class="klp-row"><button class="klp-go').concat(ready ? "" : " kdim", '" data-k="langgo">').concat(GO_TXT[S2.n || UIL] || GO_TXT.en, ' <span>▶</span></button><button class="kreset" data-k="slots" aria-label="Players">👤 ').concat(esc((SLOT_TXT[S2.n] || SLOT_TXT.en).who), "</button></div>");
   }
   function kidsLangPick(row, c) {
     const S2 = K.lsel;
@@ -5968,7 +5979,7 @@ html.klang-screen .klp.klp2-card{width:min(94vw,500px)!important;margin:0 auto;p
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.51";
+  const APP_VER = "1.0.52";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
