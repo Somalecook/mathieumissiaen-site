@@ -5519,72 +5519,6 @@ html.klang-screen .klp{width:min(94vw,560px)!important;max-width:none}
   TUTO.zh = { "next": "下一步", "go": "开始吧！", "s": [["欢迎来到 Stickoo！", "听一听词语，点一下正确的图片。每答对一次就得到一颗星星 ⭐"], ["赢取贴纸", "每玩完一局，你就能打开礼物，得到一张新贴纸。有时里面还藏着稀有动物哦！"], ["解锁词语", "玩得越多，新词语就越多。一个词认对6次，它就会变成金色 ✨"], ["你的收藏", "在“我的贴纸”里看所有贴纸，在“图画书”里看词语，在“我的奖杯”里看奖杯。"], ["你的本子", "在“我的本子”里把贴纸贴在你喜欢的地方。继续玩，把它们全部收集起来吧！"]] };
   delete TUTO.it;
   const TUTO_IMG = ["kid/home/play3.webp", "kid/gift/g00.png", "kid/home/book3.webp", "kid/home/stickers3.webp", "kid/home/cahier3.webp"];
-  const RATE_TXT = {
-    fr: ["Tu aimes Stickoo ? 💖", "Stickoo est fait par un papa, tout seul. Une petite note sur le store l’aide énormément !", "Noter Stickoo", "Plus tard", "Question pour les parents", "Combien font"],
-    en: ["Do you love Stickoo? 💖", "Stickoo is made by one dad, all by himself. A quick rating on the store helps enormously!", "Rate Stickoo", "Later", "Question for parents", "What is"],
-    es: ["¿Te gusta Stickoo? 💖", "Stickoo lo hace un papá, él solo. ¡Una valoración en la tienda le ayuda muchísimo!", "Valorar Stickoo", "Más tarde", "Pregunta para los padres", "¿Cuánto es"],
-    ko: ["Stickoo 좋아요? 💖", "Stickoo는 아빠 한 명이 혼자 만든 앱이에요. 스토어에 별점을 남겨 주시면 큰 힘이 돼요!", "별점 주기", "나중에", "부모님께 질문", ""],
-    ja: ["Stickoo、すき？💖", "Stickooはパパがひとりで作ったアプリです。ストアでの評価がとても励みになります！", "評価する", "あとで", "おうちのかたへの質問", ""],
-    zh: ["喜欢 Stickoo 吗？💖", "Stickoo 是一位爸爸独自制作的。在商店给个评分会帮上大忙！", "去评分", "以后再说", "家长问题", ""]
-  };
-  const STORE_URL = { android: "https://play.google.com/store/apps/details?id=paris.iolo.stickoo", ios: "" };
-  function kNativePlatform() {
-    try {
-      const C = window.Capacitor;
-      const pl = C && C.getPlatform && C.getPlatform();
-      return pl && pl !== "web" ? pl : "";
-    } catch (e) {
-      return "";
-    }
-  }
-  function kRateMaybe() {
-    const pl = kNativePlatform();
-    if (!pl || !STORE_URL[pl]) return;
-    let st = {};
-    try {
-      st = JSON.parse(localStorage.getItem("stickoo-rate") || "{}");
-    } catch (e) {
-    }
-    if (st.done || (st.asked || 0) >= 3) return;
-    const rounds = kidsState().rounds || 0;
-    if (rounds < (st.next || 6)) return;
-    if (document.querySelector(".ktuto, .kachpop")) return;
-    st.asked = (st.asked || 0) + 1;
-    st.next = rounds + 15;
-    try {
-      localStorage.setItem("stickoo-rate", JSON.stringify(st));
-    } catch (e) {
-    }
-    const T = RATE_TXT[UIL] || RATE_TXT.en;
-    const el = document.createElement("div");
-    el.className = "ktuto krate";
-    const close = () => {
-      el.classList.add("out");
-      setTimeout(() => el.remove(), 300);
-    };
-    el.innerHTML = '<div class="ktuto-card"><img class="ktuto-img" src="kid/home/ach3.webp" alt=""><b class="kpuffy kp-ink">'.concat(esc(T[0]), "</b><p>").concat(esc(T[1]), '</p><button class="ktuto-btn krate-go">').concat(esc(T[2]), '</button><button class="krate-later">').concat(esc(T[3]), "</button></div>");
-    el.querySelector(".krate-later").onclick = close;
-    el.querySelector(".krate-go").onclick = () => {
-      const a = 3 + Math.floor(Math.random() * 7), b = 3 + Math.floor(Math.random() * 7), ok = a * b;
-      const opts = [ok, ok + (Math.random() < 0.5 ? -1 : 1) * (2 + Math.floor(Math.random() * 4)), ok + 10 + Math.floor(Math.random() * 6)].sort(() => Math.random() - 0.5);
-      el.querySelector(".ktuto-card").innerHTML = '<b class="kpuffy kp-ink">'.concat(esc(T[4]), '</b><p class="krate-q">').concat(esc(T[5]), " ").concat(a, " × ").concat(b, ' ?</p><div class="krate-opts">').concat(opts.map((v) => '<button data-v="'.concat(v, '">').concat(v, "</button>")).join(""), '</div><button class="krate-later">').concat(esc(T[3]), "</button>");
-      el.querySelector(".krate-later").onclick = close;
-      el.querySelectorAll(".krate-opts button").forEach((btn) => btn.onclick = () => {
-        if (+btn.dataset.v === ok) {
-          st.done = 1;
-          try {
-            localStorage.setItem("stickoo-rate", JSON.stringify(st));
-          } catch (e) {
-          }
-          close();
-          setTimeout(() => {
-            window.location.href = STORE_URL[pl];
-          }, 200);
-        } else close();
-      });
-    };
-    document.body.appendChild(el);
-  }
   function kidTuto(force) {
     var _a2;
     let seen = null;
@@ -5731,12 +5665,6 @@ html.klang-screen .klp{width:min(94vw,560px)!important;max-width:none}
     setTimeout(() => {
       if (K.screen === "home") kidTuto();
     }, 450);
-    setTimeout(() => {
-      if (K.screen === "home") try {
-        kRateMaybe();
-      } catch (e) {
-      }
-    }, 1400);
     let chosen = null;
     try {
       chosen = localStorage.getItem(SK("stickoo-langs-ok"));
@@ -6022,7 +5950,7 @@ html.klang-screen .klp{width:min(94vw,560px)!important;max-width:none}
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.47";
+  const APP_VER = "1.0.48";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
