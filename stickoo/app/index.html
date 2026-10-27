@@ -1618,7 +1618,7 @@ html.kquiz[data-season="party"] #kseasonfx{background:url("data:image/svg+xml,%3
 @keyframes kGullFlap{0%{transform:rotate(-4deg) scaleY(1)}100%{transform:rotate(10deg) scaleY(-.45)}}
 @keyframes kGullBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-5px) rotate(3deg)}}
 
-.kfxburst{position:fixed;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);display:block;filter:drop-shadow(0 0 12px rgba(255,220,120,.7))}
+.kfxburst{position:fixed;z-index:9998;pointer-events:none;transform:translate(-50%,-50%);display:block;will-change:transform,opacity}
 .ksparkle.kspimg{width:var(--sw);height:var(--sh);background:var(--sb)!important;font-size:0!important;text-shadow:none!important}
 
 /* profile rows — logo style */
@@ -5982,7 +5982,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.53";
+  const APP_VER = "1.0.54";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
@@ -6570,13 +6570,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
   }
   function kidFireworks() {
     const pts = [[0.25, 0.3], [0.75, 0.25], [0.5, 0.45], [0.2, 0.6], [0.8, 0.55]];
-    pts.forEach(([x, y], i) => setTimeout(() => {
-      try {
-        confettiAt(innerWidth * x, innerHeight * y, ["#ff6f9c", "#ffd34d", "#8fd19e", "#9b7bff", "#5cc8ff", "#ffffff"], 90);
-      } catch (e) {
-      }
-    }, i * 380));
-    if (reduced) return;
+    return;
     const rain = document.createElement("div");
     rain.className = "kstarrain";
     for (let i = 0; i < 26; i++) {
@@ -6725,6 +6719,12 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
   function kGiftFor(prize) {
     if (_kgCache && _kgCache.p === prize) return _kgCache.g;
     const pick = (a) => a[Math.floor(Math.random() * a.length)];
+    const n2 = () => String(Math.floor(Math.random() * 12)).padStart(2, "0");
+    if (GENDER === "m" && tierOf(prize) >= 0) {
+      const i = Math.floor(Math.random() * 12), g2 = { src: tierOf(prize) >= 1 ? "kid/gift/gift_boys_pack.webp" : "kid/gift/gift_boys_box.webp", pack: tierOf(prize) >= 1, pos: "".concat((i / 11 * 100).toFixed(3), "% 50%") };
+      _kgCache = { p: prize, g: g2 };
+      return g2;
+    }
     const set = [null, KG_PACKS.princess, KG_PACKS.princess2, KG_PACKS.princess3][tierOf(prize)];
     const g = set ? { src: "kid/gift/".concat(pick(set), ".png"), pack: true } : { src: "kid/gift/g".concat(String(Math.floor(Math.random() * 12)).padStart(2, "0"), ".png"), pack: false };
     _kgCache = { p: prize, g };
@@ -6817,7 +6817,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     const winLine = GENDER === "m" ? gText(kidPickNew(SPL().win, "usedWin" + LL)).split("공주님").join("영웅").split("요정").join("영웅") : kidPickNew(SPL().win, "usedWin" + LL);
     const dancers = [kidFriend([prize]), null];
     dancers[1] = kidFriend([prize, dancers[0]]);
-    $("#kids").innerHTML = kidsHeader(true) + '<div class="kwin kwin2">\n    <div class="kwc kwc-top">'.concat(cloudSvg("top"), '<div class="kwin-stars">').concat('<span><img class="kst-ic" src="kid/nature/nature02.png" alt=""></span>'.repeat(5), '</div>\n    <div class="kwin-title">').concat(winLine.split("!").map((x) => x.trim()).filter(Boolean).slice(0, 2).join("! "), '!</div></div>\n    <div class="kwc-prize kframe2"><div class="kf2-in"><span class="kf2-rays"></span></div><img class="kf2-img" src="kid/sky/frame2.webp?v=1" alt="" draggable="false"><div class="kprize closed" id="kprize"><span class="krays"></span><span class="kgift ').concat(kGiftFor(prize).pack ? "kpack" : "", '" style="background-image:url(').concat(kGiftFor(prize).src, ')"></span><img src="').concat(kStickerSrc(prize), '" alt="" draggable="false"></div><p class="kf2-lab"><span class="kpuffy kp-ink kfit">').concat(tierOf(prize) === 3 ? "Une princesse licorne diamant 🦄💎 pour ton album !" : tierOf(prize) === 2 ? "Une princesse dorée ✨👑 pour ton album !" : tierOf(prize) === 1 ? "Une nouvelle princesse 👑 pour ton album !" : prize.startsWith("gold/") ? "Un sticker en or ✨ pour ton album !" : tierOf(prize) === 0 ? "Une nouvelle amie pour ton album !" : "Un nouveau sticker pour ton album !", '</span></p></div>\n    <div class="kplay row2 khome kwinbtns">\n      <button class="kbig" data-k="replay"><img class="khome-st" src="kid/home/play3.webp" alt=""><span>Encore !</span></button>\n      <button class="kbig alt2" data-k="album"><img class="khome-st" src="kid/home/stickers3.webp" alt=""><span>Mon album</span></button>\n    </div></div>');
+    $("#kids").innerHTML = kidsHeader(true) + '<div class="kwin kwin2">\n    <div class="kwc kwc-top">'.concat(cloudSvg("top"), '<div class="kwin-stars">').concat('<span><img class="kst-ic" src="kid/nature/nature02.png" alt=""></span>'.repeat(5), '</div>\n    <div class="kwin-title">').concat(winLine.split("!").map((x) => x.trim()).filter(Boolean).slice(0, 2).join("! "), '!</div></div>\n    <div class="kwc-prize kframe2"><div class="kf2-in"><span class="kf2-rays"></span></div><img class="kf2-img" src="kid/sky/frame2.webp?v=1" alt="" draggable="false"><div class="kprize closed" id="kprize"><span class="krays"></span><span class="kgift ').concat(kGiftFor(prize).pack ? "kpack" : "", '" style="background-image:url(').concat(kGiftFor(prize).src, ")").concat(kGiftFor(prize).pos ? ";background-size:1200% auto!important;background-position:".concat(kGiftFor(prize).pos, "!important") : "", '"></span><img src="').concat(kStickerSrc(prize), '" alt="" draggable="false"></div><p class="kf2-lab"><span class="kpuffy kp-ink kfit">').concat(tierOf(prize) === 3 ? "Une princesse licorne diamant 🦄💎 pour ton album !" : tierOf(prize) === 2 ? "Une princesse dorée ✨👑 pour ton album !" : tierOf(prize) === 1 ? "Une nouvelle princesse 👑 pour ton album !" : prize.startsWith("gold/") ? "Un sticker en or ✨ pour ton album !" : tierOf(prize) === 0 ? "Une nouvelle amie pour ton album !" : "Un nouveau sticker pour ton album !", '</span></p></div>\n    <div class="kplay row2 khome kwinbtns">\n      <button class="kbig" data-k="replay"><img class="khome-st" src="kid/home/play3.webp" alt=""><span>Encore !</span></button>\n      <button class="kbig alt2" data-k="album"><img class="khome-st" src="kid/home/stickers3.webp" alt=""><span>Mon album</span></button>\n    </div></div>');
     try {
       kFitText();
       setTimeout(kFitText, 400);
@@ -6842,14 +6842,14 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       if (!g) return;
       g.classList.remove("shaking", "closed");
       g.classList.add("open");
-      setTimeout(() => kSparkle(g, 22), 250);
+      setTimeout(() => kSparkle(g, 10), 250);
       try {
         if (!playUi("chime", 0.6)) {
           tone(NOTE_HZ.G5, 0, 0.5, "sine", 0.04);
           tone(NOTE_HZ.C6, 0.08, 0.7, "sine", 0.04);
         }
         const r = g.getBoundingClientRect();
-        confettiAt(r.left + r.width / 2, r.top + r.height / 2, ["#ffd34d", "#ff6f9c", "#ffffff", "#9b7bff"], 180);
+        confettiAt(r.left + r.width / 2, r.top + r.height / 2, ["#ffd34d", "#ff6f9c", "#ffffff", "#9b7bff"], 110);
       } catch (er) {
       }
       {
@@ -8435,7 +8435,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
   }
   const KCF = { P: [], run: false };
   function confetti(colors, amount = 140, ox, oy, opt = {}) {
-    if (reduced) return;
+    if (reduced) amount = Math.min(amount, 40);
     const cv = $("#confetti");
     if (!cv) return;
     const x0 = ox != null ? ox : innerWidth / 2, y0 = oy != null ? oy : innerHeight * 0.38, now = performance.now(), img = kfxReady();
@@ -8475,37 +8475,41 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     (function frame(t) {
-      fit();
-      ctx.clearRect(0, 0, innerWidth, innerHeight);
-      const f = Math.min(2.5, (t - last) / 16.67);
-      last = t;
-      KCF.P = KCF.P.filter((p) => t - p.t0 < p.life && p.y < innerHeight + 80);
-      for (const p of KCF.P) {
-        const age = t - p.t0;
-        if (age < 0) continue;
-        p.vy += 0.2 * f;
-        p.vx *= Math.pow(0.962, f);
-        p.vy *= Math.pow(0.975, f);
-        p.wob += 0.12 * f;
-        p.x += (p.vx + Math.sin(p.wob) * 0.6) * f;
-        p.y += p.vy * f;
-        p.r += p.vr * f;
-        const u = age / p.life, pop = age < 140 ? 0.3 + 0.9 * (age / 140) + (age > 100 ? 0.15 * Math.sin((age - 100) / 40 * Math.PI) : 0) : 1;
-        ctx.globalAlpha = u > 0.65 ? Math.max(0, 1 - (u - 0.65) / 0.35) : 1;
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        const dpr = cv.width / innerWidth;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.r);
-        if (p.sp) {
-          const s = p.sp, w = s[2] * p.k * pop, hh = s[3] * p.k * pop;
-          ctx.drawImage(KFX_IMG, s[0], s[1], s[2], s[3], -w / 2, -hh / 2, w, hh);
-        } else {
-          ctx.fillStyle = p.c;
-          ctx.fillRect(-p.w / 2 * pop, -p.h / 2 * pop, p.w * pop, p.h * pop);
+      try {
+        fit();
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+        const f = Math.min(2.5, (t - last) / 16.67);
+        last = t;
+        KCF.P = KCF.P.filter((p) => t - p.t0 < p.life && p.y < innerHeight + 80);
+        for (const p of KCF.P) {
+          const age = t - p.t0;
+          if (age < 0) continue;
+          p.vy += 0.2 * f;
+          p.vx *= Math.pow(0.962, f);
+          p.vy *= Math.pow(0.975, f);
+          p.wob += 0.12 * f;
+          p.x += (p.vx + Math.sin(p.wob) * 0.6) * f;
+          p.y += p.vy * f;
+          p.r += p.vr * f;
+          const u = age / p.life, pop = age < 140 ? 0.3 + 0.9 * (age / 140) + (age > 100 ? 0.15 * Math.sin((age - 100) / 40 * Math.PI) : 0) : 1;
+          ctx.globalAlpha = u > 0.65 ? Math.max(0, 1 - (u - 0.65) / 0.35) : 1;
+          ctx.setTransform(1, 0, 0, 1, 0, 0);
+          const dpr = cv.width / innerWidth;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.r);
+          if (p.sp) {
+            const s = p.sp, w = s[2] * p.k * pop, hh = s[3] * p.k * pop;
+            ctx.drawImage(KFX_IMG, s[0], s[1], s[2], s[3], -w / 2, -hh / 2, w, hh);
+          } else {
+            ctx.fillStyle = p.c;
+            ctx.fillRect(-p.w / 2 * pop, -p.h / 2 * pop, p.w * pop, p.h * pop);
+          }
         }
+        ctx.globalAlpha = 1;
+      } catch (e) {
+        KCF.P = [];
       }
-      ctx.globalAlpha = 1;
       if (KCF.P.length) requestAnimationFrame(frame);
       else {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -8522,9 +8526,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
         const x = r.left + r.width / 2 || innerWidth / 2, y = r.top + r.height / 2 || innerHeight / 2;
         const cx = c.left + c.width / 2, cy = c.top + c.height / 2, ring = Math.max(60, Math.min(c.width, c.height) * 0.42);
         kBurstFlash(cx, cy, Math.min(innerWidth * 1.25, Math.max(380, c.width * 1.6)), 44, 1150);
-        setTimeout(() => kBurstFlash(cx, cy, Math.min(innerWidth * 1.1, Math.max(320, c.width * 1.35)), 44, 900), 180);
-        confetti(colors, amount, cx, y, { ring });
-        setTimeout(() => confetti(colors, Math.round(amount * 0.5), cx, cy, { ring: ring * 1.2, power: 0.8 }), 320);
+        confetti(colors, Math.min(amount, 80), cx, y, { ring });
       } catch (e) {
         confetti(colors, amount);
       }
