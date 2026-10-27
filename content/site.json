@@ -13,10 +13,17 @@
         "label": "",
         "text": "",
         "images": [
-          "images/acne-paper/window-5.jpg",
           "images/acne-paper/kv-pink.jpg",
           "images/acne-paper/window-new-york.jpg",
           "images/acne-paper/detail.jpg"
+        ],
+        "carousel": [
+          "images/acne-paper/window-5.jpg",
+          "images/acne-paper/window-tokyo.jpg",
+          "images/acne-paper/window-west-hollywood.jpg",
+          "images/acne-paper/window-2.jpg",
+          "images/acne-paper/window-6.jpg",
+          "images/acne-paper/kv-white.jpg"
         ]
       },
       {
@@ -29,7 +36,21 @@
         "type": "project",
         "slug": "anti",
         "label": "",
-        "text": ""
+        "text": "",
+        "carousel": [
+          "images/anti/01-bast.jpg",
+          "images/anti/02-rosa-antiqua.jpg",
+          "images/anti/03-nashi-toro.jpg",
+          "images/anti/04-antinous.jpg",
+          "images/anti/05-paura-dell-acqua.jpg",
+          "images/anti/06-le-jardinier.jpg",
+          "images/anti/07-dukes-carpet.jpg"
+        ],
+        "images": [
+          "images/anti/motion-01.webp",
+          "images/anti/motion-02.webp",
+          "images/anti/motion-04.webp"
+        ]
       },
       {
         "type": "project",
@@ -37,8 +58,16 @@
         "label": "",
         "text": "",
         "images": [
+          "images/kenzo-move/10-white-shoe.jpg",
+          "images/kenzo-move/05-blue-shoe.jpg",
+          "images/kenzo-move/09-red-shoe.jpg"
+        ],
+        "carousel": [
+          "images/kenzo-move/01-stripes-duo.jpg",
           "images/kenzo-move/02-flowers-duo.jpg",
-          "images/kenzo-move/10-white-shoe.jpg"
+          "images/kenzo-move/03-purple-duo.jpg",
+          "images/kenzo-move/04-green-duo.jpg",
+          "images/kenzo-move/12-striped-girl.jpg"
         ]
       }
     ],
@@ -70,7 +99,72 @@
       "logo": "images/stickoo/logo.png",
       "sound": "images/stickoo/sound.png",
       "show": false
-    }
+    },
+    "stickers": [
+      {
+        "src": "images/stickers/cry.png",
+        "at": ".latest",
+        "x": 46,
+        "y": 6,
+        "r": -8
+      },
+      {
+        "src": "images/stickers/heart-kiss.png",
+        "at": ".latest",
+        "x": 4,
+        "y": 62,
+        "r": 10
+      },
+      {
+        "src": "images/stickers/eyes-blue.png",
+        "at": "feature:1",
+        "x": 3,
+        "y": 8,
+        "r": -6
+      },
+      {
+        "src": "images/stickers/bowl.png",
+        "at": "feature:2",
+        "x": 92,
+        "y": 10,
+        "r": 12
+      },
+      {
+        "src": "images/stickers/purple-blob.png",
+        "at": "feature:3",
+        "x": 4,
+        "y": 70,
+        "r": -10
+      },
+      {
+        "src": "images/stickers/mug.png",
+        "at": "feature:4",
+        "x": 90,
+        "y": 72,
+        "r": 8
+      },
+      {
+        "src": "images/stickers/cloud.png",
+        "at": ".car",
+        "x": 95,
+        "y": 2,
+        "r": -12
+      },
+      {
+        "src": "images/stickers/heart-sketch.png",
+        "at": "#wallBox",
+        "x": 2,
+        "y": 4,
+        "r": 6
+      },
+      {
+        "src": "images/stickers/eyes.png",
+        "at": "#ig",
+        "x": 80,
+        "y": 0,
+        "r": -4
+      }
+    ]
   },
   "panels": {
     "research": "Personal series, without a brief.",

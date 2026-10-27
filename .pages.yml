@@ -141,6 +141,16 @@ content:
                   - { name: lang, label: "Langue du titre (ko pour le coréen)", type: string }
                   - { name: text, label: Texte, type: text }
                   - { name: href, label: Lien, type: string }
+          - name: stickers
+            label: "Stickers à déplacer"
+            type: object
+            list: true
+            fields:
+              - { name: src, label: Image, type: image }
+              - { name: at, label: "Zone (ex : .latest, feature:2, .car, #wallBox)", type: string }
+              - { name: x, label: "Position horizontale (%)", type: number }
+              - { name: y, label: "Position verticale (%)", type: number }
+              - { name: r, label: "Rotation (degrés)", type: number }
           - name: features
             label: Blocs
             type: object
@@ -154,7 +164,8 @@ content:
               - { name: vimeo, label: "Numéro Vimeo (si film)", type: string }
               - { name: label, label: "Petit titre au-dessus", type: string }
               - { name: text, label: "Texte (vide = texte du projet)", type: text }
-              - { name: images, label: "Images à montrer (vide = les 6 premières)", type: image, list: true }
+              - { name: carousel, label: "Grande image en carrousel (plusieurs images)", type: image, list: true }
+              - { name: images, label: "Images à montrer (avec carrousel : les 3 petites)", type: image, list: true }
   - name: films
     label: Films (Moving image)
     type: file
