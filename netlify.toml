@@ -27,3 +27,8 @@
   from = "/services/ai/*"
   to = "/services/cgi/"
   status = 301
+
+[[headers]]
+  for = "/lab/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

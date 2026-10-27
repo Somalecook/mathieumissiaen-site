@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /stickoo/app/
+Disallow: /lab/
 
 Sitemap: https://mathieumissiaen.fr/sitemap.xml

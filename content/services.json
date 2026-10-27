@@ -65,24 +65,20 @@
     {
       "slug": "vibe-coding",
       "label": "Vibe coding",
-      "title": "Vibe coding — apps, tools & websites built with AI",
-      "metaTitle": "Vibe Coding — Apps, Creative Tools & Websites Built with AI | Mathieu Missiaen",
-      "description": "A creative director who vibe codes: Stickoo, a language app for children, interactive tools and this portfolio website, built with AI.",
-      "intro": "Mathieu Missiaen vibe codes: he designs and ships software by working with AI, the way an art director works with a team. The result is real, published work.",
+      "title": "Vibe coding — AI-assisted apps, tools & websites",
+      "metaTitle": "Vibe Coding — AI-Assisted Apps, Creative Tools & Websites | Mathieu Missiaen",
+      "description": "A creative director who vibe codes: Stickoo, a language app for children, and this portfolio website — AI-assisted development.",
+      "intro": "Mathieu Missiaen vibe codes: he designs and ships software with AI assistance, the way an art director works with a team. The result is real, published work.",
       "body": [
-        "Stickoo is his language-learning app for children — words collected as stickers, in English, French, Spanish, Korean, Japanese and Chinese. He also built this portfolio website, a rashguard customiser and other small creative tools.",
+        "Stickoo is his language-learning app for children — words collected as stickers, in English, French, Spanish, Korean, Japanese and Chinese. He also built this portfolio website and other small creative tools.",
         "For brands, the same approach makes interactive campaign pieces, prototypes and microsites fast to try and easy to change."
       ],
-      "fr": "Vibe coding : applications, outils créatifs et sites web conçus avec l'IA — dont Stickoo, une app pour apprendre les langues aux enfants, et ce site.",
+      "fr": "Vibe coding : applications, outils créatifs et sites web, développés en étant assisté par l'IA — dont Stickoo, une app pour apprendre les langues aux enfants, et ce site.",
       "projects": [],
       "links": [
         {
           "label": "Stickoo — the app",
           "href": "/stickoo/"
-        },
-        {
-          "label": "Rash Lab — rashguard tool",
-          "href": "/lab/rash-lab/index.html"
         }
       ]
     }

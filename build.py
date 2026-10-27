@@ -257,7 +257,7 @@ for rel in ['stickoo/index.html', 'stickoo/confidentialite.html']:
         extra.append((rel.replace('index.html', ''), '0.5'))
 urls = ''.join('<url><loc>%s/%s</loc><lastmod>%s</lastmod><priority>%s</priority></url>\n' % (SITE_URL, u, TODAY, pr) for u, pr in pages + extra)
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s</urlset>\n' % urls)
-write('robots.txt', 'User-agent: *\nAllow: /\nDisallow: /stickoo/app/\n\nSitemap: %s/sitemap.xml\n' % SITE_URL)
+write('robots.txt', 'User-agent: *\nAllow: /\nDisallow: /stickoo/app/\nDisallow: /lab/\n\nSitemap: %s/sitemap.xml\n' % SITE_URL)
 
 # remove service pages that no longer exist
 sdir = os.path.join(ROOT, 'services')
