@@ -166,7 +166,7 @@
         '<p style="margin:0;line-height:1.75;max-width:400px;opacity:.85">' + esc(f.text || p.intro) + '</p>' +
         '<a class="pill" href="work/' + p.slug + '/">' + (p.kind === 'research' ? 'Enter the series →' : 'See the project →') + '</a></div>' +
         (f.carousel && f.carousel.length
-          ? '<a class="f-imgs quad" href="work/' + p.slug + '/" aria-label="' + esc(p.title) + '"><span class="f-car">' + f.carousel.map(function (src, n) {
+          ? '<a class="f-imgs quad" href="work/' + p.slug + '/" aria-label="' + esc(p.title) + '" style="--r:' + (f.carouselRatio || 0.8) + '"><span class="f-car">' + f.carousel.map(function (src, n) {
               return '<img' + (n ? ' loading="lazy"' : '') + ' class="' + (n ? '' : 'on') + '" src="' + esc(src) + '" alt="' + esc(plain(p.title)) + '">';
             }).join('') + '</span>' + imgs.slice(0, 3).map(function (im) {
               return '<img loading="lazy" src="' + im.src + '" alt="' + esc(plain(im.title) || plain(p.title)) + '" style="background:' + (im.bg || '#000') + '">';

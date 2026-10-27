@@ -24,7 +24,8 @@
           "images/acne-paper/window-2.jpg",
           "images/acne-paper/window-6.jpg",
           "images/acne-paper/kv-white.jpg"
-        ]
+        ],
+        "carouselRatio": 0.8
       },
       {
         "type": "film",
@@ -50,7 +51,8 @@
           "images/anti/motion-01.webp",
           "images/anti/motion-02.webp",
           "images/anti/motion-04.webp"
-        ]
+        ],
+        "carouselRatio": 0.8
       },
       {
         "type": "project",
@@ -68,7 +70,8 @@
           "images/kenzo-move/03-purple-duo.jpg",
           "images/kenzo-move/04-green-duo.jpg",
           "images/kenzo-move/12-striped-girl.jpg"
-        ]
+        ],
+        "carouselRatio": 0.75
       }
     ],
     "latest": {

@@ -172,6 +172,7 @@ content:
               - { name: label, label: "Petit titre au-dessus", type: string }
               - { name: text, label: "Texte (vide = texte du projet)", type: text }
               - { name: carousel, label: "Grande image en carrousel (plusieurs images)", type: image, list: true }
+              - { name: carouselRatio, label: "Format du carrousel (largeur / hauteur, ex : 0.8)", type: number }
               - { name: images, label: "Images à montrer (avec carrousel : les 3 petites)", type: image, list: true }
   - name: films
     label: Films (Moving image)
