@@ -1655,6 +1655,8 @@ html.klang-screen .klp{width:min(94vw,560px)!important;max-width:none}
 .klp-go.kdim{filter:grayscale(.6);opacity:.7}
 .klp.kshake{animation:kShake .45s ease}
 @keyframes kShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+
+html.kquiz body .kopts.four{row-gap:18px!important}
 </style>
 </head>
 <body>
@@ -5950,7 +5952,7 @@ html.klang-screen .klp{width:min(94vw,560px)!important;max-width:none}
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.48";
+  const APP_VER = "1.0.49";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
@@ -6324,7 +6326,7 @@ html.klang-screen .klp{width:min(94vw,560px)!important;max-width:none}
     if (K._osKey !== key) {
       const r = ko.getBoundingClientRect(), cs = getComputedStyle(ko), avail = r.height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 8;
       const rows = n === 3 ? 1.88 : n === 4 ? 2.04 : 1.02;
-      K._os = Math.max(90, Math.floor(Math.min(innerWidth * (n === 3 || n === 4 ? 0.46 : 0.32), avail / rows, 230)));
+      K._os = Math.max(90, Math.floor(Math.min(innerWidth * (n === 3 || n === 4 ? 0.46 : 0.32), (avail - (n === 4 ? 18 : 0)) / rows, 230)));
       K._osKey = key;
     }
     document.documentElement.style.setProperty("--os", K._os + "px");
