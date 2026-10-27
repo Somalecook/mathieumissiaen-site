@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="theme-color" content="#3a2158">
 <script>setTimeout(function(){if(window.__stickooOK)return;var d=document.createElement("div");d.style.cssText="position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:#3a2158;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;font:600 18px/1.5 sans-serif";d.innerHTML="<div><p style='font-size:22px'>Stickoo</p><p>Please update <b>Android System WebView</b> and <b>Chrome</b> from Google Play, then reopen Stickoo.</p><p>Merci de mettre \u00e0 jour <b>Android System WebView</b> et <b>Chrome</b> depuis Google Play, puis de rouvrir Stickoo.</p></div>";document.body.appendChild(d);},8000);</script>
-<link rel="preload" as="image" href="kid/sky/logo.webp?v=1" fetchpriority="high"><link rel="preload" as="image" href="kid/sky/logo.webp?v=1" fetchpriority="high"><link rel="preload" as="image" href="kid/home/play3.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/book3.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/stickers3.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/ach3.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/cahier3.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/sky/langpage.webp?v=2" fetchpriority="high">
+<link rel="preload" as="image" href="kid/sky/logo.webp?v=1" fetchpriority="high"><link rel="preload" as="image" href="kid/sky/logo.webp?v=1" fetchpriority="high"><link rel="preload" as="image" href="kid/home/play3.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/book3.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/stickers3.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/ach3.webp" fetchpriority="high"><link rel="preload" as="image" href="kid/home/cahier3.webp" fetchpriority="high">
 <title>Stickoo Hanee</title>
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
@@ -1657,6 +1657,19 @@ html.klang-screen .klp{width:min(94vw,560px)!important;max-width:none}
 @keyframes kShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
 
 html.kquiz body .kopts.four{row-gap:18px!important}
+
+.klp2{display:flex;flex-direction:column;align-items:center;gap:6px;width:100%}
+.klp2-logo{width:min(86vw,440px);height:auto;filter:drop-shadow(0 10px 20px rgba(20,0,40,.4));animation:bubbleBob 5s ease-in-out infinite}
+html.klang-screen .klp.klp2-card{width:min(94vw,500px)!important;margin:0 auto;padding:18px 14px 20px;border-radius:34px;display:grid;gap:14px;background:radial-gradient(circle at 10% 15%,#fff 0 1.8px,transparent 2.6px),radial-gradient(circle at 92% 20%,#fff 0 2px,transparent 2.8px),radial-gradient(circle at 88% 85%,rgba(255,255,255,.9) 0 1.5px,transparent 2.3px),linear-gradient(180deg,rgba(255,255,255,.8) 0,rgba(255,255,255,0) 30%),linear-gradient(150deg,#ffdff1 0%,#eedfff 48%,#d6ecff 100%);border:4px solid #fff;box-shadow:0 0 0 3px #b98cff,0 8px 0 #8f62c9,0 22px 44px rgba(10,0,30,.45)}
+.klp2-row{display:grid;gap:8px;justify-items:center}
+.klp2-row>b{font-size:clamp(1.15rem,5vw,1.5rem)!important}
+.klp2-chips{display:flex;gap:min(2vw,10px);justify-content:center;flex-wrap:nowrap}
+.klp2-c{width:min(12.5vw,58px);height:min(12.5vw,58px);border-radius:50%;border:3px solid #fff;cursor:pointer;padding:0;display:grid;place-items:center;background:linear-gradient(160deg,#fff,#efe4ff);box-shadow:0 0 0 2px #cdb4f0,0 4px 0 #b79be0;transition:transform .15s}
+.klp2-c span{font:800 clamp(1rem,4.6vw,1.35rem)/1 "Baloo 2","Jua","Noto Sans KR",sans-serif;color:#8a4ab0}
+.klp2-c.on{background:linear-gradient(160deg,#ff9fd2,#b98cff 55%,#7fc8ff);box-shadow:0 0 0 3px #7b2d8e,0 5px 0 #5b2380,0 0 16px rgba(255,120,200,.6);transform:scale(1.1)}
+.klp2-c.on span{color:#fff;text-shadow:0 2px 0 #7b2d8e}
+.klp2-c.off{opacity:.35;filter:grayscale(.6)}
+.klp2-c:active{transform:scale(.92)}
 </style>
 </head>
 <body>
@@ -1835,7 +1848,7 @@ html.kquiz body .kopts.four{row-gap:18px!important}
 
 <script>(() => {
   try {
-    window.__homePre = ["kid/sky/logo_anim.webp?v=1", "kid/home/play3.webp", "kid/home/book3.webp", "kid/home/stickers3.webp", "kid/home/ach3.webp", "kid/home/cahier3.webp", "kid/sky/logo.webp?v=1", "kid/sky/langpage.webp?v=2", "kid/nature/nature02.png", "kid/sky/back.webp?v=3", "kid/sky/starsc.webp?v=4"].map((u) => {
+    window.__homePre = ["kid/sky/logo_anim.webp?v=1", "kid/home/play3.webp", "kid/home/book3.webp", "kid/home/stickers3.webp", "kid/home/ach3.webp", "kid/home/cahier3.webp", "kid/sky/logo.webp?v=1", "kid/sky/logo_kids.webp?v=1", "kid/nature/nature02.png", "kid/sky/back.webp?v=3", "kid/sky/starsc.webp?v=4"].map((u) => {
       const i = new Image();
       i.fetchPriority = "high";
       i.decoding = "async";
@@ -5326,6 +5339,7 @@ html.kquiz body .kopts.four{row-gap:18px!important}
   };
   RESET_TXT.zh = "注意！所有进度都会被删除（星星、贴纸、奖杯、本子）。再点一下就全部清除。";
   delete RESET_TXT.it;
+  const LANGROW_TXT = { fr: ["Je parle", "J’apprends"], en: ["I speak", "I learn"], es: ["Hablo", "Aprendo"], ko: ["나는 말해요", "나는 배워요"], ja: ["はなす", "まなぶ"], zh: ["我会说", "我想学"] };
   const GO_TXT = { fr: "C’est parti !", en: "Let’s go!", es: "¡Vamos!", ko: "시작!", ja: "はじめよう！" };
   GO_TXT.zh = "开始吧！";
   delete GO_TXT.it;
@@ -5349,8 +5363,10 @@ html.kquiz body .kopts.four{row-gap:18px!important}
       }
     }
     const S2 = K.lsel, ready = S2.n && S2.l && S2.n !== S2.l;
-    const btn = (row, c) => '<button class="klp-b '.concat(S2[row] === c ? "on" : "", " ").concat(row === "l" && S2.n === c || row === "n" && S2.l === c ? "off" : "", '" data-klp="').concat(row, ":").concat(c, '" aria-label="').concat(c, '" style="left:').concat(LANG_X[c], "%;top:").concat(row === "n" ? 60 : 75.9, '%"></button>');
-    $("#kids").innerHTML = kidsHeader(true) + '<div class="klp"><img src="kid/sky/langpage.webp?v=2" alt="I speak · I learn" draggable="false">'.concat(Object.keys(LANG_X).map((c) => btn("n", c) + btn("l", c)).join(""), '</div>\n    <div class="klp-row"><button class="klp-go').concat(ready ? "" : " kdim", '" data-k="langgo">').concat(GO_TXT[S2.n || UIL] || GO_TXT.en, ' <span>▶</span></button><button class="kreset" data-k="slots" aria-label="Players">👤</button></div>');
+    const LBL = { fr: "FR", en: "EN", zh: "中", es: "ES", ko: "한", ja: "日" }, RT = LANGROW_TXT[S2.n] || LANGROW_TXT.en;
+    const btn = (row2, c) => '<button class="klp2-c '.concat(S2[row2] === c ? "on" : "", " ").concat(row2 === "l" && S2.n === c || row2 === "n" && S2.l === c ? "off" : "", '" data-klp="').concat(row2, ":").concat(c, '" aria-label="').concat(c, '"><span>').concat(LBL[c], "</span></button>");
+    const row = (r) => '<div class="klp2-row"><b class="kpuffy kp-ink">'.concat(r === "n" ? RT[0] : RT[1], '</b><div class="klp2-chips">').concat(Object.keys(LANG_X).map((c) => btn(r, c)).join(""), "</div></div>");
+    $("#kids").innerHTML = kidsHeader(true) + '<div class="klp2"><img class="klp2-logo" src="kid/sky/logo_kids.webp?v=1" alt="Stickoo" draggable="false"><div class="klp klp2-card">'.concat(row("n")).concat(row("l"), '</div></div>\n    <div class="klp-row"><button class="klp-go').concat(ready ? "" : " kdim", '" data-k="langgo">').concat(GO_TXT[S2.n || UIL] || GO_TXT.en, ' <span>▶</span></button><button class="kreset" data-k="slots" aria-label="Players">👤</button></div>');
   }
   function kidsLangPick(row, c) {
     const S2 = K.lsel;
@@ -5952,7 +5968,7 @@ html.kquiz body .kopts.four{row-gap:18px!important}
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.50";
+  const APP_VER = "1.0.51";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
