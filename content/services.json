@@ -63,23 +63,6 @@
       "films": true
     },
     {
-      "slug": "ai",
-      "label": "AI images",
-      "title": "AI image making & generative workflows",
-      "metaTitle": "AI Image Making & Generative Workflows for Brands — Paris | Mathieu Missiaen",
-      "description": "Generative AI, node-based workflows and Houdini combined into a hands-on image practice for brands and personal research, by a Paris creative director.",
-      "intro": "Mathieu Missiaen uses generative AI the way he uses a camera or Houdini: as one more tool in a controlled, art-directed pipeline. Node-based workflows, his own references and 3D scans keep the result specific instead of generic.",
-      "body": [
-        "His research on masks mixes hand-made sculpture, photography, Houdini and generative tools, and he explores models trained on his own images. For brands, AI is used for exploration, look development and moving tests — always finished with real craft."
-      ],
-      "fr": "IA générative et workflows nodaux au service de l'image : recherche, look development, tests animés, toujours combinés à la photo et à la 3D pour un résultat sur mesure.",
-      "projects": [
-        "tal",
-        "aichmophobia",
-        "studies"
-      ]
-    },
-    {
       "slug": "vibe-coding",
       "label": "Vibe coding",
       "title": "Vibe coding — apps, tools & websites built with AI",

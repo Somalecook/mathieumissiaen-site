@@ -63,7 +63,7 @@ PERSON = {
     'address': {'@type': 'PostalAddress', 'addressLocality': 'Paris', 'addressCountry': 'FR'},
     'sameAs': [u for u in [C.get('instagram'), C.get('vimeo'), C.get('tiktok'), C.get('iolo')] if u],
     'knowsAbout': ['Art direction', 'CGI', '3D', 'Houdini', 'Cinema 4D', 'Still life photography', 'Campaign photography',
-                   'Film direction', 'Motion design', 'Generative AI', 'AI image making', 'Vibe coding', 'Creative coding'],
+                   'Film direction', 'Motion design', 'Vibe coding', 'Creative coding'],
 }
 
 FONT_LINKS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
@@ -258,6 +258,13 @@ for rel in ['stickoo/index.html', 'stickoo/confidentialite.html']:
 urls = ''.join('<url><loc>%s/%s</loc><lastmod>%s</lastmod><priority>%s</priority></url>\n' % (SITE_URL, u, TODAY, pr) for u, pr in pages + extra)
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s</urlset>\n' % urls)
 write('robots.txt', 'User-agent: *\nAllow: /\nDisallow: /stickoo/app/\n\nSitemap: %s/sitemap.xml\n' % SITE_URL)
+
+# remove service pages that no longer exist
+sdir = os.path.join(ROOT, 'services')
+if os.path.isdir(sdir):
+    for d in os.listdir(sdir):
+        if d not in {s['slug'] for s in SERVICES}:
+            shutil.rmtree(os.path.join(sdir, d), ignore_errors=True)
 
 # remove pages of projects that no longer exist
 wdir = os.path.join(ROOT, 'work')

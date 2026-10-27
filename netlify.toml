@@ -22,3 +22,8 @@
   for = "/stickoo/app/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
+
+[[redirects]]
+  from = "/services/ai/*"
+  to = "/services/cgi/"
+  status = 301
