@@ -123,7 +123,7 @@
       var img = new Image(); img.src = st.src; img.alt = ''; img.className = 'sticker-drag'; img.draggable = false;
       img.style.left = (st.x != null ? st.x : 8 + (n * 37) % 80) + '%'; img.style.top = (st.y != null ? st.y : 10 + (n * 23) % 70) + '%';
       img.style.setProperty('--r', (st.r != null ? st.r : ((n * 47) % 30) - 15) + 'deg');
-      img.onload = function () { var w = Math.round(img.naturalWidth * (phone ? .45 : .62)); img.style.width = w + 'px'; var max = host.clientWidth - w - 6; if (img.offsetLeft > max) img.style.left = Math.max(0, max) + 'px'; };
+      img.onload = function () { var w = Math.round(img.naturalWidth * (phone ? .315 : .434)); img.style.width = w + 'px'; var max = host.clientWidth - w - 6; if (img.offsetLeft > max) img.style.left = Math.max(0, max) + 'px'; };
       host.appendChild(img);
       var sx, sy, ox, oy, moved;
       img.addEventListener('pointerdown', function (ev) {
@@ -203,7 +203,7 @@
     document.getElementById('app').innerHTML = header('work', site) +
       (function () {
         var L = site.home && site.home.latest;
-        var title = '<div class="hero-wrap"><h1 class="hero-title">Image <em>IRL</em><br>&amp; <em>CGI</em></h1><img class="sticker" src="images/sticker.png" alt="" width="108" height="132"></div>';
+        var title = '<div class="hero-wrap"><h1 class="hero-title">Image <em>IRL</em><br>&amp; <em>CGI</em></h1></div>';
         var items = L && (L.items || (L.src ? [L] : []));
         if (!items || !items.length) return '<section class="wrap" style="padding-block:112px 96px">' + title + '</section>';
         loadFont('Gowun+Dodum');

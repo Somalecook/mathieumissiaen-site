@@ -289,6 +289,6 @@ img,video,iframe{max-width:100%}
 .f-imgs.quad .f-car img.on{opacity:1}
 @media (max-width:820px){.f-imgs.quad .f-car{grid-column:1 / -1;grid-row:auto;aspect-ratio:4/5}}
 /* draggable stickers */
-.sticker-drag{position:absolute;z-index:30;width:auto;max-width:none;height:auto;cursor:grab;touch-action:none;user-select:none;-webkit-user-drag:none;transform:rotate(var(--r,0deg));filter:drop-shadow(0 3px 4px rgba(0,0,0,.18));transition:filter .2s,transform .2s}
+.sticker-drag{position:absolute;z-index:30;width:auto;max-width:none;height:auto;cursor:grab;touch-action:none;user-select:none;-webkit-user-drag:none;transform:rotate(var(--r,0deg));filter:drop-shadow(1px 2px 0 rgba(0,0,0,.42));transition:filter .2s,transform .2s}
 .sticker-drag:hover{transform:rotate(var(--r,0deg)) translateY(-2px)}
-.sticker-drag.grab{cursor:grabbing;filter:drop-shadow(0 10px 14px rgba(0,0,0,.25));transition:none}
+.sticker-drag.grab{cursor:grabbing;filter:drop-shadow(3px 5px 1px rgba(0,0,0,.38));transition:none}
