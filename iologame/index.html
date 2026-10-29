@@ -301,6 +301,9 @@ button:disabled { opacity: .4; cursor: default; }
   // water bottle (level 0..1 = one full bowl) and kibble box (amount 0..1 = three bowls)
   const bottle = { x: 4.49, y: 1.26, level: 0, filling: 0, pour: false };
   const box = { x: 9.2, y: 3.3, amount: 1, open: false, of: 0, rolled: false, pour: false, present: true };
+  // up to three bags of kibble can be out of the big box at once
+  const box2 = { x: 9.6, y: 3.4, amount: 1, open: false, of: 0, pour: false, present: false }, box3 = { x: 8.8, y: 3.1, amount: 1, open: false, of: 0, pour: false, present: false };
+  const BAGS = [box, box2, box3];
   // trash bin for empty boxes, and the big carton new boxes come out of
   const bin = { x: 5.7, y: 0.9, lid: 0 };
   const crate = { x: 9.25, y: 2.05, open: false, taped: true, f: 0 };   // f: how open it is (0 shut, 1 open)
@@ -402,7 +405,9 @@ button:disabled { opacity: .4; cursor: default; }
       if (s.bottle) Object.assign(bottle, s.bottle);
       if (Math.abs(bottle.y - 0.35) < 0.05) Object.assign(bottle, underTap());   // was under the old wall tap
       if (s.box) Object.assign(box, s.box);
-      box.of = box.open ? 1 : 0;
+      if (s.box2) Object.assign(box2, s.box2);
+      if (s.box3) Object.assign(box3, s.box3);
+      for (const b of BAGS) b.of = b.open ? 1 : 0;
       if (s.bowl2) Object.assign(bowl2, s.bowl2);
       if (s.bowl3) Object.assign(bowl3, s.bowl3);
       if (s.plate2) Object.assign(plate2, s.plate2);
@@ -419,15 +424,16 @@ button:disabled { opacity: .4; cursor: default; }
       crate.f = crate.open ? 1 : 0;
       if (Math.hypot(crate.x - 9.25, crate.y - 1.1) < 0.05) crate.y = 2.4;   // old spot hid the bottle under the tap
       bin.lift = crate.lift = 0;
-      bowl.lift = plate.lift = stump.lift = bed.lift = bottle.lift = box.lift = 0;
-      bottle.pour = box.pour = false; bottle.filling = 0;
+      bowl.lift = plate.lift = stump.lift = bed.lift = bottle.lift = 0;
+      bottle.pour = false; bottle.filling = 0;
+      for (const b of BAGS) { b.lift = 0; b.pour = false; }
       stats.food = clamp(stats.food - away * 0.05, 15, 100);
       stats.water = clamp(stats.water - away * 0.07, 15, 100);
       stats.joy = clamp(stats.joy - away * 0.04, 15, 100);
       stats.energy = clamp(stats.energy + away * 0.1, 0, 100);
     }
   } catch (e) {}
-  const save = () => { try { localStorage.setItem('bebe-dragon-v1', JSON.stringify({ at: Date.now(), stats, bowl, plate, soban, tap: TAP, lamp: LAMP.on, puddle, bowl2, bowl3, plate2, soli, soli2, soli3, soban2, stump, bed, garden, bottle, box, bin, crate, stage })); } catch (e) {} };
+  const save = () => { try { localStorage.setItem('bebe-dragon-v1', JSON.stringify({ at: Date.now(), stats, bowl, plate, box2, box3, soban, tap: TAP, lamp: LAMP.on, puddle, bowl2, bowl3, plate2, soli, soli2, soli3, soban2, stump, bed, garden, bottle, box, bin, crate, stage })); } catch (e) {} };
 
   // ---------- canvas sizing ----------
   let terrain = null;
@@ -776,23 +782,85 @@ button:disabled { opacity: .4; cursor: default; }
   const SOBAN_FOOT = [54.6, 96];
   const underTap = () => ({ x: clampX(TAP.x - 0.11), y: clampY(TAP.y + 0.36) });   // where the bottle stands to fill
   const tapPoint = ([ax, ay]) => { const [x, y] = iso(TAP.x, TAP.y, TAP.lift || 0); return [x - TAP_FOOT[0] + ax, y - TAP_FOOT[1] + ay]; };
+  // the puddle: an uneven blob of water lying in the grass. Soaked darker grass around it, depth in the middle,
+  // the sky reflected towards the back, a bright wet rim, blades of grass poking through, rings where the tap hits
+  const puddleR = (a, R) => R * (1 + 0.11 * Math.sin(3 * a + 0.7) + 0.07 * Math.sin(5 * a + 2.1 + t * 0.25) + 0.045 * Math.sin(8 * a + 4.2) + 0.025 * Math.sin(13 * a + 1.3 - t * 0.4));
+  function puddlePath(cx, cy, R, grow = 1) {
+    ctx.beginPath();
+    for (let i = 0; i <= 64; i++) {
+      const a = i / 64 * Math.PI * 2, r = puddleR(a, R) * grow;
+      const x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r * 0.5;
+      i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+    }
+    ctx.closePath();
+  }
   function drawPuddle() {
     if (puddle <= 0.01) return;
     // it starts where the stream hits the grass and keeps spreading: after 5 minutes the whole lawn is under water
     const [, ty] = iso(TAP.x, TAP.y, TAP.lift || 0), p = Math.sqrt(puddle), sx = tapPoint(TAP_SPOUT)[0], sy = ty + 24;
-    const [mx, my] = iso(NX / 2, NY / 2), x = sx + (mx - sx) * p, y = sy + (my - sy) * p;
-    const rx = 16 + 1250 * p, ry = rx * 0.5, wob = Math.sin(t * 2.3) * 1.5;
+    const [mx, my] = iso(NX / 2, NY / 2), cx = sx + (mx - sx) * p, cy = sy + (my - sy) * p;
+    const R = 18 + 1250 * p, fade = Math.min(1, puddle * 25);
     ctx.save();
     // never past the edges of the lawn
-    ctx.beginPath(); [[0, 0], [NX, 0], [NX, NY], [0, NY]].forEach(([gx, gy], i) => { const [cx, cy] = iso(gx, gy); i ? ctx.lineTo(cx, cy) : ctx.moveTo(cx, cy); }); ctx.closePath(); ctx.clip();
-    ell(x, y, rx + wob, ry + wob * 0.4, `rgba(80,170,235,${0.24 + 0.16 * p})`);
-    ell(x - rx * 0.12, y - ry * 0.1, rx * 0.72, ry * 0.62, `rgba(150,215,255,${0.16 + 0.1 * p})`);
+    ctx.beginPath(); [[0, 0], [NX, 0], [NX, NY], [0, NY]].forEach(([gx, gy], i) => { const [x, y] = iso(gx, gy); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.closePath(); ctx.clip();
+    ctx.globalAlpha = fade;
+    // soaked grass: a darker, greener band all round the water
+    ctx.globalCompositeOperation = 'multiply';
+    puddlePath(cx, cy + 2, R, 1.16); ctx.fillStyle = 'rgb(205,218,180)'; ctx.fill();
+    puddlePath(cx, cy + 1, R, 1.06); ctx.fillStyle = 'rgb(190,208,170)'; ctx.fill();
+    // the water body: deeper in the middle, the sky catching the far side
+    puddlePath(cx, cy, R); ctx.fillStyle = 'rgb(176,214,232)'; ctx.fill();
+    ctx.globalCompositeOperation = 'source-over';
+    puddlePath(cx, cy, R);
+    const g = ctx.createLinearGradient(0, cy - R * 0.5, 0, cy + R * 0.5);
+    g.addColorStop(0, 'rgba(225,245,255,.55)'); g.addColorStop(0.45, 'rgba(130,205,250,.36)'); g.addColorStop(1, 'rgba(70,160,230,.44)');
+    ctx.fillStyle = g; ctx.fill();
+    ctx.save(); puddlePath(cx, cy, R); ctx.clip();
+    // a soft sheen sliding slowly across the surface
+    const shx = cx - R * 0.3 + Math.sin(t * 0.35) * R * 0.08, shy = cy - R * 0.18;
+    ctx.translate(shx, shy); ctx.scale(1, 0.32);
+    const sh = ctx.createRadialGradient(0, 0, 0, 0, 0, R * 0.55);
+    sh.addColorStop(0, 'rgba(255,255,255,.4)'); sh.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = sh; ctx.beginPath(); ctx.arc(0, 0, R * 0.55, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
-    // ripples where the stream hits
-    for (let i = 0; i < 2; i++) {
-      const k = (t * 0.8 + i * 0.5) % 1;
-      ctx.strokeStyle = `rgba(230,248,255,${(1 - k) * 0.5 * Math.min(1, p * 4)})`; ctx.lineWidth = 1.2;
-      ctx.beginPath(); ctx.ellipse(sx, sy - 2, 4 + k * 30, (4 + k * 30) * 0.42, 0, 0, Math.PI * 2); ctx.stroke();
+    // wet rim: bright along the back edge, darker under the front lip
+    ctx.lineWidth = 1.6; ctx.lineJoin = 'round';
+    puddlePath(cx, cy, R);
+    const rim = ctx.createLinearGradient(0, cy - R * 0.5, 0, cy + R * 0.5);
+    rim.addColorStop(0, 'rgba(255,255,255,.85)'); rim.addColorStop(0.5, 'rgba(255,255,255,.25)'); rim.addColorStop(1, 'rgba(40,90,60,.45)');
+    ctx.strokeStyle = rim; ctx.stroke();
+    // blades of grass sticking out of the water, more near the shore
+    ctx.lineCap = 'round';
+    const n = Math.min(90, 6 + Math.round(R / 9));
+    for (let i = 0; i < n; i++) {
+      const a = hash(i, 71) * Math.PI * 2, f = 0.35 + 0.6 * Math.sqrt(hash(i, 93));
+      const r = puddleR(a, R) * f, bx = cx + Math.cos(a) * r, by = cy + Math.sin(a) * r * 0.5;
+      for (let k = -1; k <= 1; k++) {
+        const h = 3 + hash(i * 3 + k, 17) * 5, lean = k * 1.8 + Math.sin(t * 1.3 + i) * 0.6;
+        ctx.strokeStyle = (i + k) % 3 ? '#4f8f36' : '#6dab45'; ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.moveTo(bx + k * 1.4, by); ctx.quadraticCurveTo(bx + k * 1.4 + lean * .4, by - h * .6, bx + k * 1.4 + lean, by - h); ctx.stroke();
+      }
+      // a little ring of water round each tuft
+      ctx.strokeStyle = 'rgba(235,250,255,.35)'; ctx.lineWidth = 0.8;
+      ctx.beginPath(); ctx.ellipse(bx, by, 4.5, 1.7, 0, 0, Math.PI * 2); ctx.stroke();
+    }
+    // glints that twinkle
+    for (let i = 0; i < Math.min(14, 2 + R / 60); i++) {
+      const a = hash(i, 211) * Math.PI * 2, r = puddleR(a, R) * (0.2 + 0.6 * hash(i, 223)), tw = Math.max(0, Math.sin(t * (1.5 + hash(i, 5)) + i * 2));
+      if (tw < 0.4) continue;
+      ell(cx + Math.cos(a) * r, cy + Math.sin(a) * r * 0.5, 3 * tw, 0.9 * tw, `rgba(255,255,255,${0.7 * tw})`);
+    }
+    ctx.restore();
+    // rings where the stream hits, and stray drops plopping here and there
+    for (let i = 0; i < 3; i++) {
+      const k = (t * 0.9 + i / 3) % 1;
+      ctx.strokeStyle = `rgba(235,250,255,${(1 - k) * 0.6 * Math.min(1, p * 4)})`; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.ellipse(sx, sy - 2, 3 + k * 26, (3 + k * 26) * 0.42, 0, 0, Math.PI * 2); ctx.stroke();
+    }
+    if (R > 60) for (let i = 0; i < 3; i++) {
+      const cyc = Math.floor(t * 0.7 + i * 0.33), k = (t * 0.7 + i * 0.33) % 1, a = hash(cyc, 300 + i) * Math.PI * 2, r = puddleR(a, R) * 0.7 * hash(cyc, 400 + i);
+      ctx.strokeStyle = `rgba(235,250,255,${(1 - k) * 0.45})`; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.ellipse(cx + Math.cos(a) * r, cy + Math.sin(a) * r * 0.5, 2 + k * 14, (2 + k * 14) * 0.42, 0, 0, Math.PI * 2); ctx.stroke();
     }
   }
   function drawTap() {
@@ -1228,7 +1296,7 @@ button:disabled { opacity: .4; cursor: default; }
   function obstacles() {
     const L = [[bed, 0.8], [soban, 0.66], [soban2, 0.72], [crate, 0.75], [bin, 0.4], [TAP, 0.25], [stump, 0.35], [bowl, 0.32]];
     for (const o of [...MIX, soli, soli2, soli3]) if (!o.rest) L.push([o, o === plate2 ? 0.36 : MIX.includes(o) ? 0.3 : 0.22]);
-    if (box.present && !box.rest && !box.pour) L.push([box, 0.25]);
+    for (const b of BAGS) if (b.present && !b.rest && !b.pour) L.push([b, 0.25]);
     if (!bottle.rest && !bottle.pour && !(bottle.potPour >= 0)) L.push([bottle, 0.18]);
     garden.jars.forEach((j, i) => { if (!j.rest) L.push([j, 0.22 * JAR_W[i] / 40]); });
     return L.filter(([o]) => !(dragging && dragging.o === o) && !isStored(o)).map(([o, r]) => [o.x, o.y, r + 0.18]).concat(shelfObstacles());
@@ -1530,6 +1598,31 @@ button:disabled { opacity: .4; cursor: default; }
   }
 
   // ---------- ball physics ----------
+  // the ball knocks into things: it bounces off, vases and bowls rock, a soban shakes what stands on it
+  function ballHits() {
+    const v = Math.hypot(ball.vx, ball.vy);
+    if (v < 0.25) return;
+    const rocks = [soli, soli2, soli3, bottle, ...garden.jars, ...BOWLS];
+    const things = [bowl, ...MIX, soli, soli2, soli3, bottle, ...garden.jars].filter(o => !isStored(o) && !(dragging && dragging.o === o)).map(o => [o, 0.26, o.rest || 0, 44]);
+    for (const b of BAGS) if (b.present && !isStored(b)) things.push([b, 0.24, b.rest || 0, 40]);
+    for (const T of TABLES) things.push([T.o, 0.5, 0, T.z]);
+    things.push([crate, 0.5, 0, 90], [bin, 0.3, 0, 60], [stump, 0.28, 0, 50]);
+    for (const [o, r, z0, h] of things) {
+      if (ball.z < z0 - 8 || ball.z > z0 + h) continue;   // flying over it, or under the table top
+      const dx = ball.x - o.x, dy = ball.y - o.y, d = Math.hypot(dx, dy), R = r + 0.14;
+      if (d >= R || d < 1e-4) continue;
+      const nx = dx / d, ny = dy / d, vn = ball.vx * nx + ball.vy * ny;
+      ball.x = o.x + nx * R; ball.y = o.y + ny * R;
+      if (vn >= 0) continue;
+      ball.vx -= 1.55 * vn * nx; ball.vy -= 1.55 * vn * ny;
+      const hit = Math.min(1, -vn / 3.5);
+      if (rocks.includes(o)) o.wob = Math.max(o.wob || 0, 0.45 + 0.55 * hit);
+      else if (o.x != null && SMALL().includes(o)) o.settle = Math.max(o.settle || 0, 0.6 * hit);
+      const ti = TABLES.findIndex(T => T.o === o);
+      if (ti >= 0) for (const it of SMALL()) if (it.rest && !isStored(it) && (it.tbl || 0) === ti && rocks.includes(it)) it.wob = Math.max(it.wob || 0, 0.3 + 0.5 * hit);
+      if (o === crate) o.shake = Math.max(o.shake || 0, 0.15 * hit);
+    }
+  }
   function updateBall(dt) {
     if (ball.carried) { ball.x = dragon.x; ball.y = dragon.y; return; }
     if (ball.held) return;
@@ -1565,6 +1658,7 @@ button:disabled { opacity: .4; cursor: default; }
     if (ball.x > NX - 0.3) { ball.x = NX - 0.3; ball.vx = -Math.abs(ball.vx) * 0.6; }
     if (ball.y < 0.3) { ball.y = 0.3; ball.vy = Math.abs(ball.vy) * 0.6; }
     if (ball.y > NY - 0.3) { ball.y = NY - 0.3; ball.vy = -Math.abs(ball.vy) * 0.6; }
+    ballHits();
     // it rolls, it doesn't slide: on the ground it turns by the distance it covers on screen (radius 13 px),
     // in the air it keeps the spin it had
     const sx = (ball.vx - ball.vy) * TW / 2, sy = (ball.vx + ball.vy) * TH / 2;
@@ -1676,15 +1770,33 @@ button:disabled { opacity: .4; cursor: default; }
     save(); updateHud();
   }
 
+  // flowers in the carafe: a tap with flowers in hand puts them in (up to eight), a tap with empty hands takes them out
+  function carafeFlowers() {
+    const o = bottle, [x, y] = iso(o.x, o.y, o.rest || 0);
+    if (garden.bouquet) { if (o.flowers) return; o.flowers = garden.bouquet; garden.bouquet = null; }
+    else if (garden.hand.length) {
+      if (o.flowers && !Array.isArray(o.flowers)) return;
+      const have = o.flowers || [], room = HAND_MAX - have.length;
+      if (room <= 0) return;
+      o.flowers = [...have, ...garden.hand.splice(-room)];
+    } else if (o.flowers) {
+      if (Array.isArray(o.flowers)) garden.hand = o.flowers.slice(0, HAND_MAX); else garden.bouquet = o.flowers;
+      o.flowers = null; save(); updateHud(); return;
+    } else return;
+    o.wob = 0.6;
+    for (let k = 0; k < 3; k++) setTimeout(() => puff('heart', x + rand(-14, 14), y - 90), k * 120);
+    save(); updateHud();
+  }
+
   // ---------- moving the furniture ----------
   let dragging = null;
   // the things small enough to put on the soban
-  const SMALL = () => [bowl, ...MIX, soli, soli2, soli3, bottle, box, ...garden.jars];
+  const SMALL = () => [bowl, ...MIX, soli, soli2, soli3, bottle, ...BAGS, ...garden.jars];
   // every object under the pointer; the one drawn in front wins
   function objectAt(px, py) {
     const hits = [];
-    for (const o of [bottle, box]) {
-      if (o === box && !box.present) continue;
+    for (const o of [bottle, ...BAGS]) {
+      if (BAGS.includes(o) && !o.present) continue;
       const [x, y] = iso(o.x, o.y, zOf(o));
       if (Math.abs(px - x) < 26 && py > y - (o === bottle ? 68 : 58) && py < y + 10) hits.push(o);
     }
@@ -1749,13 +1861,6 @@ button:disabled { opacity: .4; cursor: default; }
       dragging.px = px; dragging.py = py;
       if (Math.hypot(px - dragging.sx, py - dragging.sy) > 8) dragging.moved = true;
       if (!dragging.moved) return;
-      // pulling from the open box takes a new bag out of it
-      if (dragging.o === crate && crate.open && crate.f > 0.9 && !box.present) {
-        takeNewBox();
-        const [bx, by] = iso(box.x, box.y);
-        dragging = { o: box, dx: 0, dy: 11, sx: dragging.sx, sy: dragging.sy, moved: true };
-        box.lift = 14; box.pop = 0;
-      }
       const o = dragging.o;
       const wasInBed = o === bed && dragon.state === 'sleep' && nearBed();
       const vx = px + dragging.dx, vy = py + dragging.dy;
@@ -1829,18 +1934,28 @@ button:disabled { opacity: .4; cursor: default; }
       }
       if (TABLES.some(T => T.o === o)) for (const it of SMALL()) if (it.rest && !isStored(it)) it.lift = 0;
       if (dragging.moved) o.settle = 1;   // soft squash as it lands
-      if (dragging.moved && [soli, soli2, soli3, ...garden.jars, ...BOWLS].includes(o)) o.wob = 1;   // a vase or a bowl rocks on its foot before it settles
+      if (dragging.moved && [soli, soli2, soli3, bottle, ...garden.jars, ...BOWLS].includes(o)) o.wob = 1;   // a vase or a bowl rocks on its foot before it settles
       if (!dragging.moved && o === bed) sendToBed();
       if (!dragging.moved && dragging.jar != null) placeBouquet(dragging.jar);   // tap a jar: empty a dead bouquet
-      if (!dragging.moved && o === box && box.amount > 0.001) { box.open = !box.open; if (!box.open) box.rolled = true; }
+      if (!dragging.moved && BAGS.includes(o) && o.amount > 0.001) { o.open = !o.open; if (!o.open) o.rolled = true; }
       if (o === bottle && !o.rest && Math.hypot(o.x - underTap().x, o.y - underTap().y) < 0.9) Object.assign(o, underTap());
       if (o === TAP && Math.hypot(bottle.x - underTap().x, bottle.y - underTap().y) < 1.2 && !bottle.rest) Object.assign(bottle, underTap());
-      if (!dragging.moved && o === crate) { crate.open = !crate.open; if (crate.open && crate.taped) { const [x, y] = iso(crate.x, crate.y); puff('dust', x, y - 60, { size: 5 }); } }
-      if (o === box && Math.hypot(box.x - bin.x, box.y - bin.y) < 0.8) {
-        box.present = false; box.pour = false; bin.lid = 1;
+      if (!dragging.moved && o === bottle) carafeFlowers();
+      // the big box: the first tap tears it open (it stays open), then each tap takes a bag out, three at most
+      if (!dragging.moved && o === crate) { if (!crate.open) { crate.open = true; const [x, y] = iso(crate.x, crate.y); puff('dust', x, y - 60, { size: 5 }); } else if (crate.f > 0.9) takeNewBox(); }
+      if (BAGS.includes(o) && Math.hypot(o.x - bin.x, o.y - bin.y) < 0.8) {
+        o.present = false; o.pour = false; bin.lid = 1;
         const [x, y] = iso(bin.x, bin.y); puff('dust', x, y - 50, { size: 6 }); puff('dust', x + 6, y - 52, { size: 5 });
       }
-      if (o.pour) { const to = o.pourTo || (o === box ? plate2 : bowl); o.pour = false; o.rest = 0; o.x = clampX(to.x + (o === box ? 0.9 : -0.3)); o.y = clampY(to.y + 1.1); }
+      if (o.pour) { const isBag = BAGS.includes(o), to = o.pourTo || (isBag ? plate2 : bowl); o.pour = false; o.rest = 0; o.x = clampX(to.x + (isBag ? 0.9 : -0.3)); o.y = clampY(to.y + 1.1); }
+      // a bowl or a plate dropped on the bin is emptied into it, then set down beside it
+      if ((o === bowl || MIX.includes(o)) && !o.on && !o.rest && Math.hypot(o.x - bin.x, o.y - bin.y) < 0.8) {
+        const full = o === bowl ? bowl.water + bowl.food > 0.01 : o.amount > 0.01;
+        if (o === bowl) { bowl.water = 0; bowl.food = 0; } else { o.amount = 0; o.kind = null; }
+        bin.lid = 1; o.x = clampX(bin.x + 0.15); o.y = clampY(bin.y + 0.95); o.lift = 14;
+        if (full) { const [x, y] = iso(bin.x, bin.y); puff('dust', x, y - 50, { size: 5 }); }
+        syncStack();
+      }
       dragging = null; cv.classList.remove('grabbing'); save();
       return;
     }
@@ -1869,8 +1984,12 @@ button:disabled { opacity: .4; cursor: default; }
   // ---------- buttons ----------
   function takeNewBox() {
     const [cx, cy] = iso(crate.x, crate.y);
-    if (box.present) { crate.shake = 0.4; return; }   // one bag at a time
-    Object.assign(box, { present: true, amount: 1, open: false, of: 0, rolled: false, pour: false, flow: false, x: clampX(crate.x - 0.2), y: clampY(crate.y + 0.9), lift: 0, pop: 1, rest: 0, stored: null, on: null });
+    const b = BAGS.find(b => !b.present);
+    if (!b) { crate.shake = 0.4; return; }   // three bags out already
+    // each one lands on a free spot in front of the box
+    const spots = [[-0.35, 1.3], [0.35, 1.4], [-1, 0.95], [0.1, 1.95]].map(([dx, dy]) => [clampX(crate.x + dx), clampY(crate.y + dy)]);
+    const [x, y] = spots.find(([x, y]) => BAGS.every(o => !o.present || Math.hypot(o.x - x, o.y - y) > 0.35)) || spots[0];
+    Object.assign(b, { present: true, amount: 1, open: false, of: 0, rolled: false, pour: false, flow: false, x, y, lift: 0, pop: 1, rest: 0, stored: null, on: null, tbl: 0 });
     for (let i = 0; i < 4; i++) puff('heart', cx + rand(-14, 14), cy - 60);
   }
 
@@ -1901,13 +2020,15 @@ button:disabled { opacity: .4; cursor: default; }
     puddle = wasting ? Math.min(1, puddle + dt / 300) : Math.max(0, puddle - dt / 90);
     if (wasting && puddle > 0.03) stats.joy = clamp(stats.joy - dt * 0.8, 0, 100);
     bin.lid = Math.max(0, bin.lid - dt * 1.5);
-    if (dragging && dragging.o === box && dragging.moved && Math.hypot(box.x - bin.x, box.y - bin.y) < 0.8) bin.lid = 1;
+    if (dragging && dragging.moved && (BAGS.includes(dragging.o) || dragging.o === bowl || MIX.includes(dragging.o)) && Math.hypot(dragging.o.x - bin.x, dragging.o.y - bin.y) < 0.8) bin.lid = 1;
     crate.shake = Math.max(0, (crate.shake || 0) - dt);
     // flaps and bag tops move a frame at a time towards open or shut
     crate.f = clamp((crate.f || 0) + (crate.open ? 1 : -1) * dt / 0.5, 0, 1);
     if (crate.f >= 1) crate.taped = false;
-    box.of = clamp((box.of || 0) + (box.open ? 1 : -1) * dt / 0.35, 0, 1);
-    box.pop = Math.max(0, (box.pop || 0) - dt * 2.5);
+    for (const b of BAGS) {
+      b.of = clamp((b.of || 0) + (b.open ? 1 : -1) * dt / 0.35, 0, 1);
+      b.pop = Math.max(0, (b.pop || 0) - dt * 2.5);
+    }
     // pots drain and bouquets wilt when dry
     garden.care.forEach((c, i) => {
       if (!garden.pots[i]) return;
@@ -1917,7 +2038,7 @@ button:disabled { opacity: .4; cursor: default; }
     });
     // watering a pot: drag the bottle up to it
     bottle.potPour = -1;
-    if (dragging && dragging.o === bottle && dragging.moved && dragging.px != null) {
+    if (dragging && dragging.o === bottle && dragging.moved && dragging.px != null && !bottle.flowers) {
       const i = garden.jars.findIndex((g, k) => { const [x, y] = potPos(k); return Math.hypot(dragging.px - x, dragging.py - (y - 30)) < 55; });
       if (i >= 0 && garden.pots[i]) {
         bottle.potPour = i;
@@ -1929,10 +2050,12 @@ button:disabled { opacity: .4; cursor: default; }
         }
       }
     }
-    for (const o of [bottle, box]) {
-      if (o === box) { box.flow = false; if (!box.present) { o.pour = false; continue; } }
-      const kind = o === box ? 'food' : 'water';
-      const cands = o === box ? [] : [bowl];
+    for (const o of [bottle, ...BAGS]) {
+      const isBag = BAGS.includes(o);
+      if (isBag) { o.flow = false; if (!o.present) { o.pour = false; continue; } }
+      if (o === bottle && bottle.flowers) { o.pour = false; continue; }
+      const kind = isBag ? 'food' : 'water';
+      const cands = isBag ? [] : [bowl];
       for (const m of MIX) if ((!m.kind || m.kind === kind) && (!MIXSPEC.get(m).only || MIXSPEC.get(m).only === kind)) cands.push(m);
       for (let i = cands.length - 1; i >= 0; i--) if (covered(cands[i]) || isStored(cands[i])) cands.splice(i, 1);
       let to = null, best = 1.1;
@@ -1946,11 +2069,11 @@ button:disabled { opacity: .4; cursor: default; }
         const q = Math.min(dt * 0.6, bottle.level, room);
         bottle.level -= q; fill(q);
       }
-      if (o === box && box.amount > 0.001 && room > 0) {
-        box.open = true;   // tipping a closed bag over a dish opens it
-        if (box.of < 0.99) continue;
-        const q = Math.min(dt * 0.5, box.amount * 3, room);
-        box.amount = Math.max(0, box.amount - q / 3); fill(q); box.flow = true;
+      if (isBag && o.amount > 0.001 && room > 0) {
+        o.open = true;   // tipping a closed bag over a dish opens it
+        if (o.of < 0.99) continue;
+        const q = Math.min(dt * 0.5, o.amount * 3, room);
+        o.amount = Math.max(0, o.amount - q / 3); fill(q); o.flow = true;
       }
     }
   }
@@ -1992,6 +2115,13 @@ button:disabled { opacity: .4; cursor: default; }
     if (o.potPour >= 0 || o.pour) [x, y] = bottleNeckTarget();
     else { [x, y] = iso(o.x, o.y, o.lift || 0); y += 2; }
     ctx.drawImage(F.img, x - F.a[0] * CAR_K, y - F.a[1] * CAR_K, F.img.naturalWidth * CAR_K, F.img.naturalHeight * CAR_K);
+    // flowers standing in it: stems clipped at the front lip of the opening
+    if (o.flowers && !o.pour && !(o.potPour >= 0)) {
+      const mx = x, my = y - 157 * CAR_K;   // centre of the opening, measured on the sprite
+      ctx.save(); ctx.beginPath(); ctx.rect(mx - 90, my - 200, 180, 203); ctx.clip();
+      drawBouquet(mx, my + 26, o.flowers, 78);
+      ctx.restore();
+    }
   }
 
   // the user's metal trash can; it jiggles when something is thrown in
@@ -2073,8 +2203,7 @@ button:disabled { opacity: .4; cursor: default; }
     drawFrame(CRATE_FR[seq[Math.round(clamp(crate.f, 0, 1) * 3)]], x + sh - 1, y + 36);
   }
 
-  function drawBox() {
-    const o = box;
+  function drawBox(o = box) {
     if (!o.present) return;
     let [x, y] = iso(o.x, o.y, (o.lift || 0) + Math.sin((o.pop || 0) * Math.PI) * 40);
     // pouring: the painted tipped bag, its stream of kibble landing in the dish
@@ -2187,12 +2316,12 @@ button:disabled { opacity: .4; cursor: default; }
     // depth-sort the things standing on the terrain
     const items = [
       { d: dOf(bowl), draw: sunk(bowl, () => { drawBowl(); nestFront(bowl); }, 50) },
-      ...MIX.map(m => ({ d: bottle.pour && bottle.pourTo === m || box.pour && box.pourTo === m ? dOf(m) - 0.01 : dOf(m), draw: sunk(m, () => { drawMix(m); nestFront(m); }, MIXSPEC.get(m).w * 0.96) })),
+      ...MIX.map(m => ({ d: bottle.pour && bottle.pourTo === m || BAGS.some(b => b.pour && b.pourTo === m) ? dOf(m) - 0.01 : dOf(m), draw: sunk(m, () => { drawMix(m); nestFront(m); }, MIXSPEC.get(m).w * 0.96) })),
       ...SOLIS.map(S => ({ d: dOf(S.o), draw: sunk(S.o, () => drawSoli(S), S.w * 0.9) })),
       { d: stump.x + stump.y, draw: sunk(stump, drawStump, 22) },
       { d: bed.x + bed.y - 0.5, draw: sunk(bed, drawBed, [{ path: frontArc(0, 2, 55, 22) }]) },
       { d: bottle.pour || bottle.potPour >= 0 ? 999 : dOf(bottle), draw: sunk(bottle, drawBottle, 22) },
-      { d: box.pour ? 999 : dOf(box), draw: box.present ? sunk(box, drawBox, 30) : () => {} },
+      ...BAGS.map(b => ({ d: b.pour ? 999 : dOf(b), draw: b.present ? sunk(b, () => drawBox(b), 30) : () => {} })),
       { d: bin.x + bin.y, draw: sunk(bin, drawBin, [[0, 0, 40], [30, 5, 30]]) },
       { d: crate.x + crate.y, draw: sunk(crate, drawCrate, [{ path: [[-61, 4], [-1, 36], [56, 0]] }]) },
       ...garden.jars.map((j, i) => ({ d: dragging && dragging.jar === i ? 998 : dOf(j), draw: sunk(j, () => drawJarItem(i), JAR_W[i]) })),
@@ -2231,7 +2360,7 @@ button:disabled { opacity: .4; cursor: default; }
   // things set on a soban sit at its (bigger) height
   for (const o of SMALL()) if (o.rest && o.stored == null && !o.on) o.rest = tableOf(o).z;
   // nothing stands where the shelf now is (older saves had things against the back edge)
-  for (const o of [soban, soban2, crate, bin, TAP, stump, bed, bowl, ...MIX, soli, soli2, soli3, box, bottle, ...garden.jars]) {
+  for (const o of [soban, soban2, crate, bin, TAP, stump, bed, bowl, ...MIX, soli, soli2, soli3, ...BAGS, bottle, ...garden.jars]) {
     if (o.rest || o.stored != null || o.on) continue;
     if (o.x > SH.X0 - 0.35 && o.x < SH.X0 + SH.W + 0.35 && o.y < SH.FY + 0.45) o.y = SH.FY + 0.6;
   }
