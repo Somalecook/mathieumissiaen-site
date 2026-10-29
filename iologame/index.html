@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bébé Dragon</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -312,7 +312,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   const soban = { x: 1.25, y: 6.1 };
   const soban2 = { x: 1.4, y: 2.45 };   // the round, low one
   let puddle = 0;   // grows while the tap runs for nothing, dries once it's closed
-  const LAMP = { x: 1.6, y: 4.6, h: 92, on: false };   // hanging lamp: ground point under it, height of the shade
+  const LAMP = { x: 5, y: 7, h: 273, on: false };   // hanging lamp: ground point under it (the middle of the lawn), height of the shade
   const SOBAN_K = 1.1;                       // both sobans are drawn 10% bigger than their art
   const SOBAN_Z = 70 * SOBAN_K;              // height of the table top, in px
   // the three moon jars start on the soban, spread along its width
@@ -551,10 +551,13 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   // water bowl at the back-left, food plate at the front-right
   // water bowl
   // a bowl nested in the other one is drawn a little smaller, so it really fits inside
+  const nestW = d => d === bowl ? 52 : MIXSPEC.get(d).w;
+  // its scale: a bit narrower than the (maybe already shrunk) bowl it sits in
+  const nestK = o => { const b = stackBase(o); return b ? Math.min(1, nestW(b) * nestK(b) * 0.84 / nestW(o)) : 1; };
   function nestScale(o, x, y) {
     const b = stackBase(o);
     if (!b) return;
-    const W = d => d === bowl ? 52 : MIXSPEC.get(d).w, k = Math.min(1, W(b) * 0.84 / W(o));
+    const k = nestK(o);
     ctx.translate(x, y + 6); ctx.scale(k, k); ctx.translate(-x, -(y + 6));
   }
   function drawBowl(noShadow) {
@@ -568,9 +571,10 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   // the rim of each bowl on screen: centre and radii of its opening
   function bowlRim(o) {
     const [x, y] = iso(o.x, o.y, o.lift || 0);
-    if (o === bowl) return [x, y + 6 - 42.4 + 8, 25, 8];
+    const k = nestK(o);
+    if (o === bowl) return [x, y + 6 - (42.4 - 8) * k, 25 * k, 8 * k];
     const S = MIXSPEC.get(o), h = S.w * (S.img.naturalHeight || 1) / (S.img.naturalWidth || 1);
-    return [x, y + 6 - h + S.rim[0], S.rim[1], S.rim[2]];
+    return [x, y + 6 - (h - S.rim[0]) * k, S.rim[1] * k, S.rim[2] * k];
   }
   // a bowl stacked in the other one: redraw the lower bowl's front wall over it, so it sits inside
   function nestFront(o) {
@@ -582,6 +586,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
     ctx.beginPath(); ctx.rect(cx - 40, cy, 80, 80); ctx.clip();
     ctx.beginPath(); ctx.rect(cx - 60, cy - 60, 120, 200); ctx.moveTo(cx + rx * 0.92, cy); ctx.ellipse(cx, cy, rx * 0.92, ry * 0.92, 0, 0, Math.PI * 2); ctx.clip('evenodd');
     if (b === bowl) drawBowl(true); else drawMix(b);
+    nestFront(b);
     ctx.restore();
   }
   // food plate: empty, half or full
@@ -820,7 +825,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
     // the cone: blurred edges, fading towards the ground
     ctx.filter = 'blur(10px)';
     const beam = ctx.createLinearGradient(0, by, 0, gy);
-    beam.addColorStop(0, 'rgba(255,236,180,.5)'); beam.addColorStop(0.7, 'rgba(255,228,165,.16)'); beam.addColorStop(1, 'rgba(255,228,165,0)');
+    beam.addColorStop(0, 'rgba(255,236,180,.5)'); beam.addColorStop(0.5, 'rgba(255,230,170,.24)'); beam.addColorStop(0.92, 'rgba(255,228,165,.14)'); beam.addColorStop(1, 'rgba(255,228,165,0)');
     ctx.fillStyle = beam; ctx.beginPath();
     ctx.moveTo(bx - 14, by); ctx.lineTo(bx + 14, by); ctx.lineTo(gx + 78, gy - 6); ctx.lineTo(gx - 78, gy - 6); ctx.closePath(); ctx.fill();
     ctx.filter = 'none';
@@ -854,11 +859,11 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
     const t = (SH_COLS[c][0] + SH_COLS[c][1]) / 2, h = r < 3 ? SH_ROWS[2 - r][1] : 0;
     SLOTS.push([SH.X0 + SH.s * t, SH.FY - SH.s / 2, SH.s * (SH.H - h)]);
   }
-  const isStored = o => o.stored != null || !!(stackBase(o) && stackBase(o).stored != null);
+  const isStored = o => stackRoot(o).stored != null;
   // a thing in a cell is only seen through the cell's front opening: clip to it so its top hides under the board above
   function clipToCell(o) {
-    const si = o.stored != null ? o.stored : stackBase(o) ? stackBase(o).stored : null;
-    if (si == null || si >= 9 || (dragging && (dragging.o === o || dragging.o === stackBase(o)))) return;
+    const si = stackRoot(o).stored;
+    if (si == null || si >= 9 || (dragging && (dragging.o === o || dragging.o === stackRoot(o)))) return;
     const [t0, t1] = SH_COLS[si % 3], [h0, h1] = SH_ROWS[2 - Math.floor(si / 3)];
     ctx.beginPath();
     [shelfPt(t0, h0), shelfPt(t1, h0), shelfPt(t1, h1), shelfPt(t0, h1)].forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
@@ -1646,7 +1651,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
     return hits.length ? hits.reduce((a, b) => depthOf(b) > depthOf(a) ? b : a) : null;
   }
   // front-to-back order, same as the drawing: things on the soban sit just in front of it
-  const depthOf = o => o.stored != null ? SHELF_DEPTH + 0.01 + o.stored * 0.0001 : stackBase(o) ? depthOf(stackBase(o)) + 0.005 : o.rest ? tableOf(o).o.x + tableOf(o).o.y + 0.02 + (o.x + o.y - tableOf(o).o.x - tableOf(o).o.y + 1) * 0.01 : o.x + o.y;
+  const depthOf = o => o.stored != null ? SHELF_DEPTH + 0.01 + o.stored * 0.0001 : stackBase(o) ? depthOf(stackBase(o)) + 0.002 : o.rest ? tableOf(o).o.x + tableOf(o).o.y + 0.02 + (o.x + o.y - tableOf(o).o.x - tableOf(o).o.y + 1) * 0.01 : o.x + o.y;
   function startDrag(e, o, px, py) {
     const [ox, oy] = iso(o.x, o.y, o.rest || 0);
     dragging = { o, dx: ox - px, dy: oy - py, sx: px, sy: py, moved: false };
@@ -1697,10 +1702,10 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
       const si = SMALL().includes(o) ? shelfSlotAt(vx, vy + 14, o) : -1;
       if (si >= 0) { [o.x, o.y, o.rest] = SLOTS[si]; o.stored = si; o.on = null; o.lift = 0; }
       else o.stored = null;
-      // the nearest free bowl it could nest in (only two high)
+      // the nearest bowl on top of a pile it could nest in (all three can go in one stack)
       let other = null, od = 40;
       if (BOWLS.includes(o) && !covered(o)) for (const c of BOWLS) {
-        if (c === o || c.on || covered(c) && stackBase(o) !== c || isStored(c)) continue;
+        if (c === o || covered(c) && stackBase(o) !== c || isStored(c)) continue;
         const [cx, cy] = iso(c.x, c.y, zOf(c)), dd = Math.hypot(vx - cx, vy + 14 - cy);
         if (dd < od) { od = dd; other = c; }
       }
@@ -1809,16 +1814,20 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
 
   // pouring: drag the bottle or the open box over the bowl
   // the two bowls can be stacked: the top one follows the bottom one
-  const NEST = 8;
-  const BOWLS = [bowl, bowl2, bowl3], BOWL_NAME = new Map([[bowl, 'bowl'], [bowl2, 'bowl2'], [bowl3, 'bowl3']]);
+    const BOWLS = [bowl, bowl2, bowl3], BOWL_NAME = new Map([[bowl, 'bowl'], [bowl2, 'bowl2'], [bowl3, 'bowl3']]);
   const stackBase = o => o.on ? BOWLS.find(b => BOWL_NAME.get(b) === o.on) || null : null;
   const covered = o => BOWLS.some(b => b !== o && b.on && stackBase(b) === o);
+  const stackRoot = o => { for (let i = 0; i < 3 && stackBase(o); i++) o = stackBase(o); return o; };
+  // how high a bowl's rim is above its foot, as drawn
+  const rimUp = o => { if (o === bowl) return (42.4 - 8) * nestK(o); const S = MIXSPEC.get(o), h = S.w * (S.img.naturalHeight || 1) / (S.img.naturalWidth || 1); return (h - S.rim[0]) * nestK(o); };
   function syncStack() {
-    for (const o of BOWLS) {
+    // never a loop, and never two bowls in the same one
+    for (const o of BOWLS) { const b = stackBase(o); if (b && (stackRoot(o).on || BOWLS.some(c => c !== o && stackBase(c) === b && BOWLS.indexOf(c) < BOWLS.indexOf(o)))) o.on = null; }
+    // bottom first, so the middle bowl is placed before the top one
+    for (let pass = 0; pass < 2; pass++) for (const o of BOWLS) {
       const b = stackBase(o);
       if (!b) continue;
-      if (b.on) { o.on = null; continue; }   // never a loop
-      o.x = b.x; o.y = b.y; o.rest = (b.rest || 0) + NEST;
+      o.x = b.x; o.y = b.y; o.rest = (b.rest || 0) + rimUp(b) - rimUp(o) + 2.5 * nestK(o);   // its rim just above the rim it sits in
       if (!(dragging && dragging.o === o)) o.lift = b.lift || 0;
     }
   }
@@ -2061,7 +2070,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
         clipToCell(o);
         if (onTable) ctx.translate(0, -o.rest);
         // in a shelf cell, something too wide (the plate) is drawn smaller so it fits between the walls
-        { const si = o.stored != null ? o.stored : stackBase(o) ? stackBase(o).stored : null, ww = typeof w === 'number' ? w : 0, sc = si != null && si < 9 && ww ? Math.min(1, 44 / ww) : 1;
+        { const si = stackRoot(o).stored, ww = typeof w === 'number' ? w : 0, sc = si != null && si < 9 && ww ? Math.min(1, 44 / ww) : 1;
           if (sc < 1 && !(dragging && dragging.o === o)) { ctx.translate(x, y + o.rest); ctx.scale(sc, sc); ctx.translate(-x, -(y + o.rest)); } }
         // a little shadow under things put in the shelf, like on the sobans
         if (o.stored != null && !o.on && !o.lift) { const ww = typeof w === 'number' ? w : 30; ell(x + ww * 0.08, y + o.rest - 1, ww * 0.6, ww * 0.19, 'rgba(45,25,15,.24)'); }
@@ -2132,6 +2141,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   requestAnimationFrame(frame);
 })();
 </script>
+
 
 </body>
 </html>
