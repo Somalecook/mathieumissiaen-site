@@ -275,14 +275,14 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
 
   // ---------- state ----------
   const stats = { food: 80, water: 75, joy: 70, energy: 85, fire: 4 };
-  const stump = { x: 2.4, y: 3.4, burn: 0 };
-  const bed = { x: 2.2, y: 11.8 };
+  const stump = { x: 2.2, y: 0.45, burn: 0 };
+  const bed = { x: 2.9, y: 5.0 };
   // water bottle (level 0..1 = one full bowl) and kibble box (amount 0..1 = three bowls)
   const bottle = { x: 4.49, y: 1.26, level: 0, filling: 0, pour: false };
-  const box = { x: 9.2, y: 6.2, amount: 1, open: true, pour: false, present: true };
+  const box = { x: 9.2, y: 3.3, amount: 1, open: true, pour: false, present: true };
   // trash bin for empty boxes, and the big carton new boxes come out of
   const bin = { x: 5.7, y: 0.9, lid: 0 };
-  const crate = { x: 9.25, y: 2.4 };
+  const crate = { x: 9.25, y: 2.05 };
   // pickable flowers, the bouquet in hand and the vases
   // the user's flower sheet: stemless heads grow on the grass, a picked one becomes a sprig in the hand,
   // 6 sprigs make a bouquet, and a bouquet goes into a vase
@@ -309,8 +309,8 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   const garden = { hand: [], bouquet: null, pots: [null, null, null], care: [{ water: 1, wilt: 0 }, { water: 1, wilt: 0 }, { water: 1, wilt: 0 }] };
   // a standpipe tap coming out of the ground, and a little soban (low table) to put things on
   const TAP = { x: 4.6, y: 0.9, on: false };
-  const soban = { x: 7.3, y: 1.3 };
-  const soban2 = { x: 2.6, y: 5.0 };   // the round, low one
+  const soban = { x: 1.25, y: 6.1 };
+  const soban2 = { x: 1.4, y: 2.45 };   // the round, low one
   let puddle = 0;   // grows while the tap runs for nothing, dries once it's closed
   const LAMP = { x: 1.6, y: 4.6, h: 92, on: false };   // hanging lamp: ground point under it, height of the shade
   const SOBAN_K = 1.1;                       // both sobans are drawn 10% bigger than their art
@@ -326,11 +326,11 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   const nearBed = () => Math.hypot(dragon.x - bed.x, dragon.y - bed.y) < 0.3;
   // water bowl and food plate are two separate objects; the food level lives on bowl.food for old saves
   const bowl = { x: 8.0, y: 4.6, water: 0.4, food: 0.3 };
-  const plate = { x: 8.7, y: 6.3 };
+  const plate = { x: 1.3, y: 8.5 };
   // the blue flowered bowl takes water or kibble, whichever is poured in first
   const bowl2 = { x: 6.6, y: 7.4, kind: null, amount: 0 };
   const bowl3 = { x: 5.3, y: 8.9, kind: null, amount: 0 };    // the confetti one
-  const plate2 = { x: 7.6, y: 9.4, kind: null, amount: 0 };   // the blue flowered plate (kibble only)
+  const plate2 = { x: 7.15, y: 8.8, kind: 'food', amount: 0.5 };   // the blue flowered plate (kibble only)
   // dishes that take water or kibble, whichever is poured first; the bowls can be stacked
   const MIX = [bowl2, bowl3, plate2];
   // the black soliflore holds a single flower
@@ -345,15 +345,17 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
     else { o.amount = Math.max(0, o.amount - q); if (o.amount <= 0.001) o.kind = null; }
   }
   const dishFor = kind => [kind === 'water' ? bowl : plate, ...MIX].filter(o => !isStored(o) && !covered(o) && level(o, kind) > 0.02).sort((a, b) => Math.hypot(a.x - dragon.x, a.y - dragon.y) - Math.hypot(b.x - dragon.x, b.y - dragon.y))[0] || null;
-  const ball = { x: 5.2, y: 4.3, z: 0, vx: 0, vy: 0, vz: 0, roll: 0, held: false, carried: false, fetchable: false, origin: { ...FRONT } };
-  const dragon = { x: 2.5, y: 9, face: 1, state: 'idle', timer: 1.5, phase: 0, moving: false, run: false, hop: 0, dip: 0, blink: 3, tx: 0, ty: 0, purpose: null, thought: null };
+  const ball = { x: 3.4, y: 3.8, z: 0, vx: 0, vy: 0, vz: 0, roll: 0, held: false, carried: false, fetchable: false, origin: { ...FRONT } };
+  const dragon = { x: 6.2, y: 8, face: 1, state: 'idle', timer: 1.5, phase: 0, moving: false, run: false, hop: 0, dip: 0, blink: 3, tx: 0, ty: 0, purpose: null, thought: null };
   const particles = [];
   let t = 0;
 
   // load saved state
+  let fresh = true;   // no saved game: the first-game setup is applied once everything exists
   try {
     const s = JSON.parse(localStorage.getItem('bebe-dragon-v1') || 'null');
     if (s) {
+      fresh = false;
       const away = clamp((Date.now() - s.at) / 1000, 0, 900);
       Object.assign(stats, s.stats); Object.assign(bowl, s.bowl);
       if (s.stump) Object.assign(stump, s.stump);
@@ -2089,6 +2091,15 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
 
   window.addEventListener('resize', resize);
   window.addEventListener('pagehide', save);
+  // a first game starts with the user's setup: the dishes and soliflores in the shelf, the moon jars with flowers on top
+  if (fresh) {
+    const put = (o, si) => { [o.x, o.y, o.rest] = SLOTS[si]; o.stored = si; o.on = null; o.lift = 0; };
+    bowl.water = 0.6; bowl.food = 0;
+    put(bowl, 6); put(bowl2, 7); put(bowl3, 8); put(soli2, 3); put(soli, 4); put(soli3, 5);
+    garden.jars = [11, 10, 9].map(si => { const [x, y, rest] = SLOTS[si]; return { x, y, rest, stored: si }; });
+    garden.pots = [[9, 5], [8], [9, 2]];
+    bottle.level = 0.5;
+  }
   // things set on a soban sit at its (bigger) height
   for (const o of SMALL()) if (o.rest && o.stored == null && !o.on) o.rest = tableOf(o).z;
   // nothing stands where the shelf now is (older saves had things against the back edge)
