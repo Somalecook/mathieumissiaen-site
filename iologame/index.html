@@ -52,49 +52,43 @@ h1 { font-family: var(--display); font-weight: 800; font-size: 1.6rem; margin: 0
 canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: none !important; }
 canvas.grabbing { cursor: none !important; }
 .panel {
-  /* compact strip centred on the bottom edge of the game, FF Resonance style:
-     dark glass with a soft gradient, thin white lines, small spaced capitals */
-  position: absolute; left: 0; right: 0; bottom: 12px; margin: 0 auto; width: fit-content;
-  display: flex; align-items: center; gap: 20px;
-  padding: 9px 10px 9px 18px; box-sizing: border-box; max-width: calc(100% - 24px);
-  border-radius: 4px; border: 1px solid rgba(255,255,255,.18);
-  background: linear-gradient(to bottom, rgba(34,46,66,.82), rgba(10,15,26,.9));
-  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 8px 22px rgba(0,0,0,.25);
-  color: #f4f6fa; font-family: var(--body);
+  /* iOLO-like: plain black type straight on the picture, no box, small spaced capitals, numbers in brackets */
+  position: absolute; left: 26px; right: 26px; bottom: 18px;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+  color: #111; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  transition: color .6s;
 }
-.stats { flex: 0 0 auto; display: grid; grid-template-columns: repeat(5, 92px); gap: 0; min-width: 0; }
-.stat { padding: 0 12px; border-left: 1px solid rgba(255,255,255,.14); }
-.stat:first-child { border-left: 0; padding-left: 0; }
-.stat label { display: flex; justify-content: space-between; align-items: baseline; font-size: .58rem; text-transform: uppercase; letter-spacing: .14em; color: rgba(244,246,250,.7); margin-bottom: 4px; font-variant-numeric: tabular-nums; font-weight: 500; }
-.stat label span:last-child { color: #fff; font-size: .78rem; letter-spacing: .02em; font-weight: 700; }
-.bar { height: 2px; background: rgba(255,255,255,.14); overflow: hidden; }
-.bar i { display: block; height: 100%; width: 50%; transition: width .3s; background: linear-gradient(to right, rgba(255,255,255,.35), #fff) !important; box-shadow: 0 0 6px rgba(255,255,255,.6); }
-.stat.low label span:first-child { color: #fff; }
+.frame.night .panel { color: #f2f2f2; }
+.stats { display: flex; gap: 26px; min-width: 0; }
+.stat { width: 92px; }
+.stat label { display: flex; justify-content: space-between; align-items: baseline; font-size: .66rem; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 5px; font-variant-numeric: tabular-nums; font-weight: 500; }
+.stat label span:last-child::before { content: "("; }
+.stat label span:last-child::after { content: ")"; }
+.bar { height: 1px; background: currentColor; opacity: 1; position: relative; overflow: visible; }
+.bar::before { content: ""; position: absolute; inset: 0; background: currentColor; opacity: .18; }
+.bar { background: transparent; }
+.bar i { display: block; position: relative; height: 1px; width: 50%; transition: width .3s; background: currentColor !important; }
+.stat.low label span:first-child::before { content: "● "; font-size: .5rem; vertical-align: 1px; }
 .stat.low .bar i { animation: blink 1s steps(2) infinite; }
-@keyframes blink { 50% { opacity: .25; } }
-.actions { display: flex; gap: 10px; flex: 0 0 auto; }
+@keyframes blink { 50% { opacity: .2; } }
+.actions { display: flex; gap: 22px; }
 button {
-  font-family: var(--body); font-weight: 600; font-size: .6rem; letter-spacing: .14em; text-transform: uppercase;
-  color: #fff; border: 1px solid rgba(255,255,255,.45); border-radius: 2px; padding: 9px 18px; cursor: pointer;
-  background: linear-gradient(to bottom, rgba(255,255,255,.16), rgba(255,255,255,.02));
-  transition: background .15s, border-color .15s;
+  font-family: inherit; font-weight: 500; font-size: .66rem; letter-spacing: .12em; text-transform: uppercase;
+  color: inherit; background: none; border: 0; padding: 0 0 3px; cursor: pointer;
+  border-bottom: 1px solid transparent; transition: border-color .15s;
 }
-button:hover { border-color: #fff; background: linear-gradient(to bottom, rgba(255,255,255,.3), rgba(255,255,255,.08)); }
-button:active { transform: translateY(1px); }
-button:focus-visible { outline: 1px solid #fff; outline-offset: 3px; }
-button:disabled { opacity: .4; cursor: default; }
+button::after { content: " →"; letter-spacing: 0; }
+button:hover { border-bottom-color: currentColor; }
+button:focus-visible { outline: 1px solid currentColor; outline-offset: 4px; }
+button:disabled { opacity: .35; cursor: default; }
 @media (max-width: 760px) {
-  /* on a phone the strip goes right under the picture, still inside the frame */
-  .frame { aspect-ratio: auto; background: #0c121e; }
+  /* on a phone the line of type goes right under the picture */
+  .frame { aspect-ratio: auto; background: #fff; }
   canvas { height: auto; aspect-ratio: 16 / 9; }
-  .panel { position: static; width: auto; max-width: none; border-radius: 0; border: 0; flex-wrap: wrap; gap: 10px; padding: 10px 12px 12px; }
-  .stats { grid-template-columns: repeat(5, minmax(0, 1fr)); flex: 1 1 100%; }
-  .stats { flex: 1 1 100%; }
-  .stat { padding: 0 6px; }
-  .stat label { font-size: .5rem; letter-spacing: .06em; flex-direction: column; }
-  .stat label span:last-child { font-size: .8rem; }
-  button { padding: 7px 12px; }
+  .panel, .frame.night .panel { position: static; flex-wrap: wrap; gap: 12px; padding: 12px 14px 14px; color: #111; }
+  .stats { flex: 1 1 100%; gap: 12px; }
+  .stat { flex: 1 1 0; width: auto; }
+  .stat label { font-size: .52rem; letter-spacing: .06em; }
   h1 { font-size: 1.3rem; }
 }
 </style>
@@ -569,7 +563,7 @@ button:disabled { opacity: .4; cursor: default; }
   }
 
   function drawBall() {
-    if (ball.carried) return;
+    if (ball.carried || ball.inBowl) return;
     const [gx, gy] = iso(ball.x, ball.y);
     const sh = clamp(1 - ball.z / 260, .35, 1);
     ell(gx, gy, 13 * sh, 6 * sh, `rgba(60,40,60,${.28 * sh})`);
@@ -603,6 +597,17 @@ button:disabled { opacity: .4; cursor: default; }
     if (o === bowl) return [x, y + 6 - (42.4 - 8) * k, 25 * k, 8 * k];
     const S = MIXSPEC.get(o), h = S.w * (S.img.naturalHeight || 1) / (S.img.naturalWidth || 1);
     return [x, y + 6 - (h - S.rim[0]) * k, S.rim[1] * k, S.rim[2] * k];
+  }
+  // the ball fallen into a bowl: it sits in the hollow, the bowl's front wall drawn back over its lower half
+  function ballInBowl(o) {
+    if (!ball.inBowl || BOWL_NAME.get(o) !== ball.inBowl) return;
+    const [cx, cy, rx, ry] = bowlRim(o), r = Math.min(13, rx * 0.62);
+    drawBallAt(cx, cy - r * 0.15, r, ball.roll);
+    ctx.save();
+    ctx.beginPath(); ctx.rect(cx - 40, cy, 80, 80); ctx.clip();
+    ctx.beginPath(); ctx.rect(cx - 60, cy - 60, 120, 200); ctx.moveTo(cx + rx * 0.92, cy); ctx.ellipse(cx, cy, rx * 0.92, ry * 0.92, 0, 0, Math.PI * 2); ctx.clip('evenodd');
+    if (o === bowl) drawBowl(true); else drawMix(o);
+    ctx.restore();
   }
   // a bowl stacked in the other one: redraw the lower bowl's front wall over it, so it sits inside
   function nestFront(o) {
@@ -913,7 +918,9 @@ button:disabled { opacity: .4; cursor: default; }
     ctx.restore();
   }
   // night: the lamp switched on dims the whole game to a deep blue, except round the pool of light
+  const frameEl = document.querySelector('.frame');
   function drawNight() {
+    frameEl.classList.toggle('night', lampK > 0.5);
     if (!lampK) return;
     const [x, y] = iso(LAMP.x, LAMP.y);
     ctx.save(); ctx.globalCompositeOperation = 'multiply'; ctx.globalAlpha = lampK;
@@ -1626,9 +1633,26 @@ button:disabled { opacity: .4; cursor: default; }
   function updateBall(dt) {
     if (ball.carried) { ball.x = dragon.x; ball.y = dragon.y; return; }
     if (ball.held) return;
+    // in a bowl: it rides along with it
+    if (ball.inBowl) {
+      const b = BOWLS.find(b => BOWL_NAME.get(b) === ball.inBowl);
+      if (b) { ball.x = b.x; ball.y = b.y; ball.z = (b.rest || 0) + (b.lift || 0) + rimUp(b) * 0.5 - 6; ball.vx = ball.vy = ball.vz = 0; return; }
+      ball.inBowl = null;
+    }
     if (ball.z > 0 || ball.vz > 0) {
       ball.vz -= G * dt;
+      const z0 = ball.z;
       ball.z += ball.vz * dt;
+      // coming down right over a bowl: it drops in
+      if (ball.vz < 0) for (const b of BOWLS) {
+        if (covered(b) || isStored(b) || (dragging && dragging.o === b)) continue;
+        const rim = (b.rest || 0) + rimUp(b);
+        if (z0 + 6 > rim && ball.z + 6 <= rim && Math.hypot(ball.x - b.x, ball.y - b.y) < 0.2 + 0.08 * nestK(b)) {
+          ball.inBowl = BOWL_NAME.get(b); ball.fetchable = false; b.wob = Math.max(b.wob || 0, 0.7);
+          const [x, y] = iso(b.x, b.y, rim); puff('dust', x, y - 4, { vy: -10, life: .3, max: .3, size: 3 });
+          return;
+        }
+      }
       if (ball.z <= 0) {
         ball.z = 0;
         if (ball.vz < -120) {
@@ -1668,7 +1692,7 @@ button:disabled { opacity: .4; cursor: default; }
   }
 
   function throwBallTo(tx, ty) {
-    ball.carried = false; ball.held = false;
+    ball.carried = false; ball.held = false; ball.inBowl = null;
     if (dragon.state === 'return') setState('idle', 0.3);
     ball.x = FRONT.x; ball.y = FRONT.y; ball.z = 70;
     const T = 1.0;
@@ -1720,7 +1744,7 @@ button:disabled { opacity: .4; cursor: default; }
       return;
     }
     if (ball.carried) { ball.carried = false; setState('wait', 0); }
-    ball.held = true; ball.fetchable = false; ball.vx = ball.vy = ball.vz = 0;
+    ball.held = true; ball.inBowl = null; ball.fetchable = false; ball.vx = ball.vy = ball.vz = 0;
     cv.setPointerCapture(e.pointerId); cv.classList.add('grabbing');
     samples = [{ x: px, y: py, t: performance.now() }];
     holdAt(px, py);
@@ -1871,7 +1895,7 @@ button:disabled { opacity: .4; cursor: default; }
       // the nearest bowl on top of a pile it could nest in (all three can go in one stack)
       let other = null, od = 40;
       if (BOWLS.includes(o) && !covered(o)) for (const c of BOWLS) {
-        if (c === o || covered(c) && stackBase(o) !== c || isStored(c)) continue;
+        if (c === o || covered(c) && stackBase(o) !== c || isStored(c) || ball.inBowl === BOWL_NAME.get(c)) continue;
         const [cx, cy] = iso(c.x, c.y, zOf(c)), dd = Math.hypot(vx - cx, vy + 14 - cy);
         if (dd < od) { od = dd; other = c; }
       }
@@ -1952,6 +1976,7 @@ button:disabled { opacity: .4; cursor: default; }
       if ((o === bowl || MIX.includes(o)) && !o.on && !o.rest && Math.hypot(o.x - bin.x, o.y - bin.y) < 0.8) {
         const full = o === bowl ? bowl.water + bowl.food > 0.01 : o.amount > 0.01;
         if (o === bowl) { bowl.water = 0; bowl.food = 0; } else { o.amount = 0; o.kind = null; }
+        if (ball.inBowl === BOWL_NAME.get(o)) { ball.inBowl = null; ball.x = clampX(bin.x + 0.6); ball.y = clampY(bin.y + 1.2); ball.z = 0; }
         bin.lid = 1; o.x = clampX(bin.x + 0.15); o.y = clampY(bin.y + 0.95); o.lift = 14;
         if (full) { const [x, y] = iso(bin.x, bin.y); puff('dust', x, y - 50, { size: 5 }); }
         syncStack();
@@ -2315,8 +2340,8 @@ button:disabled { opacity: .4; cursor: default; }
     const dOf = depthOf;
     // depth-sort the things standing on the terrain
     const items = [
-      { d: dOf(bowl), draw: sunk(bowl, () => { drawBowl(); nestFront(bowl); }, 50) },
-      ...MIX.map(m => ({ d: bottle.pour && bottle.pourTo === m || BAGS.some(b => b.pour && b.pourTo === m) ? dOf(m) - 0.01 : dOf(m), draw: sunk(m, () => { drawMix(m); nestFront(m); }, MIXSPEC.get(m).w * 0.96) })),
+      { d: dOf(bowl), draw: sunk(bowl, () => { drawBowl(); ballInBowl(bowl); nestFront(bowl); }, 50) },
+      ...MIX.map(m => ({ d: bottle.pour && bottle.pourTo === m || BAGS.some(b => b.pour && b.pourTo === m) ? dOf(m) - 0.01 : dOf(m), draw: sunk(m, () => { drawMix(m); ballInBowl(m); nestFront(m); }, MIXSPEC.get(m).w * 0.96) })),
       ...SOLIS.map(S => ({ d: dOf(S.o), draw: sunk(S.o, () => drawSoli(S), S.w * 0.9) })),
       { d: stump.x + stump.y, draw: sunk(stump, drawStump, 22) },
       { d: bed.x + bed.y - 0.5, draw: sunk(bed, drawBed, [{ path: frontArc(0, 2, 55, 22) }]) },
