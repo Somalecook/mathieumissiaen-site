@@ -2390,12 +2390,22 @@ button:disabled { opacity: .35; cursor: default; }
   window.addEventListener('pagehide', save);
   // a first game starts with the user's setup: the dishes and soliflores in the shelf, the moon jars with flowers on top
   if (fresh) {
+    // the user's first-game setup (screenshot of 2026-10-29): furniture on the lawn, everything else in the shelf
     const put = (o, si) => { [o.x, o.y, o.rest] = SLOTS[si]; o.stored = si; o.on = null; o.lift = 0; };
-    bowl.water = 0.6; bowl.food = 0;
-    put(bowl, 6); put(bowl2, 7); put(bowl3, 8); put(soli2, 3); put(soli, 4); put(soli3, 5);
-    garden.jars = [11, 10, 9].map(si => { const [x, y, rest] = SLOTS[si]; return { x, y, rest, stored: si }; });
-    garden.pots = [[9, 5], [8], [9, 2]];
-    bottle.level = 0.5;
+    Object.assign(signpost, { x: 0.95, y: 12.95 }); Object.assign(bed, { x: 1.42, y: 11.5 });
+    Object.assign(soban, { x: 1.34, y: 9.8 }); Object.assign(soban2, { x: 1.5, y: 8.08 });
+    Object.assign(crate, { x: 1.45, y: 5.8, open: true, taped: false, f: 1 });
+    for (const b of BAGS) b.present = false;
+    Object.assign(ball, { x: 8.75, y: 5, z: 0 });
+    bowl.water = 0; bowl.food = 0; bottle.level = 0.5; plate2.amount = 0; plate2.kind = null;
+    // top: the black soliflore and two moon jars, each with a flower
+    put(soli, 9); soli.flower = 10;
+    garden.jars = [11, 10, 0].map(si => { const [x, y, rest] = SLOTS[si]; return { x, y, rest, stored: si }; });
+    garden.pots = [[0], [9], null];
+    // the cells, top row to bottom row
+    put(bowl, 6); put(plate2, 7); put(bowl3, 8);
+    put(bottle, 3); put(bowl2, 4); put(soli3, 5);
+    put(soli2, 1);
   }
   // things set on a soban sit at its (bigger) height
   for (const o of SMALL()) if (o.rest && o.stored == null && !o.on) o.rest = tableOf(o).z;
