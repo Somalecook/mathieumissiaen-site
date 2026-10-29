@@ -831,8 +831,14 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   }
   function drawShelf() {
     if (SHELF_IMG.naturalWidth) {
-      const [x, y] = shelfPt(0, 0), s = SH.s;
+      const [x, y] = shelfPt(0, 0), s = SH.s, [fx, fy] = iso(SH.X0, SH.FY);
+      // its painted bottom edge sinks into the grass: cut just above it, the blades make the edge
+      ctx.save(); ctx.beginPath();
+      ctx.moveTo(fx - 20, fy - 400);
+      SHELF_FOOT.forEach(([px, py]) => ctx.lineTo(fx + px * s, fy + py * s - 2.5));
+      ctx.lineTo(fx + 300, fy - 400); ctx.closePath(); ctx.clip();
       ctx.drawImage(SHELF_IMG, x - SH.A[0] * s, y - SH.A[1] * s, SHELF_IMG.naturalWidth * s, SHELF_IMG.naturalHeight * s);
+      ctx.restore();
     }
     // a little glow on the free spots while something small is carried
     if (dragging && SMALL().includes(dragging.o)) SLOTS.forEach(([gx, gy, z], i) => {
@@ -2019,7 +2025,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
       ...garden.jars.map((j, i) => ({ d: dragging && dragging.jar === i ? 998 : dOf(j), draw: sunk(j, () => drawJarItem(i), JAR_W[i]) })),
       ...TABLES.map(T => ({ d: T.o.x + T.o.y, draw: sunk(T.o, () => drawTable(T), T.legs) })),
       { d: TAP.x + TAP.y, draw: sunk(TAP, drawTap, 22) },
-      { d: SHELF_DEPTH, draw: sunk(SHELF_O, drawShelf, [{ path: SHELF_FOOT.map(([px, py]) => [px * SH.s, py * SH.s]) }]) },
+      { d: SHELF_DEPTH, draw: sunk(SHELF_O, drawShelf, [{ path: SHELF_FOOT.map(([px, py]) => [px * SH.s, py * SH.s]) }, [274 * SH.s, 141 * SH.s + 1, 30], [270 * SH.s, 139 * SH.s - 1, 18]]) },
       { d: LAMP.x + LAMP.y, draw: drawLamp },
       { d: dragon.x + dragon.y + (['eat', 'drink'].includes(dragon.state) ? 0.6 : 0), draw: drawDragon },   // eating: head over the dish
       { d: ball.x + ball.y + (ball.held ? 100 : 0.01), draw: drawBall },
