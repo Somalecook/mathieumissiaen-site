@@ -1390,7 +1390,10 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
         // a tap gives it a flower from the hand, a drag moves it (see release)
         startDrag(e, objectAt(px, py), px, py); dragging.giveFlower = true;
       }
-      else if (tapAt(px, py)) TAP.on = !TAP.on;
+      else if (tapAt(px, py) || objectAt(px, py) === TAP) {
+        // a tap anywhere on the standpipe turns it on/off, a drag moves it
+        startDrag(e, TAP, px, py); dragging.toggleTap = true;
+      }
       else if (lampAt(px, py)) { LAMP.on = !LAMP.on; save(); }
       else {
         const o = objectAt(px, py);
@@ -1433,7 +1436,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   }
   function tapAt(px, py) {
     const [x, y] = tapPoint(TAP_HANDLE);
-    return Math.hypot(px - x, py - y - 4) < 18;
+    return Math.hypot(px - x, py - y - 4) < 30;
   }
   function bottleUnderTap() {
     const u = underTap();
@@ -1465,7 +1468,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
       const [x, y] = iso(o.x, o.y, zOf(o));
       if (Math.abs(px - x) < 22 && py > y - 44 && py < y + 8) hits.push(o);
     }
-    { const [x, y] = iso(TAP.x, TAP.y, TAP.lift || 0); if (Math.abs(px - x) < 14 && py > y - 100 && py < y + 8) hits.push(TAP); }
+    { const [x, y] = iso(TAP.x, TAP.y, TAP.lift || 0); if (Math.abs(px - x) < 24 && py > y - 110 && py < y + 10) hits.push(TAP); }
     for (const o of [bin, crate]) {
       const [x, y] = iso(o.x, o.y, o.lift || 0);
       if (Math.abs(px - x) < 32 && py > y - 58 && py < y + 14) hits.push(o);
@@ -1586,6 +1589,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   const release = e => {
     if (dragging) {
       const o = dragging.o; o.lift = 0;
+      if (dragging.toggleTap && !dragging.moved) { TAP.on = !TAP.on; save(); }
       if (dragging.giveFlower && !dragging.moved && garden.hand.length) {
         // one sprig from the hand goes into the soliflore
         o.flower = garden.hand.pop();
