@@ -164,8 +164,7 @@
         (p.kicker ? '<span style="font-family:' + esc(t.fontCss) + ';font-size:22px" class="muted">' + esc(p.kicker) + '</span>' : '') +
         '<a href="work/' + p.slug + '/" ' + (p.displayLang ? 'lang="' + p.displayLang + '" ' : '') + 'style="font-family:' + esc(t.fontCss) + ';font-weight:' + t.titleWeight + ';font-style:' + (t.titleItalic ? 'italic' : 'normal') + ';font-size:' + (p.display.length > 6 ? 'clamp(44px,4.6vw,84px)' : 'clamp(56px,7vw,120px)') + ';line-height:.9;letter-spacing:' + (t.titleTracking || '-.02em') + ';overflow-wrap:break-word">' + esc(p.display) + '</a>' +
         (p.subtitle ? '<span class="serif" style="font-size:24px;line-height:1.15">' + (p.slug === 'tal' ? 'TAL — ' : '') + rich(p.subtitle) + '</span>' : '') +
-        (p.role ? '<span class="role">' + esc(p.role) + '</span>' : '') +
-        '<p style="margin:0;line-height:1.75;max-width:400px;opacity:.85">' + esc(f.text || p.intro) + '</p>' +
+        (p.role ? '<p class="f-role">' + esc(p.role) + '</p>' : (f.text ? '<p class="f-role">' + esc(f.text) + '</p>' : '')) +
         '<a class="pill" href="work/' + p.slug + '/">' + (p.kind === 'research' ? 'Enter the series →' : 'See the project →') + '</a></div>' +
         (f.carousel && f.carousel.length
           ? '<a class="f-imgs quad" href="work/' + p.slug + '/" aria-label="' + esc(p.title) + '" style="--r:' + (f.carouselRatio || 0.8) + '"><span class="f-car">' + f.carousel.map(function (src, n) {
@@ -184,8 +183,7 @@
         '<div class="f-text">' + (f.label ? '<span class="muted">' + esc(f.label) + '</span>' : '') +
         '<span class="serif it" style="font-size:24px">' + esc(fm.client) + '</span>' +
         '<a href="film.html" style="font-family:\'Big Shoulders Display\',sans-serif;font-weight:800;font-size:clamp(64px,8vw,136px);line-height:.82;text-transform:uppercase">' + esc(fm.title) + '</a>' +
-        ((f.role || fm.role) ? '<span class="role">' + esc(f.role || fm.role) + '</span>' : '') +
-        '<p style="margin:0;line-height:1.75;max-width:400px;opacity:.85">' + esc(f.text || fm.note) + '</p>' +
+        ((f.role || fm.role) ? '<p class="f-role">' + esc(f.role || fm.role) + '</p>' : '') +
         '<span style="display:flex;gap:10px;flex-wrap:wrap"><a class="pill" href="film.html">All films →</a><a class="pill" href="https://vimeo.com/' + fm.vimeo + '" target="_blank" rel="noopener">Vimeo ↗</a></span></div>' +
         '<div class="player" data-film="' + fm.vimeo + '" style="aspect-ratio:' + ratio + ';width:100%;align-self:center"><img src="' + poster + '" data-fallback="' + fm.thumb + '" alt="" style="opacity:.75"><button type="button" class="playbtn" aria-label="Play ' + esc(fm.title) + '">' + playIcon + '</button></div>' +
         '</div></div></section>';
