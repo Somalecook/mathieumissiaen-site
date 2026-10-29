@@ -941,6 +941,34 @@ button:disabled { opacity: .35; cursor: default; }
     ctx.fillStyle = g; ctx.fillRect(-4000, -6000, 8000, 12000);
     ctx.restore();
   }
+  // night sky: little stars twinkling in the sky around the island, never over the lawn or what stands on it
+  const STARS = (() => {
+    const L = iso(0, NY), T = iso(0, 0), Rr = iso(NX, 0), F = iso(NX, NY), lerpY = (a, b, x) => a[1] + (b[1] - a[1]) * (x - a[0]) / (b[0] - a[0]);
+    const out = [];
+    for (let i = 0; out.length < 150 && i < 4000; i++) {
+      const x = -90 + hash(i, 501) * 1780, y = -50 + hash(i, 502) * 1000;
+      const inX = x > L[0] - 30 && x < Rr[0] + 30, xc = clamp(x, L[0], Rr[0]);
+      const top = xc < T[0] ? lerpY(L, T, xc) : lerpY(T, Rr, xc), bot = (xc < F[0] ? lerpY(L, F, xc) : lerpY(F, Rr, xc)) + DEPTH;
+      if (inX && y > top - 150 && y < bot + 25) continue;
+      if (x > 1140 && x < 1480 && y > 60 && y < 500) continue;   // the shelf
+      if (y > 760) continue;   // the bar at the bottom
+      out.push({ x, y, r: 0.5 + hash(i, 503) ** 3 * 1.6, sp: 0.8 + hash(i, 504) * 2.2, ph: hash(i, 505) * 6.3 });
+    }
+    return out;
+  })();
+  function drawStars() {
+    if (lampK < 0.05) return;
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    for (const st of STARS) {
+      const tw = 0.55 + 0.45 * Math.sin(t * st.sp + st.ph), a = lampK * tw;
+      ctx.fillStyle = `rgba(255,250,235,${0.85 * a})`; ctx.beginPath(); ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2); ctx.fill();
+      if (st.r > 1.4) {   // the bigger ones get a soft little cross of light
+        ctx.fillStyle = `rgba(255,250,235,${0.25 * a})`;
+        ctx.fillRect(st.x - st.r * 3, st.y - 0.4, st.r * 6, 0.8); ctx.fillRect(st.x - 0.4, st.y - st.r * 3, 0.8, st.r * 6);
+      }
+    }
+    ctx.restore();
+  }
   // the dragon's flames light up around them: a warm flickering glow along the painted fire
   function drawFireGlow() {
     const d = dragon;
@@ -2382,6 +2410,7 @@ button:disabled { opacity: .35; cursor: default; }
     ].sort((a, b) => a.d - b.d);
     for (const it of items) it.draw();
     drawNight();
+    drawStars();
     drawFireGlow();
     drawLampGlow();
     drawParticles();
