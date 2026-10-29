@@ -317,3 +317,6 @@ img,video,iframe{max-width:100%}
 .svc-card em{font-family:var(--serif);font-size:15px}
 .svc .pill{margin-top:20px}
 .svc .svc-others a{border-bottom:1px solid currentColor;margin-right:12px}
+
+/* what Mathieu did on the project, shown first */
+.role{display:inline-block;align-self:flex-start;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;padding:6px 10px;border:1px solid currentColor;border-radius:999px;line-height:1.2}

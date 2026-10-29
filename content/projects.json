@@ -347,7 +347,7 @@
           "name": "Cécile Paravina"
         },
         {
-          "role": "Photography & CGI",
+          "role": "Photography, art direction & CGI",
           "name": "Mathieu Missiaen"
         },
         {
@@ -372,7 +372,8 @@
         }
       ],
       "kicker": "",
-      "chapters": null
+      "chapters": null,
+      "role": "Photographer & art director"
     },
     {
       "slug": "kenzo-move",
@@ -385,7 +386,7 @@
       "kicker": "",
       "subtitle": "",
       "tagline": "",
-      "intro": "Worldwide campaign for the Kenzo Move sneaker. Art direction and photography.",
+      "intro": "Worldwide campaign for the Kenzo Move sneaker — film and photography.",
       "medium": "Art direction, photography, film",
       "cover": "images/kenzo-move/01-stripes-duo.jpg",
       "theme": {
@@ -552,11 +553,12 @@
           "name": "Kenzo"
         },
         {
-          "role": "Art direction & photography",
+          "role": "Direction, photography & art direction",
           "name": "Mathieu Missiaen"
         }
       ],
-      "chapters": null
+      "chapters": null,
+      "role": "Director, photographer & art director"
     },
     {
       "slug": "aichmophobia",
@@ -1221,7 +1223,8 @@
           "name": "Mathieu Missiaen"
         }
       ],
-      "chapters": null
+      "chapters": null,
+      "role": "Key visual — photography & CGI"
     },
     {
       "slug": "amazon-japan",
@@ -1454,7 +1457,8 @@
           "name": "Mathieu Missiaen"
         }
       ],
-      "chapters": null
+      "chapters": null,
+      "role": "Art director & CGI artist"
     },
     {
       "slug": "suntory-196",
@@ -1643,7 +1647,8 @@
           "name": "Mathieu Missiaen"
         }
       ],
-      "chapters": null
+      "chapters": null,
+      "role": "Art director & CGI artist"
     },
     {
       "slug": "la-prairie",
@@ -1805,7 +1810,8 @@
           "name": "Paul Coudamy, Bonjour Lab, TremensS"
         }
       ],
-      "chapters": null
+      "chapters": null,
+      "role": "Photography & CGI"
     },
     {
       "slug": "rolls-royce",
@@ -1951,7 +1957,8 @@
           "name": "Mathieu Missiaen"
         }
       ],
-      "chapters": null
+      "chapters": null,
+      "role": "Photographer"
     },
     {
       "slug": "sept",
@@ -2219,7 +2226,8 @@
       "essay": null,
       "credits": [],
       "kicker": "",
-      "chapters": null
+      "chapters": null,
+      "role": "Photographer"
     },
     {
       "slug": "studies",

@@ -30,6 +30,7 @@ content:
           - { name: galleryOnly, label: "Seulement dans la page Gallery (pas de page projet)", type: boolean }
           - { name: tab, label: "Onglet à part dans le menu (nom de l'onglet, vide = non)", type: string }
           - { name: client, label: Client, type: string }
+          - { name: role, label: "Mon rôle (affiché en premier, ex : Director & art director)", type: string }
           - { name: year, label: Année, type: string }
           - { name: kicker, label: "Sur-titre", type: string }
           - { name: subtitle, label: "Sous-titre", type: string }
@@ -192,6 +193,7 @@ content:
           - { name: poster, label: "Image HD (lien, optionnel)", type: string }
           - { name: title, label: Titre, type: string }
           - { name: client, label: Client, type: string }
+          - { name: role, label: "Mon rôle", type: string }
           - { name: year, label: Année, type: string }
           - { name: uploadDate, label: "Date de mise en ligne (ex : 2018-01-09T12:00:00+01:00)", type: string }
           - { name: duration, label: "Durée (secondes)", type: number }

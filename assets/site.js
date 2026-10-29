@@ -164,6 +164,7 @@
         (p.kicker ? '<span style="font-family:' + esc(t.fontCss) + ';font-size:22px" class="muted">' + esc(p.kicker) + '</span>' : '') +
         '<a href="work/' + p.slug + '/" ' + (p.displayLang ? 'lang="' + p.displayLang + '" ' : '') + 'style="font-family:' + esc(t.fontCss) + ';font-weight:' + t.titleWeight + ';font-style:' + (t.titleItalic ? 'italic' : 'normal') + ';font-size:' + (p.display.length > 6 ? 'clamp(44px,4.6vw,84px)' : 'clamp(56px,7vw,120px)') + ';line-height:.9;letter-spacing:' + (t.titleTracking || '-.02em') + ';overflow-wrap:break-word">' + esc(p.display) + '</a>' +
         (p.subtitle ? '<span class="serif" style="font-size:24px;line-height:1.15">' + (p.slug === 'tal' ? 'TAL — ' : '') + rich(p.subtitle) + '</span>' : '') +
+        (p.role ? '<span class="role">' + esc(p.role) + '</span>' : '') +
         '<p style="margin:0;line-height:1.75;max-width:400px;opacity:.85">' + esc(f.text || p.intro) + '</p>' +
         '<a class="pill" href="work/' + p.slug + '/">' + (p.kind === 'research' ? 'Enter the series →' : 'See the project →') + '</a></div>' +
         (f.carousel && f.carousel.length
@@ -183,6 +184,7 @@
         '<div class="f-text">' + (f.label ? '<span class="muted">' + esc(f.label) + '</span>' : '') +
         '<span class="serif it" style="font-size:24px">' + esc(fm.client) + '</span>' +
         '<a href="film.html" style="font-family:\'Big Shoulders Display\',sans-serif;font-weight:800;font-size:clamp(64px,8vw,136px);line-height:.82;text-transform:uppercase">' + esc(fm.title) + '</a>' +
+        ((f.role || fm.role) ? '<span class="role">' + esc(f.role || fm.role) + '</span>' : '') +
         '<p style="margin:0;line-height:1.75;max-width:400px;opacity:.85">' + esc(f.text || fm.note) + '</p>' +
         '<span style="display:flex;gap:10px;flex-wrap:wrap"><a class="pill" href="film.html">All films →</a><a class="pill" href="https://vimeo.com/' + fm.vimeo + '" target="_blank" rel="noopener">Vimeo ↗</a></span></div>' +
         '<div class="player" data-film="' + fm.vimeo + '" style="aspect-ratio:' + ratio + ';width:100%;align-self:center"><img src="' + poster + '" data-fallback="' + fm.thumb + '" alt="" style="opacity:.75"><button type="button" class="playbtn" aria-label="Play ' + esc(fm.title) + '">' + playIcon + '</button></div>' +
@@ -428,6 +430,7 @@
         (p.kicker ? '<div style="font-family:var(--title-font);font-size:clamp(22px,2.2vw,32px);color:' + (t.accent || 'var(--muted)') + ';margin-bottom:14px">' + esc(p.kicker) + '</div>' : '') +
         '<h1 class="p-title"' + (p.displayLang ? ' lang="' + p.displayLang + '"' : '') + '>' + esc(p.display) + '</h1>' +
         '<div class="p-intro"><div style="display:flex;flex-direction:column;gap:14px">' +
+        (p.role ? '<span class="role">' + esc(p.role) + '</span>' : '') +
         (p.subtitle ? '<p class="serif" style="margin:0;font-size:clamp(28px,3vw,44px);line-height:1.05">' + (p.slug === 'tal' ? 'TAL — ' : '') + rich(p.subtitle) + '</p>' : '') +
         (p.tagline ? '<p class="serif it" style="margin:0;font-size:22px;opacity:.8">' + rich(p.tagline) + '</p>' : '') + '</div>' +
         '<p style="margin:0;font-size:14px;line-height:1.7;max-width:560px">' + rich(p.intro) + (p.year && p.year !== 'Ongoing' ? ' <span class="muted">' + esc(p.year) + '</span>' : '') + '</p></div>' +
@@ -490,7 +493,7 @@
       document.getElementById('app').innerHTML = header('film', site) +
         '<section class="wrap" style="padding-block:72px 48px;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap"><h1 style="margin:0;font-family:\'Big Shoulders Display\',sans-serif;font-weight:800;font-size:clamp(72px,12vw,200px);line-height:.82;text-transform:uppercase">Moving<br>image</h1></section>' +
         '<section class="wrap"><div class="stage-grid"><div class="player" style="' + (vertical ? 'aspect-ratio:4 / 5;height:min(78vh,760px);margin:0 auto;max-width:100%' : 'aspect-ratio:16 / 9;width:100%') + '">' + player + '</div>' +
-        '<div style="display:flex;flex-direction:column;gap:14px;padding-bottom:6px"><span style="font-family:\'Big Shoulders Display\',sans-serif;font-weight:300;font-size:clamp(36px,3.4vw,54px);line-height:.95;text-transform:uppercase">' + esc(n.title) + '</span><span class="serif it" style="font-size:22px">' + esc(n.client) + '</span><span class="muted" style="line-height:1.7">' + esc(n.note) + '</span><a class="pill" href="https://vimeo.com/' + n.vimeo + '" target="_blank" rel="noopener">Watch on Vimeo ↗</a></div></div></section>' +
+        '<div style="display:flex;flex-direction:column;gap:14px;padding-bottom:6px"><span style="font-family:\'Big Shoulders Display\',sans-serif;font-weight:300;font-size:clamp(36px,3.4vw,54px);line-height:.95;text-transform:uppercase">' + esc(n.title) + '</span><span class="serif it" style="font-size:22px">' + esc(n.client) + '</span>' + (n.role ? '<span class="role">' + esc(n.role) + '</span>' : '') + '<span class="muted" style="line-height:1.7">' + esc(n.note) + '</span><a class="pill" href="https://vimeo.com/' + n.vimeo + '" target="_blank" rel="noopener">Watch on Vimeo ↗</a></div></div></section>' +
         '<section class="wrap" style="padding-block:72px 40px"><div style="border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap"><span></span><span>' +
         ['all', 'commission', 'research'].map(function (k) { return '<button type="button" class="tog" data-k="' + k + '" aria-pressed="' + (st.k === k) + '">' + (k === 'all' ? 'All' : k === 'commission' ? 'Commissions' : 'Research') + '</button>'; }).join('') + '</span></div></section>' +
         '<section class="wrap" style="padding-bottom:120px"><div class="films">' + list.map(function (f) {

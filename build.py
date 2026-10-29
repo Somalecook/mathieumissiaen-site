@@ -162,12 +162,13 @@ for i, p in enumerate(visible):
     who = (p['client'] + ' ') if p.get('client') and p['client'] not in p['title'] else ''
     what = (who + ('campaign' if p['kind'] == 'commission' else 'personal series')).strip()
     title = '%s — %s%s | %s' % (plain(p['title']), what, (', ' + ' &'.join(p['medium'].rsplit(',', 1))) if p.get('medium') else '', NAME)
-    desc = plain(p.get('intro')) or ('%s by %s, %s.' % (p['title'], NAME, 'personal research' if p['kind'] == 'research' else 'commission'))
+    desc = ((NAME + ', ' + p['role'].lower() + '. ') if p.get('role') else '') + plain(p.get('intro')) if p.get('intro') else None
+    desc = desc or ('%s by %s, %s.' % (p['title'], NAME, 'personal research' if p['kind'] == 'research' else 'commission'))
     figs = ''.join('<figure><img src="%s" alt="%s" width="%d" height="%d" loading="lazy"></figure>' % (
         e(im['src']), e('%s — %s%s by %s' % (plain(im.get('title')) or plain(p['title']), (p['client'] + ', ') if p.get('client') else '', (p.get('medium') or 'image').lower(), NAME)), *ratio_wh(im.get('ratio'))) for im in imgs[:24])
     credits = ''.join('<li>%s: %s</li>' % (e(c['role']), e(c['name'])) for c in p.get('credits') or [])
-    content = ('<p><a href="/">Work</a> / %s</p><h1>%s</h1><p>%s</p>%s%s%s' % (
-        'Research' if p['kind'] == 'research' else 'Commissions', e(plain(p['title'])), e(desc),
+    content = ('<p><a href="/">Work</a> / %s</p><h1>%s</h1>%s<p>%s</p>%s%s%s' % (
+        'Research' if p['kind'] == 'research' else 'Commissions', e(plain(p['title'])), ('<p class="role">%s — %s</p>' % (e(NAME), e(p['role']))) if p.get('role') else '', e(desc),
         ('<p>%s</p>' % e(p['year'])) if p.get('year') else '', ('<h2>Credits</h2><ul>%s</ul>' % credits) if credits else '', figs))
     ld = {'@context': 'https://schema.org', '@graph': [
         {'@type': 'CreativeWork', 'name': plain(p['title']), 'url': '%s/work/%s/' % (SITE_URL, p['slug']),
