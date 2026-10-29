@@ -525,7 +525,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   function drawBowl(noShadow) {
     const L = bowl.lift || 0, [x, y] = iso(bowl.x, bowl.y, L);
     ctx.save(); nestScale(bowl, x, y);
-    if (!noShadow && !bowl.on) ell(x, y + 4 + L, 27, 10, 'rgba(60,40,60,.22)');
     const w = clamp(bowl.water, 0, 1) * 2, k = Math.min(1, Math.floor(w)), f = Math.min(1, w - k);
     obj(OB.bowl[k], x, y + 6, 52);
     if (f > 0.01) { ctx.save(); ctx.globalAlpha = Math.min(1, f * 1.4); obj(OB.bowl[k + 1], x, y + 6, 52); ctx.restore(); }
@@ -551,7 +550,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   // food plate: empty, half or full
   function drawPlate() {
     const L = plate.lift || 0, [x, y] = iso(plate.x, plate.y, L);
-    ell(x, y + 4 + L, 30, 10, 'rgba(60,40,60,.2)');
     obj(OB.plate[bowl.food < 0.04 ? 0 : bowl.food < 0.4 ? 1 : bowl.food < 0.75 ? 2 : 3], x, y + 9, 60);
   }
 
@@ -562,7 +560,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
     ctx.save(); nestScale(bowl2, x, y); drawBowl2Body(noShadow, L, x, y); ctx.restore();
   }
   function drawBowl2Body(noShadow, L, x, y) {
-    if (!noShadow && !bowl2.on) ell(x, y + 4 + L, 25, 9, 'rgba(60,40,60,.22)');
     if (!BOWL2_IMG.naturalWidth) return;
     const w = 50, h = w * BOWL2_IMG.naturalHeight / BOWL2_IMG.naturalWidth, top = y + 6 - h;
     ctx.drawImage(BOWL2_IMG, x - w / 2, top, w, h);
@@ -598,7 +595,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   const SOLIS = [{ o: soli, img: SOLI_IMG, w: 38, neck: [-0.5, 26] }, { o: soli2, img: SOLI2_IMG, w: 34, neck: [0.6, 18] }];
   function drawSoli(S) {
     const o = S.o, L = o.lift || 0, [x, y] = iso(o.x, o.y, L), img = S.img;
-    ell(x, y + 3 + L, S.w * 0.45, S.w * 0.16, 'rgba(60,40,60,.25)');
     const w = S.w, h = img.naturalWidth ? w * img.naturalHeight / img.naturalWidth : w * 1.3, top = y + 5 - h;
     if (o.flower != null) { ctx.save(); ctx.translate(x + S.neck[0], top + S.neck[1]); ctx.rotate(Math.sin(t * 1.3 + 2) * 0.04); spr(SPR.sprig[o.flower], 0, 0, 78); ctx.restore(); }
     if (img.naturalWidth) ctx.drawImage(img, x - w / 2, top, w, h);
@@ -643,7 +639,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   function drawVase(i, px, py) {
     const JW = JAR_W[i], k = JW / 40, [x0, y0, x1, y1] = OB.jar, JH = (y1 - y0) * JW / (x1 - x0);
     const b = garden.pots[i], j = garden.jars[i];
-    ell(px, py + 2 + (j.lift || 0), 19 * k, 7 * k, 'rgba(60,40,60,.25)');
     obj(OB.jar, px, py + 2, JW);
     if (b) {
       // stems come out of the opening: clip the bouquet at the front lip of the jar
@@ -699,7 +694,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   }
   function drawTap() {
     const [x, y] = iso(TAP.x, TAP.y, TAP.lift || 0);
-    ell(x, y + 2 + (TAP.lift || 0), 12, 4.5, 'rgba(60,40,60,.25)');
     if (TAP_IMG.naturalWidth) ctx.drawImage(TAP_IMG, x - TAP_FOOT[0], y - TAP_FOOT[1] + 4, TAP_IMG.naturalWidth / 2, TAP_IMG.naturalHeight / 2);
     const [sx, sy] = tapPoint(TAP_SPOUT);
     // the handle glows blue while the water runs
@@ -832,7 +826,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   const tableOf = o => TABLES[o.tbl || 0];
   function drawTable(T) {
     const o = T.o, [x, y] = iso(o.x, o.y, o.lift || 0);
-    ell(x, y + 6 + (o.lift || 0), T.sh[0], T.sh[1], 'rgba(60,40,60,.2)');
     if (T.img.naturalWidth) ctx.drawImage(T.img, x - T.foot[0], y - T.foot[1] + 4, T.img.naturalWidth / 2, T.img.naturalHeight / 2);
   }
   // which table top is under a screen point (-1 for none)
@@ -845,7 +838,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   function drawStump() {
     const L = stump.lift || 0, [x, y] = iso(stump.x, stump.y, L);
     const b = clamp(stump.burn, 0, 1);
-    ell(x, y + 3 + L, 16, 6, 'rgba(60,40,60,.25)');
     ctx.save();
     if (b > 0) ctx.filter = `sepia(${b * .5}) brightness(${1 - b * .45})`;
     obj(OB.target, x, y + 6, 46);
@@ -857,7 +849,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   // the user's purple pet bed
   function drawBed() {
     const L = bed.lift || 0, [x, y] = iso(bed.x, bed.y, L);
-    ell(x, y + 10 + L, 52, 18, 'rgba(60,40,60,.22)');
     obj(OB.bed, x, y + 22, 112);
   }
 
@@ -1808,7 +1799,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
       const [nx, ny] = bottleNeckTarget(); rot = 1.9;
       x = nx - BOTTLE_NECK * Math.sin(rot); y = ny + BOTTLE_NECK * Math.cos(rot);
     }
-    else ell(x, y + 2 + (o.lift || 0), 12, 5, 'rgba(60,40,60,.25)');
     ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
     obj(OB.bottle[o.level < 0.06 ? 0 : o.level < 0.7 ? 1 : 2], 0, 2, 21);
     ctx.restore();
@@ -1851,7 +1841,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   }
   function drawBin() {
     const [x, y] = iso(bin.x, bin.y, bin.lift || 0);
-    ell(x, y + 3 + (bin.lift || 0), 22, 8, 'rgba(60,40,60,.25)');
     if (!BIN_IMG.complete || !BIN_IMG.naturalWidth) return;
     const w = BIN_IMG.naturalWidth / 2, h = BIN_IMG.naturalHeight / 2;
     ctx.save(); ctx.translate(x, y + 6); ctx.rotate(Math.sin(t * 40) * bin.lid * 0.06);
@@ -1862,7 +1851,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   function drawCrate() {
     const sh = crate.shake ? Math.sin(t * 60) * 2 : 0;
     const L = crate.lift || 0, [x, y] = iso(crate.x, crate.y, L);
-    ell(x, y + 4 + L, 52, 20, 'rgba(60,40,60,.22)');
     obj(OB.crate, x + sh, y + 24, 112);
   }
 
@@ -1872,7 +1860,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
     let [x, y] = iso(o.x, o.y, (o.lift || 0) + Math.sin((o.pop || 0) * Math.PI) * 40);
     let rot = 0;
     if (o.pour) { const to = o.pourTo || plate, [bx, by] = iso(to.x, to.y, zOf(to)); x = bx + 36; y = by - 50; rot = -1.7; }
-    else ell(x, y + 2 + (o.lift || 0), 16, 6, 'rgba(60,40,60,.25)');
     ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
     if (o.amount <= 0) ctx.filter = 'saturate(.35) brightness(.92)';
     const h = obj(OB.box, 0, 3, 30);
