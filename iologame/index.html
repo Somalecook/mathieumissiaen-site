@@ -760,8 +760,18 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   // its open front faces +gy (lower left), its 3 columns run along gx
   const SHELF = { x0: 13.2, fy: 7, d: 0.75, cw: 1.1, cols: 3, rows: 3, z0: -90, rh: 62, th: 6 };
   const SLOTS = [];
-  for (let r = 0; r < SHELF.rows; r++) for (let c = 0; c < SHELF.cols; c++) SLOTS.push([SHELF.x0 + (c + 0.5) * SHELF.cw, SHELF.fy - SHELF.d / 2, SHELF.z0 + r * SHELF.rh + SHELF.th]);
+  // one more row of spots on the very top of the shelf
+  for (let r = 0; r <= SHELF.rows; r++) for (let c = 0; c < SHELF.cols; c++) SLOTS.push([SHELF.x0 + (c + 0.5) * SHELF.cw, SHELF.fy - SHELF.d / 2, SHELF.z0 + r * SHELF.rh + SHELF.th]);
   const isStored = o => o.stored != null || !!(stackBase(o) && stackBase(o).stored != null);
+  // a thing in a cell is only seen through the cell's front opening: clip to it so its top hides under the board above
+  function clipToCell(o) {
+    const si = o.stored != null ? o.stored : stackBase(o) ? stackBase(o).stored : null;
+    if (si == null || si >= SHELF.rows * SHELF.cols || (dragging && (dragging.o === o || dragging.o === stackBase(o)))) return;
+    const S = SHELF, c = si % S.cols, r = Math.floor(si / S.cols), xa = S.x0 + c * S.cw, xb = xa + S.cw, z = S.z0 + r * S.rh;
+    ctx.beginPath();
+    [[xa, S.fy, z - 30], [xb, S.fy, z - 30], [xb, S.fy, z + S.rh], [xa, S.fy, z + S.rh]].forEach(([gx, gy, zz], i) => { const [x, y] = iso(gx, gy, zz); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+    ctx.closePath(); ctx.clip();
+  }
   // the nearest free cell under a screen point, for the object o being carried
   function shelfSlotAt(px, py, o) {
     let best = -1, bd = 46;
@@ -1551,7 +1561,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
     return hits.length ? hits.reduce((a, b) => depthOf(b) > depthOf(a) ? b : a) : null;
   }
   // front-to-back order, same as the drawing: things on the soban sit just in front of it
-  const depthOf = o => o.stored != null ? 499.15 + (o.stored % SHELF.cols) * 0.1 - Math.floor(o.stored / SHELF.cols) * 0.01 : stackBase(o) ? depthOf(stackBase(o)) + 0.005 : o.rest ? tableOf(o).o.x + tableOf(o).o.y + 0.02 + (o.x + o.y - tableOf(o).o.x - tableOf(o).o.y + 1) * 0.01 : o.x + o.y;
+  const depthOf = o => o.stored != null ? (o.stored >= SHELF.rows * SHELF.cols ? 499.6 + (o.stored % SHELF.cols) * 0.01 : 499.15 + (o.stored % SHELF.cols) * 0.1 - Math.floor(o.stored / SHELF.cols) * 0.01) : stackBase(o) ? depthOf(stackBase(o)) + 0.005 : o.rest ? tableOf(o).o.x + tableOf(o).o.y + 0.02 + (o.x + o.y - tableOf(o).o.x - tableOf(o).o.y + 1) * 0.01 : o.x + o.y;
   function startDrag(e, o, px, py) {
     const [ox, oy] = iso(o.x, o.y, o.rest || 0);
     dragging = { o, dx: ox - px, dy: oy - py, sx: px, sy: py, moved: false };
@@ -1770,7 +1780,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
       if (o === bottle && bottle.level > 0 && room > 0) {
         const q = Math.min(dt * 0.6, bottle.level, room);
         bottle.level -= q; fill(q);
-        if (Math.random() < dt * 25) particles.push({ kind: 'drop', x: bx - 4 + rand(-3, 3), y: by - 62, vx: rand(-6, 6), vy: 120, life: .3, max: .3 });
+        if (Math.random() < dt * 25) { const [nx, ny] = bottleNeckTarget(); particles.push({ kind: 'drop', x: nx + rand(-2, 2), y: ny + 2, vx: rand(-6, 6), vy: 120, life: .25, max: .25 }); }
       }
       if (o === box && box.amount > 0 && room > 0) {
         box.open = true;   // tipping a closed box over a dish tears it open
@@ -1782,12 +1792,22 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
     }
   }
 
+  const BOTTLE_NECK = 62;   // from the bottle's base to its mouth, drawn at width 21
+  // where the mouth of the tipped bottle goes: above the bowl it pours into, or above a pot
+  function bottleNeckTarget() {
+    if (bottle.potPour >= 0) { const i = bottle.potPour, [px, py] = potPos(i), k = JAR_W[i] / 40; return [px - 4, py - 46 * k - 14]; }
+    const to = bottle.pourTo || bowl, [bx, by] = iso(to.x, to.y, zOf(to));
+    return [bx, by - 54];
+  }
   function drawBottle() {
     const o = bottle;
     let [x, y] = iso(o.x, o.y, o.lift || 0);
     let rot = 0;
-    if (o.potPour >= 0) { const [px, py] = potPos(o.potPour); x = px - 36; y = py - 50; rot = 1.9; }
-    else if (o.pour) { const to = o.pourTo || bowl, [bx, by] = iso(to.x, to.y, zOf(to)); x = bx - 36; y = by - 56; rot = 1.9; }
+    if (o.potPour >= 0 || o.pour) {
+      // tipped over: place it so the neck (not the middle of the bottle) is right above the opening
+      const [nx, ny] = bottleNeckTarget(); rot = 1.9;
+      x = nx - BOTTLE_NECK * Math.sin(rot); y = ny + BOTTLE_NECK * Math.cos(rot);
+    }
     else ell(x, y + 2 + (o.lift || 0), 12, 5, 'rgba(60,40,60,.25)');
     ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
     obj(OB.bottle[o.level < 0.06 ? 0 : o.level < 0.7 ? 1 : 2], 0, 2, 21);
@@ -1928,6 +1948,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
       const up = o.lift || o.pour || o.potPour >= 0 || onTable, [x, y] = iso(o.x, o.y, onTable ? o.rest : 0), st = o.settle || 0;
       const body = () => {
         ctx.save();
+        clipToCell(o);
         if (onTable) ctx.translate(0, -o.rest);
         if (st > 0) { const q = Math.sin(st * Math.PI * 3) * st * 0.07; ctx.translate(x, y); ctx.scale(1 + q, 1 - q); ctx.translate(-x, -y); }
         if (!up) ctx.translate(0, 3);
