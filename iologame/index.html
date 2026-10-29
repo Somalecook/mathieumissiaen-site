@@ -792,28 +792,42 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
     ctx.beginPath(); ctx.moveTo(lx + LAMP_W / 2, ly + 20); ctx.lineTo(lx + LAMP_W / 2, -600); ctx.stroke();
     if (LAMP_IMG.naturalWidth) ctx.drawImage(LAMP_IMG, lx, ly, LAMP_W, LAMP_H);
   }
+  // the light fades in and out (k: 0 off, 1 on), with a tiny flutter while it warms up
+  function lampLevel(dt) {
+    const k0 = LAMP.k || 0, goal = LAMP.on ? 1 : 0;
+    LAMP.k = k0 + (goal - k0) * Math.min(1, dt * (LAMP.on ? 3.5 : 5));
+    const k = LAMP.k < 0.005 ? 0 : LAMP.k;
+    return LAMP.on && k < 0.85 ? k * (0.9 + 0.1 * Math.sin(t * 47)) : k;
+  }
+  let lampK = 0;
   // warm pool of light on the grass, drawn under everything
-  function drawLampPool() {
-    if (!LAMP.on) return;
+  function drawLampPool(dt) {
+    lampK = lampLevel(dt);
+    if (!lampK) return;
     const [x, y] = iso(LAMP.x, LAMP.y);
-    ctx.save(); ctx.translate(x, y); ctx.scale(1, 0.5);
-    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 120);
-    g.addColorStop(0, 'rgba(255,236,160,.55)'); g.addColorStop(0.6, 'rgba(255,220,130,.22)'); g.addColorStop(1, 'rgba(255,220,130,0)');
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, 120, 0, Math.PI * 2); ctx.fill();
+    ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.globalAlpha = lampK;
+    ctx.translate(x, y); ctx.scale(1, 0.48);
+    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 115);
+    g.addColorStop(0, 'rgba(255,230,160,.7)'); g.addColorStop(0.45, 'rgba(255,220,140,.36)'); g.addColorStop(1, 'rgba(255,214,140,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, 115, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
   }
-  // the glow and the soft beam, drawn over everything
+  // a soft cone from the shade down to the pool, and a small halo round the bulb, over everything
   function drawLampGlow() {
-    if (!LAMP.on) return;
+    if (!lampK) return;
     const [lx, ly] = lampTop(), bx = lx + LAMP_BULB[0], by = ly + LAMP_BULB[1], [gx, gy] = iso(LAMP.x, LAMP.y);
-    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.globalAlpha = lampK;
+    // the cone: blurred edges, fading towards the ground
+    ctx.filter = 'blur(10px)';
     const beam = ctx.createLinearGradient(0, by, 0, gy);
-    beam.addColorStop(0, 'rgba(255,230,150,.22)'); beam.addColorStop(1, 'rgba(255,230,150,0)');
+    beam.addColorStop(0, 'rgba(255,236,180,.5)'); beam.addColorStop(0.7, 'rgba(255,228,165,.16)'); beam.addColorStop(1, 'rgba(255,228,165,0)');
     ctx.fillStyle = beam; ctx.beginPath();
-    ctx.moveTo(bx - 18, by - 4); ctx.lineTo(bx + 18, by - 4); ctx.lineTo(gx + 100, gy); ctx.lineTo(gx - 100, gy); ctx.closePath(); ctx.fill();
-    const r = 46 + Math.sin(t * 3) * 1.5, g = ctx.createRadialGradient(bx, by, 0, bx, by, r);
-    g.addColorStop(0, 'rgba(255,248,215,.85)'); g.addColorStop(0.35, 'rgba(255,225,140,.35)'); g.addColorStop(1, 'rgba(255,210,120,0)');
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(bx, by, r, 0, Math.PI * 2); ctx.fill();
+    ctx.moveTo(bx - 14, by); ctx.lineTo(bx + 14, by); ctx.lineTo(gx + 78, gy - 6); ctx.lineTo(gx - 78, gy - 6); ctx.closePath(); ctx.fill();
+    ctx.filter = 'none';
+    // the bulb: a bright little core and a soft halo that breathes a little
+    const r = 34 + Math.sin(t * 2.4) * 1.2, g = ctx.createRadialGradient(bx, by + 1, 0, bx, by + 1, r);
+    g.addColorStop(0, 'rgba(255,252,235,.95)'); g.addColorStop(0.25, 'rgba(255,238,190,.55)'); g.addColorStop(1, 'rgba(255,220,150,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(bx, by + 1, r, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
   }
   function lampAt(px, py) {
@@ -2061,7 +2075,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
       if (up) body();
       else masked(x, y, body, () => { for (const tf of Array.isArray(w) ? w : [[0, 0, w]]) tf.path ? grassAlong(x, y + 3, tf.path) : grassTufts(x + tf[0], y + 3 + tf[1], tf[2]); });
     };
-    drawLampPool();
+    drawLampPool(dt);
     drawPuddle();
     // things on the soban are drawn just after it, in their own front-to-back order
     const dOf = depthOf;
