@@ -840,11 +840,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
       ctx.drawImage(SHELF_IMG, x - SH.A[0] * s, y - SH.A[1] * s, SHELF_IMG.naturalWidth * s, SHELF_IMG.naturalHeight * s);
       ctx.restore();
     }
-    // a little glow on the free spots while something small is carried
-    if (dragging && SMALL().includes(dragging.o)) SLOTS.forEach(([gx, gy, z], i) => {
-      if (SMALL().some(it => it !== dragging.o && it.stored === i)) return;
-      const [x, y] = iso(gx, gy, z); ell(x, y, 18, 6, `rgba(255,170,210,${.3 + Math.sin(t * 5) * .12})`);
-    });
   }
   // the dragon walks around it
   const shelfObstacles = () => Array.from({ length: 6 }, (_, i) => [SH.X0 + 0.3 + i * (SH.W - 0.6) / 5, SH.FY / 2, 0.5]);
@@ -858,12 +853,6 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   function drawTable(T) {
     const o = T.o, [x, y] = iso(o.x, o.y, o.lift || 0);
     if (T.img.naturalWidth) ctx.drawImage(T.img, x - T.foot[0], y - T.foot[1] + 4, T.img.naturalWidth / 2, T.img.naturalHeight / 2);
-    // while something small is carried, the top glows softly, and brighter when it will land there
-    const d = dragging && dragging.moved && SMALL().includes(dragging.o) ? dragging.o : null;
-    if (d && !o.lift) {
-      const here = d.rest && !isStored(d) && !d.on && tableOf(d) === T;
-      ell(x, y - T.z + 4, T.rx * 0.82, T.ry * 0.78, `rgba(255,170,210,${here ? .42 + Math.sin(t * 6) * .1 : .22})`);
-    }
   }
   // which table top is under a screen point (-1 for none)
   function tableAt(px, py) {
@@ -1445,12 +1434,27 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
       if (ball.z <= 0) {
         ball.z = 0;
         if (ball.vz < -120) {
-          ball.vz = -ball.vz * 0.5; ball.vx *= 0.75; ball.vy *= 0.75;
+          // each bounce is a little different: the grass soaks up some, and the ball kicks off a bit sideways
+          ball.vz = -ball.vz * rand(0.4, 0.56);
+          const keep = rand(0.55, 0.72), turn = rand(-0.22, 0.22), c = Math.cos(turn), s = Math.sin(turn);
+          const vx = ball.vx * keep, vy = ball.vy * keep;
+          ball.vx = vx * c - vy * s; ball.vy = vx * s + vy * c;
           const [px, py] = iso(ball.x, ball.y); puff('dust', px, py, { vy: -15, life: .4, max: .4, size: 5 });
         } else ball.vz = 0;
       }
     }
-    if (ball.z === 0 && ball.vz === 0) { const f = Math.max(0, 1 - 2.4 * dt); ball.vx *= f; ball.vy *= f; }
+    if (ball.z === 0 && ball.vz === 0) {
+      // rolling in grass: drag plus a steady resistance, so it slows down and stops instead of sliding on
+      let v = Math.hypot(ball.vx, ball.vy);
+      if (v > 0) {
+        const nv = Math.max(0, v * Math.max(0, 1 - 3.2 * dt) - 1.1 * dt);
+        ball.vx *= nv / v; ball.vy *= nv / v; v = nv;
+        if (v < 0.04) ball.vx = ball.vy = 0;
+        // tufts and bumps: small hops and wobbles while it still rolls fast
+        else if (v > 1.4 && Math.random() < dt * 2.5) ball.vz = rand(30, 30 + v * 18);
+        else if (v > 0.3) { const w = rand(-1, 1) * dt * 0.9, c = Math.cos(w), s = Math.sin(w); [ball.vx, ball.vy] = [ball.vx * c - ball.vy * s, ball.vx * s + ball.vy * c]; }
+      }
+    }
     ball.x += ball.vx * dt; ball.y += ball.vy * dt;
     if (ball.x < 0.3) { ball.x = 0.3; ball.vx = Math.abs(ball.vx) * 0.6; }
     if (ball.x > NX - 0.3) { ball.x = NX - 0.3; ball.vx = -Math.abs(ball.vx) * 0.6; }
