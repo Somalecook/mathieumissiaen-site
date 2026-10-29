@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -64,7 +64,7 @@ canvas.grabbing { cursor: none !important; }
 }
 .frame.night .panel { color: #f2f2f2; }
 .stats { display: flex; gap: 26px; min-width: 0; }
-.stat { width: 118px; }
+.stat { width: 136px; }
 .stat label { display: flex; justify-content: space-between; align-items: baseline; font-size: .66rem; text-transform: uppercase; letter-spacing: .12em; margin-bottom: 5px; font-variant-numeric: tabular-nums; font-weight: 500; }
 .stat label span:last-child::before { content: "("; }
 .stat label span:last-child::after { content: ")"; }
@@ -109,18 +109,18 @@ button:disabled { opacity: .35; cursor: default; }
     <div id="status">Il se réveille…</div>
   </div>
   <div class="frame">
-    <canvas id="game" aria-label="Terrain de jeu isométrique avec Yongi, le petit dragon, sa balle et ses bols · 아기 용 용이와 공, 그릇이 있는 정원"></canvas>
+    <canvas id="game" aria-label="Isometric garden with Yongi, the little dragon, his ball and bowls · 아기 용 용이와 공, 그릇이 있는 정원"></canvas>
     <div class="panel">
       <div class="stats">
-        <div class="stat" id="sFood"><label><span>Faim <i lang="ko">배고픔</i></span><span>0</span></label><div class="bar"><i style="background:var(--food)"></i></div></div>
-        <div class="stat" id="sWater"><label><span>Soif <i lang="ko">목마름</i></span><span>0</span></label><div class="bar"><i style="background:var(--water)"></i></div></div>
-        <div class="stat" id="sJoy"><label><span>Joie <i lang="ko">기쁨</i></span><span>0</span></label><div class="bar"><i style="background:var(--joy)"></i></div></div>
-        <div class="stat" id="sEnergy"><label><span>Énergie <i lang="ko">기운</i></span><span>0</span></label><div class="bar"><i style="background:var(--energy)"></i></div></div>
-        <div class="stat" id="sFire"><label><span>Feu <i lang="ko">불꽃</i></span><span>0</span></label><div class="bar"><i style="background:var(--fire)"></i></div></div>
+        <div class="stat" id="sFood"><label><span>Hunger <i lang="ko">배고픔</i></span><span>0</span></label><div class="bar"><i style="background:var(--food)"></i></div></div>
+        <div class="stat" id="sWater"><label><span>Thirst <i lang="ko">목마름</i></span><span>0</span></label><div class="bar"><i style="background:var(--water)"></i></div></div>
+        <div class="stat" id="sJoy"><label><span>Joy <i lang="ko">기쁨</i></span><span>0</span></label><div class="bar"><i style="background:var(--joy)"></i></div></div>
+        <div class="stat" id="sEnergy"><label><span>Energy <i lang="ko">기운</i></span><span>0</span></label><div class="bar"><i style="background:var(--energy)"></i></div></div>
+        <div class="stat" id="sFire"><label><span>Fire <i lang="ko">불꽃</i></span><span>0</span></label><div class="bar"><i style="background:var(--fire)"></i></div></div>
       </div>
       <div class="actions">
-        <button id="bBall">Lancer la balle <i lang="ko">공 던지기</i></button>
-        <button id="bFire">Souffler du feu <i lang="ko">불 뿜기</i></button>
+        <button id="bBall">Throw the ball <i lang="ko">공 던지기</i></button>
+        <button id="bFire">Breathe fire <i lang="ko">불 뿜기</i></button>
       </div>
     </div>
   </div>
