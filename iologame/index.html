@@ -1808,7 +1808,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
       }
       if (TABLES.some(T => T.o === o)) for (const it of SMALL()) if (it.rest && !isStored(it)) it.lift = 0;
       if (dragging.moved) o.settle = 1;   // soft squash as it lands
-      if (dragging.moved && [soli, soli2, soli3, ...garden.jars].includes(o)) o.wob = 1;   // a vase rocks on its foot before it settles
+      if (dragging.moved && [soli, soli2, soli3, ...garden.jars, ...BOWLS].includes(o)) o.wob = 1;   // a vase or a bowl rocks on its foot before it settles
       if (!dragging.moved && o === bed) sendToBed();
       if (!dragging.moved && dragging.jar != null) placeBouquet(dragging.jar);   // tap a jar: empty a dead bouquet
       if (!dragging.moved && o === box && box.amount > 0.001) { box.open = !box.open; if (!box.open) box.rolled = true; }
@@ -2146,7 +2146,8 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
         // rocking from one edge of its foot to the other, smaller and smaller
         if (o.wob > 0 && !(dragging && dragging.o === o)) {
           const ww = typeof w === 'number' ? w : 30, e = 1 - o.wob, a = Math.sin(e * Math.PI * 7) * 0.11 * o.wob * o.wob, px = x + Math.sign(a) * ww * 0.32;
-          ctx.translate(px, y); ctx.rotate(a); ctx.translate(-px, -y);
+          const fy = onTable ? y + o.rest : y;   // its foot (the canvas is already raised by its height on a soban or a shelf)
+          ctx.translate(px, fy); ctx.rotate(a); ctx.translate(-px, -fy);
         }
         if (!up) ctx.translate(0, 3);
         draw();
