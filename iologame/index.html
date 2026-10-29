@@ -999,12 +999,14 @@ button:disabled { opacity: .35; cursor: default; }
     ctx.closePath(); ctx.clip();
   }
   // the nearest free cell under a screen point, for the object o being carried
-  function shelfSlotAt(px, py, o) {
-    let best = -1, bd = 40;
+  // the free spot nearest to the object's base or to the hand; the top of the shelf pulls from further away,
+  // so a free spot between the vases already up there is easy to reach
+  function shelfSlotAt(px, py, o, hx = px, hy = py) {
+    let best = -1, bd = Infinity;
     SLOTS.forEach(([gx, gy, z], i) => {
       if (SMALL().some(it => it !== o && it.stored === i)) return;
-      const [x, y] = iso(gx, gy, z), dd = Math.hypot(px - x, py - (y - 14));
-      if (dd < bd) { bd = dd; best = i; }
+      const [x, y] = iso(gx, gy, z), dd = Math.min(Math.hypot(px - x, py - (y - 14)), Math.hypot(hx - x, hy - (y - 30)) * 1.1);
+      if (dd < (i >= 9 ? 72 : 40) && dd < bd) { bd = dd; best = i; }
     });
     return best;
   }
@@ -1889,7 +1891,7 @@ button:disabled { opacity: .35; cursor: default; }
       const wasInBed = o === bed && dragon.state === 'sleep' && nearBed();
       const vx = px + dragging.dx, vy = py + dragging.dy;
       const ox0 = o.x, oy0 = o.y;
-      const si = SMALL().includes(o) ? shelfSlotAt(vx, vy + 14, o) : -1;
+      const si = SMALL().includes(o) ? shelfSlotAt(vx, vy + 14, o, px, py) : -1;
       if (si >= 0) { [o.x, o.y, o.rest] = SLOTS[si]; o.stored = si; o.on = null; o.lift = 0; }
       else o.stored = null;
       // the nearest bowl on top of a pile it could nest in (all three can go in one stack)
