@@ -11,7 +11,8 @@
       "duration": 16,
       "format": "4:5",
       "kind": "commission",
-      "note": "Loewe × Studio Ghibli collaboration."
+      "note": "Loewe × Studio Ghibli collaboration.",
+      "uploadDate": "2025-04-08T12:00:00+02:00"
     },
     {
       "vimeo": "1075962763",
@@ -22,7 +23,8 @@
       "duration": 15,
       "format": "4:5",
       "kind": "commission",
-      "note": "Launch film for a Loewe runway show."
+      "note": "Launch film for a Loewe runway show.",
+      "uploadDate": "2022-01-01T12:00:00+01:00"
     },
     {
       "vimeo": "1075961022",
@@ -33,7 +35,8 @@
       "duration": 15,
       "format": "16:9",
       "kind": "commission",
-      "note": "A pink sugar palace in CGI."
+      "note": "A pink sugar palace in CGI.",
+      "uploadDate": "2023-01-01T12:00:00+01:00"
     },
     {
       "vimeo": "1015165387",
@@ -44,7 +47,8 @@
       "duration": 79,
       "format": "16:9",
       "kind": "research",
-      "note": "A study of movement, with Uncannyvalley Studio. Sound by Minh."
+      "note": "A study of movement, with Uncannyvalley Studio. Sound by Minh.",
+      "uploadDate": "2024-01-01T12:00:00+01:00"
     },
     {
       "vimeo": "878810876",
@@ -55,7 +59,8 @@
       "duration": 15,
       "format": "4:5",
       "kind": "commission",
-      "note": "Social content for Loewe."
+      "note": "Social content for Loewe.",
+      "uploadDate": "2022-01-01T12:00:00+01:00"
     },
     {
       "vimeo": "423209257",
@@ -66,7 +71,8 @@
       "duration": 53,
       "format": "16:9",
       "kind": "commission",
-      "note": "Christmas collection film."
+      "note": "Christmas collection film.",
+      "uploadDate": "2019-01-01T12:00:00+01:00"
     },
     {
       "vimeo": "323130876",
@@ -77,7 +83,8 @@
       "duration": 33,
       "format": "16:9",
       "kind": "commission",
-      "note": "The TN La Requin at the market stall."
+      "note": "The TN La Requin at the market stall.",
+      "uploadDate": "2019-01-01T12:00:00+01:00"
     },
     {
       "vimeo": "298189197",
@@ -88,7 +95,8 @@
       "duration": 42,
       "format": "16:9",
       "kind": "commission",
-      "note": "Light and motion control."
+      "note": "Light and motion control.",
+      "uploadDate": "2018-01-01T12:00:00+01:00"
     },
     {
       "vimeo": "298188244",
@@ -100,7 +108,8 @@
       "format": "16:9",
       "kind": "commission",
       "note": "The Bolide bag, leather in macro.",
-      "poster": "https://i.vimeocdn.com/video/736044353-a6a4695921037888230c625b26cd4c1ca8de556caead700cd64ae29ef6eefcb6-d_1280"
+      "poster": "https://i.vimeocdn.com/video/736044353-a6a4695921037888230c625b26cd4c1ca8de556caead700cd64ae29ef6eefcb6-d_1280",
+      "uploadDate": "2018-01-01T12:00:00+01:00"
     },
     {
       "vimeo": "250252341",
@@ -111,7 +120,8 @@
       "duration": 41,
       "format": "16:9",
       "kind": "commission",
-      "note": "Dance, shot and directed."
+      "note": "Dance, shot and directed.",
+      "uploadDate": "2018-01-09T05:42:25+00:00"
     },
     {
       "vimeo": "240645178",
@@ -122,7 +132,8 @@
       "duration": 30,
       "format": "16:9",
       "kind": "commission",
-      "note": "Fluids, glass, CGI."
+      "note": "Fluids, glass, CGI.",
+      "uploadDate": "2017-01-01T12:00:00+01:00"
     }
   ]
 }

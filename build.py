@@ -195,7 +195,7 @@ F = films['films']
 fl = ''.join('<li><a href="https://vimeo.com/%s">%s</a> — %s%s. %s</li>' % (f['vimeo'], e(f['title']), e(f['client']), (', ' + e(f['year'])) if f.get('year') else '', e(f.get('note'))) for f in F)
 vids = [{'@type': 'VideoObject', 'name': '%s — %s' % (f['title'], f['client']), 'description': f.get('note') or f['title'],
          'thumbnailUrl': absu(f.get('thumb')), 'embedUrl': 'https://player.vimeo.com/video/%s' % f['vimeo'],
-         'url': 'https://vimeo.com/%s' % f['vimeo'], **({'uploadDate': f['year'] + '-01-01'} if re.match(r'^\d{4}$', str(f.get('year', ''))) else {}),
+         'url': 'https://vimeo.com/%s' % f['vimeo'], 'uploadDate': f.get('uploadDate') or ((f['year'] + '-01-01T12:00:00+01:00') if re.match(r'^\d{4}$', str(f.get('year', ''))) else TODAY + 'T12:00:00+01:00'),
          'duration': 'PT%dS' % int(f.get('duration') or 0), 'creator': {'@id': SITE_URL + '/#person'}} for f in F]
 write('film.html', page('film.html', 'Moving image — ' + NAME, 'Films directed and produced by %s for %s.' % (NAME, ', '.join(dict.fromkeys(f['client'] for f in F if f.get('client') and not f['client'].startswith('with')))),
                         'data-page="film"', '<h1>Moving image</h1><ul>%s</ul>' % fl, F[0].get('thumb') or default_img,

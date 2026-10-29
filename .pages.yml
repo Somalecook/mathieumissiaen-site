@@ -193,6 +193,7 @@ content:
           - { name: title, label: Titre, type: string }
           - { name: client, label: Client, type: string }
           - { name: year, label: Année, type: string }
+          - { name: uploadDate, label: "Date de mise en ligne (ex : 2018-01-09T12:00:00+01:00)", type: string }
           - { name: duration, label: "Durée (secondes)", type: number }
           - name: format
             label: Format
