@@ -40,7 +40,7 @@ body {
   display: flex; flex-direction: column; align-items: center; gap: 10px;
   max-width: 1400px; margin: 0 auto;
 }
-.top, .frame, .panel { width: min(100%, calc((100dvh - 210px) * 16 / 9)); min-width: min(100%, 320px); }
+.top, .frame { width: min(100%, calc((100dvh - 80px) * 16 / 9)); min-width: min(100%, 320px); }
 .top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 h1 { font-family: var(--display); font-weight: 800; font-size: 1.6rem; margin: 0; color: var(--pink); letter-spacing: .01em; }
 #status { display: none; }   /* no text at the top right */
@@ -52,28 +52,39 @@ h1 { font-family: var(--display); font-weight: 800; font-size: 1.6rem; margin: 0
 canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: none !important; }
 canvas.grabbing { cursor: none !important; }
 .panel {
-  display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: center; justify-content: space-between;
-  background: var(--panel); border-radius: 14px; padding: 12px 16px; box-sizing: border-box;
+  /* minimal black and white strip sitting on the bottom edge of the game */
+  position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 18px;
+  padding: 7px 10px 7px 16px; border-radius: 12px; box-sizing: border-box; max-width: calc(100% - 20px);
+  background: rgba(255,255,255,.82); color: #111;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  box-shadow: 0 1px 0 rgba(0,0,0,.08), 0 6px 18px rgba(0,0,0,.12);
+  font-family: var(--body);
 }
-.stats { display: grid; grid-template-columns: repeat(5, minmax(72px, 1fr)); gap: 8px 16px; flex: 1 1 100%; min-width: 0; }
-.stat label { display: flex; justify-content: space-between; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 4px; font-variant-numeric: tabular-nums; }
-.bar { height: 9px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; }
-.bar i { display: block; height: 100%; width: 50%; border-radius: inherit; transition: width .3s; }
-.stat.low label span:first-child { color: #ff9a9a; }
-.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.stats { display: grid; grid-template-columns: repeat(5, 74px); gap: 4px 14px; min-width: 0; }
+.stat label { display: flex; justify-content: space-between; font-size: .62rem; text-transform: uppercase; letter-spacing: .09em; color: #111; margin-bottom: 3px; font-variant-numeric: tabular-nums; font-weight: 700; }
+.stat label span:last-child { color: #777; font-weight: 500; }
+.bar { height: 3px; border-radius: 99px; background: rgba(0,0,0,.12); overflow: hidden; }
+.bar i { display: block; height: 100%; width: 50%; border-radius: inherit; transition: width .3s; background: #111 !important; }
+.stat.low .bar i { animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: .25; } }
+.actions { display: flex; gap: 6px; }
 button {
-  font-family: var(--display); font-weight: 600; font-size: 1rem;
-  border: 0; border-radius: 12px; padding: 8px 14px; cursor: pointer;
-  color: #2a1830; background: var(--fg);
-  box-shadow: 0 3px 0 rgba(0,0,0,.35); transition: transform .08s;
+  font-family: var(--body); font-weight: 700; font-size: .72rem; letter-spacing: .04em;
+  border: 1.5px solid #111; border-radius: 8px; padding: 5px 10px; cursor: pointer;
+  color: #111; background: transparent; transition: background .12s, color .12s;
 }
-button:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,.35); }
-button:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
-#bBall { background: var(--pink); }
-#bFire { background: var(--fire); }
-button:disabled { opacity: .5; cursor: default; transform: none; }
-@media (max-width: 560px) {
-  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+button:hover { background: #111; color: #fff; }
+button:active { transform: translateY(1px); }
+button:focus-visible { outline: 2px solid #111; outline-offset: 2px; }
+button:disabled { opacity: .4; cursor: default; }
+@media (max-width: 760px) {
+  /* on a phone the strip goes right under the picture, still inside the frame */
+  .frame { aspect-ratio: auto; }
+  canvas { height: auto; aspect-ratio: 16 / 9; }
+  .panel { position: static; transform: none; max-width: none; border-radius: 0; flex-wrap: wrap; gap: 6px; padding: 8px 10px; background: #fff; box-shadow: none; }
+  .stats { grid-template-columns: repeat(5, minmax(0, 1fr)); flex: 1 1 100%; gap: 2px 8px; }
+  .stat label { font-size: .52rem; letter-spacing: .04em; }
   h1 { font-size: 1.3rem; }
 }
 </style>
@@ -87,18 +98,18 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
   </div>
   <div class="frame">
     <canvas id="game" aria-label="Terrain de jeu isométrique avec le bébé dragon, sa balle et sa gamelle"></canvas>
-  </div>
-  <div class="panel">
-    <div class="stats">
-      <div class="stat" id="sFood"><label><span>Faim</span><span>0</span></label><div class="bar"><i style="background:var(--food)"></i></div></div>
-      <div class="stat" id="sWater"><label><span>Soif</span><span>0</span></label><div class="bar"><i style="background:var(--water)"></i></div></div>
-      <div class="stat" id="sJoy"><label><span>Joie</span><span>0</span></label><div class="bar"><i style="background:var(--joy)"></i></div></div>
-      <div class="stat" id="sEnergy"><label><span>Énergie</span><span>0</span></label><div class="bar"><i style="background:var(--energy)"></i></div></div>
-      <div class="stat" id="sFire"><label><span>Feu</span><span>0</span></label><div class="bar"><i style="background:var(--fire)"></i></div></div>
-    </div>
-    <div class="actions">
-      <button id="bBall">Lancer la balle</button>
-      <button id="bFire">Souffler du feu</button>
+    <div class="panel">
+      <div class="stats">
+        <div class="stat" id="sFood"><label><span>Faim</span><span>0</span></label><div class="bar"><i style="background:var(--food)"></i></div></div>
+        <div class="stat" id="sWater"><label><span>Soif</span><span>0</span></label><div class="bar"><i style="background:var(--water)"></i></div></div>
+        <div class="stat" id="sJoy"><label><span>Joie</span><span>0</span></label><div class="bar"><i style="background:var(--joy)"></i></div></div>
+        <div class="stat" id="sEnergy"><label><span>Énergie</span><span>0</span></label><div class="bar"><i style="background:var(--energy)"></i></div></div>
+        <div class="stat" id="sFire"><label><span>Feu</span><span>0</span></label><div class="bar"><i style="background:var(--fire)"></i></div></div>
+      </div>
+      <div class="actions">
+        <button id="bBall">Lancer la balle</button>
+        <button id="bFire">Souffler du feu</button>
+      </div>
     </div>
   </div>
 </div>
