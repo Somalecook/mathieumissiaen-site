@@ -40,11 +40,14 @@ body {
   display: flex; flex-direction: column; align-items: center; gap: 10px;
   max-width: 1400px; margin: 0 auto;
 }
-.top, .frame { width: min(100%, calc((100dvh - 80px) * 16 / 9)); min-width: min(100%, 320px); }
+.frame { width: min(100%, calc((100dvh - 40px) * 16 / 9)); min-width: min(100%, 320px); }
 .top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-h1 { font-family: var(--display); font-weight: 800; font-size: 1.6rem; margin: 0; color: var(--pink); letter-spacing: .01em; }
 #status { display: none; }   /* no text at the top right */
-h1 .ko { font-family: "Noto Sans KR", var(--display); font-weight: 700; font-size: .8em; margin-left: .35em; }
+/* the title sits in the frame's top-left corner, plain black type like the bar below */
+h1 { position: absolute; left: 26px; top: 20px; z-index: 1; margin: 0; pointer-events: none;
+  font: 500 .95rem "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #111; transition: color .6s; }
+.frame.night h1 { color: #f2f2f2; }
+h1 .ko { font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; font-weight: 500; letter-spacing: .04em; opacity: .55; margin-left: .5em; }
 /* every label carries its Korean twin, lighter, in Noto Sans KR */
 .panel i[lang="ko"] { white-space: nowrap; font-style: normal; font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; letter-spacing: .02em; opacity: .55; margin-left: .35em; text-transform: none; }
 :lang(ko) .panel, :lang(ko) .lang [lang="ko"] { font-family: "Helvetica Neue", Helvetica, "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif; }
@@ -97,18 +100,16 @@ button:disabled { opacity: .35; cursor: default; }
   .panel i[lang="ko"] { display: block; margin: 2px 0 0; }
   .actions { gap: 16px; }
   .actions button { text-align: left; }
-  h1 { font-size: 1.3rem; }
+  h1 { font-size: .8rem; left: 14px; top: 12px; }
 }
 </style>
 </head>
 <body>
 
 <div class="app">
-  <div class="top">
-    <h1><span>Yongi</span><span class="ko" lang="ko">용이</span></h1>
-    <div id="status">Il se réveille…</div>
-  </div>
   <div class="frame">
+    <h1><span>Yongi</span><span class="ko" lang="ko">용이</span></h1>
+    <div id="status"></div>
     <canvas id="game" aria-label="Isometric garden with Yongi, the little dragon, his ball and bowls · 아기 용 용이와 공, 그릇이 있는 정원"></canvas>
     <div class="panel">
       <div class="stats">
