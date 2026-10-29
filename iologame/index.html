@@ -2049,6 +2049,8 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
         // in a shelf cell, something too wide (the plate) is drawn smaller so it fits between the walls
         { const si = o.stored != null ? o.stored : stackBase(o) ? stackBase(o).stored : null, ww = typeof w === 'number' ? w : 0, sc = si != null && si < 9 && ww ? Math.min(1, 44 / ww) : 1;
           if (sc < 1 && !(dragging && dragging.o === o)) { ctx.translate(x, y + o.rest); ctx.scale(sc, sc); ctx.translate(-x, -(y + o.rest)); } }
+        // a little shadow under things put in the shelf, like on the sobans
+        if (o.stored != null && !o.on && !o.lift) { const ww = typeof w === 'number' ? w : 30; ell(x + ww * 0.08, y + o.rest - 1, ww * 0.6, ww * 0.19, 'rgba(45,25,15,.24)'); }
         if (st > 0) { const q = Math.sin(st * Math.PI * 3) * st * 0.07; ctx.translate(x, y); ctx.scale(1 + q, 1 - q); ctx.translate(-x, -y); }
         if (!up) ctx.translate(0, 3);
         draw();
