@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bébé Dragon</title>
+<title>Yongi 용이</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700&family=Noto+Sans+KR:wght@500;700&display=swap">
 <style>
 /* Layout: one 16:9 game stage, a status line above, stats + care buttons below. Single dusk-plum look. */
 :root {
@@ -44,6 +44,15 @@ body {
 .top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 h1 { font-family: var(--display); font-weight: 800; font-size: 1.6rem; margin: 0; color: var(--pink); letter-spacing: .01em; }
 #status { display: none; }   /* no text at the top right */
+h1 .ko { font-family: "Noto Sans KR", var(--display); font-weight: 700; font-size: .8em; margin-left: .35em; }
+h1 .stage { font-family: var(--body); font-weight: 500; font-size: .5em; color: var(--muted); margin-left: .7em; letter-spacing: .08em; text-transform: uppercase; }
+.lang { display: flex; gap: 12px; font: 500 .72rem "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: .12em; }
+.lang button { all: unset; cursor: pointer; color: var(--muted); padding-bottom: 2px; border-bottom: 1px solid transparent; }
+.lang button[aria-pressed="true"] { color: var(--fg); border-bottom-color: currentColor; }
+.lang button:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
+.lang button::after { content: none; }
+:lang(ko) .stat label, :lang(ko) .actions button { letter-spacing: .04em; }
+:lang(ko) .panel, :lang(ko) .lang [lang="ko"] { font-family: "Helvetica Neue", Helvetica, "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif; }
 .frame {
   position: relative; aspect-ratio: 16 / 9; max-width: 100%;
   border-radius: 14px; overflow: hidden;
@@ -97,11 +106,12 @@ button:disabled { opacity: .35; cursor: default; }
 
 <div class="app">
   <div class="top">
-    <h1 id="title">Bébé Dragon</h1>
+    <h1><span>Yongi</span><span class="ko" lang="ko">용이</span><span class="stage" id="title"></span></h1>
+    <div class="lang" role="group" aria-label="Langue / 언어"><button type="button" data-lang="fr" aria-pressed="true">FR</button><button type="button" data-lang="ko" lang="ko" aria-pressed="false">한국어</button></div>
     <div id="status">Il se réveille…</div>
   </div>
   <div class="frame">
-    <canvas id="game" aria-label="Terrain de jeu isométrique avec le bébé dragon, sa balle et sa gamelle"></canvas>
+    <canvas id="game" aria-label="Terrain de jeu isométrique avec Yongi, le petit dragon, sa balle et ses bols"></canvas>
     <div class="panel">
       <div class="stats">
         <div class="stat" id="sFood"><label><span>Faim</span><span>0</span></label><div class="bar"><i style="background:var(--food)"></i></div></div>
@@ -2272,6 +2282,31 @@ button:disabled { opacity: .35; cursor: default; }
     fire: document.getElementById('sFire'),
   };
   const statusEl = document.getElementById('status');
+  // ---------- two languages: French and Korean ----------
+  const I18N = {
+    fr: { food: 'Faim', water: 'Soif', joy: 'Joie', energy: 'Énergie', fire: 'Feu', ball: 'Lancer la balle', breathe: 'Souffler du feu',
+          stages: ['Bébé', 'Jeune', 'Grand'], canvas: 'Terrain de jeu isométrique avec Yongi, le petit dragon, sa balle et ses bols' },
+    ko: { food: '배고픔', water: '목마름', joy: '기쁨', energy: '기운', fire: '불꽃', ball: '공 던지기', breathe: '불 뿜기',
+          stages: ['아기', '어린', '큰'], canvas: '아기 용 용이와 공, 그릇이 있는 아이소메트릭 정원' },
+  };
+  let lang = 'fr';
+  try { lang = localStorage.getItem('yongi-lang') || ((navigator.language || '').startsWith('ko') ? 'ko' : 'fr'); } catch (e) {}
+  if (!I18N[lang]) lang = 'fr';
+  function applyLang() {
+    const L = I18N[lang];
+    document.documentElement.lang = lang;
+    for (const k in hud) hud[k].querySelector('label span:first-child').textContent = L[k];
+    document.getElementById('bBall').textContent = L.ball;
+    document.getElementById('bFire').textContent = L.breathe;
+    cv.setAttribute('aria-label', L.canvas);
+    document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    document.getElementById('title').textContent = '';
+    updateHud();
+  }
+  document.querySelectorAll('.lang button').forEach(b => b.onclick = () => {
+    lang = b.dataset.lang; try { localStorage.setItem('yongi-lang', lang); } catch (e) {}
+    applyLang();
+  });
   function updateHud() {
     // "Faim" and "Soif" show how full he is, so a full bar means he's fine
     for (const k in hud) {
@@ -2280,7 +2315,7 @@ button:disabled { opacity: .35; cursor: default; }
       hud[k].querySelector('label span:last-child').textContent = v;
       hud[k].classList.toggle('low', k !== 'fire' && v < 30);
     }
-    const tl = document.getElementById('title'); if (tl.textContent !== STAGES[stage].name) tl.textContent = STAGES[stage].name;
+    const tl = document.getElementById('title'), sn = I18N[lang].stages[stage]; if (tl.textContent !== sn) tl.textContent = sn;
     const s = statusText();
     if (statusEl.textContent !== s) statusEl.textContent = s;
   }
@@ -2414,7 +2449,7 @@ button:disabled { opacity: .35; cursor: default; }
     if (o.rest || o.stored != null || o.on) continue;
     if (o.x > SH.X0 - 0.35 && o.x < SH.X0 + SH.W + 0.35 && o.y < SH.FY + 0.45) o.y = SH.FY + 0.6;
   }
-  resize(); updateHud();
+  resize(); applyLang();
   requestAnimationFrame(frame);
 })();
 </script>
