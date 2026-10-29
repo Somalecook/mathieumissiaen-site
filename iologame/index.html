@@ -817,6 +817,17 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
     ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, 115, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
   }
+  // night: the lamp switched on dims the whole game to a deep blue, except round the pool of light
+  function drawNight() {
+    if (!lampK) return;
+    const [x, y] = iso(LAMP.x, LAMP.y);
+    ctx.save(); ctx.globalCompositeOperation = 'multiply'; ctx.globalAlpha = lampK;
+    ctx.translate(x, y - 20); ctx.scale(1, 0.55);
+    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 330);
+    g.addColorStop(0, 'rgb(255,250,240)'); g.addColorStop(0.3, 'rgb(205,200,222)'); g.addColorStop(0.75, 'rgb(92,100,158)'); g.addColorStop(1, 'rgb(64,72,130)');
+    ctx.fillStyle = g; ctx.fillRect(-4000, -6000, 8000, 12000);
+    ctx.restore();
+  }
   // a soft cone from the shade down to the pool, and a small halo round the bulb, over everything
   function drawLampGlow() {
     if (!lampK) return;
@@ -2108,6 +2119,7 @@ button:disabled { opacity: .5; cursor: default; transform: none; }
       { d: ball.x + ball.y + (ball.held ? 100 : 0.01), draw: drawBall },
     ].sort((a, b) => a.d - b.d);
     for (const it of items) it.draw();
+    drawNight();
     drawLampGlow();
     drawParticles();
     drawHand();
