@@ -1858,8 +1858,8 @@ button:disabled { opacity: .35; cursor: default; }
         startDrag(e, objectAt(px, py), px, py); dragging.giveFlower = true;
       }
       else if (tapAt(px, py) || objectAt(px, py) === TAP) {
-        // a tap anywhere on the standpipe turns it on/off, a drag moves it
-        startDrag(e, TAP, px, py); dragging.toggleTap = true;
+        // a tap anywhere on the standpipe turns it on/off; it is fixed to the ground and can't be moved
+        TAP.on = !TAP.on; save();
       }
       else if (lampAt(px, py)) { LAMP.on = !LAMP.on; save(); }
       else {
