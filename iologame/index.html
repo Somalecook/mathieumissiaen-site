@@ -2567,7 +2567,7 @@ button:disabled { opacity: .35; cursor: default; }
     if (o.pour) { const to = o.pourTo || plate2, [bx, by] = iso(to.x, to.y, zOf(to)); ctx.save(); ctx.translate(bx + 30, by - 22); ctx.rotate(-0.55); drawFrame(F, 0, 3); ctx.restore(); return; }
     drawFrame(F, x, y + 3);
   }
-  // pixel art: the whole picture redrawn from a 4x smaller copy, square pixels and a reduced palette
+  // pixel art: the whole picture redrawn from a 2.5x smaller copy, square pixels and a reduced palette
   const PIXEL = { on: false, cv: document.createElement('canvas') };
   try { PIXEL.on = localStorage.getItem('yongi-pixel') === '1'; } catch (e) {}
   const bPixel = document.getElementById('bPixel');
@@ -2578,7 +2578,7 @@ button:disabled { opacity: .35; cursor: default; }
   };
   function pixelate() {
     if (!PIXEL.on) return;
-    const w = Math.ceil(W / 4), h = Math.ceil(H / 4), pc = PIXEL.cv;
+    const w = Math.ceil(W / 2.5), h = Math.ceil(H / 2.5), pc = PIXEL.cv;
     if (pc.width !== w || pc.height !== h) { pc.width = w; pc.height = h; }
     const px = pc.getContext('2d', { willReadFrequently: true });
     px.imageSmoothingEnabled = true; px.imageSmoothingQuality = 'high';
