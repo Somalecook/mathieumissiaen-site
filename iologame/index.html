@@ -2683,7 +2683,16 @@ button:disabled { opacity: .35; cursor: default; }
         { const si = stackRoot(o).stored, ww = typeof w === 'number' ? w : 0, sc = si != null && si < 9 && ww ? Math.min(1, 44 / ww) : 1;
           if (sc < 1 && !(dragging && dragging.o === o)) { ctx.translate(x, y + o.rest); ctx.scale(sc, sc); ctx.translate(-x, -(y + o.rest)); } }
         // a little shadow under things put in the shelf, like on the sobans
-        if (o.stored != null && !o.on && !o.lift) { const ww = typeof w === 'number' ? w : 30; ell(x + ww * 0.08, y + o.rest - 1, ww * 0.6, ww * 0.19, 'rgba(45,25,15,.24)'); }
+        if (o.stored != null && !o.on && !o.lift) {
+          const ww = typeof w === 'number' ? w : 30;
+          ctx.save();
+          if (o.stored >= 9) {   // on top of the shelf: the shadow stays on the board (the canvas is raised by o.rest here)
+            ctx.beginPath(); [shelfPt(0.05, 0), shelfPt(4.35, 0), shelfPt(4.35, 0, 0.97), shelfPt(0.05, 0, 0.97)].forEach(([px, py], i) => i ? ctx.lineTo(px, py + o.rest) : ctx.moveTo(px, py + o.rest));
+            ctx.closePath(); ctx.clip();
+          }
+          ell(x + ww * 0.08, y + o.rest - 1, ww * 0.6, ww * 0.19, 'rgba(45,25,15,.24)');
+          ctx.restore();
+        }
         if (st > 0) { const q = Math.sin(st * Math.PI * 3) * st * 0.07; ctx.translate(x, y); ctx.scale(1 + q, 1 - q); ctx.translate(-x, -y); }
         // rocking from one edge of its foot to the other, smaller and smaller
         if (o.wob > 0 && !(dragging && dragging.o === o)) {
