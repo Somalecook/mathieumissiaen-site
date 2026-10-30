@@ -2125,9 +2125,9 @@ button:disabled { opacity: .35; cursor: default; }
   // every object under the pointer; the one drawn in front wins
   // the iOLO shop pieces in the scene, as the shop names them
   const PRODUCTS = new Map([
-    [bowl, ['[Exclusive] 1000 Flower Bowl, Feu', 250]],
-    [bowl2, ['[Exclusive] 1000 Flower Bowl, Rainbow Blue & White', 250]],
-    [bowl3, ['[Exclusive] 1000 Flower Bowl, Bébé', 250]],
+    [bowl, ['[Exclusive] 1000 Flower Bowl, Feu', 250, 'Aculi']],
+    [bowl2, ['[Exclusive] 1000 Flower Bowl, Rainbow Blue & White', 250, 'Aculi']],
+    [bowl3, ['[Exclusive] 1000 Flower Bowl, Bébé', 250, 'Aculi']],
     [plate2, ['Vintage Arabia “Anemone” Big Plate, Ulla Procopé, 1960s', 135]],
     [bottle, ['Vintage Arabia “Anemone” Jug, Ulla Procopé, 1960s', 75]],
     [soli, ['Vase Solifleur Eye 1', 65]],
@@ -2147,7 +2147,7 @@ button:disabled { opacity: .35; cursor: default; }
     const P = o && PRODUCTS.get(o);
     if (P === productShown) return;
     productShown = P;
-    if (P) { productEl.firstChild.textContent = P[0]; productEl.lastChild.textContent = P[1] + ' €'; }
+    if (P) { productEl.firstChild.textContent = P[0]; productEl.lastChild.textContent = (P[2] ? P[2] + ' · ' : '') + P[1] + ' €'; }
     productEl.classList.toggle('on', !!P);
   }
   function objectAt(px, py) {
