@@ -355,7 +355,7 @@ button:disabled { opacity: .35; cursor: default; }
   for (let i = 0; i < 36; i++) flowers.push({ x: 0.5 + hash(i, 21) * (NX - 1), y: 0.5 + hash(i, 22) * (NY - 1), head: Math.floor(hash(i, 23) * 7), alive: true, regrow: 0 });
   // each pot: water 0..1 drains over time; once dry the bouquet wilts (wilt 0..1, 1 = dead)
   // bouquet and pots hold a bouquet sprite number + 1 (null = none)
-  const garden = { hand: [], bouquet: null, pots: [null, null, null], care: [{ water: 1, wilt: 0 }, { water: 1, wilt: 0 }, { water: 1, wilt: 0 }] };
+  const garden = { hand: [], bouquet: null, pots: [null, null], care: [{ water: 1, wilt: 0 }, { water: 1, wilt: 0 }] };
   // a standpipe tap coming out of the ground, and a little soban (low table) to put things on
   const TAP = { x: 4.6, y: 0.9, on: false };
   const soban = { x: 1.25, y: 6.1 };
@@ -365,7 +365,7 @@ button:disabled { opacity: .35; cursor: default; }
   const SOBAN_K = 1.1;                       // both sobans are drawn 10% bigger than their art
   const SOBAN_Z = 70 * SOBAN_K;              // height of the table top, in px
   // the three moon jars start on the soban, spread along its width
-  const JAR_OFF = [-0.32, 0, 0.36];
+  const JAR_OFF = [-0.16, 0.24];
   const jarsOnSoban = () => JAR_OFF.map(d => ({ x: soban.x + d, y: soban.y - d, rest: SOBAN_Z }));
   if (!garden.jars) garden.jars = jarsOnSoban();
   // where an object stands: on the grass, or on top of the soban (rest), plus a lift while carried
@@ -423,10 +423,13 @@ button:disabled { opacity: .35; cursor: default; }
       puddle = clamp(+s.puddle || 0, 0, 1);
       soban.lift = TAP.lift = 0;
       // jars that used to sit on the old window sill go onto the soban
-      if (!Array.isArray(garden.jars) || garden.jars.length !== 3 || garden.jars.some(j => j.sill)) garden.jars = jarsOnSoban();
+      // the small moon jar was taken out of the game: saves with three jars drop the first one
+      if (Array.isArray(garden.jars) && garden.jars.length === 3) { garden.jars.shift(); if (Array.isArray(garden.pots)) garden.pots.shift(); if (Array.isArray(garden.care)) garden.care.shift(); }
+      if (!Array.isArray(garden.jars) || garden.jars.length !== 2 || garden.jars.some(j => j.sill)) garden.jars = jarsOnSoban();
+      if (!Array.isArray(garden.pots) || garden.pots.length !== 2) garden.pots = [null, null];
       garden.jars.forEach(j => { j.lift = 0; });
       if (s.stage) stage = clamp(s.stage | 0, 0, 2);
-      if (!garden.care) garden.care = [0, 1, 2].map(() => ({ water: 1, wilt: 0 }));
+      if (!Array.isArray(garden.care) || garden.care.length !== 2) garden.care = [0, 1].map(() => ({ water: 1, wilt: 0 }));
       if (!Array.isArray(garden.hand)) garden.hand = [];
       const asBouquet = v => Array.isArray(v) || typeof v === 'number' ? v : v ? 1 + Math.floor(Math.random() * 8) : null;
       garden.pots = garden.pots.map(asBouquet); garden.bouquet = asBouquet(garden.bouquet);
@@ -828,8 +831,8 @@ button:disabled { opacity: .35; cursor: default; }
     }
     ctx.restore();
   }
-  // three moon jars: small, medium and large
-  const JAR_W = [30, 40, 54].map(w => w * 1.21);
+  // two moon jars: medium and large
+  const JAR_W = [40, 54].map(w => w * 1.21);
   function drawVase(i, px, py) {
     const JW = JAR_W[i], k = JW / 40, [x0, y0, x1, y1] = OB.jar, JH = (y1 - y0) * JW / (x1 - x0);
     const b = garden.pots[i], j = garden.jars[i];
@@ -2750,8 +2753,8 @@ button:disabled { opacity: .35; cursor: default; }
     bowl.water = 0; bowl.food = 0; bottle.level = 0.5; plate2.amount = 0; plate2.kind = null;
     // top: the black soliflore and two moon jars, each with a flower
     put(soli, 9); soli.flower = 10;
-    garden.jars = [11, 10, 0].map(si => { const [x, y, rest] = SLOTS[si]; return { x, y, rest, stored: si }; });
-    garden.pots = [[0], [9], null];
+    garden.jars = [10, 0].map(si => { const [x, y, rest] = SLOTS[si]; return { x, y, rest, stored: si }; });
+    garden.pots = [[9], null];
     // the cells, top row to bottom row
     put(bowl, 6); put(plate2, 7); put(bowl3, 8);
     put(bottle, 3); put(bowl2, 4); put(soli3, 5);
