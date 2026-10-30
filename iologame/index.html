@@ -829,7 +829,7 @@ button:disabled { opacity: .35; cursor: default; }
     ctx.restore();
   }
   // three moon jars: small, medium and large
-  const JAR_W = [30, 40, 54].map(w => w * 1.1);
+  const JAR_W = [30, 40, 54].map(w => w * 1.21);
   function drawVase(i, px, py) {
     const JW = JAR_W[i], k = JW / 40, [x0, y0, x1, y1] = OB.jar, JH = (y1 - y0) * JW / (x1 - x0);
     const b = garden.pots[i], j = garden.jars[i];
