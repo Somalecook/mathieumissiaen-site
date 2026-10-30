@@ -177,9 +177,9 @@ em{font-style:italic}
 .ig-empty .ig-grid{display:none}
 @media (max-width:760px){.ig-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* dense wall + gallery, captions on hover */
-.wall{display:block;columns:5 220px;column-gap:8px}
+.wall{display:block;columns:4 240px;column-gap:8px}
 .wall .w{display:block;position:relative;break-inside:avoid;margin:0 0 8px}
-.masonry{columns:5 220px;column-gap:8px}
+.masonry{columns:4 240px;column-gap:8px}
 .tile{position:relative;margin:0 0 8px}
 .w-cap{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;padding:28px 10px 9px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.55));opacity:0;transition:opacity .25s;pointer-events:none;font-size:12px}
 .w-cap a{pointer-events:auto}
