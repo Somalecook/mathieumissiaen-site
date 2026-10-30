@@ -47,6 +47,14 @@ body {
 h1 { position: absolute; left: 26px; top: 20px; z-index: 1; margin: 0; pointer-events: none;
   font: 500 .95rem "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #111; transition: color .6s; }
 .frame.night h1 { color: #f2f2f2; }
+/* the iOLO product under the mouse, named in the empty sky on the right */
+#product { position: absolute; right: 26px; top: 66%; z-index: 1; max-width: 280px; text-align: right; pointer-events: none;
+  font: 500 .72rem/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #111;
+  opacity: 0; transform: translateY(4px); transition: opacity .25s, transform .25s, color .6s; }
+#product.on { opacity: 1; transform: none; }
+#product b { display: block; font-weight: 500; }
+#product span { display: block; opacity: .55; margin-top: .3em; }
+.frame.night #product { color: #f2f2f2; }
 h1 .ko { font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; font-weight: 500; letter-spacing: .04em; opacity: .55; margin-left: .5em; }
 /* every label carries its Korean twin, lighter, in Noto Sans KR */
 .panel i[lang="ko"] { white-space: nowrap; font-style: normal; font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; letter-spacing: .02em; opacity: .55; margin-left: .35em; text-transform: none; }
@@ -109,6 +117,7 @@ button:disabled { opacity: .35; cursor: default; }
 <div class="app">
   <div class="frame">
     <h1><span>Yongi</span><span class="ko" lang="ko">용이</span></h1>
+    <div id="product" aria-live="polite"><b></b><span></span></div>
     <div id="status"></div>
     <canvas id="game" aria-label="Isometric garden with Yongi, the little dragon, his ball and bowls · 아기 용 용이와 공, 그릇이 있는 정원"></canvas>
     <div class="panel">
@@ -1994,7 +2003,7 @@ button:disabled { opacity: .35; cursor: default; }
   const trackMouse = e => { mouse = e.pointerType === 'mouse' ? pointerPos(e) : null; };
   cv.addEventListener('pointermove', trackMouse);
   cv.addEventListener('pointerdown', trackMouse);
-  cv.addEventListener('pointerleave', () => { mouse = null; });
+  cv.addEventListener('pointerleave', () => { mouse = null; showProduct(null); });
   cv.addEventListener('pointerdown', e => {
     const [px, py] = pointerPos(e);
     let bx, by;
@@ -2114,6 +2123,33 @@ button:disabled { opacity: .35; cursor: default; }
   // the things small enough to put on the soban
   const SMALL = () => [bowl, ...MIX, soli, soli2, soli3, bottle, ...BAGS, sock, ...garden.jars];
   // every object under the pointer; the one drawn in front wins
+  // the iOLO shop pieces in the scene, as the shop names them
+  const PRODUCTS = new Map([
+    [bowl, ['[Exclusive] 1000 Flower Bowl, Feu', 250]],
+    [bowl2, ['[Exclusive] 1000 Flower Bowl, Rainbow Blue & White', 250]],
+    [bowl3, ['[Exclusive] 1000 Flower Bowl, Bébé', 250]],
+    [plate2, ['Vintage Arabia “Anemone” Big Plate, Ulla Procopé, 1960s', 135]],
+    [bottle, ['Vintage Arabia “Anemone” Jug, Ulla Procopé, 1960s', 75]],
+    [soli, ['Vase Solifleur Eye 1', 65]],
+    [soli2, ['Vase Solifleur Eye 2', 65]],
+    [soli3, ['Vase Solifleur Eye 3', 65]],
+    [soban, ['Korean Naju Style “Soban”', 375]],
+    [soban2, ['Korean Traditional Flower Shaped “Soban”', 120]],
+    [sock, ['Japanese Flower Pattern Socks', 22]],
+    [LAMP, ['Vintage Ceiling Lamp, Lyfa Bent Karlby 1950s', 195]],
+    ['jar', ['Korean Moon Jar', 210]],
+  ]);
+  const productEl = document.getElementById('product');
+  let productShown = null;
+  function showProduct(px, py) {
+    let o = px == null ? null : lampAt(px, py) ? LAMP : potAt(px, py) >= 0 ? 'jar' : objectAt(px, py);
+    if (o && garden.jars.includes(o)) o = 'jar';
+    const P = o && PRODUCTS.get(o);
+    if (P === productShown) return;
+    productShown = P;
+    if (P) { productEl.firstChild.textContent = P[0]; productEl.lastChild.textContent = P[1] + ' €'; }
+    productEl.classList.toggle('on', !!P);
+  }
   function objectAt(px, py) {
     const hits = [];
     for (const o of [bottle, ...BAGS]) {
@@ -2232,6 +2268,7 @@ button:disabled { opacity: .35; cursor: default; }
     if (!ball.held) {
       const [px, py] = pointerPos(e);
       hover = [px, py];
+      showProduct(px, py);
       if (garden.bouquet) { cv.style.cursor = potAt(px, py) >= 0 || objectAt(px, py) === bin ? CUR.click : ''; return; }
       const [bx, by] = ball.carried ? [-999, -999] : iso(ball.x, ball.y, ball.z);
       cv.style.cursor = onDragon(px, py) ? CUR.pet : tapAt(px, py) || lampAt(px, py) ? CUR.click
