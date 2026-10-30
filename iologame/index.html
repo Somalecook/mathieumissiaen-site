@@ -380,6 +380,7 @@ button:disabled { opacity: .35; cursor: default; }
   // dishes and what they hold
   const level = (o, kind) => o === bowl ? (kind === 'water' ? bowl.water : 0) : o === plate ? (kind === 'food' ? bowl.food : 0) : (o.kind === kind ? o.amount : 0);
   function take(o, kind, q) {
+    if (kind === 'water' && BOWLS.includes(o)) o.ripple = Math.max(o.ripple || 0, 0.5);   // his tongue rings the water
     if (o === bowl) bowl.water = Math.max(0, bowl.water - q);
     else if (o === plate) bowl.food = Math.max(0, bowl.food - q);
     else { o.amount = Math.max(0, o.amount - q); if (o.amount <= 0.001) o.kind = null; }
@@ -614,6 +615,13 @@ button:disabled { opacity: .35; cursor: default; }
     obj(OB.bowl[k], x, y + 6, 52);
     if (f > 0.01) { ctx.save(); ctx.globalAlpha = Math.min(1, f * 1.4); obj(OB.bowl[k + 1], x, y + 6, 52); ctx.restore(); }
     ctx.restore();
+    // the painted water gets the same live surface as the other bowls: sheen, rings, slops
+    if (bowl.water > 0.02 && !noShadow) {
+      const [cx, cy, rx, ry] = bowlRim(bowl);
+      ctx.save(); ctx.beginPath(); ctx.ellipse(cx, cy, rx * 0.95, ry * 0.95, 0, 0, Math.PI * 2); ctx.clip();
+      drawWater(bowl, cx, cy, rx * 0.95, ry * 0.95, bowl.water > 0.5 ? 0.95 : 0.7, true);
+      ctx.restore();
+    }
   }
   // the rim of each bowl on screen: centre and radii of its opening
   function bowlRim(o) {
@@ -687,19 +695,59 @@ button:disabled { opacity: .35; cursor: default; }
       return;
     }
     ctx.save(); ctx.beginPath(); ctx.ellipse(x, r0, S.rim[1], S.rim[2], 0, 0, Math.PI * 2); ctx.clip();
-    if (o.kind === 'water') {
-      // see-through water sitting inside the bowl: lower and narrower when there's little,
-      // the porcelain shows through, a darker rim where it meets the wall and a soft glint
-      const wy = r0 + (0.7 + (1 - a) * 7) * qy, wx = 20.5 * qx * (0.6 + 0.4 * a), wr = 6.2 * qy * (0.6 + 0.4 * a);
-      const g = ctx.createLinearGradient(0, wy - wr, 0, wy + wr);
-      g.addColorStop(0, 'rgba(150,205,240,.55)'); g.addColorStop(1, 'rgba(70,140,215,.62)');
-      ctx.beginPath(); ctx.ellipse(x, wy, wx, wr, 0, 0, Math.PI * 2);
+    if (o.kind === 'water') drawWater(o, x, r0, S.rim[1], S.rim[2], a);
+    else kibble(x, r0 + (0.2 + (1 - a) * 5) * qy, 21 * qx * (0.72 + 0.28 * a), 6.4 * qy * (0.72 + 0.28 * a), 26, a * 2.5);
+    ctx.restore();
+  }
+  // water in a bowl, seen through its opening (the caller clips to it): it rises towards the rim as it fills,
+  // clear enough to see the porcelain, a bright meniscus at the back and a shaded lip at the front,
+  // the surface tilts and slops when the bowl is carried or knocked, rings spread where water falls in or he drinks
+  function drawWater(o, cx, cy, rx, ry, a, behind) {
+    const sl = o.slosh || 0, k = 0.6 + 0.37 * a, wx = rx * k, wr = ry * k, wy = cy + ry * 1.15 * (1 - a);
+    ctx.save(); ctx.translate(cx, wy); ctx.rotate(sl * 0.1);
+    ctx.beginPath(); ctx.ellipse(0, 0, wx, wr, 0, 0, Math.PI * 2);
+    if (!behind) {
+      const g = ctx.createLinearGradient(0, -wr, 0, wr);
+      g.addColorStop(0, 'rgba(205,236,255,.55)'); g.addColorStop(0.55, 'rgba(120,190,240,.5)'); g.addColorStop(1, 'rgba(60,130,210,.62)');
       ctx.fillStyle = g; ctx.fill();
-      ctx.strokeStyle = 'rgba(40,95,170,.45)'; ctx.lineWidth = 0.9; ctx.stroke();
-      const sh = Math.sin(t * 1.6) * 1.2;
-      ctx.strokeStyle = 'rgba(255,255,255,.7)'; ctx.lineWidth = 1.1; ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.ellipse(x + sh, wy, wx * 0.62, wr * 0.55, 0, Math.PI * 1.15, Math.PI * 1.45); ctx.stroke();
-    } else kibble(x, r0 + (0.2 + (1 - a) * 5) * qy, 21 * qx * (0.72 + 0.28 * a), 6.4 * qy * (0.72 + 0.28 * a), 26, a * 2.5);
+    }
+    ctx.save(); ctx.clip();
+    // deeper towards the middle, a soft sky sheen drifting across the back
+    const d = ctx.createRadialGradient(0, wr * 0.35, 0, 0, wr * 0.35, wx);
+    d.addColorStop(0, 'rgba(40,110,200,.22)'); d.addColorStop(1, 'rgba(40,110,200,0)');
+    ctx.fillStyle = d; ctx.fillRect(-wx, -wr, wx * 2, wr * 2);
+    const shx = -wx * 0.25 + Math.sin(t * 0.9) * wx * 0.12 - sl * wx * 0.4;
+    ctx.save(); ctx.translate(shx, -wr * 0.35); ctx.scale(1, 0.3);
+    const sh = ctx.createRadialGradient(0, 0, 0, 0, 0, wx * 0.5);
+    sh.addColorStop(0, 'rgba(255,255,255,.75)'); sh.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = sh; ctx.beginPath(); ctx.arc(0, 0, wx * 0.5, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+    // rings from where the stream lands (or his tongue), three at a time, fading as they widen
+    const rp = o.ripple || 0, tapIn = TAP.on && bowlUnderTap() === o, rx0 = tapIn ? tapPoint(TAP_SPOUT)[0] - cx : 0;
+    if (tapIn) {
+      ctx.strokeStyle = 'rgba(70,180,250,.9)'; ctx.lineWidth = 4 + Math.sin(t * 30) * 0.7;
+      ctx.beginPath(); ctx.moveTo(rx0, -40); ctx.lineTo(rx0, 0); ctx.stroke();
+      ell(rx0, 0, 5, 2, 'rgba(255,255,255,.7)');
+    }
+    if (rp > 0) for (let i = 0; i < 3; i++) {
+      const q = (t * 1.6 + i / 3) % 1, al = (1 - q) * Math.min(1, rp * 2) * 0.9;
+      ctx.strokeStyle = `rgba(255,255,255,${al})`; ctx.lineWidth = 1.1;
+      ctx.beginPath(); ctx.ellipse(rx0, 0, 1.5 + q * wx * 0.85, (1.5 + q * wx * 0.85) * wr / wx, 0, 0, Math.PI * 2); ctx.stroke();
+    }
+    // a little wave running across while it slops
+    if (Math.abs(sl) > 0.03) {
+      ctx.strokeStyle = `rgba(255,255,255,${Math.min(0.7, Math.abs(sl) * 1.6)})`; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.ellipse(-sl * wx * 0.5, 0, wx * 0.5, wr * 0.75, 0, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
+    }
+    ctx.restore();
+    // meniscus: light catching the far edge, the near edge in the shade of the lip
+    if (!behind) {
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = 1.1;
+    ctx.beginPath(); ctx.ellipse(0, 0, wx, wr, 0, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke();
+    ctx.strokeStyle = 'rgba(30,80,150,.35)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.ellipse(0, 0, wx, wr, 0, Math.PI * 0.12, Math.PI * 0.88); ctx.stroke();
+    }
     ctx.restore();
   }
   // soliflores: a single sprig standing in the neck (w: drawn width, neck: where the stem goes in)
@@ -839,12 +887,57 @@ button:disabled { opacity: .35; cursor: default; }
     }
     ctx.closePath();
   }
+  // it starts where the stream hits the grass and keeps spreading: after 5 minutes the whole lawn is under water
+  function puddleGeom() {
+    const [, ty] = iso(TAP.x, TAP.y, TAP.lift || 0), p = Math.sqrt(puddle), sx = tapPoint(TAP_SPOUT)[0], sy = ty + 24;
+    const [mx, my] = iso(NX / 2, NY / 2);
+    return [sx + (mx - sx) * p, sy + (my - sy) * p, 18 + 1250 * p];
+  }
+  // is a point of the lawn under water? (how deep in: 0 at the shore, 1 in the middle)
+  function inPuddle(gx, gy) {
+    if (puddle <= 0.01) return 0;
+    const [cx, cy, R] = puddleGeom(), [x, y] = iso(gx, gy), dx = x - cx, dy = (y - cy) * 2, d = Math.hypot(dx, dy);
+    const r = puddleR(Math.atan2(dy, dx), R) * 0.92;
+    return d < r ? 1 - d / r : 0;
+  }
+  // the spreading water picks up what lies in it: the ball, bowls, bags, the sock and vases float and drift
+  // out towards the shore, bobbing a little; they settle back on the grass where the water leaves them
+  function floatAway(dt, growing) {
+    const [cx, cy] = puddle > 0.01 ? puddleGeom() : [0, 0];
+    const outward = (gx, gy) => {
+      const [x, y] = iso(gx, gy), dx = x - cx, dy = (y - cy) * 2, d = Math.hypot(dx, dy) || 1;
+      const ux = dx / d * 62.5, uy = dy / d * 31.25;   // a screen direction, back to the grid
+      const gx2 = (ux / 62.5 + uy / 31.25) / 2, gy2 = (uy / 31.25 - ux / 62.5) / 2, n = Math.hypot(gx2, gy2) || 1;
+      return [gx2 / n, gy2 / n];
+    };
+    ball.floating = false;
+    if (!ball.held && !ball.carried && !ball.inBowl && ball.z < 1) {
+      const w = inPuddle(ball.x, ball.y);
+      ball.floating = w > 0;
+      if (w > 0 && growing) {
+        const [ux, uy] = outward(ball.x, ball.y), sp = 0.35 + 0.5 * w;
+        ball.vx += (ux * sp - ball.vx) * Math.min(1, dt * 1.5); ball.vy += (uy * sp - ball.vy) * Math.min(1, dt * 1.5);
+      }
+    }
+    const things = SMALL().filter(o => !garden.jars.includes(o) && !(dragging && dragging.o === o) && !isStored(o) && !o.rest && !o.on
+      && !o.pour && !(o.potPour >= 0) && !o.held && (!BAGS.includes(o) || o.present) && !(o === bottle && bottleUnderTap()) && bowlUnderTap() !== o);
+    for (const o of things) {
+      const w = inPuddle(o.x, o.y);
+      if (w <= 0) { if (o.floating) { o.floating = false; o.lift = 0; o.settle = 1; } continue; }
+      o.floating = true;
+      o.lift = 2 + Math.sin(t * 2.2 + o.x * 3 + o.y * 5) * 1.6;
+      if (growing) {
+        const [ux, uy] = outward(o.x, o.y), sp = (0.12 + 0.25 * w) * dt;
+        const ox = o.x, oy = o.y;
+        o.x = clamp(o.x + ux * sp, 0.7, NX - 0.7); o.y = clamp(o.y + uy * sp, 0.7, NY - 0.7);
+        // whatever is stacked in it rides along
+        for (const c of BOWLS) if (c !== o && stackRoot(c) === o) { c.x += o.x - ox; c.y += o.y - oy; }
+      }
+    }
+  }
   function drawPuddle() {
     if (puddle <= 0.01) return;
-    // it starts where the stream hits the grass and keeps spreading: after 5 minutes the whole lawn is under water
-    const [, ty] = iso(TAP.x, TAP.y, TAP.lift || 0), p = Math.sqrt(puddle), sx = tapPoint(TAP_SPOUT)[0], sy = ty + 24;
-    const [mx, my] = iso(NX / 2, NY / 2), cx = sx + (mx - sx) * p, cy = sy + (my - sy) * p;
-    const R = 18 + 1250 * p, fade = Math.min(1, puddle * 25);
+    const [cx, cy, R] = puddleGeom(), p = Math.sqrt(puddle), fade = Math.min(1, puddle * 25);
     ctx.save();
     // never past the edges of the lawn
     ctx.beginPath(); [[0, 0], [NX, 0], [NX, NY], [0, NY]].forEach(([gx, gy], i) => { const [x, y] = iso(gx, gy); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.closePath(); ctx.clip();
@@ -897,7 +990,8 @@ button:disabled { opacity: .35; cursor: default; }
     }
     ctx.restore();
     // rings where the stream hits, and stray drops plopping here and there
-    for (let i = 0; i < 3; i++) {
+    const sx = tapPoint(TAP_SPOUT)[0], sy = iso(TAP.x, TAP.y, TAP.lift || 0)[1] + 24;
+    if (TAP.on && !bowlUnderTap() && !bottleUnderTap()) for (let i = 0; i < 3; i++) {
       const k = (t * 0.9 + i / 3) % 1;
       ctx.strokeStyle = `rgba(235,250,255,${(1 - k) * 0.6 * Math.min(1, p * 4)})`; ctx.lineWidth = 1.2;
       ctx.beginPath(); ctx.ellipse(sx, sy - 2, 3 + k * 26, (3 + k * 26) * 0.42, 0, 0, Math.PI * 2); ctx.stroke();
@@ -916,12 +1010,13 @@ button:disabled { opacity: .35; cursor: default; }
     const [hx, hy] = tapPoint(TAP_HANDLE);
     if (TAP.on) ell(hx, hy + 4, 9, 6, 'rgba(79,184,245,.35)');
     if (TAP.on) {
-      const under = bottleUnderTap();
+      const under = bottleUnderTap(), ub = bowlUnderTap();
       const [bx, by] = iso(bottle.x, bottle.y);
-      const bottom = under ? [sx, by - 60] : [sx, y + 22];
+      const bottom = under ? [sx, by - 60] : ub ? [sx, bowlRim(ub)[1] - bowlRim(ub)[3]] : [sx, y + 22];
       ctx.strokeStyle = 'rgba(70,180,250,.9)'; ctx.lineWidth = 4 + Math.sin(t * 30) * 0.7;
       ctx.beginPath(); ctx.moveTo(sx, sy + 4); ctx.lineTo(bottom[0], bottom[1]); ctx.stroke();
-      if (!under || bottle.level >= 1) {
+      if (ub) { if ((ub === bowl ? bowl.water : ub.amount) >= 1 && Math.random() < 0.5) particles.push({ kind: 'drop', x: sx + rand(-6, 6), y: bowlRim(ub)[1], vx: rand(-50, 50), vy: rand(-70, -20), g: 420, life: .4, max: .4 }); }
+      else if (!under || bottle.level >= 1) {
         if (Math.random() < 0.5) particles.push({ kind: 'drop', x: bottom[0] + rand(-4, 4), y: bottom[1], vx: rand(-40, 40), vy: rand(-60, -20), life: .35, max: .35 });
         if (!under) ell(bottom[0], bottom[1] + 2, 14, 5, 'rgba(94,200,255,.45)');
       }
@@ -1794,7 +1889,9 @@ button:disabled { opacity: .35; cursor: default; }
     if (ball.z === 0 && ball.vz === 0) {
       // rolling in grass: drag plus a steady resistance, so it slows down and stops instead of sliding on
       let v = Math.hypot(ball.vx, ball.vy);
-      if (v > 0) {
+      // floating on the puddle: the water carries it, only a soft drag
+      if (ball.floating) { const k = Math.max(0, 1 - 1.2 * dt); ball.vx *= k; ball.vy *= k; }
+      else if (v > 0) {
         const nv = Math.max(0, v * Math.max(0, 1 - 3.2 * dt) - 1.1 * dt);
         ball.vx *= nv / v; ball.vy *= nv / v; v = nv;
         if (v < 0.04) ball.vx = ball.vy = 0;
@@ -1901,6 +1998,13 @@ button:disabled { opacity: .35; cursor: default; }
     const [x, y] = tapPoint(TAP_HANDLE);
     return Math.hypot(px - x, py - y - 4) < 30;
   }
+  // a bowl set under the tap (nothing stacked in it, no kibble in it) fills up
+  function bowlUnderTap() {
+    if (bottleUnderTap()) return null;
+    const u = underTap();
+    return BOWLS.find(o => !(dragging && dragging.o === o) && !isStored(o) && !covered(o) && !o.rest && !stackBase(o) && (o === bowl || o.kind !== 'food')
+      && Math.hypot(o.x - u.x, o.y - u.y) < 0.4) || null;
+  }
   function bottleUnderTap() {
     const u = underTap();
     return !(dragging && dragging.o === bottle) && !bottle.rest && Math.hypot(bottle.x - u.x, bottle.y - u.y) < 0.2;
@@ -1931,10 +2035,14 @@ button:disabled { opacity: .35; cursor: default; }
       o.flowers = [...have, ...garden.hand.splice(-room)];
     } else if (o.flowers) {
       if (Array.isArray(o.flowers)) garden.hand = o.flowers.slice(0, HAND_MAX); else garden.bouquet = o.flowers;
+      o.outFlowers = o.flowers; o.fOut = 1; o.wob = 0.4;   // they lift out of the jug and fade into the hand
       o.flowers = null; save(); updateHud(); return;
     } else return;
-    o.wob = 0.6;
-    for (let k = 0; k < 3; k++) setTimeout(() => puff('heart', x + rand(-14, 14), y - 90), k * 120);
+    o.wob = 0.6; o.fIn = 0;
+    // a little splash as the stems go in
+    const [mx, my] = [x, y - 157 * CAR_K];
+    if (o.level > 0.05) setTimeout(() => { for (let k = 0; k < 6; k++) particles.push({ kind: 'drop', x: mx + rand(-8, 8), y: my - 2, vx: rand(-40, 40), vy: rand(-110, -60), g: 420, life: .55, max: .55 }); }, 260);
+    for (let k = 0; k < 3; k++) setTimeout(() => puff('heart', x + rand(-14, 14), y - 100), 300 + k * 120);
     save(); updateHud();
   }
 
@@ -2170,12 +2278,30 @@ button:disabled { opacity: .35; cursor: default; }
     syncStack();
     if (TAP.on && bottleUnderTap()) bottle.level = Math.min(1, bottle.level + dt * 0.45);
     // water running onto the grass (no bottle, or a full one) makes a puddle and makes him sad
-    const wasting = TAP.on && !(bottleUnderTap() && bottle.level < 1);
+    const ub = TAP.on ? bowlUnderTap() : null, ubRoom = ub ? 1 - (ub === bowl ? bowl.water : ub.amount) : 0;
+    if (ub && ubRoom > 0) {
+      const q = Math.min(dt * 0.3, ubRoom);
+      if (ub === bowl) bowl.water += q; else { ub.kind = 'water'; ub.amount += q; }
+      ub.ripple = 0.6;
+    }
+    const wasting = TAP.on && !(bottleUnderTap() && bottle.level < 1) && !(ub && ubRoom > 0);
+    // water slops about in the bowls when they're carried or knocked, and the rings fade
+    for (const o of BOWLS) {
+      const [sx] = iso(o.x, o.y, 0), v = o.px != null && dt > 0 ? (sx - o.px) / dt : 0;
+      o.px = sx;
+      o.sv = ((o.sv || 0) + (-(o.slosh || 0) * 70 - v * 0.012 - (o.wob || 0) * Math.sin(t * 20) * 3) * dt) * Math.exp(-dt * 3);
+      o.slosh = clamp((o.slosh || 0) + o.sv * dt, -1, 1);
+      o.ripple = Math.max(0, (o.ripple || 0) - dt);
+    }
+    if (bottle.pour && bottle.pourTo && BOWLS.includes(bottle.pourTo) && bottle.level > 0) bottle.pourTo.ripple = 0.6;
     puddle = wasting ? Math.min(1, puddle + dt / 300) : Math.max(0, puddle - dt / 90);
+    floatAway(dt, wasting && puddle > 0.01);
     if (wasting && puddle > 0.03) stats.joy = clamp(stats.joy - dt * 0.8, 0, 100);
     bin.lid = Math.max(0, bin.lid - dt * 1.5);
     if (dragging && dragging.moved && (BAGS.includes(dragging.o) || dragging.o === bowl || MIX.includes(dragging.o)) && Math.hypot(dragging.o.x - bin.x, dragging.o.y - bin.y) < 0.8) bin.lid = 1;
     crate.shake = Math.max(0, (crate.shake || 0) - dt);
+    if (bottle.fIn != null && bottle.fIn < 1) bottle.fIn = Math.min(1, bottle.fIn + dt / 0.5);
+    if (bottle.fOut > 0) bottle.fOut = Math.max(0, bottle.fOut - dt / 0.35);
     // flaps and bag tops move a frame at a time towards open or shut
     crate.f = clamp((crate.f || 0) + (crate.open ? 1 : -1) * dt / 0.5, 0, 1);
     if (crate.f >= 1) crate.taped = false;
@@ -2270,11 +2396,21 @@ button:disabled { opacity: .35; cursor: default; }
     else { [x, y] = iso(o.x, o.y, o.lift || 0); y += 2; }
     ctx.drawImage(F.img, x - F.a[0] * CAR_K, y - F.a[1] * CAR_K, F.img.naturalWidth * CAR_K, F.img.naturalHeight * CAR_K);
     // flowers standing in it: stems clipped at the front lip of the opening
-    if (o.flowers && !o.pour && !(o.potPour >= 0)) {
-      const mx = x, my = y - 157 * CAR_K;   // centre of the opening, measured on the sprite
-      ctx.save(); ctx.beginPath(); ctx.rect(mx - 90, my - 200, 180, 203); ctx.clip();
-      drawBouquet(mx, my + 26, o.flowers, 78);
+    // flowers in it: they slide down into the water when put in, lift out when taken, and sway a little;
+    // the stems disappear behind the front of the rim, seen through the opening
+    const fl = o.flowers || (o.fOut > 0 ? o.outFlowers : null);
+    if (fl && !o.pour && !(o.potPour >= 0)) {
+      const mx = x, my = y - 157 * CAR_K, rx = 16.5, ry = 4.8;   // the opening, measured on the sprite
+      const fin = o.flowers ? 1 - (1 - clamp(o.fIn ?? 1, 0, 1)) ** 3 : 1, out = o.flowers ? 0 : 1 - o.fOut;
+      const lift = (1 - fin) * 38 + out * 34;
+      ctx.save();
+      ctx.beginPath(); ctx.rect(mx - 120, my - 260, 240, 260); ctx.ellipse(mx, my, rx * 0.92, ry * 0.92, 0, 0, Math.PI * 2); ctx.clip();
+      ctx.globalAlpha = o.flowers ? 1 : clamp(o.fOut * 1.4, 0, 1);
+      ctx.translate(mx, my); ctx.rotate(Math.sin(t * 1.3) * 0.025 + (1 - fin) * 0.06); ctx.translate(-mx, -my);
+      drawBouquet(mx, my + 30 - lift, fl, 80);
       ctx.restore();
+      // a dark ring of water at the stems, just inside the rim
+      if (o.flowers && o.level > 0.05) { ctx.save(); ctx.globalAlpha = 0.35 * fin; ell(mx, my + 0.6, rx * 0.55, ry * 0.45, 'rgba(40,90,140,.6)'); ctx.restore(); }
     }
   }
 
@@ -2412,7 +2548,7 @@ button:disabled { opacity: .35; cursor: default; }
       else if (f.grow < 1) f.grow += dt * 0.5;
     }
     for (let i = particles.length - 1; i >= 0; i--) {
-      const p = particles[i]; p.life -= dt; p.x += p.vx * dt; p.y += p.vy * dt;
+      const p = particles[i]; p.life -= dt; p.vy += (p.g || 0) * dt; p.x += p.vx * dt; p.y += p.vy * dt;
       if (p.kind === 'smoke') p.size += dt * 9;
       if (p.life <= 0) particles.splice(i, 1);
     }
