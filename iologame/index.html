@@ -79,7 +79,6 @@ canvas.grabbing { cursor: none !important; }
 .stat.low .bar i { animation: blink 1s steps(2) infinite; }
 @keyframes blink { 50% { opacity: .2; } }
 .actions { display: flex; gap: 22px; }
-.actions button.on { font-weight: 700; }
 button {
   font-family: inherit; font-weight: 500; font-size: .66rem; letter-spacing: .12em; text-transform: uppercase;
   color: inherit; background: none; border: 0; padding: 0 0 3px; cursor: pointer;
@@ -123,7 +122,6 @@ button:disabled { opacity: .35; cursor: default; }
       <div class="actions">
         <button id="bBall">Throw the ball <i lang="ko">공 던지기</i></button>
         <button id="bFire">Breathe fire <i lang="ko">불 뿜기</i></button>
-        <button id="bPixel">Pixel art <i lang="ko">픽셀 아트</i></button>
       </div>
     </div>
   </div>
@@ -2567,26 +2565,6 @@ button:disabled { opacity: .35; cursor: default; }
     if (o.pour) { const to = o.pourTo || plate2, [bx, by] = iso(to.x, to.y, zOf(to)); ctx.save(); ctx.translate(bx + 30, by - 22); ctx.rotate(-0.55); drawFrame(F, 0, 3); ctx.restore(); return; }
     drawFrame(F, x, y + 3);
   }
-  // pixel art: the whole picture redrawn from a 2.5x smaller copy, square pixels, every colour kept
-  const PIXEL = { on: false, cv: document.createElement('canvas') };
-  try { PIXEL.on = localStorage.getItem('yongi-pixel') === '1'; } catch (e) {}
-  const bPixel = document.getElementById('bPixel');
-  bPixel.classList.toggle('on', PIXEL.on);
-  bPixel.onclick = () => {
-    PIXEL.on = !PIXEL.on; bPixel.classList.toggle('on', PIXEL.on);
-    try { localStorage.setItem('yongi-pixel', PIXEL.on ? '1' : '0'); } catch (e) {}
-  };
-  function pixelate() {
-    if (!PIXEL.on) return;
-    const w = Math.ceil(W / 2.5), h = Math.ceil(H / 2.5), pc = PIXEL.cv;
-    if (pc.width !== w || pc.height !== h) { pc.width = w; pc.height = h; }
-    const px = pc.getContext('2d');
-    px.imageSmoothingEnabled = true; px.imageSmoothingQuality = 'high';
-    px.drawImage(cv, 0, 0, w, h);
-    ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(pc, 0, 0, w, h, 0, 0, cv.width, cv.height);
-    ctx.restore();
-  }
   document.getElementById('bFire').onclick = () => {
     if (stats.energy < 12) { statusEl.textContent = 'Il est trop fatigué pour s\'entraîner'; return; }
     if (['fire', 'toFire', 'evolve'].includes(dragon.state)) return;
@@ -2714,7 +2692,6 @@ button:disabled { opacity: .35; cursor: default; }
     drawParticles();
     drawHand();
     if (garden.bouquet && hover && !(hover[0] < 230 && hover[1] > 730)) drawBouquet(hover[0], hover[1] + 40, garden.bouquet, 70);
-    pixelate();
     drawCursor();
 
     hudT += dt; if (hudT > 0.2) { hudT = 0; updateHud(); }
