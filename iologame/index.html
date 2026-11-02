@@ -667,6 +667,24 @@ button:disabled { opacity: .35; cursor: default; }
       ctx.restore();
     }
   }
+  // the stream falling from a tipped bowl's lip into the one under it: a ribbon of water or tumbling kibble
+  function pourStream(o, [lx, ly]) {
+    const to = o.bpour, [tx, ty0, trx, try_] = bowlRim(to), kind = o.bkind || 'water';
+    if (!holds(o) && !(o.bkind && level(o, kind) > 0)) return;
+    const ty = ty0 + try_ * 0.3, mx = (lx + tx) / 2, my = Math.min(ly, ty) - 6;
+    if (kind === 'water') {
+      ctx.save(); ctx.lineCap = 'round';
+      for (const [w, c] of [[5, 'rgba(70,140,215,.55)'], [2.4, 'rgba(200,232,255,.8)']]) {
+        ctx.beginPath(); ctx.moveTo(lx, ly); ctx.quadraticCurveTo(lx + (tx - lx) * 0.15, my, tx + Math.sin(t * 20) * 0.8, ty);
+        ctx.strokeStyle = c; ctx.lineWidth = w; ctx.stroke();
+      }
+      for (let i = 0; i < 3; i++) { const f = (t * 3 + i / 3) % 1; ell(tx + (hash(i, Math.floor(t * 3 + i / 3)) - 0.5) * 10, ty - f * 6, 1.6, 1.2, 'rgba(180,220,255,.8)'); }
+      ctx.restore();
+    } else for (let i = 0; i < 7; i++) {
+      const f = (t * 2.4 + i / 7) % 1, s = 1 - f, x = s * s * lx + 2 * s * f * (lx + (tx - lx) * 0.15) + f * f * tx, yy = s * s * ly + 2 * s * f * my + f * f * ty;
+      ell(x + (hash(i, 7) - 0.5) * 4, yy, 2.6, 2, i % 3 ? '#b0773e' : '#c98d4c', '#5d3418', 0.6);
+    }
+  }
   // the rim of each bowl on screen: centre and radii of its opening
   function bowlRim(o) {
     const [x, y] = iso(o.x, o.y, o.lift || 0);
@@ -1252,9 +1270,9 @@ button:disabled { opacity: .35; cursor: default; }
   const SLOTS = [];
   for (let r = 0; r <= 3; r++) for (let c = 0; c < 3; c++) {
     const t = (SH_COLS[c][0] + SH_COLS[c][1]) / 2, h = r < 3 ? SH_ROWS[2 - r][1] : 0;
-    // in a cell: a quarter of the way back and as much to the left, so it shows in the middle of the opening
-    // instead of half hidden behind the next upright; on top: in the middle of the board
-    const b = r < 3 ? 0.25 : 0;
+    // in a cell: half way back and as much to the left, in the middle of the cell, cropped by the boards and
+    // uprights like seen through the opening; on top: in the middle of the board
+    const b = r < 3 ? 0.5 : 0;
     SLOTS.push([SH.X0 + SH.s * (t - b), SH.FY - SH.s * (r < 3 ? b : 0.5), SH.s * (SH.H - h)]);
   }
   const isStored = o => stackRoot(o).stored != null;
@@ -2377,7 +2395,7 @@ button:disabled { opacity: .35; cursor: default; }
       else o.stored = null;
       // the nearest bowl on top of a pile it could nest in (all three can go in one stack)
       let other = null, od = 40;
-      if (BOWLS.includes(o) && !covered(o)) for (const c of BOWLS) {
+      if (BOWLS.includes(o) && !covered(o) && !holds(o)) for (const c of BOWLS) {
         if (c === o || covered(c) && stackBase(o) !== c || isStored(c) || ball.inBowl === BOWL_NAME.get(c)) continue;
         const [cx, cy] = iso(c.x, c.y, zOf(c)), dd = Math.hypot(vx - cx, vy + 14 - cy);
         if (dd < od) { od = dd; other = c; }
@@ -2447,6 +2465,8 @@ button:disabled { opacity: .35; cursor: default; }
       if (!dragging.moved && dragging.jar != null) placeBouquet(dragging.jar);   // tap a jar: empty a dead bouquet
       if (!dragging.moved && BAGS.includes(o) && o.amount > 0.001) { o.open = !o.open; if (!o.open) o.rolled = true; }
       if (o === bottle && !o.rest && Math.hypot(o.x - underTap().x, o.y - underTap().y) < 0.9) Object.assign(o, underTap());
+      if (BOWLS.includes(o) && dragging.moved && !o.rest && !o.on && !isStored(o) && !covered(o) && Math.hypot(o.x - underTap().x, o.y - underTap().y) < 0.9) Object.assign(o, underTap());
+      if (BOWLS.includes(o)) o.bpour = null;
       if (o === TAP && Math.hypot(bottle.x - underTap().x, bottle.y - underTap().y) < 1.2 && !bottle.rest) Object.assign(bottle, underTap());
       if (!dragging.moved && o === bottle) carafeFlowers();
       // the big box: the first tap tears it open (it stays open), then each tap takes a bag out, three at most
@@ -2516,6 +2536,7 @@ button:disabled { opacity: .35; cursor: default; }
   // the two bowls can be stacked: the top one follows the bottom one
     const BOWLS = [bowl, bowl2, bowl3, bowl4], BOWL_NAME = new Map([[bowl, 'bowl'], [bowl2, 'bowl2'], [bowl3, 'bowl3'], [bowl4, 'bowl4']]);
   const stackBase = o => o.on ? BOWLS.find(b => BOWL_NAME.get(b) === o.on) || null : null;
+  const holds = o => level(o, 'water') > 0.02 || level(o, 'food') > 0.02;
   const covered = o => BOWLS.some(b => b !== o && b.on && stackBase(b) === o);
   const stackRoot = o => { for (let i = 0; i < 4 && stackBase(o); i++) o = stackBase(o); return o; };
   // how high a bowl's rim is above its foot, as drawn
@@ -2615,6 +2636,27 @@ button:disabled { opacity: .35; cursor: default; }
         const q = Math.min(dt * 0.5, o.amount * 3, room);
         o.amount = Math.max(0, o.amount - q / 3); fill(q); o.flow = true;
       }
+    }
+    // a bowl carried over another one tips and pours what it holds into it (water or kibble)
+    for (const o of BOWLS) {
+      o.bpour = null;
+      if (!(dragging && dragging.o === o && dragging.moved) || covered(o) || !holds(o)) continue;
+      const kind = level(o, 'water') > 0.02 ? 'water' : 'food';
+      let to = null, best = 1.1;
+      for (const c of [bowl, ...MIX]) {
+        if (c === o || covered(c) || isStored(c) || stackRoot(c) === stackRoot(o)) continue;
+        if (c === bowl ? kind !== 'water' : (c.kind && c.kind !== kind) || (MIXSPEC.get(c).only && MIXSPEC.get(c).only !== kind)) continue;
+        const dd = Math.hypot(o.x - c.x, o.y - c.y); if (dd < best) { best = dd; to = c; }
+      }
+      if (!to) continue;
+      o.bpour = to;
+      const room = to === bowl ? 1 - bowl.water : 1 - to.amount;
+      if (room <= 0.001) continue;
+      const q = Math.min(dt * 0.6, level(o, kind), room);
+      take(o, kind, q);
+      if (to === bowl) bowl.water += q; else { to.kind = kind; to.amount += q; }
+      if (kind === 'water') { to.ripple = 0.6; o.slosh = 0.6; }
+      o.bkind = kind;
     }
   }
 
@@ -2835,7 +2877,7 @@ button:disabled { opacity: .35; cursor: default; }
         clipToCell(o);
         if (onTable) ctx.translate(0, -o.rest);
         // in a shelf cell, something too wide (the plate) is drawn smaller so it fits between the walls
-        { const si = stackRoot(o).stored, ww = o === sock ? SOCK_IMG.naturalWidth / 2 : typeof w === 'number' ? w : 0, sc = si != null && si < 9 && ww ? Math.min(1, 44 / ww) : 1;   // (the socks lie flat: their full width)
+        { const si = stackRoot(o).stored, ww = o === sock ? SOCK_IMG.naturalWidth / 2 : typeof w === 'number' ? w : 0, sc = si != null && si < 9 && ww && !BOWLS.includes(o) ? Math.min(1, 44 / ww) : 1;   // (the socks lie flat: their full width)
           if (sc < 1 && !(dragging && dragging.o === o)) { ctx.translate(x, y + o.rest); ctx.scale(sc, sc); ctx.translate(-x, -(y + o.rest)); } }
         // a little shadow under things put in the shelf, like on the sobans
         if (o.stored != null && !o.on && !o.lift) {
@@ -2856,8 +2898,18 @@ button:disabled { opacity: .35; cursor: default; }
           ctx.translate(px, fy); ctx.rotate(a); ctx.translate(-px, -fy);
         }
         if (!up) ctx.translate(0, 3);
+        let tilt = null;
+        if (o.bpour) {   // tipped towards the bowl it pours into
+          // held up beside it, its lip just over the other bowl's opening (so the other one stays in sight)
+          const [cx, cy, rx] = bowlRim(o), [tx, ty] = bowlRim(o.bpour), dir = o.x - o.y > o.bpour.x - o.bpour.y ? -1 : 1, a = dir * 0.6, py = y + 6;
+          const lx = cx + dir * rx * 0.95 - x, ly = cy - py;
+          const l0 = [x + lx * Math.cos(a) - ly * Math.sin(a), py + lx * Math.sin(a) + ly * Math.cos(a)], dx = tx - dir * 6 - l0[0], dy = ty - 30 - l0[1];
+          ctx.translate(dx, dy); ctx.translate(x, py); ctx.rotate(a); ctx.translate(-x, -py);
+          tilt = [l0[0] + dx, l0[1] + dy];
+        }
         draw();
         ctx.restore();
+        if (tilt) pourStream(o, tilt);
       };
       o.settle = Math.max(0, st - dt * 2.2);
       if (o.wob) o.wob = Math.max(0, o.wob - dt / 1.3);
@@ -2871,8 +2923,8 @@ button:disabled { opacity: .35; cursor: default; }
     const dOf = depthOf;
     // depth-sort the things standing on the terrain
     const items = [
-      { d: dOf(bowl), draw: sunk(bowl, () => { drawBowl(); ballInBowl(bowl); nestFront(bowl); }, 50) },
-      ...MIX.map(m => ({ d: bottle.pour && bottle.pourTo === m || BAGS.some(b => b.pour && b.pourTo === m) ? dOf(m) - 0.01 : dOf(m), draw: sunk(m, () => { drawMix(m); ballInBowl(m); nestFront(m); }, MIXSPEC.get(m).w * 0.96) })),
+      { d: bowl.bpour ? 999 : dOf(bowl), draw: sunk(bowl, () => { drawBowl(); ballInBowl(bowl); nestFront(bowl); }, 50) },
+      ...MIX.map(m => ({ d: m.bpour ? 999 : bottle.pour && bottle.pourTo === m || BAGS.some(b => b.pour && b.pourTo === m) ? dOf(m) - 0.01 : dOf(m), draw: sunk(m, () => { drawMix(m); ballInBowl(m); nestFront(m); }, MIXSPEC.get(m).w * 0.96) })),
       ...SOLIS.map(S => ({ d: dOf(S.o), draw: sunk(S.o, () => drawSoli(S), S.w * 0.9) })),
       { d: stump.x + stump.y, draw: sunk(stump, drawStump, 22) },
       { d: signpost.x + signpost.y, draw: sunk(signpost, drawSign, 16) },
