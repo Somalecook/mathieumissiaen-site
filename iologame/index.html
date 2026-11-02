@@ -2835,7 +2835,7 @@ button:disabled { opacity: .35; cursor: default; }
         clipToCell(o);
         if (onTable) ctx.translate(0, -o.rest);
         // in a shelf cell, something too wide (the plate) is drawn smaller so it fits between the walls
-        { const si = stackRoot(o).stored, ww = typeof w === 'number' ? w : 0, sc = si != null && si < 9 && ww ? Math.min(1, 44 / ww) : 1;
+        { const si = stackRoot(o).stored, ww = o === sock ? SOCK_IMG.naturalWidth / 2 : typeof w === 'number' ? w : 0, sc = si != null && si < 9 && ww ? Math.min(1, 44 / ww) : 1;   // (the socks lie flat: their full width)
           if (sc < 1 && !(dragging && dragging.o === o)) { ctx.translate(x, y + o.rest); ctx.scale(sc, sc); ctx.translate(-x, -(y + o.rest)); } }
         // a little shadow under things put in the shelf, like on the sobans
         if (o.stored != null && !o.on && !o.lift) {
