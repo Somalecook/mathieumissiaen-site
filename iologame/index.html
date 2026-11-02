@@ -1241,7 +1241,7 @@ button:disabled { opacity: .35; cursor: default; }
   const SH = { s: 0.72, A: [4, 32], U: [62.5, 30.2], H: 281, BK: [63, -31], X0: 6.55 };
   SH.FY = SH.s; SH.W = 4.4 * SH.s;   // its back against gy = 0
   // the cells' openings on the front face: columns (along the front) and rows (top to bottom), sprite units
-  const SH_COLS = [[0.16, 1.36], [1.49, 2.8], [2.93, 4.24]], SH_ROWS = [[10, 100], [108, 183], [190, 263]];
+  const SH_COLS = [[0.16, 1.36], [1.49, 2.8], [2.93, 4.24]], SH_ROWS = [[17, 100], [117, 183], [199, 263]];   // tops at the underside of each board's front edge
   // a point of the sprite on screen: t along the front, h down from its top, back towards the wall
   const shelfPt = (t, h, back = 0) => { const [bx, by] = iso(SH.X0, SH.FY); return [bx + SH.s * (SH.U[0] * t + SH.BK[0] * back), by + SH.s * (SH.U[1] * t + h - SH.H + SH.BK[1] * back)]; };
   const SHELF_DEPTH = SH.X0 + SH.FY;
