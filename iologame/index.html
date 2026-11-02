@@ -331,6 +331,7 @@ button:disabled { opacity: .35; cursor: default; }
   const BAGS = [box, box2, box3];
   // trash bin for empty boxes, and the big carton new boxes come out of
   const bin = { x: 5.7, y: 0.9, lid: 0 };
+  const basket = { x: 9.1, y: 12.7, pop: 0 };   // the shopping basket: drop an iOLO piece in it, tap it to order
   const crate = { x: 9.25, y: 2.05, open: false, taped: true, f: 0 };   // f: how open it is (0 shut, 1 open)
   // pickable flowers, the bouquet in hand and the vases
   // the user's flower sheet: stemless heads grow on the grass, a picked one becomes a sprig in the hand,
@@ -452,6 +453,7 @@ button:disabled { opacity: .35; cursor: default; }
       soli2.lift = soli3.lift = soban2.lift = 0;
       bowl2.lift = bowl3.lift = plate2.lift = soli.lift = 0;
       if (s.bin) Object.assign(bin, s.bin);
+      if (s.basket) { basket.x = +s.basket.x || basket.x; basket.y = +s.basket.y || basket.y; }
       if (s.crate) Object.assign(crate, s.crate);
       crate.f = crate.open ? 1 : 0;
       if (Math.hypot(crate.x - 9.25, crate.y - 1.1) < 0.05) crate.y = 2.4;   // old spot hid the bottle under the tap
@@ -465,7 +467,7 @@ button:disabled { opacity: .35; cursor: default; }
       stats.energy = clamp(stats.energy + away * 0.1, 0, 100);
     }
   } catch (e) {}
-  const save = () => { try { localStorage.setItem('bebe-dragon-v1', JSON.stringify({ at: Date.now(), stats, bowl, plate, box2, box3, signpost, sock, soban, tap: TAP, lamp: LAMP.on, puddle, bowl2, bowl3, plate2, soli, soli2, soli3, soban2, stump, bed, garden, bottle, box, bin, crate, stage })); } catch (e) {} };
+  const save = () => { try { localStorage.setItem('bebe-dragon-v1', JSON.stringify({ at: Date.now(), basket: { x: basket.x, y: basket.y }, stats, bowl, plate, box2, box3, signpost, sock, soban, tap: TAP, lamp: LAMP.on, puddle, bowl2, bowl3, plate2, soli, soli2, soli3, soban2, stump, bed, garden, bottle, box, bin, crate, stage })); } catch (e) {} };
 
   // ---------- canvas sizing ----------
   let terrain = null;
@@ -976,7 +978,7 @@ button:disabled { opacity: .35; cursor: default; }
     // knocks: floating things push each other (and whatever stands on the grass), bounce off the big
     // furniture, and the ball caroms off them; a real knock makes both rock and splashes a little
     const rOf = o => o === sock ? 0.3 : BOWLS.includes(o) || o === plate2 ? 0.32 : BAGS.includes(o) ? 0.26 : 0.22;
-    const fixed = [[crate, 0.95], [bin, 0.45], [bed, 0.75], [stump, 0.3], [signpost, 0.2], [TAP, 0.25], ...TABLES.map(T => [T.o, 0.6])];
+    const fixed = [[crate, 0.95], [bin, 0.45], [basket, 0.45], [bed, 0.75], [stump, 0.3], [signpost, 0.2], [TAP, 0.25], ...TABLES.map(T => [T.o, 0.6])];
     const knock = (o, v) => {
       if (v < 0.08) return;
       o.wob = Math.max(o.wob || 0, Math.min(0.8, v * 2));
@@ -1584,7 +1586,7 @@ button:disabled { opacity: .35; cursor: default; }
   // ---------- pathfinding: the dragon walks around the furniture ----------
   // obstacles are circles on the grid (x, y, radius incl. the dragon's own size)
   function obstacles() {
-    const L = [[bed, 0.8], [soban, 0.66], [soban2, 0.61], [crate, 0.75], [bin, 0.4], [TAP, 0.25], [stump, 0.35], [signpost, 0.22], [bowl, 0.32]];
+    const L = [[bed, 0.8], [soban, 0.66], [soban2, 0.61], [crate, 0.75], [bin, 0.4], [basket, 0.4], [TAP, 0.25], [stump, 0.35], [signpost, 0.22], [bowl, 0.32]];
     for (const o of [...MIX, soli, soli2, soli3]) if (!o.rest) L.push([o, o === plate2 ? 0.36 : MIX.includes(o) ? 0.3 : 0.22]);
     for (const b of BAGS) if (b.present && !b.rest && !b.pour) L.push([b, 0.25]);
     if (!bottle.rest && !bottle.pour && !(bottle.potPour >= 0)) L.push([bottle, 0.18]);
@@ -2157,30 +2159,103 @@ button:disabled { opacity: .35; cursor: default; }
   // every object under the pointer; the one drawn in front wins
   // the iOLO shop pieces in the scene, as the shop names them
   const PRODUCTS = new Map([
-    [bowl, ['[Exclusive] 1000 Flower Bowl, Feu', 250, 'Aculi']],
-    [bowl2, ['[Exclusive] 1000 Flower Bowl, Rainbow Blue & White', 250, 'Aculi']],
-    [bowl3, ['[Exclusive] 1000 Flower Bowl, Bébé', 250, 'Aculi']],
-    [plate2, ['Vintage Arabia “Anemone” Big Plate, Ulla Procopé, 1960s', 135]],
-    [bottle, ['Vintage Arabia “Anemone” Jug, Ulla Procopé, 1960s', 75]],
-    [soli, ['Vase Solifleur Eye 1', 65]],
-    [soli2, ['Vase Solifleur Eye 2', 65]],
-    [soli3, ['Vase Solifleur Eye 3', 65]],
-    [soban, ['Korean Naju Style “Soban”', 375]],
-    [soban2, ['Korean Traditional Flower Shaped “Soban”', 120]],
-    [sock, ['Japanese Flower Pattern Socks', 22]],
-    [LAMP, ['Vintage Ceiling Lamp, Lyfa Bent Karlby 1950s', 195]],
-    ['jar', ['Korean Moon Jar', 210]],
+    [bowl, ['[Exclusive] 1000 Flower Bowl, Feu', 250, 'Aculi', 55632746643795]],
+    [bowl2, ['[Exclusive] 1000 Flower Bowl, Rainbow Blue & White', 250, 'Aculi', 55521818870099]],
+    [bowl3, ['[Exclusive] 1000 Flower Bowl, Bébé', 250, 'Aculi', 55548661596499]],
+    [plate2, ['Vintage Arabia “Anemone” Big Plate, Ulla Procopé, 1960s', 135, '', 55426646344019]],
+    [bottle, ['Vintage Arabia “Anemone” Jug, Ulla Procopé, 1960s', 75, '', 55539947241811]],
+    [soli, ['Vase Solifleur Eye 1', 65, '', 55046486851923]],
+    [soli2, ['Vase Solifleur Eye 2', 65, '', 55046558843219]],
+    [soli3, ['Vase Solifleur Eye 3', 65, '', 55046720356691]],
+    [soban, ['Korean Naju Style “Soban”', 375, '', 54830923776339]],
+    [soban2, ['Korean Traditional Flower Shaped “Soban”', 120, '', 55366422266195]],
+    [sock, ['Japanese Flower Pattern Socks', 22, 'French Bull', 54879773622611]],
+    [LAMP, ['Vintage Ceiling Lamp, Lyfa Bent Karlby 1950s', 195, '', 55048081375571]],
+    ['jar', ['Korean Moon Jar', 210, '', 54856492417363]],
   ]);
   const productEl = document.getElementById('product');
   let productShown = null;
   function showProduct(px, py) {
     let o = px == null ? null : lampAt(px, py) ? LAMP : potAt(px, py) >= 0 ? 'jar' : objectAt(px, py);
     if (o && garden.jars.includes(o)) o = 'jar';
-    const P = o && PRODUCTS.get(o);
-    if (P === productShown) return;
-    productShown = P;
-    if (P) { productEl.firstChild.textContent = P[0]; productEl.lastChild.textContent = (P[2] ? P[2] + ' · ' : '') + P[1] + ' €'; }
+    let P = o && PRODUCTS.get(o);
+    if (o === basket) {
+      const n = cart.length, sum = cart.reduce((a, c) => a + c.p, 0);
+      P = ['Basket 장바구니', n ? `${n} item${n > 1 ? 's' : ''} · ${sum} € · tap to order` : 'Drag an iOLO piece in here'];
+    }
+    const key = P && P.join('|');
+    if (key === productShown) return;
+    productShown = key;
+    if (P) { productEl.firstChild.textContent = P[0]; productEl.lastChild.textContent = o === basket ? P[1] : (P[2] ? P[2] + ' · ' : '') + P[1] + ' €'; }
     productEl.classList.toggle('on', !!P);
+  }
+  // the basket: what was dropped in it, kept between visits; tapping it opens the order on iolo.paris
+  let cart = [];
+  try { cart = JSON.parse(localStorage.getItem('yongi-cart') || '[]').filter(c => c && c.v); } catch (e) { cart = []; }
+  const saveCart = () => { try { localStorage.setItem('yongi-cart', JSON.stringify(cart)); } catch (e) {} };
+  const basketAt = (px, py) => { const [x, y] = iso(basket.x, basket.y); return Math.abs(px - x) < 40 && py > y - 52 && py < y + 12; };
+  function addToCart(o) {
+    const P = PRODUCTS.get(garden.jars.includes(o) ? 'jar' : o);
+    if (!P || !P[3]) return false;
+    if (!cart.some(c => c.v === P[3])) cart.push({ v: P[3], t: P[0], p: P[1] });   // one of each: the pieces are unique
+    saveCart(); basket.pop = 1; productShown = null;
+    const [x, y] = iso(basket.x, basket.y);
+    for (let i = 0; i < 4; i++) setTimeout(() => puff('heart', x + rand(-16, 16), y - 50), i * 110);
+    return true;
+  }
+  function openCart() {
+    if (!cart.length) { basket.pop = 0.5; return; }
+    window.open('https://iolo.paris/cart/' + cart.map(c => c.v + ':1').join(','), '_blank', 'noopener');
+  }
+  // a wicker basket with a handle; the pieces in it peek over the rim, a small count on its side
+  function drawBasket() {
+    const [x, y0] = iso(basket.x, basket.y), pop = basket.pop || 0, k = 1 + Math.sin(pop * Math.PI) * 0.08, y = y0 + 2;
+    ctx.save(); ctx.translate(x, y); ctx.scale(k, 1 / k);
+    const H = 30, rb = 22, rt = 30;
+    // back half of the handle
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#8a5a2b'; ctx.lineWidth = 5;
+    ctx.beginPath(); ctx.ellipse(0, -H, rt * 0.86, 34, 0, Math.PI * 1.02, Math.PI * 1.98); ctx.stroke();
+    ctx.strokeStyle = '#c99257'; ctx.lineWidth = 2.6;
+    ctx.beginPath(); ctx.ellipse(0, -H, rt * 0.86, 34, 0, Math.PI * 1.04, Math.PI * 1.96); ctx.stroke();
+    // inside
+    ell(0, -H, rt, 11, '#6e4520');
+    // what's in it: soft tissue paper and the tops of the pieces
+    if (cart.length) {
+      ctx.save(); ctx.beginPath(); ctx.ellipse(0, -H, rt - 2, 10, 0, 0, Math.PI * 2); ctx.rect(-40, -H - 40, 80, 40); ctx.clip();
+      const cols = ['#f4d6df', '#dfe9f4', '#f6ecd2'];
+      cart.slice(0, 5).forEach((c, i) => ell((i - (Math.min(5, cart.length) - 1) / 2) * 11, -H - 3 - (i % 2) * 3, 9, 7, cols[i % 3], 'rgba(120,80,60,.35)', 0.8));
+      ctx.restore();
+    }
+    // the body: woven, lit from the left
+    ctx.beginPath(); ctx.moveTo(-rt, -H); ctx.lineTo(-rb, 0); ctx.ellipse(0, 0, rb, 8, 0, Math.PI, 0, true); ctx.lineTo(rt, -H); ctx.ellipse(0, -H, rt, 11, 0, 0, Math.PI);
+    ctx.closePath();
+    const g = ctx.createLinearGradient(-rt, 0, rt, 0);
+    g.addColorStop(0, '#e2b678'); g.addColorStop(0.55, '#c8914f'); g.addColorStop(1, '#9c6a33');
+    ctx.fillStyle = g; ctx.fill();
+    ctx.save(); ctx.clip();
+    ctx.strokeStyle = 'rgba(110,70,30,.55)'; ctx.lineWidth = 1;
+    for (let i = 1; i < 6; i++) { const f = i / 6, yy = -H * (1 - f), r = rt + (rb - rt) * f; ctx.beginPath(); ctx.ellipse(0, yy, r, 9 + 2 * (1 - f), 0, 0.05, Math.PI - 0.05); ctx.stroke(); }
+    for (let i = -6; i <= 6; i++) { const a = i / 7; ctx.beginPath(); ctx.moveTo(a * rt, -H + 11 * Math.sqrt(1 - a * a)); ctx.lineTo(a * rb, 8 * Math.sqrt(1 - a * a)); ctx.stroke(); }
+    ctx.restore();
+    ctx.strokeStyle = '#7a4c22'; ctx.lineWidth = 1.2; ctx.stroke();
+    // the rim, a thick braid
+    ctx.strokeStyle = '#a8713a'; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.ellipse(0, -H, rt, 11, 0, 0, Math.PI); ctx.stroke();
+    ctx.strokeStyle = '#e8c08a'; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.ellipse(0, -H - 1, rt, 11, 0, 0.15, Math.PI - 0.15); ctx.stroke();
+    // front half of the handle
+    ctx.strokeStyle = '#8a5a2b'; ctx.lineWidth = 5;
+    ctx.beginPath(); ctx.moveTo(-rt * 0.86, -H); ctx.lineTo(-rt * 0.86, -H + 0.1); ctx.moveTo(rt * 0.86, -H); ctx.lineTo(rt * 0.86, -H + 0.1); ctx.stroke();
+    // the count
+    if (cart.length) {
+      ell(rt - 4, -H - 8, 8, 8, '#111');
+      ctx.fillStyle = '#fff'; ctx.font = '600 10px "Helvetica Neue", Helvetica, Arial, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(String(cart.length), rt - 4, -H - 7.5);
+    }
+    // hint while an iOLO piece is carried over it
+    if (basket.hot) { ctx.strokeStyle = 'rgba(17,17,17,.55)'; ctx.setLineDash([3, 4]); ctx.lineWidth = 1.4; ell(0, 2, rt + 10, 13, null, 'rgba(17,17,17,.55)', 1.4); ctx.setLineDash([]); }
+    ctx.restore();
   }
   function objectAt(px, py) {
     const hits = [];
@@ -2203,6 +2278,7 @@ button:disabled { opacity: .35; cursor: default; }
     if (Math.abs(px - sx) < 28 && py > sy - 50 && py < sy + 10) hits.push(stump);
     if (!sockHidden()) { const [x, y] = iso(sock.x, sock.y, zOf(sock)); if (((px - x) / 32) ** 2 + ((py - y + 8) / 16) ** 2 < 1) hits.push(sock); }
     { const [x, y] = iso(signpost.x, signpost.y, signpost.lift || 0); if (px > x - 42 && px < x + 52 && py > y - 120 && py < y + 6) hits.push(signpost); }
+    if (basketAt(px, py)) hits.push(basket);
     { const [x, y] = iso(soban.x, soban.y); if (Math.abs(px - x) < 58 && py > y - 80 && py < y + 14) hits.push(soban); }
     { const [x, y] = iso(soban2.x, soban2.y); if (Math.abs(px - x) < 48 && py > y - 51 && py < y + 26) hits.push(soban2); }
     return hits.length ? hits.reduce((a, b) => depthOf(b) > depthOf(a) ? b : a) : null;
@@ -2211,7 +2287,7 @@ button:disabled { opacity: .35; cursor: default; }
   const depthOf = o => o.stored != null ? SHELF_DEPTH + 0.01 + o.stored * 0.0001 : stackBase(o) ? depthOf(stackBase(o)) + 0.002 : o.rest ? tableOf(o).o.x + tableOf(o).o.y + 0.02 + (o.x + o.y - tableOf(o).o.x - tableOf(o).o.y + 1) * 0.01 : o.x + o.y;
   function startDrag(e, o, px, py) {
     const [ox, oy] = iso(o.x, o.y, o.rest || 0);
-    dragging = { o, dx: ox - px, dy: oy - py, sx: px, sy: py, moved: false };
+    dragging = { o, dx: ox - px, dy: oy - py, sx: px, sy: py, moved: false, from: { x: o.x, y: o.y, rest: o.rest, stored: o.stored, on: o.on, tbl: o.tbl } };
     cv.setPointerCapture(e.pointerId); cv.classList.add('grabbing');
   }
   function sendToBed() {
@@ -2251,6 +2327,7 @@ button:disabled { opacity: .35; cursor: default; }
       const [px, py] = pointerPos(e);
       dragging.px = px; dragging.py = py;
       if (Math.hypot(px - dragging.sx, py - dragging.sy) > 8) dragging.moved = true;
+      basket.hot = dragging.moved && dragging.o !== basket && !!PRODUCTS.get(garden.jars.includes(dragging.o) ? 'jar' : dragging.o) && basketAt(px, py + 20);
       if (!dragging.moved) return;
       const o = dragging.o;
       const wasInBed = o === bed && dragon.state === 'sleep' && nearBed();
@@ -2335,6 +2412,15 @@ button:disabled { opacity: .35; cursor: default; }
       if (!dragging.moved && o === bottle) carafeFlowers();
       // the big box: the first tap tears it open (it stays open), then each tap takes a bag out, three at most
       if (!dragging.moved && o === signpost) window.open('https://iolo.paris', '_blank', 'noopener');
+      if (!dragging.moved && o === basket) openCart();
+      // an iOLO piece dropped in the basket: it goes on the list and the piece goes back where it was
+      if (basket.hot && addToCart(o)) {
+        const f = dragging.from, dx = f.x - o.x, dy = f.y - o.y;
+        Object.assign(o, { x: f.x, y: f.y, rest: f.rest, stored: f.stored, on: f.on, tbl: f.tbl, lift: 0, pour: false });
+        if (TABLES.some(T => T.o === o)) for (const it of SMALL()) if (it.rest && !isStored(it) && !it.on && (it.tbl || 0) === TABLES.findIndex(T => T.o === o)) { it.x += dx; it.y += dy; }
+        o.settle = 1; syncStack();
+      }
+      basket.hot = false;
       if (!dragging.moved && o === crate) { if (!crate.open) { crate.open = true; const [x, y] = iso(crate.x, crate.y); puff('dust', x, y - 60, { size: 5 }); } else if (crate.f > 0.9) takeNewBox(); }
       if (BAGS.includes(o) && Math.hypot(o.x - bin.x, o.y - bin.y) < 0.8) {
         o.present = false; o.pour = false; bin.lid = 1;
@@ -2432,6 +2518,7 @@ button:disabled { opacity: .35; cursor: default; }
     floatAway(dt, wasting && puddle > 0.01);
     if (wasting && puddle > 0.03) stats.joy = clamp(stats.joy - dt * 0.8, 0, 100);
     bin.lid = Math.max(0, bin.lid - dt * 1.5);
+    basket.pop = Math.max(0, (basket.pop || 0) - dt * 2.5);
     if (dragging && dragging.moved && (BAGS.includes(dragging.o) || dragging.o === bowl || MIX.includes(dragging.o)) && Math.hypot(dragging.o.x - bin.x, dragging.o.y - bin.y) < 0.8) bin.lid = 1;
     crate.shake = Math.max(0, (crate.shake || 0) - dt);
     if (bottle.fIn != null && bottle.fIn < 1) bottle.fIn = Math.min(1, bottle.fIn + dt / 0.5);
@@ -2670,7 +2757,7 @@ button:disabled { opacity: .35; cursor: default; }
   // ---------- main loop ----------
   let last = performance.now(), hudT = 0, saveT = 0;
   function frame(now) {
-    const dt = Math.min(0.05, (now - last) / 1000); last = now; t += dt;
+    const dt = clamp((now - last) / 1000, 0, 0.05); last = now; t += dt;   // never backwards (the first frame can be stamped early)
     updateStats(dt);
     updateDragon(dt);
     updateBall(dt);
@@ -2755,6 +2842,7 @@ button:disabled { opacity: .35; cursor: default; }
       { d: bottle.pour || bottle.potPour >= 0 ? 999 : dOf(bottle), draw: sunk(bottle, drawBottle, 22) },
       ...BAGS.map(b => ({ d: b.pour ? 999 : dOf(b), draw: b.present ? sunk(b, () => drawBox(b), 30) : () => {} })),
       { d: bin.x + bin.y, draw: sunk(bin, drawBin, [[0, 0, 40], [30, 5, 30]]) },
+      { d: basket.x + basket.y, draw: sunk(basket, drawBasket, 46) },
       { d: crate.x + crate.y, draw: sunk(crate, drawCrate, [{ path: [[-61, 4], [-1, 36], [56, 0]] }]) },
       ...garden.jars.map((j, i) => ({ d: dragging && dragging.jar === i ? 998 : dOf(j), draw: sunk(j, () => drawJarItem(i), JAR_W[i]) })),
       ...TABLES.map(T => ({ d: T.o.x + T.o.y, draw: sunk(T.o, () => drawTable(T), T.legs) })),
