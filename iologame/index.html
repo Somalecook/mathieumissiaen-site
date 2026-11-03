@@ -696,6 +696,17 @@ button:disabled { opacity: .35; cursor: default; }
       }
     }
   }
+  // his food is salad: a little leaf, in a few greens, with a light midrib
+  const LEAF_C = ['#7cc243', '#9bd35a', '#5fa834', '#b8e06c', '#6fb83a'];
+  function leaf(x, y, ang, i) {
+    const L = 4 + hash(i, 51) * 1.8, Wd = 2.8 + hash(i, 53) * 1.2;
+    ctx.save(); ctx.translate(x, y); ctx.rotate(ang); ctx.scale(1, 0.72);
+    ctx.beginPath(); ctx.moveTo(-L, 0); ctx.quadraticCurveTo(0, -Wd * 2, L, 0); ctx.quadraticCurveTo(0, Wd * 2, -L, 0);
+    ctx.fillStyle = LEAF_C[i % LEAF_C.length]; ctx.fill();
+    ctx.strokeStyle = '#2f6a1b'; ctx.lineWidth = 0.6; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-L * 0.8, 0); ctx.lineTo(L * 0.8, 0); ctx.strokeStyle = 'rgba(235,250,200,.7)'; ctx.lineWidth = 0.5; ctx.stroke();
+    ctx.restore();
+  }
   // the stream falling from a tipped bowl's lip into the one under it: a ribbon of water or tumbling kibble
   function pourStream(o, [lx, ly]) {
     const to = o.bpour, [tx, ty0, trx, try_] = bowlRim(to), kind = o.bkind || 'water';
@@ -711,7 +722,7 @@ button:disabled { opacity: .35; cursor: default; }
       ctx.restore();
     } else for (let i = 0; i < 7; i++) {
       const f = (t * 2.4 + i / 7) % 1, s = 1 - f, x = s * s * lx + 2 * s * f * (lx + (tx - lx) * 0.15) + f * f * tx, yy = s * s * ly + 2 * s * f * my + f * f * ty;
-      ell(x + (hash(i, 7) - 0.5) * 4, yy, 2.6, 2, i % 3 ? '#b0773e' : '#c98d4c', '#5d3418', 0.6);
+      leaf(x + (hash(i, 7) - 0.5) * 4, yy, hash(i, 9) * Math.PI * 2 + t * 6, i);
     }
   }
   // the rim of each bowl on screen: centre and radii of its opening
@@ -779,10 +790,10 @@ button:disabled { opacity: .35; cursor: default; }
     const a = o.amount, r0 = top + S.rim[0], qx = S.rim[1] / 22.5, qy = S.rim[2] / 7.4;
     if (!(a > 0.01 && o.kind)) return;
     const kibble = (cx, cy, rx, ry, n, rise) => {
-      ell(cx, cy, rx, ry, '#8a5426');
+      ell(cx, cy, rx, ry, '#3f7d24');
       for (let i = 0; i < n; i++) {
         const ang = hash(i, 41) * Math.PI * 2, r = Math.sqrt(hash(i, 43));
-        ell(cx + Math.cos(ang) * r * rx * 0.85, cy + Math.sin(ang) * r * ry * 0.8 - rise * (1 - r), 2.6, 2, i % 3 ? '#b0773e' : '#c98d4c', '#5d3418', 0.6);
+        leaf(cx + Math.cos(ang) * r * rx * 0.85, cy + Math.sin(ang) * r * ry * 0.8 - rise * (1 - r), hash(i, 47) * Math.PI * 2, i);
       }
     };
     const MK = BOWL_MASK.get(o), MB = MASK_BOX.get(o);
@@ -791,7 +802,7 @@ button:disabled { opacity: .35; cursor: default; }
       const sc = w / S.img.naturalWidth, mcx = x - w / 2 + (MB[0] + MB[2]) / 2 * sc, mcy = top + (MB[1] + MB[3]) / 2 * sc;
       const mrx = (MB[2] - MB[0]) / 2 * sc, mry = (MB[3] - MB[1]) / 2 * sc, f = S.flat ? 0.55 + 0.45 * a : 0.7 + 0.3 * a;
       const crx = mrx * 1.08 * f, cry = mry * 1.08 * f, ccy = mcy + (S.flat ? 0 : (1 - a) * mry * 0.5);
-      const n = Math.round(Math.max(14, crx * cry * 0.32));
+      const n = Math.round(Math.max(12, crx * cry * 0.2));
       inMask([x - w / 2, top, w, h], () => kibble(mcx, ccy, crx, cry, n, S.flat ? 3 + a * 5 : a * 2.5), g => g.drawImage(MK, x - w / 2, top, w, h));
       return;
     }
