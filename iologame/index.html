@@ -1276,6 +1276,40 @@ button:disabled { opacity: .35; cursor: default; }
   }
   const isStored = o => stackRoot(o).stored != null;
   // a thing in a cell is only seen through the cell's front opening: clip to it so its top hides under the board above
+  // the dark outlines around the cells' openings, cut out of the shelf painting: drawn again over what stands in a
+  // cell, so the black border of the boards and uprights always stays in front of it
+  let SHELF_LINES = null;
+  function shelfLines() {
+    if (SHELF_LINES || !SHELF_IMG.naturalWidth) return SHELF_LINES;
+    const W = SHELF_IMG.naturalWidth, H = SHELF_IMG.naturalHeight, c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const g = c.getContext('2d'); g.drawImage(SHELF_IMG, 0, 0);
+    const d = g.getImageData(0, 0, W, H), p = d.data, OUT = 6, IN = 2.5;
+    for (let py = 0; py < H; py++) for (let px = 0; px < W; px++) {
+      const i = (py * W + px) * 4, t = (px - SH.A[0]) / SH.U[0], h = py - SH.A[1] - SH.U[1] * t;
+      // how far inside the nearest opening (sprite px; negative: out on the frame)
+      let near = false;
+      for (let si = 0; si < 9 && !near; si++) {
+        const [t0, t1] = SH_COLS[si % 3], [h0, h1] = SH_ROWS[2 - Math.floor(si / 3)];
+        const dl = (t - t0) * SH.U[0], dr = (t1 - t) * SH.U[0], dt = h - h0, db = h1 - h;
+        const din = Math.min(dl, dr, dt, db);
+        if (din > -OUT && din < IN && dl > -OUT && dr > -OUT && dt > -OUT && db > -OUT) near = true;
+      }
+      const lum = 0.3 * p[i] + 0.59 * p[i + 1] + 0.11 * p[i + 2];
+      const a = near ? Math.max(0, Math.min(1, (78 - lum) / 26)) : 0;
+      p[i + 3] = Math.round(p[i + 3] * a);
+    }
+    g.putImageData(d, 0, 0);
+    return (SHELF_LINES = c);
+  }
+  function cellOutlines(o) {
+    const si = stackRoot(o).stored, L = shelfLines();
+    if (!L || si == null || si >= 9 || (dragging && (dragging.o === o || dragging.o === stackRoot(o)))) return;
+    const [x, y] = shelfPt(0, 0), s = SH.s;
+    ctx.save(); clipToCell(o);
+    ctx.drawImage(L, x - SH.A[0] * s, y - SH.A[1] * s, L.width * s, L.height * s);
+    ctx.restore();
+  }
   function clipToCell(o) {
     const si = stackRoot(o).stored;
     if (si == null || si >= 9 || (dragging && (dragging.o === o || dragging.o === stackRoot(o)))) return;
@@ -2908,6 +2942,7 @@ button:disabled { opacity: .35; cursor: default; }
         }
         draw();
         ctx.restore();
+        cellOutlines(o);
         if (tilt) pourStream(o, tilt);
       };
       o.settle = Math.max(0, st - dt * 2.2);
