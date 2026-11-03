@@ -762,6 +762,8 @@ button:disabled { opacity: .35; cursor: default; }
     [plate2, { img: PLATE2_IMG, w: 64, rim: [18, 17.5, 10.5], flat: true, only: 'food' }],
   ]);
   const BOWL_MASK = new Map([[bowl, maskImg(MASK_SRC['bol-feu'])], [bowl3, maskImg(MASK_SRC['bol-confetti'])], [bowl4, maskImg(MASK_SRC['bol-jaune'])], [plate2, maskImg(MASK_SRC['assiette-bleue'])]]);
+  // the masks' boxes, in mask pixels [x0, y0, x1, y1]
+  const MASK_BOX = new Map([[bowl, [3, 2, 83, 41]], [bowl3, [10, 7, 133, 66]], [bowl4, [11, 10, 248, 115]], [plate2, [30, 29, 247, 153]]]);
   function drawMix(o) {
     const L = o.lift || 0, [x, y] = iso(o.x, o.y, L);
     ctx.save(); nestScale(o, x, y); drawMixBody(o, MIXSPEC.get(o), x, y); ctx.restore();
@@ -780,6 +782,16 @@ button:disabled { opacity: .35; cursor: default; }
         ell(cx + Math.cos(ang) * r * rx * 0.85, cy + Math.sin(ang) * r * ry * 0.8 - rise * (1 - r), 2.6, 2, i % 3 ? '#b0773e' : '#c98d4c', '#5d3418', 0.6);
       }
     };
+    const MK = BOWL_MASK.get(o), MB = MASK_BOX.get(o);
+    // kibble fills the user's painted mask: an ellipse over the mask's box, a little lower and smaller as it empties
+    if (o.kind === 'food' && MK && MK.naturalWidth && MB) {
+      const sc = w / S.img.naturalWidth, mcx = x - w / 2 + (MB[0] + MB[2]) / 2 * sc, mcy = top + (MB[1] + MB[3]) / 2 * sc;
+      const mrx = (MB[2] - MB[0]) / 2 * sc, mry = (MB[3] - MB[1]) / 2 * sc, f = S.flat ? 0.55 + 0.45 * a : 0.7 + 0.3 * a;
+      const crx = mrx * 1.08 * f, cry = mry * 1.08 * f, ccy = mcy + (S.flat ? 0 : (1 - a) * mry * 0.5);
+      const n = Math.round(Math.max(14, crx * cry * 0.32));
+      inMask([x - w / 2, top, w, h], () => kibble(mcx, ccy, crx, cry, n, S.flat ? 3 + a * 5 : a * 2.5), g => g.drawImage(MK, x - w / 2, top, w, h));
+      return;
+    }
     if (S.flat) {   // a heap on the plate, rounder as it fills
       const k = 0.45 + 0.55 * a;
       kibble(x, r0, S.rim[1] * k, S.rim[2] * k, 14 + Math.round(22 * a), 3 + a * 5);
@@ -789,7 +801,6 @@ button:disabled { opacity: .35; cursor: default; }
       if (o.kind === 'water') drawWater(o, x, r0, S.rim[1], S.rim[2], a);
       else kibble(x, r0 + (0.2 + (1 - a) * 5) * qy, 21 * qx * (0.72 + 0.28 * a), 6.4 * qy * (0.72 + 0.28 * a), 26, a * 2.5);
     };
-    const MK = BOWL_MASK.get(o);
     if (MK && MK.naturalWidth) { inMask([x - w / 2, top, w, h], content, g => g.drawImage(MK, x - w / 2, top, w, h)); return; }
     ctx.save(); ctx.beginPath(); ctx.ellipse(x, r0 + (o.kind === 'water' ? S.rim[2] * 0.12 : 0), S.rim[1], S.rim[2] * (o.kind === 'water' ? 1.1 : 1), 0, 0, Math.PI * 2); ctx.clip();
     content();
