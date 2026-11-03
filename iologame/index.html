@@ -804,6 +804,14 @@ button:disabled { opacity: .35; cursor: default; }
       const crx = mrx * 1.08 * f, cry = mry * 1.08 * f, ccy = mcy + (S.flat ? 0 : (1 - a) * mry * 0.5);
       const n = Math.round(Math.max(12, crx * cry * 0.2));
       inMask([x - w / 2, top, w, h], () => kibble(mcx, ccy, crx, cry, n, S.flat ? 3 + a * 5 : a * 2.5), g => g.drawImage(MK, x - w / 2, top, w, h));
+      // a few loose leaves stick out over the edge of the mask, so the salad's outline isn't a clean cut
+      if (a > 0.25) {
+        const m = Math.round((crx + cry) * 0.35 * Math.min(1, a * 1.3));
+        for (let i = 0; i < m; i++) {
+          const ang = Math.PI * (1.02 + 0.96 * hash(i, 61)), rr = 0.86 + 0.14 * hash(i, 63);   // along the back and the sides
+          leaf(mcx + Math.cos(ang) * crx * rr, ccy + Math.sin(ang) * cry * rr - (S.flat ? 1 : 0.6) * a, hash(i, 67) * Math.PI * 2, i + 3);
+        }
+      }
       return;
     }
     if (S.flat) {   // a heap on the plate, rounder as it fills
