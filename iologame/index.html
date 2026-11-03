@@ -1259,7 +1259,7 @@ button:disabled { opacity: .35; cursor: default; }
   const SH = { s: 0.72, A: [4, 32], U: [62.5, 30.2], H: 281, BK: [63, -31], X0: 6.55 };
   SH.FY = SH.s; SH.W = 4.4 * SH.s;   // its back against gy = 0
   // the cells' openings on the front face: columns (along the front) and rows (top to bottom), sprite units
-  const SH_COLS = [[0.16, 1.36], [1.49, 2.8], [2.93, 4.24]], SH_ROWS = [[17, 100], [117, 183], [199, 263]];   // tops at the underside of each board's front edge
+  const SH_COLS = [[0.155, 1.34], [1.495, 2.78], [2.925, 4.265]], SH_ROWS = [[11, 92], [104, 183], [196, 271]];   // measured on the sprite: inner edges of the uprights, underside of each board's front face down to the next board's top edge
   // a point of the sprite on screen: t along the front, h down from its top, back towards the wall
   const shelfPt = (t, h, back = 0) => { const [bx, by] = iso(SH.X0, SH.FY); return [bx + SH.s * (SH.U[0] * t + SH.BK[0] * back), by + SH.s * (SH.U[1] * t + h - SH.H + SH.BK[1] * back)]; };
   const SHELF_DEPTH = SH.X0 + SH.FY;
@@ -1270,30 +1270,12 @@ button:disabled { opacity: .35; cursor: default; }
   const SLOTS = [];
   for (let r = 0; r <= 3; r++) for (let c = 0; c < 3; c++) {
     const t = (SH_COLS[c][0] + SH_COLS[c][1]) / 2, h = r < 3 ? SH_ROWS[2 - r][1] : 0;
-    // in a cell: in the middle of the opening; the top row is tall enough to sit half way back, the two lower ones
-    // are lower, so things sit near the front there or their top would be cut by the board above; on top: middle of the board
-    const back = r === 2 ? 0.485 : r < 2 ? 0.12 : 0.5, side = r === 2 ? 0.24 : r < 2 ? 0.06 : 0;
+    // in a cell: right in its middle, seen through the opening (cut by its edges, never resized); on top: middle of the board
+    const back = r < 3 ? 0.485 : 0.5, side = r < 3 ? 0.24 : 0;
     SLOTS.push([SH.X0 + SH.s * (t - side), SH.FY - SH.s * back, SH.s * (SH.H - h)]);
   }
   const isStored = o => stackRoot(o).stored != null;
   // a thing in a cell is only seen through the cell's front opening: clip to it so its top hides under the board above
-  // how tall a thing stands, scene px (bowls and plates fit their cell as they are)
-  function standH(o) {
-    const nh = im => im && im.naturalWidth ? im.naturalHeight / im.naturalWidth : 1.3;
-    if (o === bottle) { const F = CARAFE[carafeFrame(o)]; return F && F.a ? F.a[1] * CAR_K : 60; }
-    const S = SOLIS.find(S => S.o === o); if (S) return S.w * nh(S.img);
-    if (o === mirror) return MIRROR_W * nh(MIRROR_IMG);
-    const j = garden.jars.indexOf(o); if (j >= 0) { const [x0, y0, x1, y1] = OB.jar; return (y1 - y0) * JAR_W[j] / (x1 - x0); }
-    if (BAGS.includes(o)) return 50;
-    return 0;
-  }
-  // a thing taller than its cell is drawn a little smaller so it stands whole under the board above
-  function fitH(o, si) {
-    const hh = standH(o); if (!hh) return 1;
-    const [h0, h1] = SH_ROWS[2 - Math.floor(si / 3)], back = (SH.FY - SLOTS[si][1]) / SH.s;
-    const room = (h1 - h0) * SH.s - SH.U[1] * SH.s * back - 4;
-    return Math.min(1, room / hh);
-  }
   function clipToCell(o) {
     const si = stackRoot(o).stored;
     if (si == null || si >= 9 || (dragging && (dragging.o === o || dragging.o === stackRoot(o)))) return;
@@ -2893,8 +2875,8 @@ button:disabled { opacity: .35; cursor: default; }
         ctx.save();
         clipToCell(o);
         if (onTable) ctx.translate(0, -o.rest);
-        // in a shelf cell, something too wide (the plate) is drawn smaller so it fits between the walls
-        { const si = stackRoot(o).stored, ww = o === sock ? SOCK_IMG.naturalWidth / 2 : typeof w === 'number' ? w : 0, sc = si != null && si < 9 && !BOWLS.includes(o) ? Math.min(ww ? Math.min(1, 44 / ww) : 1, fitH(o, si)) : 1;   // (the socks lie flat: their full width)
+        // in a shelf cell nothing is resized, only cut by the opening (except the socks lying flat, wider than any cell)
+        { const si = stackRoot(o).stored, ww = o === sock ? SOCK_IMG.naturalWidth / 2 : typeof w === 'number' ? w : 0, sc = si != null && si < 9 && o === sock && ww ? Math.min(1, 44 / ww) : 1;   // (the socks lie flat: their full width)
           if (sc < 1 && !(dragging && dragging.o === o)) { ctx.translate(x, y + o.rest); ctx.scale(sc, sc); ctx.translate(-x, -(y + o.rest)); } }
         // a little shadow under things put in the shelf, like on the sobans
         if (o.stored != null && !o.on && !o.lift) {
