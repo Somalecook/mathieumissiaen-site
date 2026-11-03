@@ -1002,7 +1002,7 @@ button:disabled { opacity: .35; cursor: default; }
     // knocks: floating things push each other (and whatever stands on the grass), bounce off the big
     // furniture, and the ball caroms off them; a real knock makes both rock and splashes a little
     const rOf = o => o === sock ? 0.3 : BOWLS.includes(o) || o === plate2 ? 0.32 : BAGS.includes(o) ? 0.26 : 0.22;
-    const fixed = [[crate, 0.95], [bin, 0.45], [basket, 0.45], [bed, 0.75], [stump, 0.3], [signpost, 0.2], [TAP, 0.25], ...TABLES.map(T => [T.o, 0.6])];
+    const fixed = [[crate, 0.95], [bin, 0.45], [bed, 0.75], [stump, 0.3], [signpost, 0.2], [TAP, 0.25], ...TABLES.map(T => [T.o, 0.6])];
     const knock = (o, v) => {
       if (v < 0.08) return;
       o.wob = Math.max(o.wob || 0, Math.min(0.8, v * 2));
@@ -1270,10 +1270,8 @@ button:disabled { opacity: .35; cursor: default; }
   const SLOTS = [];
   for (let r = 0; r <= 3; r++) for (let c = 0; c < 3; c++) {
     const t = (SH_COLS[c][0] + SH_COLS[c][1]) / 2, h = r < 3 ? SH_ROWS[2 - r][1] : 0;
-    // in a cell: half way back and as much to the left, in the middle of the cell, cropped by the boards and
-    // uprights like seen through the opening; on top: in the middle of the board
-    const b = r < 3 ? 0.5 : 0;
-    SLOTS.push([SH.X0 + SH.s * (t - b), SH.FY - SH.s * (r < 3 ? b : 0.5), SH.s * (SH.H - h)]);
+    // in a cell: right in its middle, half way between the front and the back; on top: in the middle of the board
+    SLOTS.push([SH.X0 + SH.s * (t - (r < 3 ? 0.24 : 0)), SH.FY - SH.s * (r < 3 ? 0.485 : 0.5), SH.s * (SH.H - h)]);
   }
   const isStored = o => stackRoot(o).stored != null;
   // a thing in a cell is only seen through the cell's front opening: clip to it so its top hides under the board above
@@ -1623,7 +1621,7 @@ button:disabled { opacity: .35; cursor: default; }
   // ---------- pathfinding: the dragon walks around the furniture ----------
   // obstacles are circles on the grid (x, y, radius incl. the dragon's own size)
   function obstacles() {
-    const L = [[bed, 0.8], [soban, 0.66], [soban2, 0.61], [crate, 0.75], [bin, 0.4], [basket, 0.4], [TAP, 0.25], [stump, 0.35], [signpost, 0.22], [bowl, 0.32]];
+    const L = [[bed, 0.8], [soban, 0.66], [soban2, 0.61], [crate, 0.75], [bin, 0.4], [TAP, 0.25], [stump, 0.35], [signpost, 0.22], [bowl, 0.32]];
     for (const o of [...MIX, soli, soli2, soli3]) if (!o.rest) L.push([o, o === plate2 ? 0.36 : MIX.includes(o) ? 0.3 : 0.22]);
     for (const b of BAGS) if (b.present && !b.rest && !b.pour) L.push([b, 0.25]);
     if (!bottle.rest && !bottle.pour && !(bottle.potPour >= 0)) L.push([bottle, 0.18]);
@@ -2249,7 +2247,7 @@ button:disabled { opacity: .35; cursor: default; }
   let cart = [];
   try { cart = JSON.parse(localStorage.getItem('yongi-cart') || '[]').filter(c => c && c.v); } catch (e) { cart = []; }
   const saveCart = () => { try { localStorage.setItem('yongi-cart', JSON.stringify(cart)); } catch (e) {} };
-  const basketAt = (px, py) => { const [x, y] = iso(basket.x, basket.y); return Math.abs(px - x) < 40 && py > y - 52 && py < y + 12; };
+  const basketAt = () => false;   // the basket was taken out of the game
   function addToCart(o) {
     const P = PRODUCTS.get(garden.jars.includes(o) ? 'jar' : o);
     if (!P || !P[3]) return false;
@@ -2933,7 +2931,6 @@ button:disabled { opacity: .35; cursor: default; }
       { d: bottle.pour || bottle.potPour >= 0 ? 999 : dOf(bottle), draw: sunk(bottle, drawBottle, 22) },
       ...BAGS.map(b => ({ d: b.pour ? 999 : dOf(b), draw: b.present ? sunk(b, () => drawBox(b), 30) : () => {} })),
       { d: bin.x + bin.y, draw: sunk(bin, drawBin, [[0, 0, 40], [30, 5, 30]]) },
-      { d: basket.x + basket.y, draw: sunk(basket, drawBasket, 46) },
       { d: dOf(mirror), draw: sunk(mirror, drawMirror, 34) },
       { d: crate.x + crate.y, draw: sunk(crate, drawCrate, [{ path: [[-61, 4], [-1, 36], [56, 0]] }]) },
       ...garden.jars.map((j, i) => ({ d: dragging && dragging.jar === i ? 998 : dOf(j), draw: sunk(j, () => drawJarItem(i), JAR_W[i]) })),
