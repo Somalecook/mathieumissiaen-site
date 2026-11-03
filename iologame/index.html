@@ -127,11 +127,9 @@ button:disabled { opacity: .35; cursor: default; }
         <div class="stat" id="sWater"><label><span>Thirst <i lang="ko">목마름</i></span><span>0</span></label><div class="bar"><i style="background:var(--water)"></i></div></div>
         <div class="stat" id="sJoy"><label><span>Joy <i lang="ko">기쁨</i></span><span>0</span></label><div class="bar"><i style="background:var(--joy)"></i></div></div>
         <div class="stat" id="sEnergy"><label><span>Energy <i lang="ko">기운</i></span><span>0</span></label><div class="bar"><i style="background:var(--energy)"></i></div></div>
-        <div class="stat" id="sFire"><label><span>Fire <i lang="ko">불꽃</i></span><span>0</span></label><div class="bar"><i style="background:var(--fire)"></i></div></div>
       </div>
       <div class="actions">
         <button id="bBall">Throw the ball <i lang="ko">공 던지기</i></button>
-        <button id="bFire">Breathe fire <i lang="ko">불 뿜기</i></button>
       </div>
     </div>
   </div>
@@ -1071,7 +1069,7 @@ button:disabled { opacity: .35; cursor: default; }
     // knocks: floating things push each other (and whatever stands on the grass), bounce off the big
     // furniture, and the ball caroms off them; a real knock makes both rock and splashes a little
     const rOf = o => o === sock ? 0.3 : BOWLS.includes(o) || o === plate2 ? 0.32 : BAGS.includes(o) ? 0.26 : 0.22;
-    const fixed = [[crate, 0.95], [bin, 0.45], [bed, 0.75], [stump, 0.3], [signpost, 0.2], [TAP, 0.25], ...TABLES.map(T => [T.o, 0.6])];
+    const fixed = [[crate, 0.95], [bin, 0.45], [bed, 0.75], [signpost, 0.2], [TAP, 0.25], ...TABLES.map(T => [T.o, 0.6])];
     const knock = (o, v) => {
       if (v < 0.08) return;
       o.wob = Math.max(o.wob || 0, Math.min(0.8, v * 2));
@@ -1725,7 +1723,7 @@ button:disabled { opacity: .35; cursor: default; }
   // ---------- pathfinding: the dragon walks around the furniture ----------
   // obstacles are circles on the grid (x, y, radius incl. the dragon's own size)
   function obstacles() {
-    const L = [[bed, 0.8], [soban, 0.66], [soban2, 0.61], [crate, 0.75], [bin, 0.4], [TAP, 0.25], [stump, 0.35], [signpost, 0.22], [bowl, 0.32]];
+    const L = [[bed, 0.8], [soban, 0.66], [soban2, 0.61], [crate, 0.75], [bin, 0.4], [TAP, 0.25], [signpost, 0.22], [bowl, 0.32]];
     for (const o of [...MIX, soli, soli2, soli3]) if (!o.rest) L.push([o, o === plate2 ? 0.36 : MIX.includes(o) ? 0.3 : 0.22]);
     for (const b of BAGS) if (b.present && !b.rest && !b.pour) L.push([b, 0.25]);
     if (!bottle.rest && !bottle.pour && !(bottle.potPour >= 0)) L.push([bottle, 0.18]);
@@ -2090,7 +2088,7 @@ button:disabled { opacity: .35; cursor: default; }
     const things = [bowl, ...MIX, soli, soli2, soli3, bottle, ...garden.jars].filter(o => !isStored(o) && !(dragging && dragging.o === o)).map(o => [o, 0.26, o.rest || 0, 44]);
     for (const b of BAGS) if (b.present && !isStored(b)) things.push([b, 0.24, b.rest || 0, 40]);
     for (const T of TABLES) things.push([T.o, 0.5, 0, T.z]);
-    things.push([crate, 0.5, 0, 90], [bin, 0.3, 0, 60], [stump, 0.28, 0, 50], [signpost, 0.12, 0, 90]);
+    things.push([crate, 0.5, 0, 90], [bin, 0.3, 0, 60], [signpost, 0.12, 0, 90]);
     for (const [o, r, z0, h] of things) {
       if (ball.z < z0 - 8 || ball.z > z0 + h) continue;   // flying over it, or under the table top
       const dx = ball.x - o.x, dy = ball.y - o.y, d = Math.hypot(dx, dy), R = r + 0.14;
@@ -2432,8 +2430,7 @@ button:disabled { opacity: .35; cursor: default; }
     for (const o of MIX) { const [x, y] = iso(o.x, o.y, zOf(o)), S = MIXSPEC.get(o), k = S.w / 50; if (S.flat ? ((px - x) / (S.w * 0.52)) ** 2 + ((py - y + 6) / 16) ** 2 < 1 : ((px - x) / (27 * k)) ** 2 + ((py - y + 14) / 22) ** 2 < 1) hits.push(o); }
     const [bx, by] = iso(bowl.x, bowl.y, zOf(bowl));
     if (((px - bx) / 28) ** 2 + ((py - by + 8) / 20) ** 2 < 1) hits.push(bowl);
-    const [sx, sy] = iso(stump.x, stump.y);
-    if (Math.abs(px - sx) < 28 && py > sy - 50 && py < sy + 10) hits.push(stump);
+    // (the fire-training stump was taken out of the game)
     if (!sockHidden()) { const [x, y] = iso(sock.x, sock.y, zOf(sock)); if (((px - x) / 32) ** 2 + ((py - y + 8) / 16) ** 2 < 1) hits.push(sock); }
     { const [x, y] = iso(signpost.x, signpost.y, signpost.lift || 0); if (px > x - 42 && px < x + 52 && py > y - 120 && py < y + 6) hits.push(signpost); }
     if (basketAt(px, py)) hits.push(basket);
@@ -2906,12 +2903,6 @@ button:disabled { opacity: .35; cursor: default; }
     if (o.pour) { const to = o.pourTo || plate2, [bx, by] = iso(to.x, to.y, zOf(to)); ctx.save(); ctx.translate(bx + 30, by - 22); ctx.rotate(-0.55); drawFrame(F, 0, 3); ctx.restore(); return; }
     drawFrame(F, x, y + 3);
   }
-  document.getElementById('bFire').onclick = () => {
-    if (stats.energy < 12) { statusEl.textContent = 'Il est trop fatigué pour s\'entraîner'; return; }
-    if (['fire', 'toFire', 'evolve'].includes(dragon.state)) return;
-    if (ball.carried) { ball.carried = false; ball.fetchable = false; ball.x = clampX(dragon.x + 0.3); ball.y = clampY(dragon.y + 0.3); ball.z = 0; }
-    setState('toFire');
-  };
   document.getElementById('bBall').onclick = () => {
     let tx, ty;
     do { tx = rand(1, NX - 1); ty = rand(1, NY - 3); } while (Math.hypot(tx - FRONT.x, ty - FRONT.y) < 5);
@@ -2922,7 +2913,6 @@ button:disabled { opacity: .35; cursor: default; }
   const hud = {
     food: document.getElementById('sFood'), water: document.getElementById('sWater'),
     joy: document.getElementById('sJoy'), energy: document.getElementById('sEnergy'),
-    fire: document.getElementById('sFire'),
   };
   const statusEl = document.getElementById('status');
   function updateHud() {
@@ -3035,7 +3025,6 @@ button:disabled { opacity: .35; cursor: default; }
       { d: bowl.bpour ? 999 : dOf(bowl), draw: sunk(bowl, () => { drawBowl(); ballInBowl(bowl); nestFront(bowl); }, 50) },
       ...MIX.map(m => ({ d: m.bpour ? 999 : bottle.pour && bottle.pourTo === m || BAGS.some(b => b.pour && b.pourTo === m) ? dOf(m) - 0.01 : dOf(m), draw: sunk(m, () => { drawMix(m); ballInBowl(m); nestFront(m); }, MIXSPEC.get(m).w * 0.96) })),
       ...SOLIS.map(S => ({ d: dOf(S.o), draw: sunk(S.o, () => drawSoli(S), S.w * 0.9) })),
-      { d: stump.x + stump.y, draw: sunk(stump, drawStump, 22) },
       { d: signpost.x + signpost.y, draw: sunk(signpost, drawSign, 16) },
       { d: sock.rest ? dOf(sock) : sock.x + sock.y - 0.3, draw: sunk(sock, drawSock, 40) },
       { d: bed.x + bed.y - 0.5, draw: sunk(bed, drawBed, [{ path: frontArc(0, 2, 55, 22) }]) },
