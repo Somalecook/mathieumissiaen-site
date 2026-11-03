@@ -353,7 +353,9 @@ button:disabled { opacity: .35; cursor: default; }
   const BAGS = [box, box2, box3];
   // trash bin for empty boxes, and the big carton new boxes come out of
   const bin = { x: 5.7, y: 0.9, lid: 0 };
-  const basket = { x: 9.1, y: 12.7, pop: 0 };   // the shopping basket: drop an iOLO piece in it, tap it to order
+  const basket = { x: 9.1, y: 12.7, pop: 0 };
+  // a little wooden pedestal floating in the sky off the right of the lawn: set an iOLO piece on it, tap it to open its page
+  const PED = { x: 15.1, y: 8.1, z: 74 }, ped = { o: null, idx: null, hot: false, pop: 0 };   // the shopping basket: drop an iOLO piece in it, tap it to order
   const crate = { x: 9.25, y: 2.05, open: false, taped: true, f: 0 };   // f: how open it is (0 shut, 1 open)
   // pickable flowers, the bouquet in hand and the vases
   // the user's flower sheet: stemless heads grow on the grass, a picked one becomes a sprig in the hand,
@@ -420,7 +422,7 @@ button:disabled { opacity: .35; cursor: default; }
     else { o.amount = Math.max(0, o.amount - q); if (o.amount <= 0.001) o.kind = null; }
   }
   // (the purple plate was removed: kibble goes in the blue plate or a bowl)
-  const dishFor = kind => [...(kind === 'water' ? [bowl] : []), ...MIX].filter(o => !isStored(o) && !covered(o) && level(o, kind) > 0.02).sort((a, b) => Math.hypot(a.x - dragon.x, a.y - dragon.y) - Math.hypot(b.x - dragon.x, b.y - dragon.y))[0] || null;
+  const dishFor = kind => [...(kind === 'water' ? [bowl] : []), ...MIX].filter(o => o !== ped.o && !isStored(o) && !covered(o) && level(o, kind) > 0.02).sort((a, b) => Math.hypot(a.x - dragon.x, a.y - dragon.y) - Math.hypot(b.x - dragon.x, b.y - dragon.y))[0] || null;
   const ball = { x: 3.4, y: 3.8, z: 0, vx: 0, vy: 0, vz: 0, roll: 0, held: false, carried: false, fetchable: false, origin: { ...FRONT } };
   const dragon = { x: 6.2, y: 8, face: 1, state: 'idle', timer: 1.5, phase: 0, moving: false, run: false, hop: 0, dip: 0, blink: 3, tx: 0, ty: 0, purpose: null, thought: null };
   const particles = [];
@@ -445,6 +447,7 @@ button:disabled { opacity: .35; cursor: default; }
       if (s.soban) Object.assign(soban, s.soban);
       if (s.tap) Object.assign(TAP, s.tap, { on: false });
       LAMP.on = !!s.lamp;
+      if (Number.isInteger(s.ped) && s.ped >= 0) ped.idx = s.ped;
       puddle = clamp(+s.puddle || 0, 0, 1);
       soban.lift = TAP.lift = 0;
       // jars that used to sit on the old window sill go onto the soban
@@ -493,7 +496,7 @@ button:disabled { opacity: .35; cursor: default; }
       stats.energy = clamp(stats.energy + away * 0.1, 0, 100);
     }
   } catch (e) {}
-  const save = () => { try { localStorage.setItem('bebe-dragon-v1', JSON.stringify({ at: Date.now(), basket: { x: basket.x, y: basket.y }, bowl4, mirror, stats, bowl, plate, box2, box3, signpost, sock, soban, tap: TAP, lamp: LAMP.on, puddle, bowl2, bowl3, plate2, soli, soli2, soli3, soban2, stump, bed, garden, bottle, box, bin, crate, stage })); } catch (e) {} };
+  const save = () => { try { localStorage.setItem('bebe-dragon-v1', JSON.stringify({ at: Date.now(), ped: ped.o ? SMALL().indexOf(ped.o) : null, basket: { x: basket.x, y: basket.y }, bowl4, mirror, stats, bowl, plate, box2, box3, signpost, sock, soban, tap: TAP, lamp: LAMP.on, puddle, bowl2, bowl3, plate2, soli, soli2, soli3, soban2, stump, bed, garden, bottle, box, bin, crate, stage })); } catch (e) {} };
 
   // ---------- canvas sizing ----------
   let terrain = null;
@@ -2122,7 +2125,12 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     const running = dragon.moving && dragon.run;
     stats.food = clamp(stats.food - dt * 0.32, 0, 100);
     stats.water = clamp(stats.water - dt * 0.45, 0, 100);
-    stats.joy = clamp(stats.joy - dt * 0.22, 0, 100);
+    // flowers in the house cheer him up: a fresh bouquet in a moon jar, a sprig in a bud vase, flowers in the jug; a dead bouquet saddens him
+    let bloom = 0;
+    garden.pots.forEach((b, i) => { if (b) bloom += garden.care[i].wilt < 0.5 ? 0.08 : garden.care[i].wilt >= 1 ? -0.06 : 0.02; });
+    for (const o of [soli, soli2, soli3]) if (o.flower != null) bloom += 0.03;
+    if (bottle.flowers) bloom += Array.isArray(bottle.flowers) ? 0.01 * bottle.flowers.length : 0.06;
+    stats.joy = clamp(stats.joy - dt * (0.22 - bloom), 0, 100);
     if (dragon.state !== 'sleep') stats.energy = clamp(stats.energy - dt * (running ? 1.1 : 0.12), 0, 100);
   }
 
@@ -2378,6 +2386,51 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     [LAMP, ['Vintage Ceiling Lamp, Lyfa Bent Karlby 1950s', 195, '', 55048081375571]],
     ['jar', ['Korean Moon Jar', 210, '', 54856492417363]],
   ]);
+  const prodKey = o => garden.jars.includes(o) ? 'jar' : o;
+  const pedOK = o => SMALL().includes(o) && !!PRODUCTS.get(prodKey(o)) && !covered(o);
+  const pedTop = () => iso(PED.x, PED.y, PED.z + Math.sin(t * 1.3) * 2.5);
+  function pedAt(px, py) { const [x, y] = pedTop(); return Math.abs(px - x) < 64 && py > y - 100 && py < y + 70; }
+  // the piece's page on iolo.paris (the shop sends a variant link on to its product page)
+  function openPiece(o) { const P = PRODUCTS.get(prodKey(o)); if (P && P[3]) window.open('https://iolo.paris/variants/' + P[3], '_blank', 'noopener'); }
+  function pedTick(dt) {
+    if (ped.idx != null) { ped.o = SMALL()[ped.idx] || null; ped.idx = null; }
+    if (ped.o && !(dragging && dragging.o === ped.o)) { ped.o.x = PED.x; ped.o.y = PED.y; ped.o.rest = 0; ped.o.stored = null; ped.o.lift = PED.z + Math.sin(t * 1.3) * 2.5; }
+    ped.pop = Math.max(0, ped.pop - dt * 2.5);
+  }
+  // wood box in the iso grid: half-size in tiles, from z0 up to z1 (px)
+  function woodBox(cx, cy, hs, z0, z1, top, left, right) {
+    const P = (dx, dy, z) => iso(cx + dx, cy + dy, z);
+    const ln = '#3b2514';
+    const face = (pts, c) => { ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); ctx.fillStyle = c; ctx.fill(); ctx.stroke(); };
+    ctx.strokeStyle = ln; ctx.lineWidth = 1.6; ctx.lineJoin = 'round';
+    face([P(-hs, hs, z0), P(hs, hs, z0), P(hs, hs, z1), P(-hs, hs, z1)], left);     // front-left face
+    face([P(hs, hs, z0), P(hs, -hs, z0), P(hs, -hs, z1), P(hs, hs, z1)], right);   // front-right face
+    face([P(-hs, -hs, z1), P(hs, -hs, z1), P(hs, hs, z1), P(-hs, hs, z1)], top);
+  }
+  function drawPedestal() {
+    const b = Math.sin(t * 1.3) * 2.5, k = 1 + Math.sin(ped.pop * Math.PI) * 0.05;
+    const [gx, gy] = iso(PED.x, PED.y, b);
+    ctx.save(); ctx.translate(gx, gy); ctx.scale(k, 1 / k); ctx.translate(-gx, -gy);
+    woodBox(PED.x, PED.y, 0.3, b, b + 9, '#c48a52', '#7e5028', '#9c6634');          // foot
+    woodBox(PED.x, PED.y, 0.17, b + 9, b + PED.z - 10, '#c48a52', '#875630', '#a8703c');   // column
+    // a little grain on the column
+    ctx.strokeStyle = 'rgba(70,40,18,.35)'; ctx.lineWidth = 1;
+    for (const f of [0.35, 0.7]) { const [x0, y0] = iso(PED.x - 0.17 + 0.34 * f, PED.y + 0.17, b + 14), [x1, y1] = iso(PED.x - 0.17 + 0.34 * f, PED.y + 0.17, b + PED.z - 16); ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); }
+    woodBox(PED.x, PED.y, 0.33, b + PED.z - 10, b + PED.z, '#d39c62', '#7e5028', '#9c6634');   // top slab
+    if (ped.hot) { const [x, y] = iso(PED.x, PED.y, b + PED.z); ctx.setLineDash([3, 4]); ell(x, y, 46, 22, null, 'rgba(17,17,17,.55)', 1.4); ctx.setLineDash([]); }
+    ctx.restore();
+    // what to do, beneath it, in the bar's type: English, with the Korean lighter beneath
+    const ink = lampK > 0.5 ? '242,242,242' : '17,17,17', [tx, ty] = iso(PED.x, PED.y, 0);
+    ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillStyle = `rgb(${ink})`;
+    ctx.font = '500 12px "Helvetica Neue", Helvetica, Arial, sans-serif';
+    try { ctx.letterSpacing = '1.5px'; } catch (e) {}
+    const L = ped.o ? ['TAP IT TO DISCOVER IT'] : ['PLACE AN OBJECT HERE', 'AND DISCOVER IT'];
+    L.forEach((s, i) => ctx.fillText(s, tx, ty + 48 + i * 16));
+    try { ctx.letterSpacing = '0.4px'; } catch (e) {}
+    ctx.font = '500 11px "Noto Sans KR", "Apple SD Gothic Neo", sans-serif'; ctx.fillStyle = `rgba(${ink},.55)`;
+    ctx.fillText(ped.o ? '눌러서 알아보세요' : '물건을 올려놓고 알아보세요', tx, ty + 48 + L.length * 16 + 2);
+    ctx.restore();
+  }
   const productEl = document.getElementById('product');
   let productShown = null;
   function showProduct(px, py) {
@@ -2562,6 +2615,8 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
         o.x = clamp(gx, 0.7, NX - 0.7); o.y = clamp(gy, 0.7, NY - 0.7); o.lift = 14; o.rest = 0;
       }
       { const ti = TABLES.findIndex(T => T.o === o); if (ti >= 0) for (const it of SMALL()) if (it.rest && !isStored(it) && !it.on && (it.tbl || 0) === ti) { it.x += o.x - ox0; it.y += o.y - oy0; it.lift = 14; } }   // what's on it comes along
+      ped.hot = pedOK(o) && pedAt(px, py);
+      if (ped.hot) Object.assign(o, { x: PED.x, y: PED.y, rest: 0, stored: null, on: null, tbl: 0, lift: PED.z + 8 });
       syncStack();
       if (wasInBed) { dragon.x = bed.x; dragon.y = bed.y; }   // he keeps sleeping while you carry the bed
       if ((o === bowl && dragon.state === 'drink') || (MIX.includes(o) && ['eat', 'drink'].includes(dragon.state))) setState('idle', 0.5);
@@ -2630,6 +2685,16 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
         o.settle = 1; syncStack();
       }
       basket.hot = false;
+      if (dragging.moved) {
+        if (ped.hot) {
+          // the piece already on it goes back on the lawn, in front of the shelf
+          if (ped.o && ped.o !== o) { Object.assign(ped.o, { x: 8.4, y: 3.6, lift: 0, rest: 0, stored: null, on: null }); ped.o.settle = 1; }
+          ped.o = o; ped.pop = 1; Object.assign(o, { x: PED.x, y: PED.y, rest: 0, stored: null, on: null, tbl: 0, pour: false });
+          const [x, y] = iso(PED.x, PED.y, PED.z); for (let i = 0; i < 4; i++) setTimeout(() => puff('heart', x + rand(-16, 16), y - 50), i * 110);
+        } else if (ped.o === o) ped.o = null;
+        syncStack();
+      } else if (o === ped.o) openPiece(o);
+      ped.hot = false;
       if (!dragging.moved && o === crate) { if (!crate.open) { crate.open = true; const [x, y] = iso(crate.x, crate.y); puff('dust', x, y - 60, { size: 5 }); } else if (crate.f > 0.9) takeNewBox(); }
       if (BAGS.includes(o) && Math.hypot(o.x - bin.x, o.y - bin.y) < 0.8) {
         o.present = false; o.pour = false; bin.lid = 1;
@@ -3160,6 +3225,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     drawLampPool(dt);
     drawPuddle();
     drawFootprints(dt);
+    pedTick(dt);
     // things on the soban are drawn just after it, in their own front-to-back order
     const dOf = depthOf;
     // depth-sort the things standing on the terrain
@@ -3180,6 +3246,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       { d: TAP.x + TAP.y, draw: sunk(TAP, drawTap, 22) },
       { d: SHELF_DEPTH, draw: sunk(SHELF_O, drawShelf, [{ path: SHELF_FOOT.map(([px, py]) => [px * SH.s, py * SH.s]) }, [274 * SH.s, 141 * SH.s + 1, 30], [270 * SH.s, 139 * SH.s - 1, 18]]) },
       { d: LAMP.x + LAMP.y, draw: drawLamp },
+      { d: PED.x + PED.y - 0.05, draw: drawPedestal },
       { d: dragon.x + dragon.y + (['eat', 'drink'].includes(dragon.state) ? 0.6 : 0), draw: drawDragon },   // eating: head over the dish
       { d: ball.x + ball.y + (ball.held ? 100 : 0.01), draw: drawBall },
     ].sort((a, b) => a.d - b.d);
