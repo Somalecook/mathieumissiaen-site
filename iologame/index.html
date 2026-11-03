@@ -674,7 +674,8 @@ button:disabled { opacity: .35; cursor: default; }
   // a bowl nested in the other one is drawn a little smaller, so it really fits inside
   const nestW = d => d === bowl ? 52 : MIXSPEC.get(d).w;
   // its scale: a bit narrower than the (maybe already shrunk) bowl it sits in
-  const nestK = o => { const b = stackBase(o); return b ? Math.min(1, nestW(b) * nestK(b) * 0.84 / nestW(o)) : 1; };
+  // each bowl set inside another is 5% smaller than the one it sits in (never wider than it)
+  const nestK = o => { const b = stackBase(o); return b ? 0.95 * nestK(b) * Math.min(1, nestW(b) / nestW(o)) : 1; };
   function nestScale(o, x, y) {
     const b = stackBase(o);
     if (!b) return;
