@@ -297,7 +297,7 @@ button:disabled { opacity: .35; cursor: default; }
     const rw = Math.min(GL.width, Math.ceil(p1.x)) - rx, rh = Math.min(GL.height, Math.ceil(p1.y)) - ry;
     if (rw <= 0 || rh <= 0) return;
     gctx.setTransform(1, 0, 0, 1, 0, 0); gctx.clearRect(rx, ry, rw, rh);
-    gctx.setTransform(m); gctx.filter = 'none'; gctx.globalAlpha = 1;
+    gctx.setTransform(m); gctx.filter = 'none'; gctx.globalAlpha = 1; gctx.imageSmoothingQuality = 'high';
     ctx = gctx;
     try { body(); gctx.globalCompositeOperation = 'source-atop'; blades(); }
     finally { gctx.globalCompositeOperation = 'source-over'; ctx = main; }
@@ -319,7 +319,7 @@ button:disabled { opacity: .35; cursor: default; }
     const rw = Math.min(L.width, Math.ceil(Math.max(...P.map(q => q.x)) + 2)) - rx, rh = Math.min(L.height, Math.ceil(Math.max(...P.map(q => q.y)) + 2)) - ry;
     if (rw <= 0 || rh <= 0) return;
     g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(rx, ry, rw, rh);
-    g.setTransform(m); g.globalAlpha = 1; g.filter = 'none'; g.globalCompositeOperation = 'source-over';
+    g.setTransform(m); g.globalAlpha = 1; g.filter = 'none'; g.globalCompositeOperation = 'source-over'; g.imageSmoothingQuality = 'high';
     ctx = g; mDepth++;
     try { body(); g.setTransform(m); g.globalAlpha = 1; g.globalCompositeOperation = 'destination-in'; mask(g); }
     finally { g.globalCompositeOperation = 'source-over'; ctx = main; mDepth--; }
@@ -515,7 +515,8 @@ button:disabled { opacity: .35; cursor: default; }
 
   function resize() {
     const r = cv.getBoundingClientRect();
-    dpr = clamp((r.width * (window.devicePixelRatio || 1)) / W, 0.5, 2);
+    // at least twice the screen pixels: on a plain 1x screen the browser then shrinks a sharp image (supersampling)
+    dpr = clamp((r.width * Math.max(2, window.devicePixelRatio || 1)) / W, 0.5, 3);
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     terrain = buildTerrain();
   }
@@ -526,7 +527,9 @@ button:disabled { opacity: .35; cursor: default; }
     const c = document.createElement('canvas');
     c.width = cv.width; c.height = cv.height;
     const g = c.getContext('2d');
-    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // built straight at its zoomed size, so it's drawn 1:1 each frame (no blurry or jaggy resampling)
+    g.setTransform(dpr * ZOOM, 0, 0, dpr * ZOOM, dpr * W / 2 * (1 - ZOOM), dpr * H / 2 * (1 - ZOOM));
+    g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
 
     // the sky is painted unzoomed every frame (see ZOOM), so the terrain layer stays transparent around it
     if (SOL.ready) {
@@ -3036,10 +3039,13 @@ button:disabled { opacity: .35; cursor: default; }
       if (p.life <= 0) particles.splice(i, 1);
     }
 
+    // sprites are painted much bigger than they show: the best downscaling filter keeps their lines clean
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.drawImage(skyCanvas(), 0, 0, W, H);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.drawImage(terrain, 0, 0);
     ctx.setTransform(dpr * ZOOM, 0, 0, dpr * ZOOM, dpr * W / 2 * (1 - ZOOM), dpr * H / 2 * (1 - ZOOM));
-    ctx.drawImage(terrain, 0, 0, W, H);
     // moving clouds removed: the painted sky has its own
     drawFlowers();
 
