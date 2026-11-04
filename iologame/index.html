@@ -2530,7 +2530,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     delete grow.welcome; grow.pend = (Math.random() * STICKERS.length) | 0; saveGrow();
     setTimeout(() => toast('Welcome! Here is your first sticker, tap the sky to stick it', '환영해요! 첫 스티커예요, 하늘을 눌러 붙여 보세요', 7), 1200);
   }
-  const STW = 33;   // a sticker's width in the scene
+  const STW = 50;   // a sticker's width in the scene (75% of the first size)
   const stickerSize = i => { const im = STICKERS[i]; return im.naturalWidth ? [STW, STW * im.naturalHeight / im.naturalWidth] : [STW, STW]; };
   function stickerAt(px, py) {
     for (let k = grow.st.length - 1; k >= 0; k--) { const q = grow.st[k], [w, h] = stickerSize(q.i); if (Math.abs(px - q.x) < w / 2 && Math.abs(py - q.y) < h / 2) return k; }
