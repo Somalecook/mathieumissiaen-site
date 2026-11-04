@@ -2527,7 +2527,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   if (!Array.isArray(grow.st)) grow.st = [];
   if (!(grow.pend >= 0)) grow.pend = null;
   if (grow.welcome) {
-    delete grow.welcome; grow.pend = (Math.random() * STICKERS.length) | 0; saveGrow();
+    delete grow.welcome; grow.pend = 22; saveGrow();   // the first sticker is always the corn dog
     setTimeout(() => toast('Welcome! Here is your first sticker, tap the sky to stick it', '환영해요! 첫 스티커예요, 하늘을 눌러 붙여 보세요', 7), 1200);
   }
   const STW = 50;   // a sticker's width in the scene (75% of the first size)
