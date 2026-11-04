@@ -130,6 +130,7 @@ button:disabled { opacity: .35; cursor: default; }
         <div class="stat" id="sEnergy"><label><span>Energy <i lang="ko">기운</i></span><span>0</span></label><div class="bar"><i style="background:var(--energy)"></i></div></div>
       </div>
       <div class="actions">
+        <button id="bTidy">Tidy up <i lang="ko">정리</i></button>
         <button id="bSound">Sound on <i lang="ko">소리</i></button>
         <button id="bBall">Throw the ball <i lang="ko">공 던지기</i></button>
       </div>
@@ -3461,9 +3462,9 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   window.addEventListener('resize', resize);
   window.addEventListener('pagehide', save);
   // a first game starts with the user's setup: the dishes and soliflores in the shelf, the moon jars with flowers on top
-  if (fresh) {
+  function firstSetup() {
     // the user's first-game setup (screenshot of 2026-10-29): furniture on the lawn, everything else in the shelf
-    const put = (o, si) => { [o.x, o.y, o.rest] = SLOTS[si]; o.stored = si; o.on = null; o.lift = 0; };
+    const put = (o, si) => { [o.x, o.y, o.rest] = SLOTS[si]; o.stored = si; o.on = null; o.tbl = 0; o.lift = 0; o.pour = false; o.bpour = null; };
     Object.assign(signpost, { x: 0.95, y: 12.95 }); Object.assign(bed, { x: 1.42, y: 11.5 });
     Object.assign(soban, { x: 1.34, y: 9.8 }); Object.assign(soban2, { x: 1.5, y: 8.08 });
     Object.assign(crate, { x: 1.45, y: 5.8, open: true, taped: false, f: 1 });
@@ -3479,6 +3480,24 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     put(bottle, 3); put(bowl2, 4); put(soli3, 5);
     put(soli2, 1); put(bowl4, 2); put(mirror, 11);
   }
+  if (fresh) firstSetup();
+  // "Tidy up": everything back in its place in the shelf, the bowls and the vases emptied (stickers and growth stay)
+  function tidyUp() {
+    if (dragging) return;
+    ped.o = null; ball.inBowl = null; ball.carried = false;
+    firstSetup();
+    for (const o of [bowl2, bowl3, bowl4, plate2]) { o.amount = 0; o.kind = null; }
+    bowl.water = 0; bowl.food = 0;
+    garden.pots = [null, null]; garden.care = [0, 1].map(() => ({ water: 1, wilt: 0 }));
+    for (const o of [soli, soli2, soli3]) o.flower = null;
+    bottle.flowers = null; bottle.level = 0;
+    if (['eat', 'drink', 'toBowl', 'toKnock', 'knock', 'toMirror'].includes(dragon.state)) setState('idle', 1);
+    syncStack(); save(); updateHud();
+    const [x, y] = shelfPt(150, 120);
+    for (let i = 0; i < 5; i++) setTimeout(() => puff('dust', x + rand(-60, 60), y + rand(-60, 40), { size: 5 }), i * 70);
+    sfx('etagere' + (1 + Math.floor(Math.random() * 4)), 0.8);
+  }
+  { const b = document.getElementById('bTidy'); if (b) b.onclick = tidyUp; }
   // what's in the shelf stands exactly on its spot (the spots moved a little)
   for (const o of SMALL()) if (o.stored != null && SLOTS[o.stored]) [o.x, o.y, o.rest] = SLOTS[o.stored];
   // things set on a soban sit at its (bigger) height
