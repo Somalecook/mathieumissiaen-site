@@ -2563,7 +2563,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   function drawPendingSticker() {
     if (grow.pend == null) return;
     const bob = Math.sin(t * 3) * 4;
-    if (mouse) drawOneSticker(grow.pend, mouse[0] + 30, mouse[1] - 34 + bob, -0.12, inSky(mouse[0], mouse[1]) ? 1 : 0.6);
+    if (mouse) drawOneSticker(grow.pend, mouse[0], mouse[1], -0.12, inSky(mouse[0], mouse[1]) ? 1 : 0.6);   // right under the fingertip, where it will stick
     else drawOneSticker(grow.pend, 1560, 70 + bob, -0.12);
   }
   // tap the sky with a sticker in hand: it sticks there; tap a stuck one with empty hands to move it
