@@ -56,7 +56,7 @@ h1 { position: absolute; left: 26px; top: 16px; z-index: 1; margin: 0; pointer-e
 #product b { display: block; font-weight: 500; }
 #product span { display: block; opacity: .55; margin-top: .3em; }
 .frame.night #product { color: #f2f2f2; }
-h1 .logo { display: block; width: clamp(110px, 15vw, 230px); height: auto; }
+h1 .logo { display: block; width: clamp(110px, 15vw, 230px); height: auto; opacity: 0; }   /* painted into the canvas, under the hand cursor; the link stays here */
 h1 .ko { font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; font-weight: 500; letter-spacing: .04em; opacity: .55; margin-left: .5em; }
 /* every label carries its Korean twin, lighter, in Noto Sans KR */
 .panel i[lang="ko"] { white-space: nowrap; font-style: normal; font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; letter-spacing: .02em; opacity: .55; margin-left: .35em; text-transform: none; }
@@ -2548,6 +2548,16 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   }
   function drawStickers() { for (const q of grow.st) drawOneSticker(q.i, q.x, q.y, q.r || 0); }
   // the sticker waiting to be stuck follows the hand (or waits, bobbing, in the top right corner on a touch screen)
+  // the game's logo, painted into the canvas where the (invisible, clickable) one sits, so the hand cursor passes over it
+  const LOGO_EL = document.querySelector('h1 .logo');
+  function drawLogo() {
+    if (!LOGO_EL || !LOGO_EL.complete || !LOGO_EL.naturalWidth) return;
+    const c = cv.getBoundingClientRect(), r = LOGO_EL.getBoundingClientRect(), k = cv.width / c.width;
+    if (!r.width) return;
+    ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none';
+    ctx.drawImage(LOGO_EL, (r.left - c.left) * k, (r.top - c.top) * k, r.width * k, r.height * k);
+    ctx.restore();
+  }
   function drawPendingSticker() {
     if (grow.pend == null) return;
     const bob = Math.sin(t * 3) * 4;
@@ -3450,6 +3460,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     drawHand();
     if (garden.bouquet && hover && !(hover[0] < 230 && hover[1] > 730)) drawBouquet(hover[0], hover[1] + 40, garden.bouquet, 70);
     drawPendingSticker();
+    drawLogo();
     drawCursor();
     audioTick(dt);
 
