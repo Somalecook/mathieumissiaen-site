@@ -157,8 +157,14 @@ button:disabled { opacity: .35; cursor: default; }
   const GROW_AT = [150, 450];   // love needed to become a young dragon, then a big one
   const DAY_CAP = 50;           // love earned by caring, per day (the gift comes on top)
   const dayKey = d => d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+  // ?new in the address starts over: a first game, as a new player sees it
+  if (/[?&]new\b/.test(location.search)) {
+    try { ['bebe-dragon-v1', 'yongi-grow', 'yongi-cart'].forEach(k => localStorage.removeItem(k)); } catch (e) {}
+    try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
+  }
   let grow = { xp: 0, day: '', today: 0, streak: 0, gift: false, capped: false };
-  try { Object.assign(grow, JSON.parse(localStorage.getItem('yongi-grow') || '{}')); } catch (e) {}
+  let firstVisit = false;
+  try { const g = localStorage.getItem('yongi-grow'); if (g) Object.assign(grow, JSON.parse(g)); else firstVisit = true; } catch (e) {}
   const saveGrow = () => { try { localStorage.setItem('yongi-grow', JSON.stringify(grow)); } catch (e) {} };
   {
     const now = new Date(), today = dayKey(now), y = new Date(now); y.setDate(now.getDate() - 1);
@@ -167,6 +173,8 @@ button:disabled { opacity: .35; cursor: default; }
       grow.day = today; grow.today = 0; grow.gift = true; grow.capped = false; saveGrow();
     }
   }
+  // the very first visit: a welcome sticker straight in the hand (the daily gift starts the next day)
+  if (firstVisit) { grow.gift = false; grow.welcome = true; saveGrow(); }
   let toastUntil = 0;
   function toast(en, ko, secs = 4) {
     const el = document.getElementById('product'); if (!el) return;
@@ -2514,6 +2522,10 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   const STICKERS = STICKER_SRC.map(u => { const im = new Image(); im.src = u; return im; });
   if (!Array.isArray(grow.st)) grow.st = [];
   if (!(grow.pend >= 0)) grow.pend = null;
+  if (grow.welcome) {
+    delete grow.welcome; grow.pend = (Math.random() * STICKERS.length) | 0; saveGrow();
+    setTimeout(() => toast('Welcome! Here is your first sticker, tap the sky to stick it', '환영해요! 첫 스티커예요, 하늘을 눌러 붙여 보세요', 7), 1200);
+  }
   const STW = 66;   // a sticker's width in the scene
   const stickerSize = i => { const im = STICKERS[i]; return im.naturalWidth ? [STW, STW * im.naturalHeight / im.naturalWidth] : [STW, STW]; };
   function stickerAt(px, py) {
