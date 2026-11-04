@@ -44,7 +44,7 @@ body {
 .top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 #status { display: none; }   /* no text at the top right */
 /* the title sits in the frame's top-left corner, plain black type like the bar below */
-h1 a { pointer-events: auto; display: block; cursor: pointer; }
+h1 a { display: block; }
 h1 { position: absolute; left: 26px; top: 16px; z-index: 1; margin: 0; pointer-events: none;
   font: 500 .95rem "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #111; transition: color .6s; }
 .frame.night h1 { color: #f2f2f2; }
@@ -2358,6 +2358,8 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   cv.addEventListener('pointerleave', () => { mouse = null; showProduct(null); });
   cv.addEventListener('pointerdown', e => {
     const [px, py] = pointerPos(e);
+    // the logo: clicked through the canvas, so the hand cursor keeps its look over it
+    { const r = LOGO_EL && LOGO_EL.getBoundingClientRect(); if (r && r.width && e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) { window.open('https://iolo.paris', '_blank', 'noopener'); return; } }
     if (giftAt(px, py)) { openGift(); return; }
     if (stickerTap(px, py)) return;
     let bx, by;
@@ -2528,7 +2530,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     delete grow.welcome; grow.pend = (Math.random() * STICKERS.length) | 0; saveGrow();
     setTimeout(() => toast('Welcome! Here is your first sticker, tap the sky to stick it', '환영해요! 첫 스티커예요, 하늘을 눌러 붙여 보세요', 7), 1200);
   }
-  const STW = 66;   // a sticker's width in the scene
+  const STW = 33;   // a sticker's width in the scene
   const stickerSize = i => { const im = STICKERS[i]; return im.naturalWidth ? [STW, STW * im.naturalHeight / im.naturalWidth] : [STW, STW]; };
   function stickerAt(px, py) {
     for (let k = grow.st.length - 1; k >= 0; k--) { const q = grow.st[k], [w, h] = stickerSize(q.i); if (Math.abs(px - q.x) < w / 2 && Math.abs(py - q.y) < h / 2) return k; }
