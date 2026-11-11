@@ -1081,15 +1081,27 @@ button:disabled { opacity: .35; cursor: default; }
   }
   // two moon jars: medium and large
   const JAR_W = [40, 54].map(w => w * 1.21);
+  // moon jar mask (painted by the user, 89 × 98 like the sprite), padded so everything above the jar stays visible
+  const JM_IMG = new Image(); JM_IMG.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFkAAABiCAYAAAA7tn/BAAAAgElEQVR42u3Xuw3AMAhAQZv9dyZNVkBGcNekDS/+KOdQ7v7PlKKucWhQT2SRRUZkkUVGZJER+elvdaXc3iGGfMjW7xeDdszq46Lz8XGnr7DcssC6bOOcPGvHszKnzdX5QsqBMwEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACt8AVYHI2YZVggAAAAASUVORK5CYII=';
+  const JM_PX = 120, JM_PY = 320; let JM_C = null;
+  function jarMaskCanvas() {
+    if (JM_C) return JM_C;
+    if (!JM_IMG.complete || !JM_IMG.naturalWidth) return null;
+    const c = document.createElement('canvas'); c.width = 89 + JM_PX * 2; c.height = 98 + JM_PY;
+    const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.drawImage(JM_IMG, JM_PX, JM_PY); g.fillStyle = '#000'; g.fillRect(0, 0, c.width, JM_PY + 2);
+    return (JM_C = c);
+  }
   function drawVase(i, px, py) {
     const JW = JAR_W[i], k = JW / 40, [x0, y0, x1, y1] = OB.jar, JH = (y1 - y0) * JW / (x1 - x0);
     const b = garden.pots[i], j = garden.jars[i];
     obj(OB.jar, px, py + 2, JW);
     if (b) {
       // stems come out of the opening: clip the bouquet at the front lip of the jar
-      ctx.save(); ctx.beginPath(); ctx.rect(px - 80, py - 200, 160, 200 - JH + 2 + JH * 0.11); ctx.clip();
-      drawBouquet(px, py + 2 - JH * 0.4, b, 74 * (0.55 + 0.45 * k), garden.care[i].wilt);   // stems sink deep into the jar
-      ctx.restore();
+      // the user's painted mask: the bouquet shows through the opening and above it, the front lip stays in front
+      const bq = () => drawBouquet(px, py + 2 - JH * 0.4, b, 74 * (0.55 + 0.45 * k), garden.care[i].wilt);   // stems sink deep into the jar
+      const MC = jarMaskCanvas();
+      if (MC) { const s = JW / 89, mx = px - JW / 2 - JM_PX * s, my = py + 2 - JH - JM_PY * s; inMask([px - 90, py - 200, 180, 200 - JH * 0.6], bq, g => g.drawImage(MC, mx, my, MC.width * s, MC.height * s)); }
+      else { ctx.save(); ctx.beginPath(); ctx.rect(px - 80, py - 200, 160, 200 - JH + 2 + JH * 0.11); ctx.clip(); bq(); ctx.restore(); }
     }
   }
   function drawJarItem(i) {
