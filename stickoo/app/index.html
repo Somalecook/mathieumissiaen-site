@@ -1267,6 +1267,20 @@ html.kcahier .kbs img{filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff
 html.kcahier .kbs.sel img{filter:drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 0 8px rgba(255,110,170,.95))}
 html.kcahier .kbt{border-color:#ffb3d1;box-shadow:0 4px 0 #ffb3d1}
 html.kcahier .kbtray-st{background:rgba(255,255,255,.85);box-shadow:0 4px 10px rgba(140,100,190,.18)}
+/* Mon cahier: sticker drawer */
+html.kcahier .kbdrawer{flex:none;position:relative;box-sizing:border-box;width:min(calc(100% - 20px),500px);margin:8px auto 4px;padding:8px 6px 8px;border-radius:26px;background:radial-gradient(circle at 8% 20%,#fff 0 1.6px,transparent 2.4px),radial-gradient(circle at 93% 30%,#fff 0 1.8px,transparent 2.6px),linear-gradient(180deg,rgba(255,248,255,.97),rgba(240,228,255,.97) 60%,rgba(226,238,255,.97));border:3px solid #fff;box-shadow:0 0 0 2.5px #b98cff,0 6px 0 #8f5fd0,0 10px 22px rgba(40,10,70,.35)}
+html.kcahier .kbdrawer .kbhint{margin:0 6px 6px!important;padding:0!important;color:#8a4ab0!important;font:800 min(1.85vh,.88rem)/1.2 "Baloo 2","Fredoka","Jua","Noto Sans KR",sans-serif!important;font:800 min(1.85dvh,.88rem)/1.2 "Baloo 2","Fredoka","Jua","Noto Sans KR",sans-serif!important;text-align:center;letter-spacing:.01em}
+html.kcahier .kbdrawer .kbhint::before{content:"✨ "}
+html.kcahier .kbdrawer .kbtray{max-width:none;gap:10px;padding:4px 10px 8px!important;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 12px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 12px),transparent 100%)}
+html.kcahier .kbdrawer .kbtray::-webkit-scrollbar{display:none}
+html.kcahier .kbdrawer .kbtray-st{--bg:#ffe0f0;--sh:#f3a6cf;flex:0 0 min(8.6vh,62px)!important;flex:0 0 min(8.6dvh,62px)!important;height:min(8.6vh,62px)!important;height:min(8.6dvh,62px)!important;border-radius:50%;padding:5px;border:3px solid #fff;background:radial-gradient(circle at 35% 28%,#fff 0 18%,var(--bg) 60%);box-shadow:0 0 0 2px var(--sh),0 4px 0 var(--sh)!important;transition:transform .15s;scroll-snap-align:center}
+html.kcahier .kbdrawer .kbtray-st:nth-child(5n+2){--bg:#ece0ff;--sh:#c6a7f2}
+html.kcahier .kbdrawer .kbtray-st:nth-child(5n+3){--bg:#d9f6ee;--sh:#8fd8c2}
+html.kcahier .kbdrawer .kbtray-st:nth-child(5n+4){--bg:#dcecff;--sh:#9cc3f2}
+html.kcahier .kbdrawer .kbtray-st:nth-child(5n+5){--bg:#fff0d6;--sh:#f2c68c}
+html.kcahier .kbdrawer .kbtray-st img{filter:drop-shadow(0 2px 2px rgba(110,60,150,.25));transform:scale(1.08)}
+html.kcahier .kbdrawer .kbtray-st:active{transform:scale(.9)}
+
 
 .kpage.rare{background:radial-gradient(circle at 1px 1px,rgba(150,120,220,.25) 1px,transparent 1.6px) 0 0/16px 16px,linear-gradient(90deg,rgba(110,80,160,.18) 0,rgba(110,80,160,0) 22px),#f6f1ff}
 .kpage.rare .ktape{background:repeating-linear-gradient(45deg,rgba(255,255,255,.4) 0 6px,transparent 6px 12px),linear-gradient(90deg,#ffd1e3,#d7c4ff,#bfe6ff);color:#5b3f8a}
@@ -1669,6 +1683,8 @@ html.klang-screen .klp.klp2-card{width:min(94vw,500px)!important;margin:0 auto;p
 .klp2-c.on{background:linear-gradient(160deg,#ff9fd2,#b98cff 55%,#7fc8ff);box-shadow:0 0 0 3px #7b2d8e,0 5px 0 #5b2380,0 0 16px rgba(255,120,200,.6);transform:scale(1.1)}
 .klp2-c.on span{color:#fff;text-shadow:0 2px 0 #7b2d8e}
 .klp2-c.off{opacity:.35;filter:grayscale(.6)}
+html body .klp2-t .klp2-nm{font-style:normal;color:#ffe066!important;text-shadow:inherit}
+
 .klp2-c:active{transform:scale(.92)}
 
 /* language page — readability & composition */
@@ -5351,6 +5367,22 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
   RESET_TXT.zh = "注意！所有进度都会被删除（星星、贴纸、奖杯、本子）。再点一下就全部清除。";
   delete RESET_TXT.it;
   const LANGROW_TXT = { fr: ["Je parle", "J’apprends"], en: ["I speak", "I learn"], es: ["Hablo", "Aprendo"], ko: ["나는 말해요", "나는 배워요"], ja: ["はなす", "まなぶ"], zh: ["我会说", "我想学"] };
+  const LANGNAME_TXT = {
+    fr: { fr: "français", en: "anglais", zh: "chinois", es: "espagnol", ko: "coréen", ja: "japonais" },
+    en: { fr: "French", en: "English", zh: "Chinese", es: "Spanish", ko: "Korean", ja: "Japanese" },
+    es: { fr: "francés", en: "inglés", zh: "chino", es: "español", ko: "coreano", ja: "japonés" },
+    ko: { fr: "프랑스어", en: "영어", zh: "중국어", es: "스페인어", ko: "한국어", ja: "일본어" },
+    ja: { fr: "フランス語", en: "えいご", zh: "ちゅうごくご", es: "スペイン語", ko: "かんこくご", ja: "にほんご" },
+    zh: { fr: "法语", en: "英语", zh: "中文", es: "西班牙语", ko: "韩语", ja: "日语" }
+  };
+  const LANGROW_FMT = {
+    fr: [(n) => "Je parle ".concat(n), (n, c) => "J’apprends ".concat(c === "en" || c === "es" ? "l’" : "le ").concat(n)],
+    en: [(n) => "I speak ".concat(n), (n) => "I learn ".concat(n)],
+    es: [(n) => "Hablo ".concat(n), (n) => "Aprendo ".concat(n)],
+    ko: [(n) => "".concat(n, "로 말해요"), (n) => "".concat(n, "를 배워요")],
+    ja: [(n) => "".concat(n, "をはなす"), (n) => "".concat(n, "をまなぶ")],
+    zh: [(n) => "我会说".concat(n), (n) => "我想学".concat(n)]
+  };
   const GO_TXT = { fr: "C’est parti !", en: "Let’s go!", es: "¡Vamos!", ko: "시작!", ja: "はじめよう！" };
   GO_TXT.zh = "开始吧！";
   delete GO_TXT.it;
@@ -5375,8 +5407,14 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     }
     const S2 = K.lsel, ready = S2.n && S2.l && S2.n !== S2.l;
     const LBL = { fr: "FR", en: "EN", zh: "中", es: "ES", ko: "한", ja: "日" }, RT = LANGROW_TXT[S2.n] || LANGROW_TXT.en;
-    const btn = (row2, c) => '<button class="klp2-c '.concat(S2[row2] === c ? "on" : "", " ").concat(row2 === "l" && S2.n === c || row2 === "n" && S2.l === c ? "off" : "", '" data-klp="').concat(row2, ":").concat(c, '" aria-label="').concat(c, '"><span>').concat(LBL[c], "</span></button>");
-    const row = (r) => '<div class="klp2-row"><b class="klp2-t">'.concat(r === "n" ? RT[0] : RT[1], '</b><div class="klp2-chips">').concat(Object.keys(LANG_X).map((c) => btn(r, c)).join(""), "</div></div>");
+    const btn = (row2, c) => '<button class="klp2-c '.concat(S2[row2] === c ? "on" : "", " ").concat(row2 === "l" && S2.n === c || row2 === "n" && S2.l === c ? "off" : "", '" data-klp="').concat(row2, ":").concat(c, '" aria-label="').concat((LANGNAME_TXT[S2.n] || LANGNAME_TXT.en)[c], '"><span>').concat(LBL[c], "</span></button>");
+    const ttl = (r) => {
+      const c = S2[r], base = r === "n" ? RT[0] : RT[1];
+      if (!c) return base;
+      const f = (LANGROW_FMT[S2.n] || LANGROW_FMT.en)[r === "n" ? 0 : 1], nm = (LANGNAME_TXT[S2.n] || LANGNAME_TXT.en)[c];
+      return f('<em class="klp2-nm">'.concat(nm, "</em>"), c);
+    };
+    const row = (r) => '<div class="klp2-row"><b class="klp2-t">'.concat(ttl(r), '</b><div class="klp2-chips">').concat(Object.keys(LANG_X).map((c) => btn(r, c)).join(""), "</div></div>");
     $("#kids").innerHTML = kidsHeader(true) + '<div class="klp2"><img class="klp2-logo" src="kid/sky/logo_kids.webp?v=1" alt="Stickoo" draggable="false"><div class="klp klp2-card">'.concat(row("n")).concat(row("l"), '</div></div>\n    <div class="klp-row"><button class="klp-go').concat(ready ? "" : " kdim", '" data-k="langgo">').concat(GO_TXT[S2.n || UIL] || GO_TXT.en, ' <span>▶</span></button><button class="kreset" data-k="slots" aria-label="Players">👤 ').concat(esc((SLOT_TXT[S2.n] || SLOT_TXT.en).who), "</button></div>");
   }
   function kidsLangPick(row, c) {
@@ -5979,7 +6017,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.55";
+  const APP_VER = "1.0.56";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
@@ -6877,7 +6915,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     document.documentElement.classList.add("kcahier");
     const k = kidsState();
     const owned = [...KS(), ...KID_RARE].filter((f) => k.album.includes(f));
-    $("#kids").innerHTML = kidsHeader(true) + '<div class="kcdeco" aria-hidden="true"><i style="left:6%;top:14%;--c:#ffd36b">★</i><i style="right:7%;top:20%;--c:#b9a3ff">✿</i><i style="left:4%;top:52%;--c:#ff9ec7">✦</i><i style="right:5%;top:58%;--c:#7fd8c4">★</i><i style="left:8%;bottom:10%;--c:#9fc7ff">✿</i><i style="right:9%;bottom:16%;--c:#ffc36b">✦</i><i style="left:46%;top:8%;--c:#c3a8ff">·</i><i style="right:24%;bottom:6%;--c:#ff9ec7">✿</i></div>\n    <div class="kbtabs">'.concat(Array.from({ length: BOARD_PAGES }, (_, i) => '<button class="kbtab '.concat(i === K.bp ? "on" : "", '" data-kbp="').concat(i, '">Page ').concat(i + 1, "</button>")).join(""), '</div>\n    <div class="kbwrap"><div class="kboard" id="kboard"><div class="kbpaper" aria-hidden="true"><span class="kwashi w1"></span><span class="kwashi w2"></span><span class="kwashi w3"></span><span class="kwashi w4"></span><span class="kdood d1">kawaii</span><span class="kdood d2">wow!</span><span class="kdood d3">~cute~</span><svg class="kdsvg" viewBox="0 0 300 400" preserveAspectRatio="none"><path d="M70 72 q30 -26 58 -6 q20 16 6 26 q-12 6 -10 -10 q4 -20 38 -22" fill="none" stroke="#ff8fbf" stroke-width="2.4" stroke-linecap="round"/><path d="M168 86 l8 -2 l-4 8" fill="none" stroke="#ff8fbf" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M226 330 q-30 22 -60 6 q-16 -10 -2 -18 q12 -4 8 10 q-6 18 -40 16" fill="none" stroke="#a77bff" stroke-width="2.4" stroke-linecap="round"/><path d="M138 352 l-8 -2 l5 -7" fill="none" stroke="#a77bff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M250 150 c-6 -10 -20 -2 -12 8 l12 12 l12 -12 c8 -10 -6 -18 -12 -8z" fill="#ffb3cf"/><path d="M66 250 c-4 -7 -14 -1 -8 5 l8 8 l8 -8 c6 -6 -4 -12 -8 -5z" fill="#ffc8dc"/><path d="M262 238 l4 9 l10 1 l-7 7 l2 10 l-9 -5 l-9 5 l2 -10 l-7 -7 l10 -1z" fill="#ffe08a" stroke="#f2b84a" stroke-width="1.2" stroke-linejoin="round"/><circle cx="92" cy="340" r="3" fill="#b9e3ff"/><circle cx="240" cy="96" r="2.6" fill="#c9b6ff"/></svg></div></div><div class="kbtools" id="kbtools" hidden>\n      <button class="kbt" data-kb="smaller" aria-label="Plus petit">➖</button>\n      <button class="kbt" data-kb="bigger" aria-label="Plus grand">➕</button>\n      <button class="kbt" data-kb="rotl" aria-label="Tourner">↺</button>\n      <button class="kbt" data-kb="rotr" aria-label="Tourner">↻</button>\n      <button class="kbt" data-kb="front" aria-label="Devant">⬆️</button>\n      <button class="kbt del" data-kb="del" aria-label="Enlever">🗑️</button>\n    </div></div>\n    <p class="kbhint">').concat(owned.length ? "Prends un sticker en bas avec ton doigt et pose-le sur la page !" : "Gagne des parties pour avoir des stickers à coller ici !", '</p>\n    <div class="kbtray">').concat(owned.map((f) => '<button class="kbtray-st" data-kbdrag="'.concat(f, '"><img src="').concat(kStickerSrc(f), '" alt="" draggable="false"></button>')).join(""), "</div>");
+    $("#kids").innerHTML = kidsHeader(true) + '<div class="kcdeco" aria-hidden="true"><i style="left:6%;top:14%;--c:#ffd36b">★</i><i style="right:7%;top:20%;--c:#b9a3ff">✿</i><i style="left:4%;top:52%;--c:#ff9ec7">✦</i><i style="right:5%;top:58%;--c:#7fd8c4">★</i><i style="left:8%;bottom:10%;--c:#9fc7ff">✿</i><i style="right:9%;bottom:16%;--c:#ffc36b">✦</i><i style="left:46%;top:8%;--c:#c3a8ff">·</i><i style="right:24%;bottom:6%;--c:#ff9ec7">✿</i></div>\n    <div class="kbtabs">'.concat(Array.from({ length: BOARD_PAGES }, (_, i) => '<button class="kbtab '.concat(i === K.bp ? "on" : "", '" data-kbp="').concat(i, '">Page ').concat(i + 1, "</button>")).join(""), '</div>\n    <div class="kbwrap"><div class="kboard" id="kboard"><div class="kbpaper" aria-hidden="true"><span class="kwashi w1"></span><span class="kwashi w2"></span><span class="kwashi w3"></span><span class="kwashi w4"></span><span class="kdood d1">kawaii</span><span class="kdood d2">wow!</span><span class="kdood d3">~cute~</span><svg class="kdsvg" viewBox="0 0 300 400" preserveAspectRatio="none"><path d="M70 72 q30 -26 58 -6 q20 16 6 26 q-12 6 -10 -10 q4 -20 38 -22" fill="none" stroke="#ff8fbf" stroke-width="2.4" stroke-linecap="round"/><path d="M168 86 l8 -2 l-4 8" fill="none" stroke="#ff8fbf" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M226 330 q-30 22 -60 6 q-16 -10 -2 -18 q12 -4 8 10 q-6 18 -40 16" fill="none" stroke="#a77bff" stroke-width="2.4" stroke-linecap="round"/><path d="M138 352 l-8 -2 l5 -7" fill="none" stroke="#a77bff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M250 150 c-6 -10 -20 -2 -12 8 l12 12 l12 -12 c8 -10 -6 -18 -12 -8z" fill="#ffb3cf"/><path d="M66 250 c-4 -7 -14 -1 -8 5 l8 8 l8 -8 c6 -6 -4 -12 -8 -5z" fill="#ffc8dc"/><path d="M262 238 l4 9 l10 1 l-7 7 l2 10 l-9 -5 l-9 5 l2 -10 l-7 -7 l10 -1z" fill="#ffe08a" stroke="#f2b84a" stroke-width="1.2" stroke-linejoin="round"/><circle cx="92" cy="340" r="3" fill="#b9e3ff"/><circle cx="240" cy="96" r="2.6" fill="#c9b6ff"/></svg></div></div><div class="kbtools" id="kbtools" hidden>\n      <button class="kbt" data-kb="smaller" aria-label="Plus petit">➖</button>\n      <button class="kbt" data-kb="bigger" aria-label="Plus grand">➕</button>\n      <button class="kbt" data-kb="rotl" aria-label="Tourner">↺</button>\n      <button class="kbt" data-kb="rotr" aria-label="Tourner">↻</button>\n      <button class="kbt" data-kb="front" aria-label="Devant">⬆️</button>\n      <button class="kbt del" data-kb="del" aria-label="Enlever">🗑️</button>\n    </div></div>\n    <div class="kbdrawer"><p class="kbhint">').concat(owned.length ? "Prends un sticker en bas avec ton doigt et pose-le sur la page !" : "Gagne des parties pour avoir des stickers à coller ici !", '</p>\n    <div class="kbtray">').concat(owned.map((f) => '<button class="kbtray-st" data-kbdrag="'.concat(f, '"><img src="').concat(kStickerSrc(f), '" alt="" draggable="false"></button>')).join(""), "</div></div>");
     renderBoard();
     bindBoard();
   }
