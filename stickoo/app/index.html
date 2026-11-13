@@ -6038,7 +6038,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.71";
+  const APP_VER = "1.0.72";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
@@ -8910,7 +8910,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       } catch (e) {
       }
     };
-    const BAKED = { slots: 2 };
+    const BAKED = { slots: 3 };
     try {
       const done = JSON.parse(localStorage.getItem(LS + "-baked") || "{}");
       let ch = false;
@@ -8935,6 +8935,10 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     const keyOf = (s, q) => s + "|" + q;
     const render = () => {
       let css = "";
+      if (!window.__kEdit) {
+        stl.textContent = "";
+        return;
+      }
       for (const k in data) {
         const i = k.indexOf("|"), s = k.slice(0, i), q = k.slice(i + 1), v = data[k];
         css += 'html[data-kscreen="'.concat(s, '"] ').concat(q, "{translate:").concat(v.x.toFixed(2), "vw ").concat(v.y.toFixed(2), "vw!important;scale:").concat(v.s.toFixed(3), "!important}\n");
@@ -9028,6 +9032,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       if (!INNER && innerWidth > 640) return openStudio();
       if (bar) return;
       edit = true;
+      window.__kEdit = true;
       try {
         localStorage.setItem(ON, "1");
       } catch (e) {
@@ -9037,10 +9042,13 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       bar.innerHTML = '<style>#klbar{position:fixed;left:6px;right:6px;bottom:max(6px,env(safe-area-inset-bottom));z-index:2147483000;background:rgba(25,10,45,.92);color:#fff;border-radius:18px;padding:8px;font:700 12px/1.2 system-ui,sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.45);touch-action:manipulation}#klbar .r{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}#klbar button{border:0;border-radius:11px;padding:8px 9px;background:#3d2466;color:#fff;font:800 12px system-ui,sans-serif}#klbar button[data-kl=copy]{background:#ff4fa3}#klbar .i{text-align:center;margin:0 0 6px;opacity:.85}#klout{position:fixed;inset:10% 6px auto;z-index:2147483001;background:#fff;color:#222;border-radius:16px;padding:10px;box-shadow:0 10px 40px rgba(0,0,0,.5);font:12px system-ui}#klout textarea{width:100%;height:46vh;font:11px monospace}#klout button{margin-top:6px;border:0;border-radius:10px;padding:8px 12px;background:#3d2466;color:#fff;font-weight:800}</style>\n      <p class="i"></p><div class="r">'.concat(btn("mode", "✋ Déplacer")).concat(btn("parent", "⬆ Parent")).concat(btn("minus", "− Taille")).concat(btn("plus", "+ Taille")).concat(btn("pos", "↕")).concat(btn("reset", "↺ Élément")).concat(btn("copy", "📋 Envoyer à Claude")).concat(btn("clear", "🗑 Tout")).concat(btn("quit", "✕"), "</div>");
       document.body.appendChild(bar);
       info = bar.querySelector(".i");
+      render();
       upd();
     };
     const close = () => {
       edit = false;
+      window.__kEdit = false;
+      render();
       select(null);
       bar && bar.remove();
       bar = null;
