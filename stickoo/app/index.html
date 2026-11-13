@@ -1292,8 +1292,8 @@ html.kquiz header.top .brand-logo{scale:1.05;translate:0 min(4.7vw,20px)}
 html.kquiz .kspeak{scale:.864;translate:0 min(3.3vw,14px)}
 .kfly{display:block;width:100%;height:100%;background:url(kid/sky/flyfx.webp?v=1) 0 0/400% 700% no-repeat;animation:kflyFr var(--fd,.6s) steps(4) infinite;animation-delay:var(--fo,0s)}
 @keyframes kflyFr{from{background-position-x:0}to{background-position-x:133.333%}}
-#kseasonfx i.kfly{position:relative;left:0;top:0;background-image:url(kid/sky/flyfx.webp?v=1)!important;background-size:400% 700%!important;background-repeat:no-repeat!important;opacity:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.15))}
-#kseasonfx .kfx-autumn>i.kfly{filter:hue-rotate(-75deg) saturate(1.35) drop-shadow(0 2px 3px rgba(0,0,0,.18))}
+:is(#kseasonfx,#kseasonfront) i.kfly{position:relative;left:0;top:0;background-image:url(kid/sky/flyfx.webp?v=1)!important;background-size:400% 700%!important;background-repeat:no-repeat!important;opacity:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.15))}
+:is(#kseasonfx,#kseasonfront) .kfx-autumn>i.kfly{filter:hue-rotate(-75deg) saturate(1.35) drop-shadow(0 2px 3px rgba(0,0,0,.18))}
 .kfx-gull .kfly{animation-name:kflyFr,kGullBob;animation-duration:var(--fd,.5s),2.4s;animation-timing-function:steps(4),ease-in-out;aspect-ratio:1;height:auto}
 html.kcahier .kbs{z-index:2}
 .khome .kgear-cell{display:grid;place-items:center;min-height:0}
@@ -1502,7 +1502,9 @@ html:root[data-mode="kids"].kquiz[data-season="winter"] body{background:linear-g
 html.kquiz #kids{position:relative;z-index:2}
 #kseasonfx{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;display:none}
 html.kquiz[data-season] #kseasonfx{display:block}
-#kseasonfx i{position:absolute;display:block;opacity:.95;will-change:transform;filter:drop-shadow(0 2px 3px rgba(0,0,0,.18))}
+#kseasonfront{position:fixed;inset:0;pointer-events:none;z-index:30;overflow:hidden;display:none}
+html.kquiz[data-season] #kseasonfront{display:block}
+:is(#kseasonfx,#kseasonfront) i{position:absolute;display:block;opacity:.95;will-change:transform;filter:drop-shadow(0 2px 3px rgba(0,0,0,.18))}
 @keyframes kseasonSway{0%{transform:translate(0,0) rotate(-12deg)}25%{transform:translate(var(--x),28vh) rotate(12deg)}50%{transform:translate(0,56vh) rotate(-12deg)}75%{transform:translate(var(--x),84vh) rotate(12deg)}100%{transform:translate(0,118vh) rotate(-12deg)}}
 @keyframes kseasonFall{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(var(--x),55vh) rotate(180deg)}100%{transform:translate(0,115vh) rotate(360deg)}}
 @keyframes kseasonFloat{0%{transform:translate(0,115vh) rotate(-8deg);opacity:0}10%{opacity:.95}35%{transform:translate(var(--x),75vh) rotate(8deg)}65%{transform:translate(calc(var(--x) * -1),35vh) rotate(-8deg)}90%{opacity:.95}100%{transform:translate(var(--x),-12vh) rotate(8deg);opacity:0}}
@@ -1599,7 +1601,7 @@ html:root[data-mode="kids"].kquiz[data-season="mountain"] body{background:linear
 html.kquiz[data-season="mountain"] #kseasonfx{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 220' preserveAspectRatio='none'%3E%3Cpath d='M0 150 L60 70 L110 125 L170 40 L230 120 L290 60 L350 115 L400 80 L400 220 L0 220Z' fill='%239fb3e2'/%3E%3Cpath d='M170 40 L190 68 L178 66 L165 78 L150 62Z M290 60 L307 84 L296 82 L285 92 L274 80Z M60 70 L74 88 L64 87 L55 96 L47 86Z' fill='%23ffffff' opacity='.9'/%3E%3Cpath d='M0 190 L50 120 L95 165 L150 100 L210 170 L270 110 L330 175 L400 125 L400 220 L0 220Z' fill='%237d93cf'/%3E%3C/svg%3E") center bottom/100% 38% no-repeat}
 html.kquiz[data-season="forest"] #kseasonfx{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 220' preserveAspectRatio='none'%3E%3Cg fill='%232f7a52'%3E%3Cpath d='M20 220 L45 90 L70 220Z M85 220 L115 60 L145 220Z M170 220 L195 100 L220 220Z M240 220 L272 50 L304 220Z M320 220 L348 85 L376 220Z'/%3E%3C/g%3E%3Cg fill='%231f5e3e'%3E%3Cpath d='M-10 220 L18 130 L46 220Z M50 220 L80 110 L110 220Z M130 220 L158 120 L186 220Z M205 220 L238 100 L271 220Z M285 220 L312 125 L339 220Z M350 220 L382 105 L414 220Z'/%3E%3C/g%3E%3C/svg%3E") center bottom/100% 34% no-repeat}
 html.kquiz[data-season="night"] #kseasonfx{background:radial-gradient(circle at 82% 11%,#fffbe6 0 26px,rgba(255,250,220,.35) 27px 34px,rgba(255,250,220,0) 60px)}
-#kseasonfx .kfx-star{position:absolute;color:#fff7c8;text-shadow:0 0 6px rgba(255,240,180,.9);font-style:normal;line-height:1}
+:is(#kseasonfx,#kseasonfront) .kfx-star{position:absolute;color:#fff7c8;text-shadow:0 0 6px rgba(255,240,180,.9);font-style:normal;line-height:1}
 /* tips button: bottom centre */
 html.kquiz .khelp-tg{left:50%!important;right:auto!important;translate:-50% 0;bottom:max(8px,env(safe-area-inset-bottom))!important}
 html.kquiz .khint{padding-bottom:calc(max(10px,env(safe-area-inset-bottom)) + 50px)!important}
@@ -1640,13 +1642,13 @@ html.kquiz .kopt,html.kquiz .kopt:nth-child(n){animation:none!important}
 /* underwater environment */
 html:root[data-mode="kids"].kquiz[data-season="sea"] body{background:linear-gradient(180deg,#5fd0e6 0%,#2aa3c9 35%,#14709e 72%,#0c4f7a 100%) fixed!important}
 html.kquiz[data-season="sea"] #kseasonfx{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200' preserveAspectRatio='none'%3E%3Cpath d='M0 200 Q200 170 400 200Z' fill='%23e8d39a'/%3E%3Cg fill='none' stroke-linecap='round' stroke-width='9'%3E%3Cpath d='M30 200 C10 160 50 130 28 95 C10 70 40 50 30 25' stroke='%2334a37a'/%3E%3Cpath d='M70 200 C90 165 55 140 78 110 C95 88 70 70 82 52' stroke='%2346b98a'/%3E%3Cpath d='M300 200 C280 165 320 140 298 105 C282 80 310 60 300 40' stroke='%2334a37a'/%3E%3Cpath d='M345 200 C365 170 335 145 352 118' stroke='%23e07aa8'/%3E%3Cpath d='M375 200 C360 175 385 150 370 120 C360 100 380 85 372 66' stroke='%2346b98a'/%3E%3Cpath d='M120 200 C110 182 130 170 122 152' stroke='%23e07aa8'/%3E%3C/g%3E%3C/svg%3E") center bottom/100% 30% no-repeat,repeating-linear-gradient(100deg,rgba(255,255,255,.07) 0 40px,rgba(255,255,255,0) 40px 110px)}
-#kseasonfx .kfx-bub{position:absolute;border-radius:50%;background:radial-gradient(circle at 32% 30%,#fff 0 18%,rgba(255,255,255,.35) 22%,rgba(255,255,255,.08) 60%,rgba(255,255,255,.5) 100%);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.65)}
-#kseasonfx .kfx-fish{position:absolute;line-height:1;font-style:normal;filter:drop-shadow(0 2px 3px rgba(0,30,60,.3))}
-#kseasonfx .kfx-w{position:absolute;display:block;will-change:transform}
-#kseasonfx .kfx-w>i{left:0;top:0;width:100%;height:100%}
-#kseasonfx .kfx-in{display:block;font-style:normal}
-#kseasonfx .kfx-popbit{position:absolute;width:10px;height:14px;box-shadow:0 1px 2px rgba(0,0,0,.15);border-radius:2px;pointer-events:none}
-#kseasonfx .kfx-popring{position:absolute;width:46px;height:46px;border-radius:50%;border:3px solid rgba(255,255,255,.95);box-shadow:0 0 10px rgba(255,255,255,.7);pointer-events:none}
+:is(#kseasonfx,#kseasonfront) .kfx-bub{position:absolute;border-radius:50%;background:radial-gradient(circle at 32% 30%,#fff 0 18%,rgba(255,255,255,.35) 22%,rgba(255,255,255,.08) 60%,rgba(255,255,255,.5) 100%);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.65)}
+:is(#kseasonfx,#kseasonfront) .kfx-fish{position:absolute;line-height:1;font-style:normal;filter:drop-shadow(0 2px 3px rgba(0,30,60,.3))}
+:is(#kseasonfx,#kseasonfront) .kfx-w{position:absolute;display:block;will-change:transform}
+:is(#kseasonfx,#kseasonfront) .kfx-w>i{left:0;top:0;width:100%;height:100%}
+:is(#kseasonfx,#kseasonfront) .kfx-in{display:block;font-style:normal}
+:is(#kseasonfx,#kseasonfront) .kfx-popbit{position:absolute;width:10px;height:14px;box-shadow:0 1px 2px rgba(0,0,0,.15);border-radius:2px;pointer-events:none}
+:is(#kseasonfx,#kseasonfront) .kfx-popring{position:absolute;width:46px;height:46px;border-radius:50%;border:3px solid rgba(255,255,255,.95);box-shadow:0 0 10px rgba(255,255,255,.7);pointer-events:none}
 
 /* a little breathing room between the two languages */
 html.khome-screen .khome .kbig>small,html[data-mode="kids"] .kwinbtns .kbig>small{display:block;margin-top:max(7px,.8vh)!important;margin-top:max(7px,.8dvh)!important;line-height:1.15!important}
@@ -1663,11 +1665,11 @@ html:root[data-mode="kids"].kquiz[data-season="beach"] body{background:linear-gr
 html.kquiz[data-season="beach"] #kseasonfx{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 260' preserveAspectRatio='none'%3E%3Cpath d='M0 70 Q50 58 100 70 T200 70 T300 70 T400 70 L400 260 L0 260Z' fill='%2333b5d6'/%3E%3Cpath d='M0 95 Q50 83 100 95 T200 95 T300 95 T400 95 L400 260 L0 260Z' fill='%2357cbe3'/%3E%3Cpath d='M0 120 Q60 108 120 122 T240 118 T400 124 L400 260 L0 260Z' fill='%23ffffff' opacity='.85'/%3E%3Cpath d='M0 128 Q60 116 120 130 T240 126 T400 132 L400 260 L0 260Z' fill='%23f7dca0'/%3E%3Cpath d='M0 175 Q120 160 250 172 T400 168 L400 260 L0 260Z' fill='%23f0c983'/%3E%3C/svg%3E") center bottom/100% 30% no-repeat,radial-gradient(circle at 84% 12%,#fff6b8 0 30px,rgba(255,240,150,.45) 31px 46px,rgba(255,240,150,0) 80px)}
 html:root[data-mode="kids"].kquiz[data-season="party"] body{background:linear-gradient(180deg,#ff9ccc 0%,#ffc2dc 40%,#ffe2b8 75%,#fff3d6 100%) fixed!important}
 html.kquiz[data-season="party"] #kseasonfx{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'%3E%3Cpath d='M0 6 Q100 30 200 6 Q300 30 400 6' fill='none' stroke='%23ffffff' stroke-width='2' opacity='.8'/%3E%3Cg%3E%3Cpath d='M20 10 L36 14 L26 38Z' fill='%23ff6f9c'/%3E%3Cpath d='M60 18 L76 20 L66 46Z' fill='%23ffd34d'/%3E%3Cpath d='M100 22 L116 22 L108 50Z' fill='%235cc8ff'/%3E%3Cpath d='M140 19 L156 17 L148 45Z' fill='%238fd19e'/%3E%3Cpath d='M180 11 L196 9 L188 35Z' fill='%23b28cff'/%3E%3Cpath d='M220 10 L236 14 L226 38Z' fill='%23ff9f43'/%3E%3Cpath d='M260 18 L276 20 L266 46Z' fill='%23ff6f9c'/%3E%3Cpath d='M300 22 L316 22 L308 50Z' fill='%23ffd34d'/%3E%3Cpath d='M340 19 L356 17 L348 45Z' fill='%235cc8ff'/%3E%3Cpath d='M375 11 L391 9 L383 35Z' fill='%238fd19e'/%3E%3C/g%3E%3C/svg%3E") center 0/100% 64px repeat-x,radial-gradient(circle at 20% 30%,rgba(255,255,255,.35) 0 2px,transparent 3px) 0 0/34px 34px}
-#kseasonfx .kfx-conf{position:absolute;opacity:.9}
-#kseasonfx .kfx-gull{position:absolute;display:block;line-height:0;filter:drop-shadow(0 3px 3px rgba(40,70,110,.18))}
-#kseasonfx .kfx-gull svg{width:100%;height:auto;display:block;overflow:visible;animation:kGullBob 2.4s ease-in-out infinite}
-#kseasonfx .kfx-gull .gw{transform-origin:31px 25px;animation:kGullFlap var(--fl,.45s) ease-in-out infinite alternate;animation-delay:var(--fd,0s)}
-#kseasonfx .kfx-gull .gwb{animation-direction:alternate-reverse;opacity:.9}
+:is(#kseasonfx,#kseasonfront) .kfx-conf{position:absolute;opacity:.9}
+:is(#kseasonfx,#kseasonfront) .kfx-gull{position:absolute;display:block;line-height:0;filter:drop-shadow(0 3px 3px rgba(40,70,110,.18))}
+:is(#kseasonfx,#kseasonfront) .kfx-gull svg{width:100%;height:auto;display:block;overflow:visible;animation:kGullBob 2.4s ease-in-out infinite}
+:is(#kseasonfx,#kseasonfront) .kfx-gull .gw{transform-origin:31px 25px;animation:kGullFlap var(--fl,.45s) ease-in-out infinite alternate;animation-delay:var(--fd,0s)}
+:is(#kseasonfx,#kseasonfront) .kfx-gull .gwb{animation-direction:alternate-reverse;opacity:.9}
 @keyframes kGullFlap{0%{transform:rotate(-4deg) scaleY(1)}100%{transform:rotate(10deg) scaleY(-.45)}}
 @keyframes kGullBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-5px) rotate(3deg)}}
 
@@ -5816,10 +5818,20 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       fx.setAttribute("aria-hidden", "true");
       document.body.insertBefore(fx, document.body.firstChild);
     }
+    let fr = document.getElementById("kseasonfront");
+    if (!fr) {
+      fr = document.createElement("div");
+      fr.id = "kseasonfront";
+      fr.setAttribute("aria-hidden", "true");
+      document.body.appendChild(fr);
+    }
     if (fx.dataset.s === s) return;
     fx.dataset.s = s;
     fx.innerHTML = "";
+    fr.innerHTML = "";
     clearInterval(fx._pop);
+    let kn = 4 + Math.floor(Math.random() * 6);
+    const kAdd = (el) => (kn++ % 10 === 9 ? fr : fx).appendChild(el);
     const H = Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0, 600), W = Math.max(window.innerWidth || 0, 320);
     if (s === "night") {
       for (let i = 0; i < 18; i++) {
@@ -5827,7 +5839,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
         el.className = "kfx-star";
         el.textContent = i % 3 ? "✦" : "•";
         el.style.cssText = "left:".concat((Math.random() * 96 + 2).toFixed(1), "%;top:").concat((Math.random() * 70 + 3).toFixed(1), "%;font-size:").concat((8 + Math.random() * 14).toFixed(0), "px");
-        fx.appendChild(el);
+        kAdd(el);
         try {
           const d = 1600 + Math.random() * 2400, a = el.animate([{ opacity: 0.15, transform: "scale(.6)" }, { opacity: 1, transform: "scale(1.1)" }, { opacity: 0.15, transform: "scale(.6)" }], { duration: d, iterations: Infinity, easing: "ease-in-out" });
           a.currentTime = Math.random() * d;
@@ -5842,7 +5854,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
         const el = document.createElement("b"), w = 6 + Math.random() * 6;
         el.className = "kfx-conf";
         el.style.cssText = "left:".concat((Math.random() * 98).toFixed(1), "%;top:-20px;width:").concat(w.toFixed(0), "px;height:").concat((w * 1.6).toFixed(0), "px;background:").concat(cols[i % cols.length], ";border-radius:").concat(i % 3 ? 2 : 50, "px");
-        fx.appendChild(el);
+        kAdd(el);
         try {
           const d = 9e3 + Math.random() * 7e3, x = Math.round(Math.random() * 80 - 40), a = el.animate([{ transform: "translate3d(0,0,0) rotate(0deg)" }, { transform: "translate3d(".concat(x, "px,").concat(H * 0.55, "px,0) rotate(").concat(300 + Math.random() * 300, "deg)"), offset: 0.5 }, { transform: "translate3d(".concat(-x / 2, "px,").concat(H * 1.1, "px,0) rotate(720deg)") }], { duration: d, iterations: Infinity, easing: "linear" });
           a.currentTime = Math.random() * d;
@@ -5855,7 +5867,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
         el.className = "kfx-fish";
         el.innerHTML = '<i class="kfly" style="background-position-y:66.667%;--fd:1.4s;--fo:-'.concat(Math.random().toFixed(2), 's"></i>');
         el.style.cssText = "left:".concat((8 + i * 24 + Math.random() * 6).toFixed(1), "%;bottom:-90px;width:").concat((sz * 1.7).toFixed(0), "px;height:").concat((sz * 1.7).toFixed(0), "px");
-        fx.appendChild(el);
+        kAdd(el);
         try {
           const d = 15e3 + Math.random() * 8e3, a = el.animate([{ transform: "translate3d(0,0,0) rotate(-6deg)" }, { transform: "translate3d(16px,".concat(-H * 0.55, "px,0) rotate(6deg)"), offset: 0.5 }, { transform: "translate3d(-8px,".concat(-H * 1.15, "px,0) rotate(-6deg)") }], { duration: d, iterations: Infinity, easing: "linear" });
           a.currentTime = Math.random() * d;
@@ -5867,7 +5879,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       fx._pop = setInterval(() => {
         try {
           if (document.hidden || fx.dataset.s !== "party") return;
-          const vis = [...fx.querySelectorAll("[data-bal]")].filter((b) => {
+          const vis = [...fx.querySelectorAll("[data-bal]"), ...fr.querySelectorAll("[data-bal]")].filter((b) => {
             const r = b.getBoundingClientRect();
             return !b._popped && r.top > 40 && r.bottom < innerHeight - 40;
           });
@@ -5885,7 +5897,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
         el.className = "kfx-gull";
         el.innerHTML = '<i class="kfly" style="background-position-y:50.000%;--fd:.55s;--fo:-'.concat(Math.random().toFixed(2), 's"></i>');
         el.style.cssText = "top:".concat((7 + i * 10).toFixed(1), "%;left:-80px;width:").concat(46 + i * 10, "px;--fl:").concat((0.42 + i * 0.07).toFixed(2), "s;--fd:").concat((-Math.random()).toFixed(2), "s");
-        fx.appendChild(el);
+        kAdd(el);
         try {
           const d = 2e4 + i * 6e3, a = el.animate([{ transform: "translate3d(0,0,0)" }, { transform: "translate3d(".concat((W + 120) * 0.5, "px,-12px,0)"), offset: 0.5 }, { transform: "translate3d(".concat(W + 120, "px,0,0)") }], { duration: d, iterations: Infinity, easing: "linear" });
           a.currentTime = Math.random() * d;
@@ -5898,7 +5910,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
         el.className = "kfx-fish";
         el.textContent = deco[i];
         el.style.cssText = "left:".concat((12 + i * 32).toFixed(1), "%;bottom:").concat(3 + i % 2 * 4, "%;font-size:").concat(24 + i * 3, "px");
-        fx.appendChild(el);
+        kAdd(el);
         try {
           const d = 3e3 + i * 700, a = el.animate([{ transform: "translateY(0) rotate(-6deg)" }, { transform: "translateY(-6px) rotate(6deg)" }, { transform: "translateY(0) rotate(-6deg)" }], { duration: d, iterations: Infinity, easing: "ease-in-out" });
           a.currentTime = Math.random() * d;
@@ -5912,7 +5924,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
         const el = document.createElement("b"), z = 6 + Math.random() * 16;
         el.className = "kfx-bub";
         el.style.cssText = "left:".concat((Math.random() * 96 + 2).toFixed(1), "%;bottom:-").concat(z + 10, "px;width:").concat(z, "px;height:").concat(z, "px");
-        fx.appendChild(el);
+        kAdd(el);
         try {
           const d = 7e3 + Math.random() * 7e3, w = Math.round(Math.random() * 30 - 15), a = el.animate([{ transform: "translate3d(0,0,0)", opacity: 0 }, { opacity: 0.9, offset: 0.1 }, { transform: "translate3d(".concat(w, "px,").concat(-H * 0.5, "px,0)"), offset: 0.5 }, { transform: "translate3d(".concat(-w, "px,").concat(-H * 1.1, "px,0)"), opacity: 0.2 }], { duration: d, iterations: Infinity, easing: "linear" });
           a.currentTime = Math.random() * d;
@@ -5928,7 +5940,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
         inn.style.cssText = "background-position-y:16.667%;--fd:.75s;--fo:-".concat(Math.random().toFixed(2), "s");
         el.appendChild(inn);
         el.style.cssText = "top:".concat((14 + i * 15 + Math.random() * 6).toFixed(1), "%;width:").concat((sz * 1.9).toFixed(0), "px;height:").concat((sz * 1.9).toFixed(0), "px;").concat(rtl ? "right:-80px" : "left:-80px");
-        fx.appendChild(el);
+        kAdd(el);
         try {
           const d = 16e3 + Math.random() * 1e4, dx = (W + 100) * (rtl ? -1 : 1), a = el.animate([{ transform: "translate3d(0,0,0)" }, { transform: "translate3d(".concat(dx * 0.33, "px,-14px,0)"), offset: 0.33 }, { transform: "translate3d(".concat(dx * 0.66, "px,10px,0)"), offset: 0.66 }, { transform: "translate3d(".concat(dx, "px,0,0)") }], { duration: d, iterations: Infinity, easing: "linear" });
           a.currentTime = Math.random() * d;
@@ -5950,7 +5962,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       sp.className = "kfly";
       sp.style.cssText = "background-position-y:".concat((row * 100 / 6).toFixed(3), "%;--fd:").concat(fdur, "s;--fo:-").concat((Math.random() * fdur).toFixed(2), "s");
       el.appendChild(sp);
-      fx.appendChild(el);
+      kAdd(el);
       const T = (dx, dy, r) => ({ transform: "translate3d(".concat(Math.round(dx + wind * W * 0.32 * Math.max(0, dy) / H), "px,").concat(Math.round(dy), "px,0) rotate(").concat(r, "deg)") });
       let kf;
       if (wind) kf = [T(0, 0, 0), T(0, H * 1.18, 0)];
@@ -6053,7 +6065,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.77";
+  const APP_VER = "1.0.78";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
