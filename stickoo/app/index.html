@@ -5808,6 +5808,31 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     return KSEASONS.includes(s) ? s : "";
   }
   function kSeasonApply() {
+    kSeasonApply0();
+    try {
+      [["kseasonfx", 0], ["kseasonfront", 1]].forEach(([id, front]) => {
+        const box = document.getElementById(id);
+        if (!box) return;
+        Array.prototype.forEach.call(box.children, (el) => {
+          if (el._dp) return;
+          el._dp = 1;
+          const d = front ? 1 : Math.random() * 0.8;
+          el.style.scale = (front ? 1.15 : 0.5 + 0.6 * d).toFixed(2);
+          el.style.zIndex = String(Math.round(d * 10));
+          if (!front) el.style.filter = "opacity(".concat((0.3 + 0.65 * d).toFixed(2), ") saturate(").concat((0.55 + 0.45 * d).toFixed(2), ") blur(").concat(((0.8 - d) * 1.6).toFixed(2), "px)");
+          const rate = front ? 1.15 : 0.5 + 0.6 * d;
+          try {
+            (el.getAnimations ? el.getAnimations({ subtree: true }) : []).forEach((a) => {
+              a.playbackRate = rate;
+            });
+          } catch (er) {
+          }
+        });
+      });
+    } catch (e) {
+    }
+  }
+  function kSeasonApply0() {
     const s = kSeason(), html = document.documentElement;
     if (s) html.dataset.season = s;
     else delete html.dataset.season;
@@ -6065,7 +6090,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.78";
+  const APP_VER = "1.0.79";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
