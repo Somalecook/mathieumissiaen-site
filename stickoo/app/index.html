@@ -1304,6 +1304,11 @@ html.kquiz .kspeak{scale:.864;translate:0 min(3.3vw,14px)}
 .kvol-bar{display:flex;gap:4px}
 .kvol-bar em{width:14px;height:20px;border-radius:6px;background:#e3d6f5;box-shadow:inset 0 2px 3px rgba(120,80,170,.25)}
 .kvol-bar em.on{background:linear-gradient(180deg,#ff9fd2,#b98cff);box-shadow:0 1px 0 #8f5fd0}
+html.kquiz .kmus-tg{position:fixed;left:50%;translate:calc(-50% + 58px) 0;bottom:max(8px,env(safe-area-inset-bottom));z-index:20;width:44px;height:44px;border-radius:50%;border:2.5px solid rgba(255,255,255,.55);background:rgba(255,255,255,.12);font-size:1.25rem;line-height:1;display:grid;place-items:center;padding:0;cursor:pointer}
+html.kquiz .kmus-tg.on{background:linear-gradient(180deg,#ffd6ef,#c9a4ff);border-color:#fff;box-shadow:0 0 12px rgba(201,164,255,.7)}
+html.kquiz .khelp-tg{translate:calc(-50% - 29px) 0!important}
+html.kquiz .kmus-tg{translate:calc(-50% + 29px) 0}
+html:not(.kquiz) .kmus-tg{display:none}
 html.kcahier .kbs{z-index:2}
 .khome .kgear-cell{display:grid;place-items:center;min-height:0}
 html body .khome .kgear-cell .kgear{margin:0!important}
@@ -6099,7 +6104,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <div class="kset-vol">').concat([["mus", "🎵", "Musique", musStep], ["sfx", "🔊", "Sons", sfxStep]].map(([k, ic, lb, v]) => '<div class="kvol-row"><i>'.concat(ic, "</i><b>").concat(lb, '</b><button class="kvol-btn" data-kvol="').concat(k, ':-1" aria-label="moins">−</button><span class="kvol-bar">').concat(Array.from({ length: 5 }, (_, j) => '<em class="'.concat(j < v ? "on" : "", '"></em>')).join(""), '</span><button class="kvol-btn" data-kvol="').concat(k, ':1" aria-label="plus">+</button></div>')).join(""), '</div>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.82";
+  const APP_VER = "1.0.83";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
@@ -6526,7 +6531,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     R.opts = opts;
     R.tries = 0;
     R.lock = false;
-    $("#kids").innerHTML = kidsHeader(true) + '\n    <div class="kprog '.concat((R.n || KID_ROUND) > 7 ? "many" : "", '">').concat(Array.from({ length: R.n || KID_ROUND }, (_, i, _a2, N = R.n || KID_ROUND) => '<span class="'.concat(i < R.done ? "on" : "", '" style="--arc:').concat((Math.pow((i - (N - 1) / 2) / ((N - 1) / 2 || 1), 2) * 22).toFixed(1), 'px"><img class="kst-ic" src="kid/nature/nature02.png" alt=""></span>')).join(""), '</div>\n    <button class="kspeak" data-k="again" aria-label="Réécouter"><img class="ksky-spk" src="kid/sky/speaker.webp?v=7" alt=""><span class="kbubble big" hidden><svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><path d="M10 24h10l14-12v40L20 40H10z" fill="#f7e6ff"/><path d="M42 22c4 3 6 6 6 10s-2 7-6 10M48 15c6 5 9 11 9 17s-3 12-9 17" fill="none" stroke="#f7e6ff" stroke-width="4.5" stroke-linecap="round"/></svg></span></button>\n    <div class="kopts ').concat(opts.length === 4 ? "four" : opts.length === 3 ? "three" : "", '">').concat(opts.map((o, i) => '<button class="kopt" data-ko="'.concat(i, '" aria-label="').concat(esc(gl(o)), '" style="--ob:url(kid/sky/opt').concat(i % 3, '.webp?v=4)">').concat(kidPic(o), "</button>")).join(""), '</div>\n    <p class="khint">Pour les parents : « ').concat(esc(tw(target)), " » = ").concat(esc(gl(target)), '</p><button class="khelp-tg ').concat(kHelpOn() ? "on" : "", '" data-k="helptg" aria-label="Aides">💡</button>');
+    $("#kids").innerHTML = kidsHeader(true) + '\n    <div class="kprog '.concat((R.n || KID_ROUND) > 7 ? "many" : "", '">').concat(Array.from({ length: R.n || KID_ROUND }, (_, i, _a2, N = R.n || KID_ROUND) => '<span class="'.concat(i < R.done ? "on" : "", '" style="--arc:').concat((Math.pow((i - (N - 1) / 2) / ((N - 1) / 2 || 1), 2) * 22).toFixed(1), 'px"><img class="kst-ic" src="kid/nature/nature02.png" alt=""></span>')).join(""), '</div>\n    <button class="kspeak" data-k="again" aria-label="Réécouter"><img class="ksky-spk" src="kid/sky/speaker.webp?v=7" alt=""><span class="kbubble big" hidden><svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><path d="M10 24h10l14-12v40L20 40H10z" fill="#f7e6ff"/><path d="M42 22c4 3 6 6 6 10s-2 7-6 10M48 15c6 5 9 11 9 17s-3 12-9 17" fill="none" stroke="#f7e6ff" stroke-width="4.5" stroke-linecap="round"/></svg></span></button>\n    <div class="kopts ').concat(opts.length === 4 ? "four" : opts.length === 3 ? "three" : "", '">').concat(opts.map((o, i) => '<button class="kopt" data-ko="'.concat(i, '" aria-label="').concat(esc(gl(o)), '" style="--ob:url(kid/sky/opt').concat(i % 3, '.webp?v=4)">').concat(kidPic(o), "</button>")).join(""), '</div>\n    <p class="khint">Pour les parents : « ').concat(esc(tw(target)), " » = ").concat(esc(gl(target)), '</p><button class="khelp-tg ').concat(kHelpOn() ? "on" : "", '" data-k="helptg" aria-label="Aides">💡</button><button class="kmus-tg ').concat(musStep ? "on" : "", '" data-k="mustg" aria-label="Musique">').concat(musStep ? "🎵" : "🔇", "</button>");
     document.documentElement.classList.toggle("knohelp", !kHelpOn());
     kSizeOpts();
     kCenterSpk();
@@ -7596,6 +7601,30 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       const f = kidsCheckAch(k);
       putKids(k);
       if (f.length) setTimeout(() => kidAchPopup(f), 900);
+      return;
+    }
+    if (d.k === "mustg") {
+      if (musStep) {
+        try {
+          localStorage.setItem("stickoo-vol-mus-last", String(musStep));
+        } catch (er) {
+        }
+        musStep = 0;
+        musStop();
+      } else {
+        let l = 3;
+        try {
+          l = +localStorage.getItem("stickoo-vol-mus-last") || 3;
+        } catch (er) {
+        }
+        musStep = l;
+      }
+      try {
+        localStorage.setItem("stickoo-vol-mus", String(musStep));
+      } catch (er) {
+      }
+      b.classList.toggle("on", !!musStep);
+      b.textContent = musStep ? "🎵" : "🔇";
       return;
     }
     if (d.kvol) {
