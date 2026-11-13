@@ -1295,6 +1295,15 @@ html.kquiz .kspeak{scale:.864;translate:0 min(3.3vw,14px)}
 :is(#kseasonfx,#kseasonfront) i.kfly{position:relative;left:0;top:0;background-image:url(kid/sky/flyfx.webp?v=1)!important;background-size:400% 700%!important;background-repeat:no-repeat!important;opacity:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.15))}
 :is(#kseasonfx,#kseasonfront) .kfx-autumn>i.kfly{filter:hue-rotate(-75deg) saturate(1.35) drop-shadow(0 2px 3px rgba(0,0,0,.18))}
 .kfx-gull .kfly{animation-name:kflyFr,kGullBob;animation-duration:var(--fd,.5s),2.4s;animation-timing-function:steps(4),ease-in-out;aspect-ratio:1;height:auto}
+.kset-vol{display:grid;gap:10px;width:100%;max-width:420px;margin:6px auto 0;padding:12px 14px;box-sizing:border-box;border-radius:22px;background:linear-gradient(180deg,rgba(255,248,255,.95),rgba(236,226,255,.95));border:3px solid #fff;box-shadow:0 0 0 2.5px #b98cff,0 5px 0 #8f5fd0}
+.kvol-row{display:flex;align-items:center;gap:8px}
+.kvol-row>i{font-style:normal;font-size:1.3rem;width:28px;text-align:center}
+.kvol-row>b{flex:1;font:800 1rem "Baloo 2","Fredoka",sans-serif;color:#7b2d8e}
+.kvol-btn{width:38px;height:38px;border-radius:50%;border:3px solid #fff;background:linear-gradient(160deg,#ff9fd2,#b98cff 55%,#7fc8ff);color:#fff;font:900 1.3rem/1 "Baloo 2",sans-serif;box-shadow:0 3px 0 #8f5fd0;padding:0;cursor:pointer}
+.kvol-btn:active{transform:translateY(2px);box-shadow:0 1px 0 #8f5fd0}
+.kvol-bar{display:flex;gap:4px}
+.kvol-bar em{width:14px;height:20px;border-radius:6px;background:#e3d6f5;box-shadow:inset 0 2px 3px rgba(120,80,170,.25)}
+.kvol-bar em.on{background:linear-gradient(180deg,#ff9fd2,#b98cff);box-shadow:0 1px 0 #8f5fd0}
 html.kcahier .kbs{z-index:2}
 .khome .kgear-cell{display:grid;place-items:center;min-height:0}
 html body .khome .kgear-cell .kgear{margin:0!important}
@@ -6088,9 +6097,9 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
   }
   function kidsSettings() {
     K.screen = "settings";
-    $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
+    $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <div class="kset-vol">').concat([["mus", "🎵", "Musique", musStep], ["sfx", "🔊", "Sons", sfxStep]].map(([k, ic, lb, v]) => '<div class="kvol-row"><i>'.concat(ic, "</i><b>").concat(lb, '</b><button class="kvol-btn" data-kvol="').concat(k, ':-1" aria-label="moins">−</button><span class="kvol-bar">').concat(Array.from({ length: 5 }, (_, j) => '<em class="'.concat(j < v ? "on" : "", '"></em>')).join(""), '</span><button class="kvol-btn" data-kvol="').concat(k, ':1" aria-label="plus">+</button></div>')).join(""), '</div>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.81";
+  const APP_VER = "1.0.82";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
@@ -6420,7 +6429,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
         src.buffer = _victory;
         g.gain.value = 0.6;
         src.connect(g);
-        g.connect(actx.destination);
+        g.connect(sfxOut());
         src.start();
         return;
       } catch (e) {
@@ -7589,6 +7598,26 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       if (f.length) setTimeout(() => kidAchPopup(f), 900);
       return;
     }
+    if (d.kvol) {
+      const [k, dv] = d.kvol.split(":");
+      if (k === "mus") {
+        musStep = Math.max(0, Math.min(5, musStep + +dv));
+        try {
+          localStorage.setItem("stickoo-vol-mus", String(musStep));
+        } catch (er) {
+        }
+        musApply();
+      } else {
+        sfxStep = Math.max(0, Math.min(5, sfxStep + +dv));
+        try {
+          localStorage.setItem("stickoo-vol-sfx", String(sfxStep));
+        } catch (er) {
+        }
+        sfxOut();
+        playUi("bubble", 0.6);
+      }
+      return kidsSettings();
+    }
     if (d.kac) {
       kSparkle(b, 10);
       b.classList.remove("kflip");
@@ -8208,6 +8237,96 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     };
   }
   let soundOn = true, actx = null;
+  let sfxStep = 5, musStep = 3;
+  try {
+    const a = localStorage.getItem("stickoo-vol-sfx"), b = localStorage.getItem("stickoo-vol-mus");
+    if (a != null) sfxStep = +a;
+    if (b != null) musStep = +b;
+  } catch (e) {
+  }
+  let _sfxG = null, _musG = null, _mus = null;
+  function sfxOut() {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (!_sfxG) {
+      _sfxG = actx.createGain();
+      _sfxG.connect(actx.destination);
+    }
+    _sfxG.gain.value = sfxStep / 5;
+    return _sfxG;
+  }
+  function musOut() {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (!_musG) {
+      _musG = actx.createGain();
+      _musG.gain.value = 0;
+      _musG.connect(actx.destination);
+    }
+    return _musG;
+  }
+  const MUS_BASE = 0.16;
+  function musLevel() {
+    return soundOn ? MUS_BASE * musStep / 5 : 0;
+  }
+  function musStart() {
+    try {
+      if (_mus || !soundOn || !musStep) return;
+      let n = 0;
+      try {
+        n = +localStorage.getItem("stickoo-mus-n") || 0;
+        localStorage.setItem("stickoo-mus-n", String(n + 1));
+      } catch (e) {
+      }
+      const key = n % 2 ? "quiz2" : "quiz1", buf = _sndBuf[key];
+      if (!buf) return;
+      if (actx.state === "suspended") actx.resume();
+      const g = musOut(), src = actx.createBufferSource();
+      src.buffer = buf;
+      src.loop = true;
+      src.connect(g);
+      src.start();
+      const t = actx.currentTime;
+      g.gain.cancelScheduledValues(t);
+      g.gain.setValueAtTime(g.gain.value, t);
+      g.gain.linearRampToValueAtTime(musLevel(), t + 1.5);
+      _mus = src;
+    } catch (e) {
+    }
+  }
+  function musStop() {
+    try {
+      if (!_mus) return;
+      const src = _mus, g = musOut(), t = actx.currentTime;
+      _mus = null;
+      g.gain.cancelScheduledValues(t);
+      g.gain.setValueAtTime(g.gain.value, t);
+      g.gain.linearRampToValueAtTime(0, t + 0.8);
+      setTimeout(() => {
+        try {
+          src.stop();
+        } catch (e) {
+        }
+      }, 900);
+    } catch (e) {
+    }
+  }
+  function musApply() {
+    try {
+      if (_mus && _musG) {
+        const t = actx.currentTime;
+        _musG.gain.cancelScheduledValues(t);
+        _musG.gain.setValueAtTime(musLevel(), t);
+      }
+    } catch (e) {
+    }
+  }
+  setInterval(() => {
+    try {
+      const q = typeof K !== "undefined" && K.screen === "quiz" && !document.hidden;
+      if (q && !_mus) musStart();
+      else if (!q && _mus) musStop();
+    } catch (e) {
+    }
+  }, 300);
   try {
     soundOn = localStorage.getItem("vocab-sound") !== "off";
   } catch (e) {
@@ -8216,6 +8335,10 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     soundOn = !soundOn;
     try {
       localStorage.setItem("vocab-sound", soundOn ? "on" : "off");
+    } catch (e) {
+    }
+    try {
+      musApply();
     } catch (e) {
     }
   }
@@ -8248,7 +8371,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     rev.connect(wet);
     wet.connect(master);
     master.connect(comp);
-    comp.connect(actx.destination);
+    comp.connect(sfxOut());
     return _bus = lp;
   }
   let _lips = null, _lipsLoading = false, _lipLast = -1;
@@ -8271,7 +8394,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       src.buffer = _sndBuf.menu;
       g.gain.value = vol;
       src.connect(g);
-      g.connect(actx.destination);
+      g.connect(sfxOut());
       src.start(0, o, d);
       return true;
     } catch (e) {
@@ -8300,7 +8423,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       src.buffer = _sndBuf.ui;
       g.gain.value = vol;
       src.connect(g);
-      g.connect(actx.destination);
+      g.connect(sfxOut());
       src.start(0, c[0], c[1]);
       return true;
     } catch (e) {
@@ -8316,7 +8439,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       src.buffer = _sndBuf[name];
       g.gain.value = vol;
       src.connect(g);
-      g.connect(actx.destination);
+      g.connect(sfxOut());
       src.start();
       return true;
     } catch (e) {
@@ -8329,6 +8452,8 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     loadSnd("rare", "snd/rare.mp3");
     loadSnd("menu", "snd/keys.mp3");
     loadSnd("ui", "snd/ui.mp3");
+    loadSnd("quiz1", "snd/quiz1.mp3");
+    loadSnd("quiz2", "snd/quiz2.mp3");
     loadVoices(LL);
     if (UIL !== LL) loadVoices(UIL);
     try {
@@ -8366,7 +8491,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       const g = actx.createGain();
       g.gain.value = vol;
       src.connect(g);
-      g.connect(actx.destination);
+      g.connect(sfxOut());
       src.start(0, i * LIP_SLOT, LIP_SLOT);
       return true;
     } catch (e) {
