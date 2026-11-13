@@ -1266,8 +1266,11 @@ html[data-mode="kids"],html[data-mode="kids"] body{overscroll-behavior-y:none}
 /* Layout 1.0.68 (from the layout editor): Who's playing */
 html.kslots-screen header.top{padding-top:calc(max(4px,env(safe-area-inset-top)) + min(11vw,46px))!important}
 html.kslots-screen .brand .sky-logo{height:min(19.5vh,186px)!important;height:min(19.5dvh,186px)!important}
-.kslots .kslot-btn{min-height:min(9.2vh,72px)!important;min-height:min(9.2dvh,72px)!important;height:min(9.2vh,72px)!important;height:min(9.2dvh,72px)!important}
-.kslots .kslot-row.kused{display:grid;grid-template-columns:minmax(0,1fr) auto auto;grid-template-rows:auto auto;column-gap:5px;row-gap:3px;align-items:center}
+.kslots .kslot-btn{min-height:min(8.4vh,65px)!important;min-height:min(8.4dvh,65px)!important;height:min(8.4vh,65px)!important;height:min(8.4dvh,65px)!important}
+html.kslots-screen #kids{justify-content:flex-start!important}
+.kslots{margin-top:min(2.5vh,18px)!important;margin-top:min(2.5dvh,18px)!important;padding-inline:4.5%!important;box-sizing:border-box}
+.kslots .kslot-row.kused .kslot-del{width:min(31px,4.1vh)!important;width:min(31px,4.1dvh)!important;height:min(31px,4.1vh)!important;height:min(31px,4.1dvh)!important;font-size:min(.8rem,1.9vh)!important;font-size:min(.8rem,1.9dvh)!important}
+.kslots .kslot-row.kused{display:grid;grid-template-columns:minmax(0,1fr) auto auto;grid-template-rows:auto auto;column-gap:4px;row-gap:2px;align-items:center}
 .kslots .kslot-row.kused>.kslot-btn{grid-column:1;grid-row:1/3}
 .kslots .kslot-row.kused>.kslot-del:nth-child(2){grid-column:2;grid-row:1}
 .kslots .kslot-row.kused>.kslot-del:nth-child(3){grid-column:3;grid-row:1}
@@ -6033,7 +6036,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.68";
+  const APP_VER = "1.0.69";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
@@ -8905,7 +8908,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       } catch (e) {
       }
     };
-    const BAKED = { slots: 1 };
+    const BAKED = { slots: 2 };
     try {
       const done = JSON.parse(localStorage.getItem(LS + "-baked") || "{}");
       let ch = false;
