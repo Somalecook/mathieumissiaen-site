@@ -1262,6 +1262,7 @@ html.kcahier .kboard::before{left:10px;top:18px;bottom:18px;width:22px;border-ra
 .kdood.d1{left:16%;top:9%;color:#ff7fb5;transform:rotate(-10deg)}
 .kdood.d2{right:8%;top:30%;color:#9b6bff;transform:rotate(8deg)}
 .kdood.d3{left:44%;bottom:5%;color:#a77bff;transform:rotate(-5deg)}
+html[data-mode="kids"],html[data-mode="kids"] body{overscroll-behavior-y:none}
 html.kcahier .kbs{z-index:2}
 html.kcahier .kbs.kbout img{opacity:.55;filter:grayscale(.3) drop-shadow(0 0 8px rgba(255,90,120,.9))!important}
 html.kcahier .kbs.kbout::after{content:"🗑️";position:absolute;right:-8px;top:-10px;font-size:22px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
@@ -6021,7 +6022,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.60";
+  const APP_VER = "1.0.61";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
@@ -7002,7 +7003,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
         } catch (er) {
         }
         n.classList.add("kbpoof");
-        if (!playUi("ping", 0.45)) tone(330, 0, 0.12, "sine", 0.06);
+        playUi("bubble", 0.45);
         setTimeout(() => {
           K.bsel = null;
           saveBoard((pg) => {
@@ -7507,7 +7508,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     if (d.kw !== void 0) {
       const it = K.items[+d.kw];
       try {
-        playUi("ping", 0.3);
+        playUi("bubble", 0.45);
       } catch (er) {
       }
       b.classList.remove("kflip");
@@ -7528,7 +7529,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       void b.offsetWidth;
       b.classList.add("kflip");
       try {
-        if (!playUi("ping", 0.5)) sfx.badge();
+        playUi("bubble", 0.5);
       } catch (er) {
       }
       return;
