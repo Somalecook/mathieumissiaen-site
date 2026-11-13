@@ -1126,7 +1126,7 @@ html.klang-screen #kids{min-height:86vh;min-height:86dvh;display:flex!important;
 html:not(.khome-screen) .uilang{display:none!important}
 .kbook{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:20px 14px;padding:6px 2px 10px}
 .kcard.kblob{border:0!important;border-radius:var(--br)!important;transform:rotate(var(--rot));background:#2b1d3f!important;box-shadow:0 10px 18px rgba(40,10,50,.35),inset 0 0 0 2px rgba(255,255,255,.06)!important;padding:16px 10px 18px;overflow:visible;transition:transform .2s}
-.kcard.kblob .kpic-sp{width:96px;margin-top:-26px;filter:none}
+.kcard.kblob .kpic-sp{width:96px;margin-top:-26px;filter:drop-shadow(0 1.5px 1.5px rgba(40,10,60,.6))}
 .kcard.kblob .kword{color:#f7e9ff!important;font-size:1.6rem;font-weight:900}
 .kcard.kblob small{color:#cbb6dd!important;font-size:.95rem;font-weight:800}
 .kcard.kblob .kwbar{background:rgba(255,255,255,.12);width:72%;height:6px}.kcard.kblob .kwbar i{background:linear-gradient(90deg,#ffb3d1,#ffd34d)}
@@ -6022,7 +6022,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.62";
+  const APP_VER = "1.0.63";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
