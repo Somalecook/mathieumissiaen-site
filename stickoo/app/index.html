@@ -1311,6 +1311,12 @@ html.kquiz .kmus-tg{translate:calc(-50% + 29px) 0}
 html:not(.kquiz) .kmus-tg{display:none}
 .kprog .kdot{display:block;width:min(2.2vh,16px);width:min(2.2dvh,16px);height:min(2.2vh,16px);height:min(2.2dvh,16px);border-radius:50%;background:linear-gradient(160deg,#ff9fd2,#b98cff 55%,#7fc8ff);border:2.5px solid #fff;box-shadow:0 2px 0 rgba(90,40,130,.35)}
 html.kquiz .kprog{gap:min(1.4vh,10px)!important;gap:min(1.4dvh,10px)!important;align-items:center!important}
+html.kquiz .khelp-tg,html.kquiz .kmus-tg{width:54px!important;height:54px!important;border:0!important;border-radius:0!important;box-shadow:none!important;font-size:0!important;background:url(kid/sky/ic_hint.webp?v=1) center/contain no-repeat!important;filter:drop-shadow(0 3px 5px rgba(30,0,50,.3))}
+html.kquiz .khelp-tg:not(.on){filter:grayscale(.75) opacity(.6) drop-shadow(0 3px 5px rgba(30,0,50,.2))}
+html.kquiz .kmus-tg{background-image:url(kid/sky/ic_mute.webp?v=1)!important}
+html.kquiz .kmus-tg.on{background-image:url(kid/sky/ic_music.webp?v=1)!important}
+html.kquiz .khelp-tg{translate:calc(-50% - 34px) 0!important}
+html.kquiz .kmus-tg{translate:calc(-50% + 34px) 0!important}
 html.kcahier .kbs{z-index:2}
 .khome .kgear-cell{display:grid;place-items:center;min-height:0}
 html body .khome .kgear-cell .kgear{margin:0!important}
@@ -5344,7 +5350,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
   function kidPreload() {
     if (_kidPre) return;
     _kidPre = true;
-    const urls = [...Object.values(KIDS_SPR).map((x) => x.src), "kid/sky/opt0.webp?v=4", "kid/sky/opt1.webp?v=4", "kid/sky/opt2.webp?v=4", "kid/sky/speaker.webp?v=4", ...Array.from({ length: 12 }, (_, i) => "kid/gift/g".concat(String(i).padStart(2, "0"), ".png")), ...Array.from({ length: 12 }, (_, i) => "kid/gift/b".concat(String(i).padStart(2, "0"), ".png"))];
+    const urls = [...Object.values(KIDS_SPR).map((x) => x.src), "kid/sky/opt0.webp?v=4", "kid/sky/opt1.webp?v=4", "kid/sky/opt2.webp?v=4", "kid/sky/ic_speaker.webp?v=1", "kid/sky/ic_hint.webp?v=1", "kid/sky/ic_music.webp?v=1", "kid/sky/ic_mute.webp?v=1", ...Array.from({ length: 12 }, (_, i) => "kid/gift/g".concat(String(i).padStart(2, "0"), ".png")), ...Array.from({ length: 12 }, (_, i) => "kid/gift/b".concat(String(i).padStart(2, "0"), ".png"))];
     const keep = window.__kidImgs = [];
     urls.forEach((u, i) => setTimeout(() => {
       const im = new Image();
@@ -6106,7 +6112,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <div class="kset-vol">').concat([["mus", "🎵", "Musique", musStep], ["sfx", "🔊", "Sons", sfxStep]].map(([k, ic, lb, v]) => '<div class="kvol-row"><i>'.concat(ic, "</i><b>").concat(lb, '</b><button class="kvol-btn" data-kvol="').concat(k, ':-1" aria-label="moins">−</button><span class="kvol-bar">').concat(Array.from({ length: 5 }, (_, j) => '<em class="'.concat(j < v ? "on" : "", '"></em>')).join(""), '</span><button class="kvol-btn" data-kvol="').concat(k, ':1" aria-label="plus">+</button></div>')).join(""), '</div>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.85";
+  const APP_VER = "1.0.86";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
@@ -6533,7 +6539,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     R.opts = opts;
     R.tries = 0;
     R.lock = false;
-    $("#kids").innerHTML = kidsHeader(true) + '\n    <div class="kprog '.concat((R.n || KID_ROUND) > 7 ? "many" : "", '">').concat(Array.from({ length: R.n || KID_ROUND }, (_, i, _a2, N = R.n || KID_ROUND) => '<span class="'.concat(i < R.done ? "on" : "", '" style="--arc:').concat((Math.pow((i - (N - 1) / 2) / ((N - 1) / 2 || 1), 2) * 22).toFixed(1), 'px"><i class="kdot"></i></span>')).join(""), '</div>\n    <button class="kspeak" data-k="again" aria-label="Réécouter"><img class="ksky-spk" src="kid/sky/speaker.webp?v=7" alt=""><span class="kbubble big" hidden><svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><path d="M10 24h10l14-12v40L20 40H10z" fill="#f7e6ff"/><path d="M42 22c4 3 6 6 6 10s-2 7-6 10M48 15c6 5 9 11 9 17s-3 12-9 17" fill="none" stroke="#f7e6ff" stroke-width="4.5" stroke-linecap="round"/></svg></span></button>\n    <div class="kopts ').concat(opts.length === 4 ? "four" : opts.length === 3 ? "three" : "", '">').concat(opts.map((o, i) => '<button class="kopt" data-ko="'.concat(i, '" aria-label="').concat(esc(gl(o)), '" style="--ob:url(kid/sky/opt').concat(i % 3, '.webp?v=4)">').concat(kidPic(o), "</button>")).join(""), '</div>\n    <p class="khint">Pour les parents : « ').concat(esc(tw(target)), " » = ").concat(esc(gl(target)), '</p><button class="khelp-tg ').concat(kHelpOn() ? "on" : "", '" data-k="helptg" aria-label="Aides">💡</button><button class="kmus-tg ').concat(musStep ? "on" : "", '" data-k="mustg" aria-label="Musique">').concat(musStep ? "🎵" : "🔇", "</button>");
+    $("#kids").innerHTML = kidsHeader(true) + '\n    <div class="kprog '.concat((R.n || KID_ROUND) > 7 ? "many" : "", '">').concat(Array.from({ length: R.n || KID_ROUND }, (_, i, _a2, N = R.n || KID_ROUND) => '<span class="'.concat(i < R.done ? "on" : "", '" style="--arc:').concat((Math.pow((i - (N - 1) / 2) / ((N - 1) / 2 || 1), 2) * 22).toFixed(1), 'px"><i class="kdot"></i></span>')).join(""), '</div>\n    <button class="kspeak" data-k="again" aria-label="Réécouter"><img class="ksky-spk" src="kid/sky/ic_speaker.webp?v=1" alt=""><span class="kbubble big" hidden><svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><path d="M10 24h10l14-12v40L20 40H10z" fill="#f7e6ff"/><path d="M42 22c4 3 6 6 6 10s-2 7-6 10M48 15c6 5 9 11 9 17s-3 12-9 17" fill="none" stroke="#f7e6ff" stroke-width="4.5" stroke-linecap="round"/></svg></span></button>\n    <div class="kopts ').concat(opts.length === 4 ? "four" : opts.length === 3 ? "three" : "", '">').concat(opts.map((o, i) => '<button class="kopt" data-ko="'.concat(i, '" aria-label="').concat(esc(gl(o)), '" style="--ob:url(kid/sky/opt').concat(i % 3, '.webp?v=4)">').concat(kidPic(o), "</button>")).join(""), '</div>\n    <p class="khint">Pour les parents : « ').concat(esc(tw(target)), " » = ").concat(esc(gl(target)), '</p><button class="khelp-tg ').concat(kHelpOn() ? "on" : "", '" data-k="helptg" aria-label="Aides"></button><button class="kmus-tg ').concat(musStep ? "on" : "", '" data-k="mustg" aria-label="Musique"></button>');
     document.documentElement.classList.toggle("knohelp", !kHelpOn());
     kSizeOpts();
     kCenterSpk();
@@ -6657,7 +6663,10 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
         if (k.wc[kk] === KW_GOLD) R.goldNew = (R.goldNew || []).concat(t);
       }
       putKids(k);
-      $("#kids .kstars b").textContent = k.stars;
+      {
+        const sb = $("#kids .kstars b");
+        if (sb) sb.textContent = k.stars;
+      }
       (_a2 = document.querySelectorAll("#kids .kprog span")[R.done - 1]) == null ? void 0 : _a2.classList.add("on", "pop");
       const last = R.done === (R.n || KID_ROUND), show = false;
       if (show) {
@@ -6711,7 +6720,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
   function kidsSafeWin() {
     K.round = null;
     K.screen = "win";
-    $("#kids").innerHTML = kidsHeader(true) + '<div class="kwin"><div class="kwin-stars">⭐⭐⭐⭐⭐</div><div class="kwin-title">참 잘했어요!</div>\n    <div class="kplay row2 khome kwinbtns"><button class="kbig" data-k="replay"><img class="khome-st" src="kid/home/play3.webp" alt=""><span>Encore !</span></button><button class="kbig alt2" data-k="home"><img class="khome-st" src="kid/home/cahier3.webp" alt=""><span>Menu</span></button></div></div>';
+    $("#kids").innerHTML = kidsHeader(true) + '<div class="kwin"><div class="kwin-title">참 잘했어요!</div>\n    <div class="kplay row2 khome kwinbtns"><button class="kbig" data-k="replay"><img class="khome-st" src="kid/home/play3.webp" alt=""><span>Encore !</span></button><button class="kbig alt2" data-k="home"><img class="khome-st" src="kid/home/cahier3.webp" alt=""><span>Menu</span></button></div></div>';
   }
   const KID_ACH = [
     { id: "r1", img: "food/f00.webp", name: "Première victoire", t: (k) => k.rounds >= 1, p: (k) => [k.rounds, 1] },
@@ -7638,7 +7647,6 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       } catch (er) {
       }
       b.classList.toggle("on", !!musStep);
-      b.textContent = musStep ? "🎵" : "🔇";
       return;
     }
     if (d.kvol) {
