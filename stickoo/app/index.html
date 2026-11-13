@@ -8276,14 +8276,17 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
         localStorage.setItem("stickoo-mus-n", String(n + 1));
       } catch (e) {
       }
-      const key = n % 2 ? "quiz2" : "quiz1", buf = _sndBuf[key];
+      const buf = _sndBuf.quizmus;
       if (!buf) return;
+      const SPLIT = 65.12, seg = n % 2 ? [SPLIT, buf.duration] : [0, SPLIT];
       if (actx.state === "suspended") actx.resume();
       const g = musOut(), src = actx.createBufferSource();
       src.buffer = buf;
       src.loop = true;
+      src.loopStart = seg[0];
+      src.loopEnd = seg[1];
       src.connect(g);
-      src.start();
+      src.start(0, seg[0]);
       const t = actx.currentTime;
       g.gain.cancelScheduledValues(t);
       g.gain.setValueAtTime(g.gain.value, t);
@@ -8452,8 +8455,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     loadSnd("rare", "snd/rare.mp3");
     loadSnd("menu", "snd/keys.mp3");
     loadSnd("ui", "snd/ui.mp3");
-    loadSnd("quiz1", "snd/quiz1.mp3");
-    loadSnd("quiz2", "snd/quiz2.mp3");
+    loadSnd("quizmus", "snd/quizmus.mp3");
     loadVoices(LL);
     if (UIL !== LL) loadVoices(UIL);
     try {
