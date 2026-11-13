@@ -6024,7 +6024,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset"><h2 class="kset-t"><span class="kset-gear">'.concat(KGEAR, '</span><span>Paramètres</span></h2>\n    <button class="kset-b" data-k="slots"><i>👤</i><span><b>Joueur</b><small>').concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), '</small></span></button>\n    <button class="kset-b" data-k="lang"><i>🌍</i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i>❓</i><span><b>Revoir le tutoriel</b></span></button>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.64";
+  const APP_VER = "1.0.65";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
@@ -8883,6 +8883,264 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
   }
   applyLang();
   initStore();
+  (function kLayoutEditor() {
+    const LS = "stickoo-layout-v1", ON = "stickoo-layout-edit";
+    const SKIP = /^(on|off|sel|lift|kflip|kgold|kshake|kdim|kbout|kbpoof|open|closed|shaking|kright|kwrong)$/;
+    let data = {};
+    try {
+      data = JSON.parse(localStorage.getItem(LS) || "{}") || {};
+    } catch (e) {
+      data = {};
+    }
+    const save = () => {
+      try {
+        localStorage.setItem(LS, JSON.stringify(data));
+      } catch (e) {
+      }
+    };
+    const scr = () => typeof K !== "undefined" && K.screen || "x";
+    const stl = document.createElement("style");
+    stl.id = "klayout";
+    document.head.appendChild(stl);
+    const hl = document.createElement("style");
+    document.head.appendChild(hl);
+    const keyOf = (s, q) => s + "|" + q;
+    const render = () => {
+      let css = "";
+      for (const k in data) {
+        const i = k.indexOf("|"), s = k.slice(0, i), q = k.slice(i + 1), v = data[k];
+        css += 'html[data-kscreen="'.concat(s, '"] ').concat(q, "{translate:").concat(v.x.toFixed(2), "vw ").concat(v.y.toFixed(2), "vw!important;scale:").concat(v.s.toFixed(3), "!important}\n");
+      }
+      stl.textContent = css;
+    };
+    const tagScreen = () => {
+      const s = scr();
+      if (document.documentElement.dataset.kscreen !== s) document.documentElement.dataset.kscreen = s;
+    };
+    setInterval(tagScreen, 250);
+    tagScreen();
+    render();
+    const selOf = (el) => {
+      const parts = [];
+      while (el && el.nodeType === 1 && el !== document.body && el !== document.documentElement) {
+        if (el.id && el.id !== "klbar") {
+          parts.unshift("#" + CSS.escape(el.id));
+          return parts.join(">");
+        }
+        const p = el.parentElement;
+        if (!p) break;
+        const idx = Array.prototype.indexOf.call(p.children, el) + 1;
+        const c = Array.prototype.find.call(el.classList, (x) => !SKIP.test(x));
+        parts.unshift(el.tagName.toLowerCase() + (c ? "." + CSS.escape(c) : "") + ":nth-child(" + idx + ")");
+        el = p;
+      }
+      return "body>" + parts.join(">");
+    };
+    let edit = false, nav = false, cur = null, bar = null, info = null;
+    const pick = (t) => t.closest("#kids button, .kbig, .kcard, .kst, .kpuffy, .klp2-card, .kbdrawer, .kboard, .khead > *") || t.closest("h1, h2, h3, p, img, header .brand") || t;
+    const select = (el) => {
+      cur = el ? { el, q: selOf(el), s: scr() } : null;
+      hl.textContent = cur ? 'html[data-kscreen="'.concat(cur.s, '"] ').concat(cur.q, "{outline:3px dashed #ff3d9a!important;outline-offset:3px;box-shadow:0 0 0 9999px rgba(20,0,40,.18)!important}") : "";
+      upd();
+    };
+    const val = () => {
+      if (!cur) return null;
+      const k = keyOf(cur.s, cur.q);
+      return data[k] || (data[k] = { x: 0, y: 0, s: 1 });
+    };
+    const upd = () => {
+      if (!info) return;
+      const v = cur && data[keyOf(cur.s, cur.q)];
+      info.textContent = "Écran : ".concat(scr()) + (cur ? " · élément choisi · taille ".concat(Math.round((v ? v.s : 1) * 100), "%") : " · touche un élément");
+      bar.querySelector("[data-kl=mode]").textContent = nav ? "👆 Naviguer" : "✋ Déplacer";
+    };
+    const btn = (k, t) => '<button data-kl="'.concat(k, '">').concat(t, "</button>");
+    const open = () => {
+      if (bar) return;
+      edit = true;
+      try {
+        localStorage.setItem(ON, "1");
+      } catch (e) {
+      }
+      bar = document.createElement("div");
+      bar.id = "klbar";
+      bar.innerHTML = '<style>#klbar{position:fixed;left:6px;right:6px;bottom:max(6px,env(safe-area-inset-bottom));z-index:2147483000;background:rgba(25,10,45,.92);color:#fff;border-radius:18px;padding:8px;font:700 12px/1.2 system-ui,sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.45);touch-action:manipulation}#klbar .r{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}#klbar button{border:0;border-radius:11px;padding:8px 9px;background:#3d2466;color:#fff;font:800 12px system-ui,sans-serif}#klbar button[data-kl=copy]{background:#ff4fa3}#klbar .i{text-align:center;margin:0 0 6px;opacity:.85}#klout{position:fixed;inset:10% 6px auto;z-index:2147483001;background:#fff;color:#222;border-radius:16px;padding:10px;box-shadow:0 10px 40px rgba(0,0,0,.5);font:12px system-ui}#klout textarea{width:100%;height:46vh;font:11px monospace}#klout button{margin-top:6px;border:0;border-radius:10px;padding:8px 12px;background:#3d2466;color:#fff;font-weight:800}</style>\n      <p class="i"></p><div class="r">'.concat(btn("mode", "✋ Déplacer")).concat(btn("parent", "⬆ Parent")).concat(btn("minus", "− Taille")).concat(btn("plus", "+ Taille")).concat(btn("pos", "↕")).concat(btn("reset", "↺ Élément")).concat(btn("copy", "📋 Envoyer à Claude")).concat(btn("clear", "🗑 Tout")).concat(btn("quit", "✕"), "</div>");
+      document.body.appendChild(bar);
+      info = bar.querySelector(".i");
+      upd();
+    };
+    const close = () => {
+      edit = false;
+      select(null);
+      bar && bar.remove();
+      bar = null;
+      info = null;
+      try {
+        localStorage.removeItem(ON);
+      } catch (e) {
+      }
+    };
+    const exportTxt = () => {
+      const out = { app: "stickoo-layout", v: 1, appVer: typeof APP_VER !== "undefined" ? APP_VER : "", screenW: innerWidth, screenH: innerHeight, items: [] };
+      for (const k in data) {
+        const v = data[k];
+        if (Math.abs(v.x) < 0.05 && Math.abs(v.y) < 0.05 && Math.abs(v.s - 1) < 5e-3) continue;
+        const i = k.indexOf("|");
+        out.items.push({ screen: k.slice(0, i), sel: k.slice(i + 1), x_vw: +v.x.toFixed(2), y_vw: +v.y.toFixed(2), scale: +v.s.toFixed(3) });
+      }
+      return JSON.stringify(out, null, 1);
+    };
+    const showOut = () => {
+      const t = exportTxt();
+      let d = document.getElementById("klout");
+      d && d.remove();
+      d = document.createElement("div");
+      d.id = "klout";
+      d.innerHTML = '<b>Copie ce texte et colle-le dans la conversation avec Claude :</b><textarea readonly></textarea><button data-kl="closeout">OK</button>';
+      d.querySelector("textarea").value = t;
+      document.body.appendChild(d);
+      try {
+        navigator.clipboard.writeText(t).then(() => {
+          d.querySelector("b").textContent = "✅ Copié ! Colle-le dans la conversation avec Claude :";
+        }).catch(() => {
+        });
+      } catch (e) {
+      }
+      const ta = d.querySelector("textarea");
+      setTimeout(() => {
+        try {
+          ta.focus();
+          ta.select();
+        } catch (e) {
+        }
+      }, 50);
+    };
+    const act = (k) => {
+      if (k === "mode") {
+        nav = !nav;
+        if (nav) select(null);
+        return upd();
+      }
+      if (k === "quit") return close();
+      if (k === "pos") {
+        const top = bar.style.top ? "" : "max(6px,env(safe-area-inset-top))";
+        bar.style.top = top;
+        bar.style.bottom = top ? "auto" : "";
+        return;
+      }
+      if (k === "copy") return showOut();
+      if (k === "closeout") {
+        const d = document.getElementById("klout");
+        return d && d.remove();
+      }
+      if (k === "clear") {
+        if (bar.dataset.sure) {
+          data = {};
+          save();
+          render();
+          delete bar.dataset.sure;
+          bar.querySelector("[data-kl=clear]").textContent = "🗑 Tout";
+          return upd();
+        }
+        bar.dataset.sure = 1;
+        bar.querySelector("[data-kl=clear]").textContent = "Sûr ? re-touche";
+        return;
+      }
+      if (!cur) return;
+      if (k === "parent") {
+        const p = cur.el.parentElement;
+        if (p && p !== document.body) select(p);
+        return;
+      }
+      const v = val();
+      if (k === "plus") v.s = Math.min(4, v.s * 1.05);
+      if (k === "minus") v.s = Math.max(0.2, v.s / 1.05);
+      if (k === "reset") {
+        delete data[keyOf(cur.s, cur.q)];
+      }
+      save();
+      render();
+      upd();
+    };
+    const pts = /* @__PURE__ */ new Map();
+    let drag = null;
+    const inUi = (t) => t.closest && t.closest("#klbar, #klout");
+    window.addEventListener("pointerdown", (e) => {
+      if (!edit) return;
+      if (inUi(e.target)) {
+        const b = e.target.closest("[data-kl]");
+        if (b) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          act(b.dataset.kl);
+        }
+        return;
+      }
+      if (nav) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pts.size === 1) {
+        const el = pick(e.target);
+        if (!cur || !(cur.el === el || cur.el.contains(e.target))) select(el);
+        const v = val();
+        drag = { x0: e.clientX, y0: e.clientY, vx: v.x, vy: v.y, s0: v.s, d0: 0 };
+      } else if (pts.size === 2 && cur) {
+        const [a, b] = [...pts.values()];
+        drag = { ...drag, d0: Math.hypot(a.x - b.x, a.y - b.y), s0: val().s };
+      }
+    }, true);
+    window.addEventListener("pointermove", (e) => {
+      if (!edit || nav || !drag || !pts.has(e.pointerId) || !cur) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      const v = val();
+      if (pts.size >= 2 && drag.d0) {
+        const [a, b] = [...pts.values()];
+        v.s = Math.max(0.2, Math.min(4, drag.s0 * Math.hypot(a.x - b.x, a.y - b.y) / drag.d0));
+      } else {
+        v.x = drag.vx + (e.clientX - drag.x0) / innerWidth * 100;
+        v.y = drag.vy + (e.clientY - drag.y0) / innerWidth * 100;
+      }
+      render();
+      upd();
+    }, { capture: true, passive: false });
+    const up = (e) => {
+      if (!edit || nav) return;
+      if (pts.has(e.pointerId)) {
+        pts.delete(e.pointerId);
+        e.stopImmediatePropagation();
+      }
+      if (!pts.size) {
+        drag = null;
+        save();
+      }
+    };
+    window.addEventListener("pointerup", up, true);
+    window.addEventListener("pointercancel", up, true);
+    ["click", "touchstart", "mousedown"].forEach((t) => window.addEventListener(t, (e) => {
+      if (edit && !nav && !inUi(e.target)) {
+        if (t !== "touchstart") e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+    }, { capture: true, passive: false }));
+    let taps = 0, tt = 0;
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest || !e.target.closest(".kset-ver")) return;
+      const n = Date.now();
+      taps = n - tt < 900 ? taps + 1 : 1;
+      tt = n;
+      if (taps >= 5) {
+        taps = 0;
+        open();
+      }
+    }, true);
+    try {
+      if (/[?&]layout=1/.test(location.search) || localStorage.getItem(ON)) setTimeout(open, 600);
+    } catch (e) {
+    }
+  })();
   try {
     enterKids();
   } catch (e) {
