@@ -253,11 +253,16 @@ write('404.html', page('404.html', 'Page not found — ' + NAME, 'This page does
 
 # ---------- sitemap + robots ----------
 extra = []
-for rel in ['stickoo/index.html', 'stickoo/confidentialite.html']:
+STK_LANGS = [('en', ''), ('fr', 'fr/'), ('es', 'es/'), ('ko', 'ko/'), ('ja', 'ja/'), ('zh-Hans', 'zh/')]
+for rel in ['stickoo/index.html'] + ['stickoo/%sindex.html' % d for _, d in STK_LANGS if d] + ['stickoo/confidentialite.html']:
     if os.path.exists(os.path.join(ROOT, rel)):
-        extra.append((rel.replace('index.html', ''), '0.5'))
-urls = ''.join('<url><loc>%s/%s</loc><lastmod>%s</lastmod><priority>%s</priority></url>\n' % (SITE_URL, u, TODAY, pr) for u, pr in pages + extra)
-write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s</urlset>\n' % urls)
+        extra.append((rel.replace('index.html', ''), '0.8' if rel.endswith('index.html') else '0.4'))
+STK_ALT = ''.join('<xhtml:link rel="alternate" hreflang="%s" href="%s/stickoo/%s"/>' % (h, SITE_URL, d) for h, d in STK_LANGS) + \
+    '<xhtml:link rel="alternate" hreflang="x-default" href="%s/stickoo/"/>' % SITE_URL
+def _alt(u):
+    return STK_ALT if u.startswith('stickoo/') and not u.endswith('.html') else ''
+urls = ''.join('<url><loc>%s/%s</loc>%s<lastmod>%s</lastmod><priority>%s</priority></url>\n' % (SITE_URL, u, _alt(u), TODAY, pr) for u, pr in pages + extra)
+write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n%s</urlset>\n' % urls)
 write('robots.txt', 'User-agent: *\nAllow: /\nDisallow: /stickoo/app/\nDisallow: /lab/\n\nSitemap: %s/sitemap.xml\n' % SITE_URL)
 
 # remove service pages that no longer exist

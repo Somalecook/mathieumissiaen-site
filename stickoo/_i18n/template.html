@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="{{LANG}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+{{HEAD}}<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Mochiy+Pop+One&family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#2a1446;--bg2:#3d1d63;--ink:#fff;--soft:#e9dcff;--muted:#c9b6ec;--pink:#ff7fc0;--pink2:#ff4fa3;--blue:#7fd4ff;--gold:#ffd34d;--card:rgba(255,255,255,.08);--line:rgba(255,255,255,.14)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Baloo 2",system-ui,sans-serif;color:var(--ink);background:radial-gradient(1200px 700px at 50% -10%,#5b2a8f 0%,transparent 60%),linear-gradient(180deg,var(--bg2),var(--bg) 40%,#1d0e33);min-height:100vh;overflow-x:hidden;line-height:1.55}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 10% 20%,#fff9,transparent),radial-gradient(1.5px 1.5px at 80% 10%,#fff8,transparent),radial-gradient(2px 2px at 60% 70%,#fff6,transparent),radial-gradient(1.5px 1.5px at 30% 85%,#fff7,transparent),radial-gradient(2px 2px at 90% 55%,#fff6,transparent),radial-gradient(1.5px 1.5px at 45% 35%,#fff5,transparent);opacity:.8}
+a{color:var(--blue)}
+.wrap{width:min(1100px,100%);margin:0 auto;padding:0 16px;position:relative}
+.puffy{font-family:"Mochiy Pop One","Baloo 2",sans-serif;font-weight:400;letter-spacing:.01em;background:linear-gradient(180deg,#fff 0%,#fff5fb 40%,#ffd0ea 56%,#ff9fd2 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(2px 0 0 #7b2d8e) drop-shadow(-2px 0 0 #7b2d8e) drop-shadow(0 2px 0 #7b2d8e) drop-shadow(0 -2px 0 #7b2d8e) drop-shadow(0 4px 0 #4a1d66)}
+/* top bar */
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 0}
+.top a.home{color:var(--muted);text-decoration:none;font-weight:700;font-size:.9rem}
+.lang{display:flex;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px}
+.lang{flex-wrap:wrap;justify-content:flex-end}
+.lang a{color:var(--muted);font:800 .85rem "Baloo 2",sans-serif;padding:4px 11px;border-radius:999px;text-decoration:none}
+.lang a.on{background:#fff;color:#7b2d8e}
+.lang a:hover{color:#fff}
+.intro{max-width:820px;margin:0 auto;text-align:center}
+.intro p{color:var(--soft);font-size:1.08rem}
+.faq{max-width:820px;margin:0 auto}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 18px;margin:10px 0}
+.faq summary{cursor:pointer;font-weight:800;font-size:1.08rem;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:"＋ ";color:var(--pink)}
+.faq details[open] summary::before{content:"－ "}
+.faq details p{color:var(--soft);margin:.6em 0 0}
+
+/* hero */
+.hero{text-align:center;padding:10px 0 30px}
+.hero .logo{width:min(640px,96%);height:auto;display:block;margin:0 auto;animation:float 5s ease-in-out infinite;filter:drop-shadow(0 14px 26px rgba(10,0,30,.5))}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1deg)}}
+.hero h1{font-size:clamp(1.6rem,4.6vw,2.6rem);line-height:1.2;margin:10px 0 6px}
+.hero p.lead{font-size:clamp(1.05rem,2.4vw,1.3rem);color:var(--soft);max-width:680px;margin:0 auto 22px}
+.badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:10px;padding:10px 20px 10px 16px;border-radius:16px;text-decoration:none;font-weight:800;color:#2a1446;background:linear-gradient(180deg,#fff,#f1e6ff);box-shadow:0 6px 0 #c7aee6,0 14px 30px rgba(0,0,0,.35);transition:transform .15s}
+.badge:hover{transform:translateY(-2px)}
+.badge svg{width:24px;height:24px;flex:none}
+.badge small{display:block;font-size:.72rem;font-weight:700;opacity:.7;line-height:1}
+.badge span{line-height:1.1;text-align:left}
+.badge.soon{background:rgba(255,255,255,.12);color:#fff;box-shadow:none;border:2px dashed rgba(255,255,255,.35);cursor:default}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 14px;font-weight:700;font-size:.9rem;color:var(--soft)}
+/* shots */
+.shots{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:20px 16px 30px;margin:0 -16px;scrollbar-width:none}
+.shots::-webkit-scrollbar{display:none}
+.phone{flex:0 0 220px;scroll-snap-align:center;border-radius:34px;padding:8px;background:linear-gradient(160deg,#fff,#e6d4ff);box-shadow:0 20px 40px rgba(0,0,0,.45);transform:rotate(var(--r,0deg))}
+.phone img{display:block;width:100%;height:auto;border-radius:27px}
+@media (min-width:1150px){.shots{justify-content:center;overflow:visible}}
+/* sections */
+section{padding:40px 0}
+h2{font-size:clamp(1.5rem,3.6vw,2.2rem);text-align:center;margin:0 0 8px;line-height:1.2}
+.sub{text-align:center;color:var(--muted);margin:0 auto 26px;max-width:640px}
+.story{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.04));border:1px solid var(--line);border-radius:32px;padding:28px}
+.story .stk{display:flex;gap:6px}
+.story .stk img{width:110px;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
+.story .stk img:nth-child(1){transform:rotate(-8deg)}.story .stk img:nth-child(2){transform:rotate(7deg) translateY(10px)}
+.story p{margin:0 0 10px;font-size:1.08rem;color:var(--soft)}
+.story p.sig{font-weight:800;color:#fff;margin:0}
+.story h2{text-align:left}
+@media (max-width:700px){.story{grid-template-columns:1fr;text-align:center}.story .stk{justify-content:center}.story h2{text-align:center}}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+@media (min-width:820px){.grid{grid-template-columns:repeat(3,1fr)}}
+.feat{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:20px 20px 22px;position:relative;overflow:hidden}
+.feat img{width:84px;height:auto;display:block;margin:-4px 0 6px;filter:drop-shadow(0 5px 8px rgba(0,0,0,.35))}
+.feat h3{margin:0 0 4px;font-size:1.2rem}
+.feat p{margin:0;color:var(--soft)}
+.collect{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:8px}
+.collect figure{margin:0;text-align:center;width:130px}
+.collect img{width:120px;height:auto;filter:drop-shadow(0 8px 12px rgba(0,0,0,.4));animation:bob 3.4s ease-in-out infinite}
+.collect figure:nth-child(2n) img{animation-delay:-1.2s}.collect figure:nth-child(3n) img{animation-delay:-2.1s}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+.collect figcaption{font-weight:800;font-size:.95rem;color:var(--soft)}
+.langs{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.langs span{background:#fff;color:#7b2d8e;font-weight:800;border-radius:16px;padding:8px 16px;box-shadow:0 5px 0 #c7aee6}
+.parents{background:linear-gradient(180deg,#fff,#f6ecff);color:#3a1f5c;border-radius:32px;padding:28px;box-shadow:0 10px 0 #c7aee6,0 24px 50px rgba(0,0,0,.35)}
+.parents h2{color:#7b2d8e}
+.parents ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.parents li{background:#fff;border:2px solid #eadcff;border-radius:18px;padding:12px 14px;font-weight:700}
+.parents li b{display:block;color:#c43c92;font-size:1.05rem}
+.cta{text-align:center}
+.cta img{width:min(420px,90%);height:auto}
+footer{padding:30px 0 40px;text-align:center;color:var(--muted);font-size:.9rem}
+footer a{color:var(--soft)}
+html[lang="ko"] body{font-family:"Gowun Dodum","Noto Sans KR","Baloo 2",system-ui,sans-serif}
+html[lang="ko"] .puffy{font-family:"Jua","Mochiy Pop One",sans-serif}
+html[lang="ko"] .story p,html[lang="ko"] .feat p{word-break:keep-all}
+html[lang="ko"] .sub,html[lang="ko"] .lead,html[lang="ko"] h1,html[lang="ko"] h2,html[lang="ko"] h3{word-break:keep-all}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="home" href="/">← mathieumissiaen.fr</a>
+    {{SWITCHER}}
+  </div>
+
+  <header class="hero">
+    <img class="logo" src="/stickoo/assets/logo-kids.webp" alt="Stickoo" width="1000" height="559">
+    <h1 class="puffy"><span>{{s0}}</span></h1>
+    <p class="lead">
+      <span>{{s1}}</span>
+    </p>
+    <div class="badges">
+      <a class="badge" href="{{PLAY}}" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#34a853" d="M3.6 2.3 13.4 12l-9.8 9.7c-.4-.2-.6-.6-.6-1.1V3.4c0-.5.2-.9.6-1.1z"/><path fill="#fbbc04" d="m16.8 15.4-3.4-3.4 3.4-3.4 3.9 2.2c1.1.6 1.1 1.8 0 2.4z"/><path fill="#4285f4" d="M16.8 15.4 13.4 12l-9.8 9.7c.4.2.9.2 1.4-.1z"/><path fill="#ea4335" d="M16.8 8.6 5 1.9c-.5-.3-1-.3-1.4-.1l9.8 9.7z"/></svg>
+        <span><small>{{s2}}</small>Google Play</span>
+      </a>
+      <a class="badge" href="{{APPSTORE}}" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#111" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.8-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.5-1-2.5-4zM14 5.4c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.1-.6 2.8-1.4z"/></svg>
+        <span><small>{{s3}}</small>App Store</span></a>
+    </div>
+    <div class="pills">
+      <span class="pill">{{s4}}</span>
+      <span class="pill">{{s5}}</span>
+      <span class="pill">{{s6}}</span>
+      <span class="pill">{{s7}}</span>
+    </div>
+  </header>
+
+  <div class="shots" aria-label="{{alt_shots}}">
+    <div class="phone" style="--r:-3deg"><img src="/stickoo/assets/shot-home.webp?v=2" alt="{{alt_home}}" loading="lazy" width="600" height="1299"></div>
+    <div class="phone" style="--r:2deg"><img src="/stickoo/assets/shot-quiz.webp?v=2" alt="{{alt_quiz}}" loading="lazy" width="600" height="1299"></div>
+    <div class="phone" style="--r:-2deg"><img src="/stickoo/assets/shot-win.webp?v=2" alt="{{alt_win}}" loading="lazy" width="600" height="1299"></div>
+    <div class="phone" style="--r:3deg"><img src="/stickoo/assets/shot-album.webp?v=2" alt="{{alt_album}}" loading="lazy" width="600" height="1299"></div>
+    <div class="phone" style="--r:-2deg"><img src="/stickoo/assets/shot-ach.webp?v=2" alt="{{alt_ach}}" loading="lazy" width="600" height="1299"></div>
+  </div>
+
+  <section class="intro">
+    <h2 class="puffy">{{seo_h2}}</h2>
+    <p>{{seo_p1}}</p>
+    <p>{{seo_p2}}</p>
+  </section>
+
+  <section>
+    <div class="story">
+      <div class="stk"><img src="/stickoo/assets/st-girl.webp" alt="" loading="lazy"><img src="/stickoo/assets/st-boy.webp" alt="" loading="lazy"></div>
+      <div>
+        <h2 class="puffy"><span>{{s8}}</span></h2>
+        <p>{{s9}}</p>
+        <p>{{s10}}</p>
+        <p class="sig">{{s11}}</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="puffy"><span>{{s12}}</span></h2>
+    <p class="sub"><span>{{s13}}</span></p>
+    <div class="grid">
+      <div class="feat"><img src="/stickoo/assets/ic-play.webp" alt="" loading="lazy"><h3><span>{{s14}}</span></h3><p><span>{{s15}}</span></p></div>
+      <div class="feat"><img src="/stickoo/assets/ic-stickers.webp" alt="" loading="lazy"><h3><span>{{s16}}</span></h3><p><span>{{s17}}</span></p></div>
+      <div class="feat"><img src="/stickoo/assets/ic-book.webp" alt="" loading="lazy"><h3><span>{{s18}}</span></h3><p><span>{{s19}}</span></p></div>
+      <div class="feat"><img src="/stickoo/assets/ic-cahier.webp" alt="" loading="lazy"><h3><span>{{s20}}</span></h3><p><span>{{s21}}</span></p></div>
+      <div class="feat"><img src="/stickoo/assets/ic-ach.webp" alt="" loading="lazy"><h3><span>{{s22}}</span></h3><p><span>{{s23}}</span></p></div>
+      <div class="feat"><img src="/stickoo/assets/st-food.webp" alt="" loading="lazy"><h3><span>{{s24}}</span></h3><p><span>{{s25}}</span></p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="puffy"><span>{{s26}}</span></h2>
+    <p class="sub"><span>{{s27}}</span></p>
+    <div class="collect">
+      <figure><img src="/stickoo/assets/st-girl.webp" alt="" loading="lazy"><figcaption>{{s28}}</figcaption></figure>
+      <figure><img src="/stickoo/assets/st-boy.webp" alt="" loading="lazy"><figcaption>{{s29}}</figcaption></figure>
+      <figure><img src="/stickoo/assets/st-gold.webp" alt="" loading="lazy"><figcaption>{{s30}}</figcaption></figure>
+      <figure><img src="/stickoo/assets/st-boy2.webp" alt="" loading="lazy"><figcaption>{{s31}}</figcaption></figure>
+      <figure><img src="/stickoo/assets/st-diam.webp" alt="" loading="lazy"><figcaption>{{s32}}</figcaption></figure>
+      <figure><img src="/stickoo/assets/st-rare.webp" alt="" loading="lazy"><figcaption>{{s33}}</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="puffy"><span>{{s34}}</span></h2>
+    <p class="sub"><span>{{s35}}</span></p>
+    <div class="langs"><span>🇬🇧 English</span><span>🇫🇷 Français</span><span>🇪🇸 Español</span><span>🇰🇷 한국어</span><span>🇯🇵 日本語</span><span>🇨🇳 中文</span></div>
+  </section>
+
+  <section>
+    <div class="parents">
+      <h2><span>{{s36}}</span></h2>
+      <p class="sub" style="color:#7a5a9a"><span>{{s37}}</span></p>
+      <ul>
+        <li><b>{{s38}}</b><span>{{s39}}</span></li>
+        <li><b>{{s40}}</b><span>{{s41}}</span></li>
+        <li><b>{{s42}}</b><span>{{s43}}</span></li>
+        <li><b>{{s44}}</b><span>{{s45}}</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="faq">
+    <h2 class="puffy" style="text-align:center">{{faq_title}}</h2>
+    <details><summary>{{faq1_q}}</summary><p>{{faq1_a}}</p></details>
+    <details><summary>{{faq2_q}}</summary><p>{{faq2_a}}</p></details>
+    <details><summary>{{faq3_q}}</summary><p>{{faq3_a}}</p></details>
+    <details><summary>{{faq4_q}}</summary><p>{{faq4_a}}</p></details>
+    <details><summary>{{faq5_q}}</summary><p>{{faq5_a}}</p></details>
+    <details><summary>{{faq6_q}}</summary><p>{{faq6_a}}</p></details>
+  </section>
+
+  <section class="cta">
+    <img src="/stickoo/assets/logo-anim.webp" alt="Stickoo" loading="lazy" width="540" height="324">
+    <div class="badges" style="margin-top:10px">
+      <a class="badge" href="{{PLAY}}" target="_blank" rel="noopener"><span><small>{{s46}}</small>Google Play</span></a>
+      <a class="badge" href="{{APPSTORE}}" target="_blank" rel="noopener"><span><small>{{s47}}</small>App Store</span></a>
+    </div>
+  </section>
+
+  <footer>
+    <p><a href="mailto:contact@mathieumissiaen.fr">contact@mathieumissiaen.fr</a></p>
+    <p><a href="{{PRIVACY}}"><span>{{s48}}</span></a></p>
+  </footer>
+</div>
+<script>
+(function(){
+  var L=['fr','es','ko','ja','zh'];
+  document.querySelectorAll('.lang a').forEach(function(a){a.addEventListener('click',function(){try{localStorage.setItem('stickoo-site-lang',a.getAttribute('lang').slice(0,2))}catch(e){}})});
+  if({{AUTOLANG}}){var saved=null;try{saved=localStorage.getItem('stickoo-site-lang')}catch(e){}
+    if(!saved&&!/bot|crawl|spider|slurp/i.test(navigator.userAgent)&&document.referrer.indexOf(location.host)<0){var n=(navigator.language||'en').slice(0,2).toLowerCase();if(L.indexOf(n)>=0)location.replace('{{ROOT}}'+n+'/')}}
+})();
+</script>
+</body>
+</html>

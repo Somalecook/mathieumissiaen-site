@@ -32,3 +32,8 @@
   for = "/lab/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/stickoo/_i18n/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
