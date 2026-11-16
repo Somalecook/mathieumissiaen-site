@@ -2042,7 +2042,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   function startMischief() {
     const d = dragon, free = o => !isStored(o) && !o.rest && !o.on && o !== ped.o && !(dragging && dragging.o === o);
     const C = [soli, soli2, soli3, ...garden.jars].filter(free).map(o => ['knock', o]);
-    for (const T of TABLES) if (!(dragging && dragging.o === T.o)) C.push(['knock', T.o]);
+    for (const T of TABLES) if (!(dragging && dragging.o === T.o) && !LOCKED.has(T.o)) C.push(['knock', T.o]);
     if (ds5Ready && free(sock) && !sockHidden()) C.push(['sock', sock], ['sock', sock]);
     if (!C.length) return false;
     const [kind, o] = C[(Math.random() * C.length) | 0];
@@ -3681,11 +3681,12 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   }
 
   // 2) the shelf starts almost empty: each step of growing (and the long streaks) brings one more iOLO piece
-  const UNLOCKS = [[bowl2, 15, 4], [plate2, 40, 7], [soli2, 80, 1], [mirror, 120, 11], [bowl3, 170, 8], [soli3, 240, 5], [bowl4, 330, 2]];   // [object, love needed, its shelf cell]
+  // [the object, love needed, its shelf cell or null for furniture on the lawn]; the fire bowl (water) and the blue plate (kibble) are there from the start
+  const UNLOCKS = [[() => bowl2, 15, 4], [() => soli2, 40, 1], [() => garden.jars[1], 70, 0], [() => mirror, 110, 11], [() => soban2, 150, null], [() => bowl3, 200, 8], [() => soli3, 260, 5], [() => bowl4, 330, 2]];
   const unlockedCount = () => Math.min(UNLOCKS.length, UNLOCKS.filter(u => grow.xp >= u[1]).length + (grow.bonusUnl || 0));
-  const prodName = o => (PRODUCTS.get(o) || ['an iOLO object'])[0];
+  const prodName = o => (PRODUCTS.get(prodKey(o)) || ['an iOLO object'])[0];
   function placeInShelf(o, si) {
-    const free = i => SLOTS[i] && !SMALL().some(it => it !== o && it.stored === i) && !garden.jars.some(j => j.stored === i);
+    const free = i => SLOTS[i] && !SMALL().some(it => it !== o && it.stored === i);
     const cell = free(si) ? si : [1, 2, 4, 5, 7, 8, 11].find(free);
     Object.assign(o, { on: null, tbl: 0, lift: 0, pour: false, bpour: null });
     if (cell != null) { [o.x, o.y, o.rest] = SLOTS[cell]; o.stored = cell; }
@@ -3695,11 +3696,24 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   function applyLocks(announce) {
     const n = unlockedCount(), before = grow.unl == null ? n : grow.unl;
     let fresh = null;
-    UNLOCKS.forEach(([o, , si], i) => {
+    UNLOCKS.forEach(([get, , si], i) => {
+      const o = get(); if (!o) return;
+      if (si == null) {   // furniture (the flower soban): it waits off the lawn, and comes back to its first place
+        const ti = TABLES.findIndex(T => T.o === o);
+        if (i < n) { if (LOCKED.has(o) || o.x < -10) { LOCKED.delete(o); Object.assign(o, { x: 1.5, y: 8.08, lift: 0 }); if (i >= before) fresh = o; } }
+        else {
+          LOCKED.add(o);
+          for (const it of SMALL()) if (it.rest && !isStored(it) && (it.tbl || 0) === ti) { it.rest = 0; it.tbl = 0; }
+          Object.assign(o, { x: -50, y: -50, lift: 0 });
+          if (ped.o === o) ped.o = null;
+        }
+        return;
+      }
       if (i < n) {
-        if (LOCKED.has(o) || o.stored === -1) { LOCKED.delete(o); placeInShelf(o, si); if (i >= before) fresh = o; }
+        if (LOCKED.has(o) || o.stored === -1 || o.x < -10) { LOCKED.delete(o); placeInShelf(o, si); if (i >= before) fresh = o; }
       } else {
         LOCKED.add(o);
+        const ji = garden.jars.indexOf(o); if (ji >= 0) { garden.pots[ji] = null; garden.care[ji] = { water: 1, wilt: 0 }; }
         for (const b of [bowl, bowl2, bowl3, bowl4]) if (b.on && stackBase(b) === o) b.on = null;
         Object.assign(o, { x: -50, y: -50, rest: 0, stored: -1, on: null, tbl: 0, lift: 0, pour: false, bpour: null });
         if (MIX.includes(o)) { o.amount = 0; o.kind = null; }
@@ -3781,6 +3795,8 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     }, 6500);
   }
 
+  // the blue plate was briefly locked (v148): it is a starter again
+  if (plate2.stored === -1 || plate2.x < -10) placeInShelf(plate2, 7);
   applyLocks(false);
   renderQuests(); updateAlbumBtn();
 
