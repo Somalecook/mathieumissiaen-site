@@ -3695,7 +3695,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
 
   // 2) the shelf starts almost empty: each step of growing (and the long streaks) brings one more iOLO piece
   // [the object, love needed, its shelf cell or null for furniture on the lawn]; the fire bowl (water) and the blue plate (kibble) are there from the start
-  const UNLOCKS = [[() => bowl2, 15, 4], [() => soli2, 40, 1], [() => garden.jars[1], 70, 0], [() => mirror, 110, 11], [() => soban2, 150, null], [() => bowl3, 200, 8], [() => soli3, 260, 5], [() => bowl4, 330, 2]];
+  const UNLOCKS = [[() => bowl2, 15, 4], [() => soli2, 40, 1], [() => garden.jars[1], 70, 0], [() => sock, 100, 'lawn'], [() => mirror, 125, 11], [() => soban2, 150, null], [() => bowl3, 200, 8], [() => soli3, 260, 5], [() => bowl4, 330, 2]];
   const unlockedCount = () => Math.min(UNLOCKS.length, UNLOCKS.filter(u => grow.xp >= u[1]).length + (grow.bonusUnl || 0));
   const prodName = o => (PRODUCTS.get(prodKey(o)) || ['an iOLO object'])[0];
   function placeInShelf(o, si) {
@@ -3711,6 +3711,11 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     let fresh = null;
     UNLOCKS.forEach(([get, , si], i) => {
       const o = get(); if (!o) return;
+      if (si === 'lawn') {   // the socks: they turn up on the grass
+        if (i < n) { if (LOCKED.has(o) || o.stored === -1 || o.x < -10) { LOCKED.delete(o); Object.assign(o, { x: 9.6, y: 9.2, rest: 0, stored: null, on: null, lift: 0, held: false }); if (i >= before) fresh = o; } }
+        else { LOCKED.add(o); Object.assign(o, { x: -50, y: -50, rest: 0, stored: -1, on: null, lift: 0, held: false }); if (ped.o === o) ped.o = null; }
+        return;
+      }
       if (si == null) {   // furniture (the flower soban): it waits off the lawn, and comes back to its first place
         const ti = TABLES.findIndex(T => T.o === o);
         if (i < n) { if (LOCKED.has(o) || o.x < -10) { LOCKED.delete(o); Object.assign(o, { x: 1.5, y: 8.08, lift: 0 }); if (i >= before) fresh = o; } }
