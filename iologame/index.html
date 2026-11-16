@@ -2614,7 +2614,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   const prodKey = o => garden.jars.includes(o) ? 'jar' : o;
   const pedOK = o => SMALL().includes(o) && !!PRODUCTS.get(prodKey(o)) && !covered(o);
   const pedTop = () => iso(PED.x, PED.y, PED.z + Math.sin(t * 1.3) * 2.5);
-  function pedAt(px, py) { const [x, y] = pedTop(); return Math.hypot(px - x, py - (y - 26)) < 74; }
+  function pedAt(px, py, k = 1) { const [x, y] = pedTop(); return Math.hypot(px - x, py - (y - 26)) < 50 * k; }
   // the piece's page on iolo.paris (the shop sends a variant link on to its product page)
   function openPiece(o) { const P = PRODUCTS.get(prodKey(o)); if (P && P[3]) window.open('https://iolo.paris/variants/' + P[3], '_blank', 'noopener'); }
   function pedTick(dt) {
@@ -2938,7 +2938,10 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
         o.x = clamp(gx, 0.7, NX - 0.7); o.y = clamp(gy, 0.7, NY - 0.7); o.lift = 14; o.rest = 0;
       }
       { const ti = TABLES.findIndex(T => T.o === o); if (ti >= 0) for (const it of SMALL()) if (it.rest && !isStored(it) && !it.on && (it.tbl || 0) === ti) { it.x += o.x - ox0; it.y += o.y - oy0; it.lift = 14; } }   // what's on it comes along
-      ped.hot = pedOK(o) && pedAt(px, py);
+      // the bubble only pulls a piece in when the hand is really over it, and not the piece just taken out of it until the hand has left it
+      if (dragging.fromPed == null) dragging.fromPed = o === ped.o;
+      if (dragging.fromPed && !pedAt(px, py, 1.3)) dragging.fromPed = false;
+      ped.hot = pedOK(o) && !dragging.fromPed && pedAt(px, py);
       if (ped.hot) Object.assign(o, { x: PED.x, y: PED.y, rest: 0, stored: null, on: null, tbl: 0, lift: PED.z + 4 });
       syncStack();
       if (wasInBed) { dragon.x = bed.x; dragon.y = bed.y; }   // he keeps sleeping while you carry the bed
