@@ -2025,6 +2025,15 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     if (stats.energy < 15) return setState('toBed');
     if (stats.water < 50 && dishFor('water')) { setState('toBowl'); d.purpose = 'drink'; d.dish = dishFor('water'); return; }
     if (stats.food < 50 && dishFor('food')) { setState('toBowl'); d.purpose = 'eat'; d.dish = dishFor('food'); return; }
+    // now and then, on his own, he practises breathing fire: sometimes a real flame, often just smoke and a cough
+    if (ds3Ready && t > (d.fireAt || (d.fireAt = t + rand(25, 45))) && stats.energy > 30 && stats.water > 25 && stats.food > 25 && Math.random() < 0.3) {
+      d.fireAt = t + rand(45, 100); d.practice = true;
+      d.face = Math.random() < 0.5 ? 1 : -1;
+      d.fireOk = Math.random() < 0.3 + stage * 0.2 + stats.fire / 100 * 0.35;
+      d.fireRange = d.fireOk ? 25 + stage * 50 + stats.fire * 1.8 : 0;
+      d.fireAnim = !d.fireOk ? 'smoke' : d.fireRange < 70 ? 'small' : d.fireRange < 140 ? 'mid' : 'big';
+      return setState('fire', FIRE_TIME);
+    }
     // bored, nobody playing with him: he goes and makes mischief
     if (t - lastPlay > 18 && t > (d.mischiefAt || 0) && Math.random() < 0.4 && startMischief()) return;
     // now and then he goes to admire himself in the mirror
@@ -2243,9 +2252,10 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
           stats.fire = clamp(stats.fire + (d.fireOk ? 5 : 3) * (1 - stats.fire / 115), 0, 100);
           stats.energy = clamp(stats.energy - 5, 0, 100);
           // breathing fire dries the throat and burns calories
-          stats.water = clamp(stats.water - (d.fireOk ? 10 : 6), 0, 100);
-          stats.food = clamp(stats.food - (d.fireOk ? 7 : 4), 0, 100);
-          if (stats.fire >= 99.5 && stage < 2) setState('evolve', 3.2);
+          stats.water = clamp(stats.water - (d.fireOk ? (d.practice ? 5 : 10) : (d.practice ? 3 : 6)), 0, 100);
+          stats.food = clamp(stats.food - (d.fireOk ? (d.practice ? 4 : 7) : (d.practice ? 2 : 4)), 0, 100);
+          const practice = d.practice; d.practice = false;
+          if (!practice && stats.fire >= 99.5 && stage < 2) setState('evolve', 3.2);   // (he grows from love now: practice never makes him evolve)
           else if (d.fireOk) { stats.joy = clamp(stats.joy + 6, 0, 100); setState('happy', 1.2); }
           else setState('cough', ds3Ready ? COUGH_TIME : 1.1);
         }
@@ -3591,7 +3601,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     for (const it of items) it.draw();
     drawNight();
     drawStars();
-    drawFireGlow();
+    // (no glow around the flames: the painted fire is enough)
     drawLampGlow();
     drawParticles();
     drawHand();
