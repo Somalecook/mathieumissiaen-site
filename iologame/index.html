@@ -3767,7 +3767,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
 
   // 2) the shelf starts almost empty: each step of growing (and the long streaks) brings one more iOLO piece
   // [the object, love needed, its shelf cell or null for furniture on the lawn]; the fire bowl (water) and the blue plate (kibble) are there from the start
-  const UNLOCKS = [[() => bowl2, 15, 4], [() => soli2, 40, 1], [() => garden.jars[1], 70, 0], [() => sock, 100, 'lawn'], [() => mirror, 125, 11], [() => soban2, 150, null], [() => bowl3, 200, 8], [() => soli3, 260, 5], [() => bowl4, 330, 2]];
+  const UNLOCKS = [[() => bottle, 10, 3], [() => bowl2, 20, 4], [() => garden.jars[0], 30, 10], [() => soli2, 45, 1], [() => garden.jars[1], 70, 0], [() => sock, 100, 'lawn'], [() => mirror, 125, 11], [() => soban2, 150, null], [() => bowl3, 200, 8], [() => soli3, 260, 5], [() => bowl4, 330, 2]];
   const unlockedCount = () => Math.min(UNLOCKS.length, UNLOCKS.filter(u => grow.xp >= u[1]).length + (grow.bonusUnl || 0));
   const prodName = o => (PRODUCTS.get(prodKey(o)) || ['an iOLO object'])[0];
   function placeInShelf(o, si) {
