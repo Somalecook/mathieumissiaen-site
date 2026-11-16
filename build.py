@@ -254,7 +254,7 @@ write('404.html', page('404.html', 'Page not found — ' + NAME, 'This page does
 # ---------- sitemap + robots ----------
 extra = []
 STK_LANGS = [('en', ''), ('fr', 'fr/'), ('es', 'es/'), ('ko', 'ko/'), ('ja', 'ja/'), ('zh-Hans', 'zh/')]
-for rel in ['stickoo/index.html'] + ['stickoo/%sindex.html' % d for _, d in STK_LANGS if d] + ['stickoo/confidentialite.html']:
+for rel in ['iologame/index.html', 'stickoo/index.html'] + ['stickoo/%sindex.html' % d for _, d in STK_LANGS if d] + ['stickoo/confidentialite.html']:
     if os.path.exists(os.path.join(ROOT, rel)):
         extra.append((rel.replace('index.html', ''), '0.8' if rel.endswith('index.html') else '0.4'))
 STK_ALT = ''.join('<xhtml:link rel="alternate" hreflang="%s" href="%s/stickoo/%s"/>' % (h, SITE_URL, d) for h, d in STK_LANGS) + \

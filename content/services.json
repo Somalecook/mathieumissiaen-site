@@ -70,15 +70,19 @@
       "description": "A creative director who vibe codes: Stickoo, a language app for children, and this portfolio website — AI-assisted development.",
       "intro": "Mathieu Missiaen vibe codes: he designs and ships software with AI assistance, the way an art director works with a team. The result is real, published work.",
       "body": [
-        "Stickoo is his language-learning app for children — words collected as stickers, in English, French, Spanish, Korean, Japanese and Chinese. He also built this portfolio website and other small creative tools.",
+        "Stickoo is his language-learning app for children — words collected as stickers, in English, French, Spanish, Korean, Japanese and Chinese. He also made Yongi (용이), a free virtual pet game for iOLO: a little pink dragon to raise in a hand-painted garden. And this portfolio website, and other small creative tools.",
         "For brands, the same approach makes interactive campaign pieces, prototypes and microsites fast to try and easy to change."
       ],
-      "fr": "Vibe coding : applications, outils créatifs et sites web, développés en étant assisté par l'IA — dont Stickoo, une app pour apprendre les langues aux enfants, et ce site.",
+      "fr": "Vibe coding : applications, outils créatifs et sites web, développés en étant assisté par l'IA — dont Stickoo, une app pour apprendre les langues aux enfants, Yongi, un jeu d'animal virtuel pour iOLO, et ce site.",
       "projects": [],
       "links": [
         {
           "label": "Stickoo — the app",
           "href": "/stickoo/"
+        },
+        {
+          "label": "Yongi 용이 — the virtual pet game",
+          "href": "/iologame/"
         }
       ]
     }
