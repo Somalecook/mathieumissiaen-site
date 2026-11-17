@@ -72,6 +72,42 @@
           "images/kenzo-move/12-striped-girl.jpg"
         ],
         "carouselRatio": 0.75
+      },
+      {
+        "type": "project",
+        "slug": "suntory-196",
+        "label": "",
+        "text": "",
+        "carousel": [
+          "images/suntory/01-heart.jpg",
+          "images/suntory/12-lemon-type.jpg",
+          "images/suntory/04-freeze-close.jpg",
+          "images/suntory/02-heart-sticker.jpg"
+        ],
+        "images": [
+          "images/suntory/06-shatter-1.jpg",
+          "images/suntory/03-lemons.webp",
+          "images/suntory/08-burst.jpg"
+        ],
+        "carouselRatio": 1
+      },
+      {
+        "type": "project",
+        "slug": "amazon-japan",
+        "label": "",
+        "text": "",
+        "carousel": [
+          "images/amazon-japan/01-station-corner.jpg",
+          "images/amazon-japan/07-shibuya-wall.jpg",
+          "images/amazon-japan/11-escalator.jpg",
+          "images/amazon-japan/09-station-target.jpg"
+        ],
+        "images": [
+          "images/amazon-japan/04-curlers.jpg",
+          "images/amazon-japan/08-dorayaki.jpg",
+          "images/amazon-japan/12-target.jpg"
+        ],
+        "carouselRatio": 1.5
       }
     ],
     "latest": {
