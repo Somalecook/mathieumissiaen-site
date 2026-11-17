@@ -215,7 +215,7 @@
         loadFont('Gowun+Dodum');
         return '<section class="wrap latest' + (items.length > 1 ? ' duo' : '') + '"><div class="latest-text">' + title +
           '<div class="latest-cap">' + items.map(function (it) {
-            return '<div style="display:flex;flex-direction:column;gap:8px"><span' + (it.lang ? ' lang="' + esc(it.lang) + '"' : '') + ' style="font-family:' + (it.lang === 'ko' ? '\'Gowun Dodum\',sans-serif' : 'var(--serif)') + ';font-size:clamp(28px,2.6vw,42px);line-height:1">' + esc(it.title) + '</span>' +
+            return (it.video ? '<video class="latest-vid" src="' + esc(it.video) + '" poster="' + esc(it.poster || '') + '" autoplay muted loop playsinline style="aspect-ratio:' + esc(it.videoRatio || '4 / 5') + '"></video>' : '') + '<div style="display:flex;flex-direction:column;gap:8px"><span' + (it.lang ? ' lang="' + esc(it.lang) + '"' : '') + ' style="font-family:' + (it.lang === 'ko' ? '\'Gowun Dodum\',sans-serif' : 'var(--serif)') + ';font-size:clamp(28px,2.6vw,42px);line-height:1">' + esc(it.title) + '</span>' +
               (it.text ? '<p style="margin:0;max-width:360px;line-height:1.7">' + esc(it.text) + '</p>' : '') + '</div>';
           }).join('') + '</div></div>' +
           '<div class="latest-imgs">' + items.map(function (it) {
