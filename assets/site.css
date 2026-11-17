@@ -342,4 +342,4 @@ img,video,iframe{max-width:100%}
 .stk-tray img:hover{transform:scale(1.12) rotate(0)}
 .sticker-drag.placed{z-index:45}
 @media (max-width:1100px),(hover:none){.stk-tray{display:none}}
-@media (min-width:1101px) and (hover:hover){body{padding-left:max(0px,calc(62px - (100vw - 1440px) / 2))}}
+
