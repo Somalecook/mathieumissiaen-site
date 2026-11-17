@@ -541,7 +541,7 @@
   function stickerTray(site) {
     var list = site.stickerTray || []; if (!list.length || document.querySelector('.stk-tray')) return;
     var tray = document.createElement('aside'); tray.className = 'stk-tray'; tray.setAttribute('aria-label', 'Stickers');
-    tray.innerHTML = '<span class="stk-tray-label">Stickers</span>' + list.map(function (src) { return '<img src="' + esc(src) + '" alt="" draggable="false" loading="lazy">'; }).join('');
+    tray.innerHTML = list.map(function (src) { return '<img src="' + esc(src) + '" alt="" draggable="false" loading="lazy">'; }).join('');
     document.body.appendChild(tray);
     function drag(img, ev, offX, offY) {
       img.setPointerCapture(ev.pointerId); img.classList.add('grab');
