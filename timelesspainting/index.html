@@ -36,7 +36,7 @@ body{background:var(--bg);color:var(--ink);font:14px/1.45 var(--body);overflow:h
 .mark small{font-family:var(--body);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);margin-left:8px;vertical-align:4px}
 .hint{color:var(--muted);font-size:12.5px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hint kbd{font:500 11px var(--mono);padding:1px 5px;border:1px solid var(--line);border-radius:4px}
-.stage{position:relative;background:var(--stage);display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden;padding:18px}
+.stage{position:relative;background:var(--stage);display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden;padding:18px 18px 18px 76px}
 .frame{position:relative;box-shadow:0 18px 50px -20px rgb(0 0 0/.45);touch-action:none}
 .frame canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 #ov{cursor:crosshair}
@@ -90,11 +90,28 @@ button:disabled{opacity:.45;cursor:default}
 .camBtn{font:600 12px var(--body);border:1px solid var(--line);background:var(--rail);color:var(--ink);border-radius:999px;padding:5px 11px;cursor:pointer}
 @media (max-width:760px){.camBox{width:81px;right:8px;bottom:8px}}
 .zoom{position:absolute;left:14px;bottom:30px;z-index:4;display:flex;gap:2px;padding:3px;background:var(--rail);border:1px solid var(--line);border-radius:999px;box-shadow:0 8px 18px -10px rgb(0 0 0/.45)}
-.skBar{position:absolute;left:14px;bottom:68px;z-index:4;display:flex;align-items:center;gap:2px;padding:3px;background:var(--rail);border:1px solid var(--line);border-radius:999px;box-shadow:0 8px 18px -10px rgb(0 0 0/.45);max-width:calc(100% - 28px);flex-wrap:wrap}
-.skBar .zb{display:grid;place-items:center}.skBar .zb[aria-pressed=true]{background:var(--accent);color:var(--accent-ink)}
+.dock{position:absolute;left:12px;top:12px;bottom:12px;z-index:5;width:46px;display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 0;
+  background:var(--rail);border:1px solid var(--line);border-radius:23px;box-shadow:0 10px 24px -14px rgb(0 0 0/.45);overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.dock::-webkit-scrollbar{display:none}
+.dGroup{display:flex;flex-direction:column;align-items:center;gap:2px}
+.dSep{width:22px;height:1px;background:var(--line);flex:none}.dFill{flex:1 1 auto;min-height:6px}
+.db{width:31px;height:31px;flex:none;display:grid;place-items:center;border:0;border-radius:50%;background:none;color:var(--ink);cursor:pointer;font:600 15px var(--body);padding:0}
+.db:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.db[aria-pressed=true]{background:var(--accent);color:var(--accent-ink)}
+.db.zv{font:600 10px var(--mono);letter-spacing:-.02em}#zFit{font-size:11px}
+.recDot{width:13px;height:13px;border-radius:50%;background:#e5484d;transition:border-radius .15s,width .15s,height .15s}
+.recB[aria-pressed=true]{background:color-mix(in srgb,#e5484d 16%,transparent)}.recB[aria-pressed=true] .recDot{border-radius:3px;width:12px;height:12px}
+.pauseI{width:11px;height:12px;border-left:3.5px solid currentColor;border-right:3.5px solid currentColor;box-sizing:border-box}
+#tlPause[aria-pressed=true] .pauseI{border:0;width:0;height:0;border-left:11px solid currentColor;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent;margin-left:3px}
+#tlPause[aria-pressed=true]{background:none;color:#e5484d}
+.dTime{font:600 10px var(--mono);color:#e5484d;font-variant-numeric:tabular-nums}.dTime.paused{animation:tlBlink 1s steps(2) infinite}
+@keyframes tlBlink{50%{opacity:.25}}
+.skOpts{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0;border-block:1px solid var(--line);margin:2px 0}
+.skSw,.skSz{display:flex;flex-direction:column;align-items:center;gap:4px}
+#skLayer[aria-pressed=true]{background:none;color:var(--accent)}#skLayer[aria-pressed=true] path{opacity:.5}#skLayer[aria-pressed=true] circle{opacity:1}
+#sku{pointer-events:none}
+@media (max-width:760px){.stage{padding-left:52px!important}.dock{left:4px;top:6px;bottom:6px;width:42px}.db{width:32px;height:32px}.status{left:52px}}
 #skEye[aria-pressed=true]{background:none;color:var(--ink)}#skEye[aria-pressed=true] .slash{display:none}#skEye[aria-pressed=false]{color:var(--muted)}
-.skOpts{display:flex;align-items:center;gap:2px}.skOpts:not([hidden]){border-left:1px solid var(--line);border-right:1px solid var(--line);padding:0 4px;margin:0 2px}
-.skSw,.skSz{display:flex;gap:3px;padding:0 3px}
 .skSw button{width:18px;height:18px;border-radius:50%;border:1px solid rgb(0 0 0/.25);background:var(--c);cursor:pointer;padding:0}
 .skSw button[aria-pressed=true]{box-shadow:0 0 0 2px var(--rail),0 0 0 3.5px var(--accent)}
 .skSz button{width:22px;height:22px;border-radius:50%;border:0;background:none;cursor:pointer;display:grid;place-items:center;padding:0}
@@ -103,7 +120,7 @@ button:disabled{opacity:.45;cursor:default}
 .zb{font:600 12.5px var(--body);border:0;background:none;color:var(--ink);min-width:28px;height:26px;border-radius:999px;cursor:pointer;padding:0 8px}
 .zb:hover{background:var(--chip)}.zv{font:500 11.5px var(--mono);font-variant-numeric:tabular-nums;min-width:52px}
 .numIn{width:64px;font:500 11px var(--mono);background:var(--chip);color:var(--ink);border:1px solid var(--accent);border-radius:6px;padding:1px 4px;justify-self:end}
-.status{position:absolute;left:18px;bottom:8px;font:500 11px var(--mono);color:var(--muted);letter-spacing:.04em}
+.status{position:absolute;left:76px;bottom:8px;font:500 11px var(--mono);color:var(--muted);letter-spacing:.04em}
 .rail{background:var(--rail);border-left:1px solid var(--line);overflow-y:auto;min-height:0;
   padding-block:6px 40px;padding-left:18px;padding-right:max(18px,env(safe-area-inset-right,0px))}
 section{padding-block:16px;border-bottom:1px solid var(--line);display:grid;gap:10px}
@@ -170,21 +187,28 @@ textarea{width:100%;box-sizing:border-box;min-height:70px;font:11px var(--mono);
     <button class="b primary" id="exportTop">Export</button>
   </header>
   <main class="stage" id="stage">
-    <div class="frame" id="frame"><canvas id="bgc" aria-hidden="true"></canvas><canvas id="gl"></canvas><canvas id="ov"></canvas><canvas id="sk" aria-label="Sketch layer"></canvas><div class="camBox" id="camBox" hidden><div class="camHeart"><video id="camVid" playsinline muted></video><div class="camMsg" id="camMsg" hidden></div></div></div></div>
+    <div class="frame" id="frame"><canvas id="bgc" aria-hidden="true"></canvas><canvas id="sku" aria-hidden="true"></canvas><canvas id="gl"></canvas><canvas id="ov"></canvas><canvas id="sk" aria-label="Sketch layer"></canvas><div class="camBox" id="camBox" hidden><div class="camHeart"><video id="camVid" playsinline muted></video><div class="camMsg" id="camMsg" hidden></div></div></div></div>
     <div class="emptyHint" id="emptyHint" hidden><span class="ehTxt" id="ehTxt">Timeless Painting</span></div>
-    <div class="cam" id="cam"><button class="camBtn tlBtn" id="tlBtn" aria-pressed="false" title="Record your work as a timelapse video">● Rec</button><button class="camBtn" id="camBtn" aria-pressed="false">Webcam</button></div>
-    <div class="skBar" id="skBar" role="group" aria-label="Sketch">
-      <button class="zb" id="skPen" aria-pressed="false" title="Pencil: draw notes and sketches (B)"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M3 17l1-4L13.5 3.5a2 2 0 0 1 3 3L7 16z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M11.5 5.5l3 3" stroke="currentColor" stroke-width="1.7"/></svg></button>
-      <span class="skOpts" id="skOpts" hidden>
-        <span class="skSw" id="skCols"><button data-c="#ffffff" aria-pressed="true" title="White" style="--c:#ffffff"></button><button data-c="#1d1418" title="Black" style="--c:#1d1418"></button><button data-c="#ff3b5c" title="Red" style="--c:#ff3b5c"></button><button data-c="#ffc23d" title="Yellow" style="--c:#ffc23d"></button><button data-c="#3d8bff" title="Blue" style="--c:#3d8bff"></button></span>
-        <span class="skSz" id="skSizes"><button data-s="2" title="Fine"><i style="--d:3px"></i></button><button data-s="5" aria-pressed="true" title="Medium"><i style="--d:6px"></i></button><button data-s="12" title="Thick"><i style="--d:10px"></i></button></span>
-        <button class="zb" id="skErase" aria-pressed="false" title="Eraser (E)"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M8 17h9M3.5 12.5l7-7.5a2 2 0 0 1 2.9 0l2.6 2.6a2 2 0 0 1 0 2.9L10 16.5H7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M6.5 9l5 5" stroke="currentColor" stroke-width="1.6"/></svg></button>
-        <button class="zb" id="skUndo" title="Remove the last stroke">↶</button>
-        <button class="zb" id="skClear" title="Clear the whole sketch">Clear</button>
-      </span>
-      <button class="zb" id="skEye" aria-pressed="true" title="Show or hide the sketch (H)"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M1.5 10S5 4 10 4s8.5 6 8.5 6-3.5 6-8.5 6-8.5-6-8.5-6z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="10" r="2.6" fill="currentColor"/><path class="slash" d="M3 17L17 3" stroke="currentColor" stroke-width="1.8"/></svg></button>
-    </div>
-    <div class="zoom" role="group" aria-label="Zoom"><button class="zb" id="zOut" title="Zoom out (−)">−</button><button class="zb zv" id="zoomVal" title="Reset to fit (0)">100%</button><button class="zb" id="zIn" title="Zoom in (+)">+</button><button class="zb" id="zFit" title="Fit (0)">Fit</button></div>
+    <div class="cam" id="cam"><button class="camBtn" id="camBtn" aria-pressed="false">Webcam</button></div>
+    <nav class="dock" id="dock" aria-label="Recording, sketch and zoom">
+      <div class="dGroup" aria-label="Timelapse recording">
+        <button class="db recB" id="tlBtn" aria-pressed="false" title="Record a timelapse of your work"><i class="recDot"></i></button>
+        <button class="db" id="tlPause" aria-pressed="false" hidden title="Pause the recording"><i class="pauseI"></i></button>
+        <span class="dTime" id="tlTime" hidden>0:00</span>
+      </div>
+      <span class="dSep"></span>
+      <div class="dGroup" aria-label="Sketch">
+        <button class="db" id="skPen" aria-pressed="false" title="Pencil: draw notes and sketches (B)"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M3 17l1-4L13.5 3.5a2 2 0 0 1 3 3L7 16z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M11.5 5.5l3 3" stroke="currentColor" stroke-width="1.7"/></svg></button>
+        <button class="db" id="skErase" aria-pressed="false" title="Eraser (E)"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M8 17h9M3.5 12.5l7-7.5a2 2 0 0 1 2.9 0l2.6 2.6a2 2 0 0 1 0 2.9L10 16.5H7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M6.5 9l5 5" stroke="currentColor" stroke-width="1.6"/></svg></button>
+        <div class="skOpts" id="skOpts" hidden><span class="skSw" id="skCols"><button data-c="#ffffff" aria-pressed="true" title="White" style="--c:#ffffff"></button><button data-c="#1d1418" title="Black" style="--c:#1d1418"></button><button data-c="#ff3b5c" title="Red" style="--c:#ff3b5c"></button><button data-c="#ffc23d" title="Yellow" style="--c:#ffc23d"></button><button data-c="#3d8bff" title="Blue" style="--c:#3d8bff"></button></span><span class="skSz" id="skSizes"><button data-s="2" title="Fine"><i style="--d:3px"></i></button><button data-s="5" aria-pressed="true" title="Medium"><i style="--d:6px"></i></button><button data-s="12" title="Thick"><i style="--d:10px"></i></button></span></div>
+        <button class="db" id="skUndo" title="Remove the last stroke">↶</button>
+        <button class="db" id="skClear" title="Clear the whole sketch"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M4 6h12M8 6V4h4v2M5.5 6l.8 10h7.4l.8-10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg></button>
+        <button class="db" id="skLayer" aria-pressed="false" title="Sketch is over the blobs. Click to put it under them."><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><circle cx="10" cy="11" r="5.5" fill="currentColor" opacity=".35"/><path d="M2.5 9.5c3-3 6 2 9-1s4-2 6-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <button class="db" id="skEye" aria-pressed="true" title="Show or hide the sketch (H)"><svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><path d="M1.5 10S5 4 10 4s8.5 6 8.5 6-3.5 6-8.5 6-8.5-6-8.5-6z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="10" r="2.6" fill="currentColor"/><path class="slash" d="M3 17L17 3" stroke="currentColor" stroke-width="1.8"/></svg></button>
+      </div>
+      <span class="dFill"></span>
+      <div class="dGroup" role="group" aria-label="Zoom"><button class="db" id="zIn" title="Zoom in (+)">+</button><button class="db zv" id="zoomVal" title="Reset to fit (0)">100%</button><button class="db" id="zOut" title="Zoom out (−)">−</button><button class="db" id="zFit" title="Fit (0)">Fit</button></div>
+    </nav>
     <div class="status" id="status">—</div>
   </main>
   <aside class="rail">
@@ -695,7 +719,7 @@ function composite(src,dst,tmp){const [A,B]=tmp,g=S.g;gl.disable(gl.SCISSOR_TEST
   if(dst){gl.bindFramebuffer(gl.FRAMEBUFFER,dst.f);gl.viewport(0,0,dst.w,dst.h)}else{gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,cv.width,cv.height)}
   gl.useProgram(CP);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,src.t);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,B.t);
   gl.uniform1i(CU.uS,0);gl.uniform1i(CU.uBl,1);gl.uniform2f(CU.uR,dst?dst.w:cv.width,dst?dst.h:cv.height);
-  gl.uniform1i(CU.uAlpha,g.bgn&&g.bgn.on?1:0);gl.uniform1f(CU.uHaze,g.haze);gl.uniform1f(CU.uBloom,g.bloom);gl.uniform1f(CU.uFocus,g.focus);gl.drawArrays(gl.TRIANGLES,0,3);gl.activeTexture(gl.TEXTURE0)}
+  {const am=(g.bgn&&g.bgn.on)||(!dst&&skUnderActive());gl.uniform1i(CU.uAlpha,am?1:0);if(!dst)frame.style.background=am&&!(g.bgn&&g.bgn.on)?g.bg:''}gl.uniform1f(CU.uHaze,g.haze);gl.uniform1f(CU.uBloom,g.bloom);gl.uniform1f(CU.uFocus,g.focus);gl.drawArrays(gl.TRIANGLES,0,3);gl.activeTexture(gl.TEXTURE0)}
 const U={};for(const n of['uB','uN','uRes','uCamZ','uTan','uK','uWob','uWobF','uGloss','uSpec','uSpecPow','uAO','uExp','uSeed','uBg','uL','uTr','uDen','uGlow','uMode','uSel','uBleed','uLift','uStepK','uR','uSSS','uSSSR','uGlass','uClar','uOrtho','uBmin','uBmax','uCell','uSlice','uBounce','uSpill','uZoom','uPan'])U[n]=gl.getUniformLocation(P,n);
 const BU={uT:gl.getUniformLocation(BP,'uT'),uR:gl.getUniformLocation(BP,'uR')};
 gl.bindVertexArray(gl.createVertexArray());
@@ -819,12 +843,12 @@ function startFull(){if(AN.on)return;const j={y:0,cancel:false};job=j;const rows
     setStatus(`rendering ${Math.round(j.y/full.h*100)}%`);requestAnimationFrame(step)};
   requestAnimationFrame(step)}
 function fit(){
-  const r=stage.getBoundingClientRect(),narrow=innerWidth<=760,pad=narrow?0:36;
-  let w=Math.min(r.width-pad,(r.height-pad)*.8);w=Math.max(120,Math.floor(w));const h=Math.round(w*1.25);
+  const r=stage.getBoundingClientRect(),narrow=innerWidth<=760,pad=narrow?0:36,dk=narrow?52:58;
+  let w=Math.min(r.width-pad-dk,(r.height-pad)*.8);w=Math.max(120,Math.floor(w));const h=Math.round(w*1.25);
   if(w===fw&&h===fh)return;fw=w;fh=h;
   frame.style.width=w+'px';frame.style.height=h+'px';bgc.width=Math.max(4,Math.round(w*.5));bgc.height=Math.max(5,Math.round(h*.5));if(S.g.bgn&&S.g.bgn.on)drawBg();
   const dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);
-  ov.width=cv.width;ov.height=cv.height;{const k=document.getElementById('sk');if(k){k.width=cv.width;k.height=cv.height;if(window.__skDirty)window.__skDirty()}}
+  ov.width=cv.width;ov.height=cv.height;{for(const id of['sk','sku']){const k=document.getElementById(id);if(k){k.width=cv.width;k.height=cv.height}}if(window.__skDirty)window.__skDirty()}
   delFBO(full);delFBO(draft);delFBO(mask);for(const x of[...(blurF||[]),...(blurD||[])])delFBO(x);mask=mkFBO(Math.max(8,Math.round(w*.6)),Math.max(10,Math.round(h*.6)));full=mkFBO(cv.width,cv.height);draft=mkFBO(Math.max(8,Math.round(cv.width*.32)),Math.max(10,Math.round(cv.height*.32)));blurF=mkBlur(full);blurD=mkBlur(draft);
   requestRender();
 }
@@ -1610,7 +1634,7 @@ function tlGrabGL(){if(!TL.glC)TL.glC=document.createElement('canvas');const c=T
   const x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);x.drawImage(cv,0,0)}
 const tlSize=()=>{const k=Math.min(1,1080/cv.height);return[Math.round(cv.width*k/2)*2,Math.round(cv.height*k/2)*2]};
 function tlCompose(C){const [w,h]=[C.width,C.height],x=C.getContext('2d');x.fillStyle=S.g.bg||'#000';x.fillRect(0,0,w,h);
-  if(!bgc.hidden)x.drawImage(bgc,0,0,w,h);if(TL.glC)x.drawImage(TL.glC,0,0,w,h);x.drawImage(ov,0,0,w,h);if(SK.show)x.drawImage(skC,0,0,w,h);
+  if(!bgc.hidden)x.drawImage(bgc,0,0,w,h);if(SK.show&&S.skUnder)x.drawImage(skU,0,0,w,h);if(TL.glC)x.drawImage(TL.glC,0,0,w,h);x.drawImage(ov,0,0,w,h);if(SK.show&&!S.skUnder)x.drawImage(skC,0,0,w,h);
   const fr=frame.getBoundingClientRect(),k=w/fr.width;
   if(!camBox.hidden&&camVid.readyState>=2&&camVid.videoWidth){const r=camBox.getBoundingClientRect(),cx=(r.left-fr.left+r.width/2)*k,cy=(r.top-fr.top+r.height/2)*k,rr=r.width/2*k,
     vw=camVid.videoWidth,vh=camVid.videoHeight,sq=Math.min(vw,vh);const hp=new Path2D(HEART_D),hm=new DOMMatrix().translate(cx-rr,cy-rr).scale(rr/50),hpath=new Path2D();hpath.addPath(hp,hm);x.save();x.clip(hpath);
@@ -1619,17 +1643,22 @@ function tlCompose(C){const [w,h]=[C.width,C.height],x=C.getContext('2d');x.fill
   if(TL.ptr&&performance.now()-TL.ptrT<2500){const px=TL.ptr[0]*k,py=TL.ptr[1]*k,u=k*1.1;x.save();x.translate(px,py);x.scale(u,u);
     x.beginPath();x.moveTo(0,0);x.lineTo(0,15);x.lineTo(4,11.4);x.lineTo(6.8,17.8);x.lineTo(9.4,16.7);x.lineTo(6.6,10.4);x.lineTo(12.2,10.1);x.closePath();
     x.fillStyle='#fff';x.fill();x.lineWidth=1.4;x.lineJoin='round';x.strokeStyle='#1d1418';x.stroke();x.restore()}}
-function tlTick(){if(!TL.on)return;const now=performance.now();
+function tlTick(){if(!TL.on||TL.paused)return;const now=performance.now();
   const active=now-TL.lastAct<1600||job||raf||AN.on||(S.g.bgn&&S.g.bgn.on&&now-TL.lastAct<6000);
   if(active&&!TL.busy){TL.work+=TL.iv/1000;TL.busy=true;const [w,h]=tlSize();if(!TL.C){TL.C=document.createElement('canvas')}if(TL.C.width!==w||TL.C.height!==h){TL.C.width=w;TL.C.height=h}
     if(!TL.glC)tlGrabGL();tlCompose(TL.C);TL.C.toBlob(b=>{TL.busy=false;if(!b||!TL.on)return;TL.frames.push(b);
       if(TL.frames.length>=4800){TL.frames=TL.frames.filter((_,i)=>i%2===0);TL.iv*=2;clearInterval(TL.timer);TL.timer=setInterval(tlTick,TL.iv)}},'image/jpeg',.88)}
   tlBtnText()}
 const mmss=s=>{s=Math.round(s);return`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`};
-function tlBtnText(){const b=$('#tlBtn');b.textContent=TL.on?`■ ${mmss((performance.now()-TL.t0)/1000+TL.wall)}`:'● Rec';b.setAttribute('aria-pressed',TL.on)}
-function tlStart(fresh){if(fresh){TL.frames=[];TL.iv=200;TL.work=0;TL.wall=0}TL.on=true;TL.t0=performance.now();TL.lastAct=TL.t0;tlGrabGL();requestRender();
-  clearInterval(TL.timer);TL.timer=setInterval(tlTick,TL.iv);tlBtnText();toast('Recording a timelapse. Click ■ to stop.')}
-function tlStop(){TL.on=false;TL.wall+=(performance.now()-TL.t0)/1000;clearInterval(TL.timer);tlBtnText();
+const tlElapsed=()=>TL.wall+(TL.on&&!TL.paused?(performance.now()-TL.t0)/1000:0);
+function tlBtnText(){const b=$('#tlBtn'),pz=$('#tlPause'),t=$('#tlTime');b.setAttribute('aria-pressed',TL.on);b.title=TL.on?'Stop and export the timelapse':'Record a timelapse of your work';
+  pz.hidden=t.hidden=!TL.on;pz.setAttribute('aria-pressed',!!TL.paused);pz.title=TL.paused?'Resume recording':'Pause the recording';t.textContent=mmss(tlElapsed());t.classList.toggle('paused',!!TL.paused)}
+function tlPause(){if(!TL.on)return;if(!TL.paused){TL.wall+=(performance.now()-TL.t0)/1000;TL.paused=true;clearInterval(TL.timer);toast('Recording paused.')}
+  else{TL.paused=false;TL.t0=performance.now();TL.lastAct=TL.t0;clearInterval(TL.timer);TL.timer=setInterval(tlTick,TL.iv);toast('Recording again.')}tlBtnText()}
+$('#tlPause').addEventListener('click',tlPause);
+function tlStart(fresh){if(fresh){TL.frames=[];TL.iv=200;TL.work=0;TL.wall=0}TL.on=true;TL.paused=false;TL.t0=performance.now();TL.lastAct=TL.t0;tlGrabGL();requestRender();
+  clearInterval(TL.timer);TL.timer=setInterval(tlTick,TL.iv);tlBtnText();toast('Recording a timelapse. ❚❚ pauses, ■ stops.')}
+function tlStop(){if(!TL.paused)TL.wall+=(performance.now()-TL.t0)/1000;TL.on=false;TL.paused=false;clearInterval(TL.timer);tlBtnText();
   if(!TL.frames.length){toast('Nothing was recorded yet: the timelapse only keeps the moments you are working.');return}
   $('#tlInfo').textContent=`${mmss(TL.wall)} recorded (${mmss(TL.work)} of active work, ${TL.frames.length.toLocaleString()} frames). Pauses where nothing happens are left out.`;
   $('#tlProg').hidden=true;$('#tlMsg').hidden=true;['#tlExport','#tlResume','#tlDiscard'].forEach(q=>$(q).disabled=false);tlSum();$('#tlModal').hidden=false}
@@ -1678,7 +1707,7 @@ $('#tlExport').addEventListener('click',async()=>{if(TL.busyExport)return;const 
   const r=await saveFile(name,blob);if(r!=='fallback')toast(r==='saved'?`Saved ${name} (${(blob.size/1048576).toFixed(1)} MB).`:saveMsg(r))});
 
 /* ---------- Sketch: a pencil layer for notes, kept in picture coordinates so it follows zoom and pan ---------- */
-var skC=document.getElementById('sk'),SK={on:false,erase:false,show:true,col:'#ffffff',size:5,live:null,key:'',ref:null};
+var skC=document.getElementById('sk'),skU=document.getElementById('sku'),SK={on:false,erase:false,show:true,col:'#ffffff',size:5,live:null,key:'',ref:null};
 window.__skDirty=()=>{SK.key=''};
 const skW2S=(wx,wy)=>{const W=skC.width,H=skC.height;return[((wx-VW.px)*VW.z*H+W)/2,(H-(wy-VW.py)*VW.z*H)/2]};
 function skS2W(cx,cy){const r=frame.getBoundingClientRect(),W=skC.width,H=skC.height,X=(cx-r.left)/r.width*W,Y=(cy-r.top)/r.height*H;return[(2*X-W)/H/VW.z+VW.px,(H-2*Y)/H/VW.z+VW.py]}
@@ -1687,8 +1716,12 @@ function skStroke(x,st){const P=st.pts,H=skC.height,k=VW.z*H/2;if(!P.length)retu
   if(P.length===1){x.beginPath();x.arc(S_[0][0],S_[0][1],wd(0)/2,0,Math.PI*2);x.fill();return}
   for(let i=1;i<S_.length;i++){const a=i>1?[(S_[i-1][0]+S_[i-2][0])/2,(S_[i-1][1]+S_[i-2][1])/2]:S_[0],m=[(S_[i][0]+S_[i-1][0])/2,(S_[i][1]+S_[i-1][1])/2],e=i===S_.length-1?S_[i]:m;
     x.beginPath();x.moveTo(a[0],a[1]);x.quadraticCurveTo(S_[i-1][0],S_[i-1][1],e[0],e[1]);x.lineWidth=(wd(i-1)+wd(i))/2;x.stroke()}}
-function drawSketch(force){if(!skC)return;const L=S.sketch||[],key=[skC.width,skC.height,VW.z,VW.px,VW.py,SK.show,L.length].join();
-  if(!force&&key===SK.key&&SK.ref===L&&!SK.live)return;SK.key=key;SK.ref=L;const x=skC.getContext('2d');x.clearRect(0,0,skC.width,skC.height);if(!SK.show)return;
+function skUnderActive(){return typeof SK!=='undefined'&&!!SK&&SK.show&&!!S.skUnder&&!!(S.sketch&&S.sketch.length||SK.live&&!SK.live.erasing)}
+function drawSketch(force){if(!skC)return;const L=S.sketch||[],un=!!S.skUnder,key=[skC.width,skC.height,VW.z,VW.px,VW.py,SK.show,L.length,un].join();
+  const act=skUnderActive();if(act!==SK.act){SK.act=act;setTimeout(requestRender,0)}
+  if(un!==SK.unUI){SK.unUI=un;skLayerUI()}
+  if(!force&&key===SK.key&&SK.ref===L&&!SK.live)return;SK.key=key;SK.ref=L;
+  const T=un?skU:skC,O=un?skC:skU;O.getContext('2d').clearRect(0,0,O.width,O.height);const x=T.getContext('2d');x.clearRect(0,0,T.width,T.height);if(!SK.show)return;
   for(const st of L)skStroke(x,st);if(SK.live)skStroke(x,SK.live)}
 function skSetPen(on,erase){SK.on=on;SK.erase=!!erase&&on;skC.classList.toggle('on',on);skC.classList.toggle('erase',SK.erase);$('#skOpts').hidden=!on;
   $('#skPen').setAttribute('aria-pressed',on&&!SK.erase);$('#skErase').setAttribute('aria-pressed',SK.erase);if(on&&!SK.show)skShow(true);
@@ -1712,6 +1745,9 @@ skC.addEventListener('wheel',e=>{ov.dispatchEvent(new WheelEvent('wheel',e));e.p
 $('#skPen').addEventListener('click',()=>skSetPen(!(SK.on&&!SK.erase)));
 $('#skErase').addEventListener('click',()=>skSetPen(!SK.erase,!SK.erase));
 $('#skEye').addEventListener('click',()=>skShow(!SK.show));
+function skLayerUI(){const u=!!S.skUnder,b=$('#skLayer');b.setAttribute('aria-pressed',u);b.title=u?'Sketch is under the blobs. Click to put it over them.':'Sketch is over the blobs. Click to put it under them.'}
+$('#skLayer').addEventListener('click',()=>{S.skUnder=!S.skUnder;skLayerUI();drawSketch(true);requestRender();commitSoon();toast(S.skUnder?'Sketch under the blobs.':'Sketch over the blobs.')});
+skLayerUI();
 $('#skUndo').addEventListener('click',()=>{if(S.sketch&&S.sketch.length){S.sketch.pop();drawSketch(true);commitSoon()}});
 $('#skClear').addEventListener('click',()=>{if(S.sketch&&S.sketch.length){S.sketch=[];drawSketch(true);commitSoon();toast('Sketch cleared. ⌘Z / Ctrl+Z brings it back.')}});
 $('#skCols').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;SK.col=b.dataset.c;$('#skCols').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));if(SK.erase)skSetPen(true,false)});
