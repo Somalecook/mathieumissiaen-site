@@ -553,7 +553,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
   const soban = { x: 1.25, y: 6.1 };
   const soban2 = { x: 1.4, y: 2.45 };   // the round, low one
   let puddle = 0;   // grows while the tap runs for nothing, dries once it's closed
-  const LAMP = { x: 5, y: 7, h: 273, on: false };   // hanging lamp: ground point under it (the middle of the lawn), height of the shade
+  const LAMP = { x: 5, y: 7, h: 208, on: false };   // hanging lamp: ground point under it (the middle of the lawn), height of the shade
   const SOBAN_K = 1.1;                       // both sobans are drawn 10% bigger than their art
   const SOBAN_Z = 70 * SOBAN_K;              // height of the table top, in px
   // the three moon jars start on the soban, spread along its width
@@ -1543,9 +1543,9 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     const [x, y] = iso(LAMP.x, LAMP.y);
     ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.globalAlpha = lampK;
     ctx.translate(x, y); ctx.scale(1, 0.48);
-    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 115);
-    g.addColorStop(0, 'rgba(255,230,160,.7)'); g.addColorStop(0.45, 'rgba(255,220,140,.36)'); g.addColorStop(1, 'rgba(255,214,140,0)');
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, 115, 0, Math.PI * 2); ctx.fill();
+    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 98);   // the lamp hangs lower: a smaller, brighter pool
+    g.addColorStop(0, 'rgba(255,230,160,.8)'); g.addColorStop(0.45, 'rgba(255,220,140,.42)'); g.addColorStop(1, 'rgba(255,214,140,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, 98, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
   }
   // night: the lamp switched on dims the whole game to a deep blue, except round the pool of light
@@ -1556,7 +1556,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     const [x, y] = iso(LAMP.x, LAMP.y);
     ctx.save(); ctx.globalCompositeOperation = 'multiply'; ctx.globalAlpha = lampK;
     ctx.translate(x, y - 20); ctx.scale(1, 0.55);
-    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 330);
+    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 300);
     g.addColorStop(0, 'rgb(255,250,240)'); g.addColorStop(0.3, 'rgb(205,200,222)'); g.addColorStop(0.75, 'rgb(92,100,158)'); g.addColorStop(1, 'rgb(64,72,130)');
     ctx.fillStyle = g; ctx.fillRect(-4000, -6000, 8000, 12000);
     ctx.restore();
@@ -1613,7 +1613,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     // the cone: blurred edges, fading towards the ground
     // the blurred cone is cached (a blur filter every frame is slow); rebuilt only when the lamp moves
     const m = ctx.getTransform(), sc = Math.round(Math.hypot(m.a, m.b) * 4) / 4 || 1;
-    const x0 = Math.min(bx, gx) - 110, y0 = by - 30, cw = Math.abs(gx - bx) + 220, ch = gy - by + 50;
+    const x0 = Math.min(bx, gx) - 100, y0 = by - 30, cw = Math.abs(gx - bx) + 220, ch = gy - by + 50;
     const ck = [bx, by, gx, gy, sc].map(v => Math.round(v)).join(',') + sc;
     if (!drawLampGlow.c || drawLampGlow.k !== ck) {
       const c = drawLampGlow.c || document.createElement('canvas'); c.width = Math.ceil(cw * sc); c.height = Math.ceil(ch * sc);
@@ -1621,7 +1621,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       const beam = g.createLinearGradient(0, by, 0, gy);
       beam.addColorStop(0, 'rgba(255,236,180,.5)'); beam.addColorStop(0.5, 'rgba(255,230,170,.24)'); beam.addColorStop(0.92, 'rgba(255,228,165,.14)'); beam.addColorStop(1, 'rgba(255,228,165,0)');
       g.fillStyle = beam; g.beginPath();
-      g.moveTo(bx - 14, by); g.lineTo(bx + 14, by); g.lineTo(gx + 78, gy - 6); g.lineTo(gx - 78, gy - 6); g.closePath(); g.fill();
+      g.moveTo(bx - 14, by); g.lineTo(bx + 14, by); g.lineTo(gx + 66, gy - 6); g.lineTo(gx - 66, gy - 6); g.closePath(); g.fill();
       drawLampGlow.c = c; drawLampGlow.k = ck;
     }
     ctx.drawImage(drawLampGlow.c, x0, y0, cw, ch);
