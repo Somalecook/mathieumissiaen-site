@@ -552,7 +552,7 @@
     tray.addEventListener('pointerdown', function (ev) {
       var t = ev.target; if (t.tagName !== 'IMG') return; ev.preventDefault();
       var img = new Image(); img.src = t.src; img.alt = ''; img.draggable = false; img.className = 'sticker-drag placed';
-      var r = t.getBoundingClientRect(), k = 1.9, w = r.width * k, h = r.height * k;
+      var r = t.getBoundingClientRect(), k = 1.38, w = r.width * k, h = r.height * k;
       img.style.width = w + 'px'; img.style.setProperty('--r', (Math.round(Math.random() * 24) - 12) + 'deg');
       img.style.left = (ev.pageX - w / 2) + 'px'; img.style.top = (ev.pageY - h / 2) + 'px';
       document.body.appendChild(img);
