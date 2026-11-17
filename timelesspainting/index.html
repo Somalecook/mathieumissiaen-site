@@ -926,11 +926,15 @@ function drawAnts(pts,alpha,col){
   const heads_s=[];for(let h=0;h<heads;h++)heads_s.push(((head+h*per/heads)%per+per)%per);
   let cxm=0,cym=0;for(const p of pts){cxm+=p[0];cym+=p[1]}cxm/=N;cym/=N;
   const mixw=t=>[0,1,2].map(i=>Math.round(oc[i]+(255-oc[i])*t));
-  octx.save();octx.globalAlpha=alpha;
+  octx.save();octx.globalAlpha=alpha;const flames=[];
   for(let j=0;j<n;j++){const s=j*sp,q=at(s);
     let lit=0,near=1e9;for(const hs of heads_s){let d=(hs-s)%per;if(d<0)d+=per;near=Math.min(near,d,per-d);if(!still)lit=Math.max(lit,Math.exp(-d/tail*3))}
     if(still)lit=.5;
     if(near<sp*1.1)continue;                                 /* the bird takes this spot */
+    /* upper part of the outline: little flames rising instead of pearls */
+    {const pa=at(s-3),pb=at(s+3);let nx=pb[1]-pa[1],ny=-(pb[0]-pa[0]);const nl=Math.hypot(nx,ny)||1;nx/=nl;ny/=nl;
+      if(nx*(q[0]-cxm)+ny*(q[1]-cym)<0){nx=-nx;ny=-ny}const top=-ny;
+      if(top>.3){flames.push([q,top,lit,j]);continue}}
     const r=1.9+3.1*Math.pow(lit,1.3),c=mixw(lit),dk=c.map(v=>Math.round(v*.62));
     /* soft drop shadow, then a shaded sphere with a specular dot */
     octx.fillStyle='rgba(0,0,0,.22)';octx.beginPath();octx.arc(q[0]+r*.25,q[1]+r*.45,r*1.02,0,Math.PI*2);octx.fill();
@@ -939,6 +943,19 @@ function drawAnts(pts,alpha,col){
     octx.fillStyle=g;octx.beginPath();octx.arc(q[0],q[1],r,0,Math.PI*2);octx.fill();
     if(lit>.4){octx.save();octx.globalCompositeOperation='lighter';const gg=octx.createRadialGradient(q[0],q[1],0,q[0],q[1],r*2.6);
       gg.addColorStop(0,`rgba(255,255,255,${.35*lit})`);gg.addColorStop(1,'rgba(255,255,255,0)');octx.fillStyle=gg;octx.beginPath();octx.arc(q[0],q[1],r*2.6,0,Math.PI*2);octx.fill();octx.restore()}}
+  /* flames: object colour at the rim, warm yellow inside, a white-hot core; they flicker and lean with a slow breeze */
+  {const fire=[255,122,40],mixc=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t)),outer=mixc(oc.map(Math.round),fire,.55);
+   for(const [q,top,lit,j] of flames){const k=Math.min(1,(top-.3)/.5),fl=still?0:Math.sin(T*11+j*1.7)*.6+Math.sin(T*17.3+j*2.9)*.4,
+     rnd=.7+.6*(Math.sin(j*12.9898)*43758.5453%1+1)%1,h=(6+11*k)*rnd*(1+.22*fl)*(1+.45*lit),w=(2.4+2.4*k)*(1+.12*fl),sway=still?0:Math.sin(T*2.3+j*.6)*h*.18+fl*h*.06,bx=q[0],by=q[1]+1.5;
+     const shape=(sc)=>{const hh=h*sc,ww=w*sc,tx=bx+sway*sc,ty=by-hh;octx.beginPath();octx.moveTo(bx-ww,by);
+       octx.bezierCurveTo(bx-ww*1.1,by-hh*.45,tx-ww*.35,ty+hh*.3,tx,ty);octx.bezierCurveTo(tx+ww*.35,ty+hh*.3,bx+ww*1.1,by-hh*.45,bx+ww,by);
+       octx.arc(bx,by,ww,0,Math.PI,false);octx.closePath()};
+     octx.save();octx.globalCompositeOperation='lighter';const gl_=octx.createRadialGradient(bx,by-h*.35,0,bx,by-h*.35,h*.9);
+     gl_.addColorStop(0,`rgba(${fire.join(',')},${.28+.25*lit})`);gl_.addColorStop(1,'rgba(255,120,40,0)');octx.fillStyle=gl_;octx.beginPath();octx.arc(bx,by-h*.35,h*.9,0,Math.PI*2);octx.fill();octx.restore();
+     let g=octx.createLinearGradient(bx,by,bx,by-h);g.addColorStop(0,`rgb(${outer.join(',')})`);g.addColorStop(.55,'rgb(255,150,50)');g.addColorStop(1,'rgba(255,90,40,.15)');
+     shape(1);octx.fillStyle=g;octx.fill();
+     g=octx.createLinearGradient(bx,by,bx,by-h*.7);g.addColorStop(0,'rgb(255,214,90)');g.addColorStop(1,'rgba(255,200,80,.2)');shape(.66);octx.fillStyle=g;octx.fill();
+     shape(.34);octx.fillStyle='rgba(255,250,225,.95)';octx.fill()}}
   /* birds */
   const tint=`rgb(${mixw(.55).join(',')})`;
   heads_s.forEach((hs,h)=>{const q=at(hs),a=at(hs-2),b=at(hs+2),ang=Math.atan2(b[1]-a[1],b[0]-a[0]);
@@ -1090,19 +1107,23 @@ layer.append(ring);stage.append(layer,hud);
       <title>${it.label}</title><text class="gl" x="${lx}" y="${ly+1}">${it.gl}</text></g>`});
   ring.innerHTML=`<svg viewBox="0 0 ${RS*2} ${RS*2}" aria-hidden="true"><defs id="rDefs"></defs>${h}<g id="hueRing">${(()=>{let o="";const N=90,P=(r,a)=>[RS+r*Math.cos(a),RS+r*Math.sin(a)];for(let j=0;j<N;j++){const a0=(j/N)*Math.PI*2-Math.PI/2-.004,a1=((j+1)/N)*Math.PI*2-Math.PI/2+.004,[x0,y0]=P(HR1,a0),[x1,y1]=P(HR1,a1),[x2,y2]=P(HR0,a1),[x3,y3]=P(HR0,a0);o+=`<path d="M${x0} ${y0}A${HR1} ${HR1} 0 0 1 ${x1} ${y1}L${x2} ${y2}A${HR0} ${HR0} 0 0 0 ${x3} ${y3}Z" fill="hsl(${Math.round(j/N*360)} 85% 60%)"/>`}return o})()}<circle cx="${RS}" cy="${RS}" r="${HR1}" fill="none" stroke="rgb(255 255 255/.55)" stroke-width="1.5"/><circle cx="${RS}" cy="${RS}" r="${HR0}" fill="none" stroke="rgb(255 255 255/.4)" stroke-width="1"/><circle id="hueKnob" r="9" fill="#fff" stroke="#fff" stroke-width="3.5"/></g><g id="rHubBtn"><title>Change shape: sphere, cube, donut</title><circle class="hub" cx="${RS}" cy="${RS}" r="${RI-8}" fill="url(#rHub)"/><g id="rHubIco"></g></g></svg>`})();
 /* ---------- Menu outline: round, square, star or frog head. Each is a radius multiplier around the centre ---------- */
-const MSHAPES=['round','square','star','frog'],MSH_N={round:'Round',square:'Square',star:'Star',frog:'Frog head'};
+const MSHAPES=['round','square','star','frog','devil'],MSH_N={round:'Round',square:'Square',star:'Star',frog:'Frog head',devil:'Smiling devil'};
 let mShape='round';try{const v=localStorage.getItem('neoMenuShape');if(MSHAPES.includes(v))mShape=v}catch(_){}
 const D2R=Math.PI/180,gauss=(a,c,w)=>{let d=((a-c)/D2R+540)%360-180;return Math.exp(-(d/w)*(d/w))};
 function mF(a,sh=mShape){const c=Math.cos(a),s_=Math.sin(a);
   if(sh==='square'){const n=5;return .9*Math.pow(Math.pow(Math.abs(c),n)+Math.pow(Math.abs(s_),n),-1/n)}
   if(sh==='star')return 1+.17*Math.cos(5*(a+Math.PI/2));
   if(sh==='frog')return 1/Math.hypot(c/1.12,s_/.86)+.46*(gauss(a,-128*D2R,19)+gauss(a,-52*D2R,19));
+  if(sh==='devil'){const horn=(c0,dir)=>{let d=((a/D2R-c0)+540)%360-180;const w=d*dir>0?17:6;return Math.pow(Math.max(0,1-Math.abs(d)/w),2.2)};
+    const chin=Math.pow(Math.max(0,1-Math.abs((((a/D2R-90)+540)%360)-180)/24),1.8);
+    return 1/Math.hypot(c/1.06,s_/.95)+.8*(horn(-113,-1)+horn(-67,1))+.14*chin}
   return 1}
 const FROG_EYES=[-128,-52];
 function shapePath(r,sh,a0=0,a1=Math.PI*2,n=120){let d='';for(let j=0;j<=n;j++){const a=a0+(a1-a0)*j/n,rr=r*mF(a,sh);d+=(j?'L':'M')+(RS+rr*Math.cos(a)).toFixed(2)+' '+(RS+rr*Math.sin(a)).toFixed(2)}return d}
 const MICO={round:'<circle cx="0" cy="0" r="6.5"/>',square:'<rect x="-6" y="-6" width="12" height="12" rx="2.5"/>',
   star:'<path d="M0-7.5L2.2-2.4 7.6-2.3 3.4 1.1 4.8 6.6 0 3.4-4.8 6.6-3.4 1.1-7.6-2.3-2.2-2.4Z"/>',
-  frog:'<ellipse cx="0" cy="1.6" rx="7.2" ry="5"/><circle cx="-4" cy="-3.6" r="3"/><circle cx="4" cy="-3.6" r="3"/>'};
+  frog:'<ellipse cx="0" cy="1.6" rx="7.2" ry="5"/><circle cx="-4" cy="-3.6" r="3"/><circle cx="4" cy="-3.6" r="3"/>',
+  devil:'<circle cx="0" cy="1.6" r="6.2"/><path d="M-4.6-2.4L-7.6-9-1.6-4.6ZM4.6-2.4L7.6-9 1.6-4.6Z"/><path d="M-3.2 2.6q3.2 2.8 6.4 0" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>'};
 let mBtn={x:0,y:0},mMax=1;
 function buildRing(){const sh=mShape,P=a=>[RS+Math.cos(a),RS+Math.sin(a)];let h='';mMax=1;for(let j=0;j<360;j+=3)mMax=Math.max(mMax,mF(j*D2R));
   RITEMS.forEach((it,i)=>{const a0=(it.ang-RSPAN)*D2R,a1=(it.ang+RSPAN)*D2R,N=24;let d='';
@@ -1115,6 +1136,14 @@ function buildRing(){const sh=mShape,P=a=>[RS+Math.cos(a),RS+Math.sin(a)];let h=
   const edge=o=>{let d='';for(let j=0;j<=180;j++){const a=j/180*Math.PI*2,r=RO*mF(a)+o;d+=(j?'L':'M')+(RS+r*Math.cos(a)).toFixed(2)+' '+(RS+r*Math.sin(a)).toFixed(2)}return d+'Z'};
   let eyes='';if(sh==='frog')FROG_EYES.forEach(e=>{const a=e*D2R,r=RO*mF(a)-24,x=RS+r*Math.cos(a),y=RS+r*Math.sin(a),lk=e<-90?2:-2;
     eyes+=`<circle cx="${x}" cy="${y}" r="19" fill="#fff" stroke="rgb(0 0 0/.16)" stroke-width="1.5"/><circle cx="${x+lk}" cy="${y+3}" r="9.5" fill="#241a1e"/><circle cx="${x+lk-3}" cy="${y-1}" r="3" fill="#fff"/>`});
+  if(sh==='devil'){const at=(deg,off,fix)=>{const a=deg*D2R,r=(fix?fix:RO*mF(a))+off;return[RS+r*Math.cos(a),RS+r*Math.sin(a)]};
+    for(const [e,dir] of[[-128,1],[-52,-1]]){const [x,y]=at(e,-25,RO*1.0),rot=dir*-14;
+      eyes+=`<g transform="translate(${x} ${y}) rotate(${rot})"><ellipse rx="14" ry="9.5" fill="#fff" stroke="rgb(0 0 0/.18)" stroke-width="1.2"/><circle cx="${dir*3}" cy="1.5" r="5.8" fill="#2a0f16"/><circle cx="${dir*3-2}" cy="-.4" r="1.8" fill="#fff"/><path d="M-15 -14L14 -8" transform="scale(${dir} 1)" stroke="#2a0f16" stroke-width="3.6" stroke-linecap="round"/></g>`}
+    let sm='';for(let j=0;j<=40;j++){const deg=28+j*124/40,[x,y]=at(deg,0,RO*.8);sm+=(j?'L':'M')+x.toFixed(1)+' '+y.toFixed(1)}
+    eyes+=`<path d="${sm}" fill="none" stroke="#2a0f16" stroke-width="4.2" stroke-linecap="round"/>`;
+    for(const deg of[66,114]){const a=deg*D2R,[x,y]=at(deg,0,RO*.8),tx=-Math.sin(a),ty=Math.cos(a),nx=-Math.cos(a),ny=-Math.sin(a);
+      eyes+=`<path d="M${x+tx*4} ${y+ty*4}L${x-tx*4} ${y-ty*4}L${x+nx*8} ${y+ny*8}Z" fill="#fff" stroke="#2a0f16" stroke-width="1.2" stroke-linejoin="round"/>`}
+    for(const [deg,dir] of[[28,1],[152,-1]]){const [x,y]=at(deg,0,RO*.8);eyes+=`<path d="M${x} ${y}q${dir*-4} -6 ${dir*-9} -3" fill="none" stroke="#2a0f16" stroke-width="2.6" stroke-linecap="round"/>`}}
   const ba=45*D2R,br=RO*mF(ba)+28+17;mBtn={x:RS+br*Math.cos(ba),y:RS+br*Math.sin(ba)};const nx=MSHAPES[(MSHAPES.indexOf(sh)+1)%MSHAPES.length];
   const hub=sh==='frog'?`<circle class="hub" cx="${RS}" cy="${RS}" r="${RI-8}" fill="url(#rHub)"/>`:`<path class="hub" d="${shapePath(RI-8,sh)}Z" fill="url(#rHub)"/>`;
   ring.innerHTML=`<svg viewBox="0 0 ${RS*2} ${RS*2}" aria-hidden="true"><defs id="rDefs"></defs>${h}<g class="frogEyes" pointer-events="none">${eyes}</g><g id="hueRing">${hue}<path d="${edge(28)}" fill="none" stroke="rgb(255 255 255/.55)" stroke-width="1.5"/><path d="${edge(8)}" fill="none" stroke="rgb(255 255 255/.4)" stroke-width="1"/><circle id="hueKnob" r="9" fill="#fff" stroke="#fff" stroke-width="3.5"/></g><g id="rHubBtn"><title>Change shape: sphere, cube, donut</title>${hub}<g id="rHubIco"></g></g><g id="mShapeBtn" transform="translate(${mBtn.x} ${mBtn.y})"><title>Menu shape: ${MSH_N[sh]} (click for ${MSH_N[nx]})</title><circle r="15" class="mBtnBg"/><g class="mBtnIco">${MICO[sh]}</g></g></svg>`}
