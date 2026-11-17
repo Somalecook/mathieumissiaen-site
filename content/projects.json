@@ -28,6 +28,70 @@
           "layout": "sequence",
           "images": [
             {
+              "src": "images/tal/22-neo-1.jpg",
+              "title": "NEO I",
+              "caption": "",
+              "tag": "",
+              "ratio": "1760 / 2200",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/tal/23-neo-blur.jpg",
+              "title": "NEO, blur",
+              "caption": "",
+              "tag": "",
+              "ratio": "1760 / 2200",
+              "bg": "#FDFDFF"
+            },
+            {
+              "src": "images/tal/24-neo-mouth-1.jpg",
+              "title": "NEO, mouth I",
+              "caption": "",
+              "tag": "",
+              "ratio": "1760 / 2200",
+              "bg": "#F38D98"
+            },
+            {
+              "src": "images/tal/25-neo-mouth-2.jpg",
+              "title": "NEO, mouth II",
+              "caption": "",
+              "tag": "",
+              "ratio": "1760 / 2200",
+              "bg": "#D39C75"
+            },
+            {
+              "src": "images/tal/26-neo-2.jpg",
+              "title": "NEO II",
+              "caption": "",
+              "tag": "",
+              "ratio": "1760 / 2200",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/tal/27-neo-lips.jpg",
+              "title": "NEO, lips",
+              "caption": "",
+              "tag": "",
+              "ratio": "1760 / 2200",
+              "bg": "#9AB6AA"
+            },
+            {
+              "src": "images/tal/28-neo-full-face.jpg",
+              "title": "NEO, full face",
+              "caption": "",
+              "tag": "",
+              "ratio": "1760 / 2200",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/tal/29-cheval.jpg",
+              "title": "Cheval",
+              "caption": "",
+              "tag": "",
+              "ratio": "1760 / 2200",
+              "bg": "#F9E7D6"
+            },
+            {
               "src": "images/tal/17-goyohan-bam.jpg",
               "title": "고요한 밤",
               "caption": "",
