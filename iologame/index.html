@@ -167,18 +167,45 @@ button:hover { border-bottom-color: currentColor; }
 button:focus-visible { outline: 1px solid currentColor; outline-offset: 4px; }
 button:disabled { opacity: .35; cursor: default; }
 @media (max-width: 760px) {
-  /* on a phone the line of type goes right under the picture */
-  .frame { aspect-ratio: auto; background: #fff; }
-  canvas { height: auto; aspect-ratio: 16 / 9; }
-  .panel, .frame.night .panel { position: static; flex-wrap: wrap; gap: 12px; padding: 12px 14px 14px; color: #111; }
-  .stats { flex: 1 1 100%; gap: 12px; }
-  .stat { flex: 1 1 0; width: auto; }
-  .stat label { font-size: .52rem; letter-spacing: .06em; }
-  .stat label { flex-direction: column; align-items: flex-start; gap: 2px; }
-  .panel i[lang="ko"] { display: block; margin: 2px 0 0; }
+  /* a narrow window: the type stays on the picture, sized by the container steps below */
+  .frame { aspect-ratio: 16 / 9; }
+}
+/* ---------- the type follows the size of the game, not of the window: three steps for smaller frames ---------- */
+.frame { container: game / inline-size; }
+h1 .logo { width: clamp(110px, 19cqw, 300px); }
+@container game (max-width: 1420px) {
+  .panel { gap: 18px; }
+  .stats { gap: 16px; }
+  .stat { flex: 0 1 100px; min-width: 76px; width: auto; }
+  .stat label { flex-direction: column; align-items: flex-start; gap: 1px; }
+  .panel i[lang="ko"] { display: block; margin: 1px 0 0; }
   .actions { gap: 16px; }
-  .actions button { text-align: left; }
-  h1 { font-size: .8rem; left: 14px; top: 12px; }
+  .actions button { white-space: normal; text-align: left; }
+}
+@container game (max-width: 1100px) {
+  h1 { left: 18px; top: 12px; }
+  h1 .rules { display: none; }
+  h1 .quests { margin-top: .6em; font-size: 9px; line-height: 1.6; letter-spacing: .1em; }
+  .panel { left: 18px; right: 18px; bottom: 12px; gap: 12px; }
+  .stats { gap: 12px; }
+  .stat { flex-basis: 78px; min-width: 62px; }
+  .stat label, .actions button { font-size: 9px; letter-spacing: .08em; }
+  .actions { gap: 12px; }
+  #product { right: 18px; font-size: 9.5px; max-width: 230px; top: 52%; }
+  #album { font-size: 9.5px; }
+  .alb-row img, .alb-row .slot { width: 40px; height: 40px; }
+}
+@container game (max-width: 780px) {
+  h1 { left: 12px; top: 8px; }
+  h1 .quests { font-size: 7.5px; }
+  .panel { left: 12px; right: 12px; bottom: 7px; gap: 8px; }
+  .stats { gap: 8px; }
+  .stat { flex-basis: 62px; min-width: 50px; }
+  .stat label, .actions button { font-size: 7.5px; letter-spacing: .06em; margin-bottom: 3px; }
+  .actions { gap: 9px; }
+  #product { right: 12px; font-size: 8px; max-width: 190px; }
+  #album { font-size: 8px; }
+  .alb-row img, .alb-row .slot { width: 32px; height: 32px; }
 }
 /* ---------- phones: the game fills the whole screen, in landscape, and the type is set for a small screen ---------- */
 html.phone, html.phone body { margin: 0; padding: 0; height: 100%; overflow: hidden; overscroll-behavior: none; }
@@ -696,7 +723,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
   const PHONE = matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 600;
   let TK = 1;   // canvas type is set bigger on a phone so it stays readable
   function fitPhone() {
-    if (!PHONE) return;
+    if (!PHONE) { const fw = (document.querySelector('.frame') || {}).clientWidth || 1600; TK = Math.max(1, Math.min(1.9, 1250 / fw)); return; }
     const W = innerWidth, H = innerHeight, root = document.documentElement;
     root.classList.add('phone'); root.classList.toggle('portrait', H > W);
     // the whole 16:9 garden fits the screen; the sky colour fills the sides
@@ -2840,6 +2867,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     // a soft shadow on the grass under the bubble, and what to do beneath it
     const [gx, gy] = iso(PED.x, PED.y, 0), bob = Math.sin(t * 1.3);
     ell(gx, gy - 2, 34 - bob * 2, 9 - bob * 0.6, 'rgba(40,30,60,.10)');
+    if (TK > 1.15 && performance.now() < toastUntil) return;   // on a small screen the message on the right needs the room
     const ink = lampK > 0.5 ? '242,242,242' : '17,17,17';
     // on a phone the type is bigger: it sits on the left of the bubble so it stays clear of the buttons below
     const side = TK > 1, [bx, by] = bubbleCentre(), tx = side ? bx - BUB_R - 14 : gx, ty = side ? by - 32 - 12 * TK : gy;
