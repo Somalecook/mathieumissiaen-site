@@ -256,7 +256,7 @@ extra = []
 STK_LANGS = [('en', ''), ('fr', 'fr/'), ('es', 'es/'), ('ko', 'ko/'), ('ja', 'ja/'), ('zh-Hans', 'zh/')]
 for rel in ['iologame/index.html', 'stickoo/index.html'] + ['stickoo/%sindex.html' % d for _, d in STK_LANGS if d] + ['stickoo/confidentialite.html']:
     if os.path.exists(os.path.join(ROOT, rel)):
-        extra.append((rel.replace('index.html', ''), '0.8' if rel.endswith('index.html') else '0.4'))
+        extra.append((rel.replace('index.html', ''), ('0.9' if rel == 'stickoo/index.html' else '0.8') if rel.endswith('index.html') else '0.4'))
 STK_ALT = ''.join('<xhtml:link rel="alternate" hreflang="%s" href="%s/stickoo/%s"/>' % (h, SITE_URL, d) for h, d in STK_LANGS) + \
     '<xhtml:link rel="alternate" hreflang="x-default" href="%s/stickoo/"/>' % SITE_URL
 def _alt(u):

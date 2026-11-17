@@ -23,7 +23,8 @@ def t(key, L):
 def jsonld(L):
     url = SITE + '/stickoo/' + PATH[L]
     app = {
-        '@type': 'MobileApplication', 'name': 'Stickoo', 'url': url,
+        '@type': ['MobileApplication', 'VideoGame'], 'name': 'Stickoo', 'alternateName': ['Stickoo game', 'Stickoo app'], 'url': url,
+        'genre': ['Educational game', 'Language learning game', 'Kids game'], 'gamePlatform': ['Android', 'iOS'], 'playMode': 'SinglePlayer',
         'description': t('meta_desc', L), 'inLanguage': ['en', 'fr', 'es', 'ko', 'ja', 'zh'],
         'applicationCategory': 'EducationalApplication', 'applicationSubCategory': t('ld_subcat', L),
         'operatingSystem': 'Android, iOS', 'image': SITE + '/stickoo/assets/logo-kids.webp',
