@@ -26,6 +26,11 @@
     (p.sections || []).forEach(function (s) { (s.images || []).forEach(function (im) { out.push(im); }); });
     return out;
   }
+  function insetHTML(im) {
+    var v = im && im.inset; if (!v) return '';
+    return '<span class="inset" style="aspect-ratio:' + esc(v.ratio || '4 / 5') + '"><video src="' + esc(v.video) + '" poster="' + esc(v.poster || '') + '" autoplay muted loop playsinline preload="metadata"></video></span>' +
+      (v.caption ? '<span class="inset-cap">' + esc(v.caption) + '</span>' : '');
+  }
   function kindLabel(k) { return k === 'research' ? 'Research' : 'Commission'; }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
 
@@ -274,11 +279,11 @@
         }, []));
         ((site.home && site.home.wallFirst) || []).slice().reverse().forEach(function (f) {
           var fp = data.projects.filter(function (q) { return q.slug === f.slug; })[0];
-          if (fp && (st.kind === 'all' || fp.kind === st.kind)) { ims = ims.filter(function (x) { return x.src !== f.src; }); ims.unshift({ src: f.src, ratio: f.ratio, bg: f.bg, slug: fp.slug, p: fp }); }
+          if (fp && (st.kind === 'all' || fp.kind === st.kind)) { ims = ims.filter(function (x) { return x.src !== f.src; }); ims.unshift({ src: f.src, ratio: f.ratio, bg: f.bg, slug: fp.slug, p: fp, inset: f.inset }); }
         });
         box.innerHTML = '<div class="wall">' + ims.map(function (x) {
           var p = x.p, tag = p.galleryOnly ? 'div' : 'a';
-          return '<' + tag + ' class="w"' + (p.galleryOnly ? '' : ' href="work/' + p.slug + '/"') + '><div class="ph" style="aspect-ratio:' + (x.ratio || '4 / 5') + ';background:' + (x.bg || '#D2D0CA') + '"><img loading="lazy" src="' + x.src + '" alt="' + esc(p.title) + '"></div>' +
+          return '<' + tag + ' class="w"' + (p.galleryOnly ? '' : ' href="work/' + p.slug + '/"') + '><div class="ph" style="aspect-ratio:' + (x.ratio || '4 / 5') + ';background:' + (x.bg || '#D2D0CA') + '"><img loading="lazy" src="' + x.src + '" alt="' + esc(p.title) + '">' + insetHTML(x) + '</div>' +
             '<span class="w-cap"><span>' + esc(p.title) + '</span>' + (p.client && p.kind === 'commission' ? '<span class="serif it">' + esc(p.client) + '</span>' : '') + '</span></' + tag + '>';
         }).join('') + '</div>';
       } else {
@@ -416,7 +421,7 @@
       var base = 0;
       var sections = (p.sections || []).map(function (s) { var h = sectionHTML(s, base); base += s.images.length; return h; }).join('');
       if (p.view === 'masonry') sections = '<section class="wrap" style="padding-bottom:120px"><div class="masonry">' + imgs.map(function (im, i) {
-        return '<figure class="tile"><button type="button" data-zoom="' + i + '" aria-label="Open ' + esc(plain(im.title) || p.title) + '" style="background:' + (im.bg || 'var(--panel)') + '"><img loading="lazy" src="' + im.src + '" alt="' + esc(plain(im.title) || plain(p.title)) + '"></button></figure>';
+        return '<figure class="tile"><button type="button" data-zoom="' + i + '" aria-label="Open ' + esc(plain(im.title) || p.title) + '" style="background:' + (im.bg || 'var(--panel)') + '"><img loading="lazy" src="' + im.src + '" alt="' + esc(plain(im.title) || plain(p.title)) + '"></button>' + (im.inset ? '<span class="inset-wrap">' + insetHTML(im) + '</span>' : '') + '</figure>';
       }).join('') + '</div></section>';
       var ch = p.chapters;
       var chapters = ch ? '<section style="background:' + ch.bg + ';color:' + ch.fg + ';--ch-line:' + ch.line + '"><div class="wrap" style="padding-block:96px 104px">' +

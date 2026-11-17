@@ -173,7 +173,13 @@
         "src": "images/tal/29-cheval.jpg",
         "ratio": "1760 / 2200",
         "bg": "#F8E7D9",
-        "slug": "tal"
+        "slug": "tal",
+        "inset": {
+          "video": "images/tal/29-cheval-timelapse.mp4",
+          "poster": "images/tal/29-cheval-timelapse.jpg",
+          "ratio": "4 / 5",
+          "caption": "Timeless Painting — after Mike Kelley"
+        }
       }
     ]
   },

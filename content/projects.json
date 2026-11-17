@@ -85,11 +85,17 @@
             },
             {
               "src": "images/tal/29-cheval.jpg",
-              "title": "Cheval",
+              "title": "Timeless Painting, after Mike Kelley",
               "caption": "",
               "tag": "",
               "ratio": "1760 / 2200",
-              "bg": "#F9E7D6"
+              "bg": "#F9E7D6",
+              "inset": {
+                "video": "images/tal/29-cheval-timelapse.mp4",
+                "poster": "images/tal/29-cheval-timelapse.jpg",
+                "ratio": "4 / 5",
+                "caption": "Timeless Painting — after Mike Kelley"
+              }
             },
             {
               "src": "images/tal/17-goyohan-bam.jpg",
