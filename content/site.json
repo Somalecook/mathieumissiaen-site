@@ -105,71 +105,7 @@
       "sound": "images/stickoo/sound.png",
       "show": false
     },
-    "stickers": [
-      {
-        "src": "images/stickers/cry.png",
-        "at": ".latest",
-        "x": 46,
-        "y": 6,
-        "r": -8
-      },
-      {
-        "src": "images/stickers/heart-kiss.png",
-        "at": ".latest",
-        "x": 4,
-        "y": 62,
-        "r": 10
-      },
-      {
-        "src": "images/stickers/eyes-blue.png",
-        "at": "feature:1",
-        "x": 3,
-        "y": 8,
-        "r": -6
-      },
-      {
-        "src": "images/stickers/bowl.png",
-        "at": "feature:2",
-        "x": 92,
-        "y": 10,
-        "r": 12
-      },
-      {
-        "src": "images/stickers/purple-blob.png",
-        "at": "feature:3",
-        "x": 4,
-        "y": 70,
-        "r": -10
-      },
-      {
-        "src": "images/stickers/mug.png",
-        "at": "feature:4",
-        "x": 90,
-        "y": 72,
-        "r": 8
-      },
-      {
-        "src": "images/stickers/cloud.png",
-        "at": ".car",
-        "x": 95,
-        "y": 2,
-        "r": -12
-      },
-      {
-        "src": "images/stickers/heart-sketch.png",
-        "at": "#wallBox",
-        "x": 2,
-        "y": 4,
-        "r": 6
-      },
-      {
-        "src": "images/stickers/eyes.png",
-        "at": "#ig",
-        "x": 80,
-        "y": 0,
-        "r": -4
-      }
-    ],
+    "stickers": [],
     "wallFirst": [
       {
         "src": "images/tal/29-cheval.jpg",
