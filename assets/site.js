@@ -536,12 +536,39 @@
       footer(site);
   }
 
+
+  // ---------- sticker tray (side of every page): pick one, drag it anywhere ----------
+  function stickerTray(site) {
+    var list = site.stickerTray || []; if (!list.length || document.querySelector('.stk-tray')) return;
+    var tray = document.createElement('aside'); tray.className = 'stk-tray'; tray.setAttribute('aria-label', 'Stickers');
+    tray.innerHTML = '<span class="stk-tray-label">Stickers</span>' + list.map(function (src) { return '<img src="' + esc(src) + '" alt="" draggable="false" loading="lazy">'; }).join('');
+    document.body.appendChild(tray);
+    function drag(img, ev, offX, offY) {
+      img.setPointerCapture(ev.pointerId); img.classList.add('grab');
+      function mv(e) { img.style.left = (e.pageX - offX) + 'px'; img.style.top = (e.pageY - offY) + 'px'; }
+      function up() { img.classList.remove('grab'); img.removeEventListener('pointermove', mv); img.removeEventListener('pointerup', up); img.removeEventListener('pointercancel', up); }
+      img.addEventListener('pointermove', mv); img.addEventListener('pointerup', up); img.addEventListener('pointercancel', up);
+    }
+    tray.addEventListener('pointerdown', function (ev) {
+      var t = ev.target; if (t.tagName !== 'IMG') return; ev.preventDefault();
+      var img = new Image(); img.src = t.src; img.alt = ''; img.draggable = false; img.className = 'sticker-drag placed';
+      var r = t.getBoundingClientRect(), k = 1.9, w = r.width * k, h = r.height * k;
+      img.style.width = w + 'px'; img.style.setProperty('--r', (Math.round(Math.random() * 24) - 12) + 'deg');
+      img.style.left = (ev.pageX - w / 2) + 'px'; img.style.top = (ev.pageY - h / 2) + 'px';
+      document.body.appendChild(img);
+      img.addEventListener('pointerdown', function (e) { e.preventDefault(); drag(img, e, e.pageX - img.offsetLeft, e.pageY - img.offsetTop); });
+      img.addEventListener('dblclick', function () { img.remove(); });
+      drag(img, ev, w / 2, h / 2);
+    });
+  }
+
   // ---------- boot ----------
   var page = document.body.getAttribute('data-page');
   var need = { home: ['site', 'projects', 'films'], project: ['site', 'projects'], gallery: ['site', 'projects'], film: ['site', 'films', 'projects'], about: ['site', 'projects'] }[page] || ['site', 'projects'];
   var svcP = fetch('content/services.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : { services: [] }; }).then(function (d) { window.__SERVICES = d.services || []; }, function () { window.__SERVICES = []; });
   Promise.all(need.map(getJSON).concat([svcP])).then(function (r) {
     var site = r[0], data = r[1];
+    try { stickerTray(site); } catch (e) {}
     var projs = (r[need.indexOf('projects')] || {}).projects || [];
     window.__TABS = projs.filter(function (p) { return p.tab; });
     if (page === 'home') data = { projects: r[1].projects, films: r[2] };
