@@ -272,6 +272,10 @@
         var ims = mixImages(data.projects.filter(function (p) { return !p.tab && (st.kind === 'all' || p.kind === st.kind); }).reduce(function (acc, p) {
           allImages(p).forEach(function (im) { acc.push({ src: im.src, ratio: im.ratio, bg: im.bg, slug: p.slug, p: p }); }); return acc;
         }, []));
+        ((site.home && site.home.wallFirst) || []).slice().reverse().forEach(function (f) {
+          var fp = data.projects.filter(function (q) { return q.slug === f.slug; })[0];
+          if (fp && (st.kind === 'all' || fp.kind === st.kind)) { ims = ims.filter(function (x) { return x.src !== f.src; }); ims.unshift({ src: f.src, ratio: f.ratio, bg: f.bg, slug: fp.slug, p: fp }); }
+        });
         box.innerHTML = '<div class="wall">' + ims.map(function (x) {
           var p = x.p, tag = p.galleryOnly ? 'div' : 'a';
           return '<' + tag + ' class="w"' + (p.galleryOnly ? '' : ' href="work/' + p.slug + '/"') + '><div class="ph" style="aspect-ratio:' + (x.ratio || '4 / 5') + ';background:' + (x.bg || '#D2D0CA') + '"><img loading="lazy" src="' + x.src + '" alt="' + esc(p.title) + '"></div>' +

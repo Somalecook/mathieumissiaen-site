@@ -167,6 +167,14 @@
         "y": 0,
         "r": -4
       }
+    ],
+    "wallFirst": [
+      {
+        "src": "images/tal/29-cheval.jpg",
+        "ratio": "1760 / 2200",
+        "bg": "#F8E7D9",
+        "slug": "tal"
+      }
     ]
   },
   "panels": {
