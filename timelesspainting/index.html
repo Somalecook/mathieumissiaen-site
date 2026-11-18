@@ -546,12 +546,12 @@ float map(vec3 p,bool wc){
   if(wc){gC=c.rgb;gBr=c.a;gGl=mm.x;gRo=mm.y;}
   return d+uWob*wob(p);
 }
-vec3 env(vec3 r,float ro){   /* ro: roughness widens and dims the softboxes */
-  float w=ro*ro;
-  float e=1.3*smoothstep(.72-.7*w,.97-.25*w,dot(r,normalize(vec3(0.,.55,1.))));
-  e+=.9*smoothstep(.86-.8*w,.985-.3*w,dot(r,normalize(vec3(-.85,.15,.55))));
-  e+=.7*smoothstep(.86-.8*w,.985-.3*w,dot(r,normalize(vec3(.85,-.1,.55))));
-  e+=.5*smoothstep(.9-.8*w,.99-.3*w,dot(r,normalize(vec3(.2,-.9,.4))));
+vec3 env(vec3 r,float ro,float sh){   /* ro: roughness widens and dims the softboxes; sh: below the default, they shrink to thin, crisp glints */
+  float w=ro*ro,g=1.+.7*sh;
+  float e=1.3*g*smoothstep(mix(.72-.7*w,.962,sh),mix(.97-.25*w,.996,sh),dot(r,normalize(vec3(0.,.55,1.))));
+  e+=.9*g*smoothstep(mix(.86-.8*w,.978,sh),mix(.985-.3*w,.998,sh),dot(r,normalize(vec3(-.85,.15,.55))));
+  e+=.7*g*smoothstep(mix(.86-.8*w,.978,sh),mix(.985-.3*w,.998,sh),dot(r,normalize(vec3(.85,-.1,.55))));
+  e+=.5*g*smoothstep(mix(.9-.8*w,.982,sh),mix(.99-.3*w,.998,sh),dot(r,normalize(vec3(.2,-.9,.4))));
   return vec3(e*(1.-.6*ro)+.12*(r.y*.5+.5));
 }
 void main(){
@@ -698,8 +698,10 @@ void main(){
     {float gl=dot(giV,vec3(.3333));vec3 tint=giV/max(gl,1e-4);
      c=mix(c,c*mix(vec3(1.),tint,.85),clamp(gl*1.6,0.,.8));   /* colour cast: neighbours tint the surface */
      c+=giV*.55*(alb*.8+.2);}                                 /* plus the light they add */
-    c+=env(transpose(uR)*reflect(rd,n),bro)*uGloss*bgl*(.06+.5*fre*(1.-.5*bro))*(.3+.7*ao);
-    c+=uSpec*bgl*(1.-.8*bro)*exp(-mix(uSpecPow,7.,bro*bro)*(1.-clamp(dot(n,H),0.,1.)))*ao*1.6;   /* per-blob shine & roughness */
+    /* roughness 0.25 is the classic look; lower = smaller, sharper highlights, higher = matte */
+    float rq=clamp((bro-.25)/.75,0.,1.),shp=clamp(1.-bro/.25,0.,1.);
+    c+=env(transpose(uR)*reflect(rd,n),rq,shp)*uGloss*bgl*(.06+.5*fre*(1.-.5*rq))*(.3+.7*ao);
+    c+=uSpec*bgl*(1.-.8*rq)*(1.+.9*shp)*exp(-mix(uSpecPow,7.,rq*rq)*(1.+7.*shp*shp)*(1.-clamp(dot(n,H),0.,1.)))*ao*1.6;   /* per-blob shine & roughness */
     c*=uExp;c=c/(1.+.12*c);
     col=pow(c,vec3(1./2.2));za=clamp(.5+.5*dot(ro+rd*t,uR[2]),.004,1.);
   }
@@ -782,7 +784,7 @@ function upload(){
     bdata[i]=mx?-b.x:b.x;bdata[i+1]=b.y;bdata[i+2]=b.z;bdata[i+3]=mx?-b.rot:b.rot;
     bdata[j]=Math.max(b.rx,.0001);bdata[j+1]=Math.max(b.ry,.0001);bdata[j+2]=Math.max(b.rz,.0001);bdata[j+3]=b.k;
     bdata[k]=c[0];bdata[k+1]=c[1];bdata[k+2]=c[2];bdata[k+3]=b.br??1;
-    {const i26=(26*MAXB+nUp)*4;bdata[i26]=b.gl??1;bdata[i26+1]=b.ro??0;bdata[i26+2]=b.disp??0;bdata[i26+3]=b.dispS??.3}
+    {const i26=(26*MAXB+nUp)*4;bdata[i26]=b.gl??1;bdata[i26+1]=b.ro??.25;bdata[i26+2]=b.disp??0;bdata[i26+3]=b.dispS??.3}
     {const pt=b.pat,i24=(24*MAXB+nUp)*4,i25=(25*MAXB+nUp)*4,ty=pt?PATS.indexOf(pt.type):0;
      if(ty>0){const c2=hex(pt.col||'#ffffff');bdata[i24]=c2[0];bdata[i24+1]=c2[1];bdata[i24+2]=c2[2];bdata[i24+3]=ty;
        bdata[i25]=pt.scale??4;bdata[i25+1]=(pt.ang??0)*Math.PI/180;bdata[i25+2]=mx?-1:1}else bdata[i24+3]=0}
@@ -1298,7 +1300,7 @@ const GS=[['bounce','Light bounce (colour spill)',0,2.5,.01],['spill','Glow spil
   ['gloss','Reflections',0,2.5,.01],['spec','Highlight',0,3,.01],['specPow','Highlight tightness',20,800,1],
   ['ao','Crease depth',0,2.5,.01],['exp','Exposure',.5,1.8,.01],['fov','Lens (wider = more bulge)',15,75,1],
   ['lx','Light left / right',-1,1,.01],['ly','Light down / up',-1,1,.01]];
-const BS=[['br','Brightness',.1,2.5,.01],['gl','Shine',0,3,.01],['ro','Roughness (matte)',0,1,.01],['size','Size',.0002,.9,.001],['rx','Width',.0002,1.2,.001],['ry','Height',.0002,1.2,.001],['rz','Thickness',.0002,1,.001],
+const BS=[['br','Brightness',.1,2.5,.01],['gl','Shine',0,3,.01],['ro','Roughness · sharp → matte',0,1,.01],['size','Size',.0002,.9,.001],['rx','Width',.0002,1.2,.001],['ry','Height',.0002,1.2,.001],['rz','Thickness',.0002,1,.001],
   ['z','Push / pull',-.9,.9,.005],['rot','Rotation',-3.142,3.142,.01],['k','Blend softness',.001,3,.001],['disp','Bump / displacement',0,1,.01],['dispS','Bump size',.05,1,.01]];
 /* tiny-to-large sliders move on a log scale so 0.0002 and 0.9 are both reachable */
 const LOGK=new Set(['b_size','b_rx','b_ry','b_rz','b_k']),LOGN=1000;
@@ -1316,7 +1318,7 @@ mkSliders($('#gSliders'),GS,'g_');mkSliders($('#bgSliders'),BGS,'n_');mkSliders(
 const avgR=b=>(b.rx+b.ry+b.rz)/3;
 function scaleBlob(b,f){b.rx*=f;b.ry*=f;b.rz*=f;(b.pulls||[]).forEach(q=>{q.a=q.a.map(x=>x*f);q.v=q.v.map(x=>x*f);q.r*=f})}
 BS.forEach(([k,,,,st])=>{const el=$('#b_'+k);el.addEventListener('input',()=>{const b=S.blobs[sel];if(!b)return;const v=valOf(el);
-  const old=k==='size'?avgR(b):(b[k]??(k==='br'?1:k==='dispS'?.3:0)),O=others();
+  const old=k==='size'?avgR(b):(b[k]??(k==='br'?1:k==='dispS'?.3:k==='ro'?.25:0)),O=others();
   if(k==='size'){const f=v/old;scaleBlob(b,f);O.forEach(o=>scaleBlob(o,f))}
   else if(k==='z'||k==='rot'){b[k]=v;O.forEach(o=>o[k]=(o[k]||0)+(v-old))}
   else if(k==='k'||k==='gl'||k==='ro'||k==='disp'||k==='dispS'){b[k]=v;O.forEach(o=>o[k]=v)}
@@ -1333,7 +1335,7 @@ function syncBgUI(){const n=S.g.bgn;$('#bgOn').checked=n.on;$('#bgCtl').hidden=!
 function syncG(){S.g.bgn=Object.assign({},BGDEF,S.g.bgn||{});syncBgUI();syncCam();GS.forEach(([k,,,,st])=>{$('#g_'+k).value=S.g[k];$('#g_'+k+'o').textContent=fmt(S.g[k],st)});$('#gBg').value=S.g.bg}
 function syncBlob(){if(sel<0||!S.blobs[sel])extra.clear();renderList();const b=S.blobs[sel];{const n=selList().length;$('#selTitle').textContent=n>1?`${n} blobs selected · edits apply to all`:'Selected blob'}$('#mirTool').disabled=!b;if(!b)$('#mirTool').setAttribute('aria-pressed','false');$('#noSel').hidden=!!b;$('#blobCtl').hidden=!b;if(!b){drawOverlay();return}
   $('#bCol').value=b.col;$('#bOp').value=b.op||'add';$('#bTint').checked=b.tint!==false;$('#tintRow').hidden=b.op!=='sub';$('#bShape').value=b.shape||'sphere';{const pt=b.pat||{};$('#bPat').value=pt.type||'none';$('#patCtl').hidden=!pt.type||pt.type==='none';$('#bPatCol').value=pt.col||'#ffffff';$('#bPatScale').value=pt.scale??4;$('#bPatScaleo').textContent=String(pt.scale??4);$('#bPatAng').value=pt.ang??0;$('#bPatAngo').textContent=(pt.ang??0)+'°'}$('#bMir').checked=!!b.m;$('#mirTool').setAttribute('aria-pressed',!!b.m);const np=(b.pulls||[]).length;$('#pullN').textContent=np?`${np} pull${np>1?'s':''} on this blob (max ${MAXP})`:'No pulls';$('#pullReset').disabled=!np;
-  BS.forEach(([k,,,,st])=>{const v=k==='size'?avgR(b):(b[k]??(k==='br'||k==='gl'?1:k==='dispS'?.3:0));setSl($('#b_'+k),v);$('#b_'+k+'o').textContent=fmt(v,st)});drawOverlay()}
+  BS.forEach(([k,,,,st])=>{const v=k==='size'?avgR(b):(b[k]??(k==='br'||k==='gl'?1:k==='dispS'?.3:k==='ro'?.25:0));setSl($('#b_'+k),v);$('#b_'+k+'o').textContent=fmt(v,st)});drawOverlay()}
 /* multi-selection: sel is the primary (panel, pull, mask); extra holds the others picked with Shift */
 const extra=new Set();
 const selList=()=>[sel,...extra].filter((i,k,a)=>i>=0&&S.blobs[i]&&a.indexOf(i)===k);
