@@ -467,8 +467,15 @@ float shapeD(vec3 q,vec3 r,float sh){
     return (length(vec2(length(s.xy)-R,s.z))-tb)*min(1.,min(r.x,r.y)/m);}
   if(sh>.5)return sdRBox(q,r*.86,.28*min(r.x,min(r.y,r.z)));   /* rounded cube */
   return sdE(q,r);}
-float bumpN(vec3 u){vec3 v=u*3.1416;float g=dot(sin(v),cos(v.yzx));
-  vec3 w=(mat3(.8,.6,0.,-.6,.8,0.,0.,0.,1.)*u)*2.17+vec3(1.7,.4,2.3);w*=3.1416;g=g*.7+.3*dot(sin(w),cos(w.yzx));return g*.6667;}
+/* bump relief: 3 octaves of smooth value noise, each rotated and offset so no grid or repeat shows */
+float hB(vec3 p){p=fract(p*vec3(.1031,.1030,.0973));p+=dot(p,p.yxz+33.33);return fract((p.x+p.y)*p.z);}
+float vnB(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*f*(f*(f*6.-15.)+10.);
+  return mix(mix(mix(hB(i),hB(i+vec3(1,0,0)),f.x),mix(hB(i+vec3(0,1,0)),hB(i+vec3(1,1,0)),f.x),f.y),
+             mix(mix(hB(i+vec3(0,0,1)),hB(i+vec3(1,0,1)),f.x),mix(hB(i+vec3(0,1,1)),hB(i+vec3(1,1,1)),f.x),f.y),f.z);}
+float bumpN(vec3 u){u=u*1.7+vec3(17.31,-5.17,9.73);float a=0.,w=.6;
+  const mat3 M=mat3(.00,.80,.60,-.80,.36,-.48,-.60,-.48,.64);
+  for(int o=0;o<2;o++){a+=w*(vnB(u)*2.-1.);u=M*u*1.93+vec3(3.1,1.7,-2.3);w*=.42;}
+  return a*1.3;}
 float blobD(int i,vec3 p,vec4 a,vec4 b,vec4 mt){
   vec3 q=p-a.xyz;float cs=cos(a.w),sn=sin(a.w);q.xy=vec2(cs*q.x+sn*q.y,-sn*q.x+cs*q.y);
   int np=int(mt.x+.5);
@@ -480,7 +487,7 @@ float blobD(int i,vec3 p,vec4 a,vec4 b,vec4 mt){
   float sd=shapeD(q,b.xyz,mt.w);
   /* bump / displacement: organic relief in the blob's own space, so it follows moves, rotations and pulls */
   vec4 m26=texelFetch(uB,ivec2(i,26),0);
-  if(m26.z>.001){float R=(b.x+b.y+b.z)/3.,sz=R*max(m26.w,.03),amp=m26.z*.13*R;
+  if(m26.z>.001){float R=(b.x+b.y+b.z)/3.,sz=R*max(m26.w,.03),amp=m26.z*min(.13*R,.55*sz);
     sd=(sd+amp*bumpN(q/sz))/(1.+.9*amp/sz);}
   return sd;
 }
