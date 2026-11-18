@@ -1270,7 +1270,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
   function drawHand() {
     const n = garden.hand.length;
     if (!n && !garden.bouquet) return;
-    const hx = 96, hy = PHONE ? 690 : 800, sway = Math.sin(t * 1.6) * 0.03;
+    const hx = 96, hy = PHONE ? 640 : 740, sway = Math.sin(t * 1.6) * 0.03;
     ctx.save(); ctx.translate(hx, hy - 40); ctx.rotate(sway); ctx.translate(-hx, -(hy - 40));
     if (garden.bouquet) drawBouquet(hx, hy, garden.bouquet, 130);
     else garden.hand.forEach((sg, k) => {
