@@ -123,6 +123,11 @@ h1 .quests i[lang="ko"] { font-style: normal; font-family: "Noto Sans KR", "Appl
 .alb-row img, .alb-row .slot { width: 54px; height: 54px; object-fit: contain; }
 .alb-row .slot { box-sizing: border-box; border: 1px dashed rgba(0,0,0,.22); border-radius: 50%; transform: scale(.7); }
 .alb-foot { padding-top: 10px; opacity: .55; }
+.alb-shop .ms { gap: 12px; align-items: baseline; }
+.alb-shop .code { font-weight: 500; letter-spacing: .2em; }
+.alb-shop a { color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; }
+.alb-shop button { font-size: inherit; }
+.alb-shop button::after { content: ""; }
 h1 .ko { font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; font-weight: 500; letter-spacing: .04em; opacity: .55; margin-left: .5em; }
 /* every label carries its Korean twin, lighter, in Noto Sans KR */
 .panel i[lang="ko"] { white-space: nowrap; font-style: normal; font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; letter-spacing: .02em; opacity: .55; margin-left: .35em; text-transform: none; }
@@ -2837,7 +2842,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     grow.pend = left.length ? left[(Math.random() * left.length) | 0] : (Math.random() * STICKERS.length) | 0; saveGrow();
     gotSticker(grow.pend);
     streakMilestone();
-    toast(`${grow.streak > 1 ? `Day ${grow.streak} in a row` : 'Daily gift'} · +${n} love · a sticker! Tap the sky to stick it`, `${grow.streak > 1 ? `연속 ${grow.streak}일째` : '오늘의 선물'} · 사랑 +${n} · 하늘을 눌러 스티커를 붙여요`, 6);
+    toast(`${grow.streak > 1 ? `${grow.streak} day${grow.streak > 1 ? 's' : ''} in a row` : 'Daily gift'} · +${n} love · a sticker! Tap the sky to stick it`, `${grow.streak > 1 ? `연속 ${grow.streak}일째` : '오늘의 선물'} · 사랑 +${n} · 하늘을 눌러 스티커를 붙여요`, 6);
     updateHud();
   }
   // the user's painted gift box, standing in the grass, blades growing over its foot
@@ -3802,12 +3807,18 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       love(QUEST_REWARD, true);
       if (!q.all && q.ids.every(i => (q.n[i] || 0) >= QUESTS[i][2])) {
         q.all = true; love(QUEST_ALL, true); stats.joy = clamp(stats.joy + 15, 0, 100);
-        toast(`All of today's missions done · +${QUEST_REWARD + QUEST_ALL} love`, `오늘의 미션 완료 · 사랑 +${QUEST_REWARD + QUEST_ALL}`, 5);
+        grow.perfect = (grow.perfect || 0) + 1;
+        if (grow.perfect === PERFECT_GOAL) {
+          toast(`${PERFECT_GOAL} perfect days · ${SHOP_OFF}% off the iOLO shop · code ${SHOP_CODE}`, `완벽한 하루 ${PERFECT_GOAL}일 · iOLO 숍 ${SHOP_OFF}% 할인 · 코드 ${SHOP_CODE}`, 10);
+          for (let i = 0; i < 40; i++) particles.push({ kind: 'spark', x: rand(300, 1300), y: rand(150, 650), vx: rand(-60, 60), vy: rand(-90, -30), life: 1.2, max: 1.2, size: rand(2, 4) });
+        } else toast(`All of today's missions done · +${QUEST_REWARD + QUEST_ALL} love · perfect day ${Math.min(grow.perfect, PERFECT_GOAL)}/${PERFECT_GOAL}`, `오늘의 미션 완료 · 사랑 +${QUEST_REWARD + QUEST_ALL} · 완벽한 하루 ${Math.min(grow.perfect, PERFECT_GOAL)}/${PERFECT_GOAL}`, 5);
       } else toast(`Mission done · ${Q[0]} · +${QUEST_REWARD} love`, `미션 완료 · ${Q[1]} · 사랑 +${QUEST_REWARD}`, 4);
       updateHud();
     }
     saveGrow(); renderQuests();
   }
+  // the loyalty reward: 10 days (not necessarily in a row) with all of the day's missions done = 10 % off the iOLO shop
+  const PERFECT_GOAL = 10, SHOP_OFF = 10, SHOP_CODE = 'YONGI10', SHOP_URL = 'https://iolo.paris';
   const MILESTONES = [[3, 20, false], [7, 40, true], [14, 60, true], [30, 100, true]];   // [days in a row, love, a shelf object early]
   const nextMilestone = () => (MILESTONES.find(m => m[0] > grow.streak) || [null])[0];
   function renderQuests() {
@@ -3818,7 +3829,11 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       const Q = QUESTS[id], n = q.n[id] || 0, done = n >= Q[2];
       h += `<span class="q${done ? ' done' : ''}">${done ? '✓' : '○'} ${Q[0]}${Q[2] > 1 ? ` (${n}/${Q[2]})` : ''} <i lang="ko">${Q[1]}</i></span>`;
     }
-    h += `<span class="qs">Day ${grow.streak} in a row${nx ? ` · gift at ${nx}` : ''} <i lang="ko">연속 ${grow.streak}일${nx ? ` · ${nx}일째 선물` : ''}</i></span>`;
+    h += `<span class="qs">${grow.streak} day${grow.streak > 1 ? 's' : ''} in a row${nx ? ` · gift at ${nx}` : ''} <i lang="ko">연속 ${grow.streak}일${nx ? ` · ${nx}일째 선물` : ''}</i></span>`;
+    const pf = Math.min(grow.perfect || 0, PERFECT_GOAL);
+    h += pf >= PERFECT_GOAL
+      ? `<span class="qs">${SHOP_OFF}% off the iOLO shop · code ${SHOP_CODE} <i lang="ko">iOLO 숍 ${SHOP_OFF}% 할인 · 코드 ${SHOP_CODE}</i></span>`
+      : `<span class="qs">Perfect days ${pf}/${PERFECT_GOAL} · ${SHOP_OFF}% off the iOLO shop <i lang="ko">완벽한 하루 ${pf}/${PERFECT_GOAL} · iOLO 숍 ${SHOP_OFF}% 할인</i></span>`;
     el.innerHTML = h;
   }
 
@@ -3906,9 +3921,16 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   }
   function renderAlbum() {
     const body = document.getElementById('albBody'); if (!body) return;
-    let h = `<div class="alb-streak"><span>Day ${grow.streak} in a row <i lang="ko">연속 ${grow.streak}일</i></span><span class="ms">`;
+    let h = `<div class="alb-streak"><span>${grow.streak} day${grow.streak > 1 ? 's' : ''} in a row <i lang="ko">연속 ${grow.streak}일</i></span><span class="ms">`;
     for (const [d, l, obj] of MILESTONES) h += `<span class="${grow.streak >= d ? 'on' : ''}" title="+${l} love${obj ? ' · a new object' : ''}">${grow.streak >= d ? '●' : '○'} ${d}</span>`;
     h += `</span></div>`;
+    {
+      const pf = Math.min(grow.perfect || 0, PERFECT_GOAL), won = pf >= PERFECT_GOAL;
+      h += `<div class="alb-streak alb-shop"><span>${won ? `${SHOP_OFF}% off the iOLO shop <i lang="ko">iOLO 숍 ${SHOP_OFF}% 할인</i>` : `Perfect days ${pf}/${PERFECT_GOAL} · all missions done, ${SHOP_OFF}% off the iOLO shop at ${PERFECT_GOAL} <i lang="ko">완벽한 하루 ${pf}/${PERFECT_GOAL} · 미션을 모두 마친 날이 ${PERFECT_GOAL}일이면 iOLO 숍 ${SHOP_OFF}% 할인</i>`}</span>`;
+      h += won ? `<span class="ms"><b class="code">${SHOP_CODE}</b><button type="button" id="albCopy">Copy <i lang="ko">복사</i></button><a href="${SHOP_URL}" target="_blank" rel="noopener">Shop <i lang="ko">숍</i> →</a></span>`
+               : `<span class="ms">${Array.from({ length: PERFECT_GOAL }, (_, i) => `<span class="${i < pf ? 'on' : ''}">${i < pf ? '●' : '○'}</span>`).join('')}</span>`;
+      h += `</div>`;
+    }
     for (const [en, ko, ids] of SERIES) {
       const n = ids.filter(i => grow.got.includes(i)).length;
       h += `<div class="alb-ser"><div class="alb-h"><span>${en} <i lang="ko">${ko}</i></span><span>(${n}/${ids.length})</span></div><div class="alb-row">`;
@@ -3917,6 +3939,8 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     }
     h += `<div class="alb-foot">A new sticker every day · a full series +${SERIES_LOVE} love · 3, 7, 14, 30 days in a row: bonus love and new objects <i lang="ko">매일 새 스티커 · 시리즈 완성 사랑 +${SERIES_LOVE} · 3, 7, 14, 30일 연속: 보너스 사랑과 새 물건</i></div>`;
     body.innerHTML = h;
+    const cp = document.getElementById('albCopy');
+    if (cp) cp.onclick = () => { try { navigator.clipboard.writeText(SHOP_CODE); cp.firstChild.textContent = 'Copied '; } catch (e) {} };
     const c = document.getElementById('albCount'); if (c) c.textContent = `(${grow.got.length}/${STICKERS.length})`;
   }
   {
