@@ -1270,7 +1270,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
   function drawHand() {
     const n = garden.hand.length;
     if (!n && !garden.bouquet) return;
-    const hx = 120, hy = 880, sway = Math.sin(t * 1.6) * 0.03;
+    const hx = 96, hy = PHONE ? 690 : 800, sway = Math.sin(t * 1.6) * 0.03;
     ctx.save(); ctx.translate(hx, hy - 40); ctx.rotate(sway); ctx.translate(-hx, -(hy - 40));
     if (garden.bouquet) drawBouquet(hx, hy, garden.bouquet, 130);
     else garden.hand.forEach((sg, k) => {
@@ -1278,19 +1278,6 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
       ctx.save(); ctx.translate(hx, hy - 10); ctx.rotate((k - (n - 1) / 2) * 0.13);
       spr(bb, -(SPRIG_STEM[sg] || 0) * kk, 0, 120); ctx.restore();
     });
-    ctx.restore();
-    const ink = lampK > 0.5 ? '242,242,242' : '17,17,17';
-    // and what to do with them, in the bar's type: English, with the Korean lighter beneath
-    ctx.save();
-    ctx.textBaseline = 'alphabetic'; ctx.fillStyle = `rgb(${ink})`;
-    ctx.font = `500 ${13 * TK}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
-    try { ctx.letterSpacing = '1.6px'; } catch (e) {}
-    const hy0 = 768 - 37 * TK, hx0 = 214;   // above the gauges, beside the top of the flowers: it never sits on the bar
-    ctx.fillText('CLICK A MOON JAR, A BUD VASE', hx0, hy0);
-    ctx.fillText('OR THE JUG TO PUT THEM IN', hx0, hy0 + 18 * TK);
-    try { ctx.letterSpacing = '0.4px'; } catch (e) {}
-    ctx.font = `500 ${12 * TK}px "Noto Sans KR", "Apple SD Gothic Neo", sans-serif`; ctx.fillStyle = `rgba(${ink},.55)`;
-    ctx.fillText('달항아리, 꽃병, 물주전자를 눌러 꽃을 꽂아 주세요', hx0, hy0 + 37 * TK);
     ctx.restore();
   }
   // the user's standpipe tap and soban table (anchor points measured on the sprites, in px)
@@ -3854,7 +3841,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       const Q = QUESTS[id], n = q.n[id] || 0, done = n >= Q[2];
       h += `<span class="q${done ? ' done' : ''}">${done ? '✓' : '○'} ${Q[0]}${Q[2] > 1 ? ` (${n}/${Q[2]})` : ''} <i lang="ko">${Q[1]}</i></span>`;
     }
-    h += `<span class="qs">${grow.streak} day${grow.streak > 1 ? 's' : ''} in a row${nx ? ` · gift at ${nx}` : ''} <i lang="ko">연속 ${grow.streak}일${nx ? ` · ${nx}일째 선물` : ''}</i></span>`;
+    // (the day streak is shown in the album only)
     const pf = Math.min(grow.perfect || 0, PERFECT_GOAL);
     h += pf >= PERFECT_GOAL
       ? `<span class="qs">${SHOP_OFF}% off the iOLO shop · code ${SHOP_CODE} <i lang="ko">iOLO 숍 ${SHOP_OFF}% 할인 · 코드 ${SHOP_CODE}</i></span>`
