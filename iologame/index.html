@@ -3798,17 +3798,23 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   const QUEST_ALIAS = { pick: ['pick', 'pick12'], vase: ['vase', 'vase2'], fetch: ['fetch', 'fetch5'], pet: ['pet', 'pet12'] };
   const QUEST_REWARD = 8, QUEST_ALL = 15;
   function todayQuests() {
-    if (grow.q && grow.q.day === grow.day && grow.q.v === 2) return grow.q;
+    if (grow.q && grow.q.day === grow.day && grow.q.v === 3) return grow.q;
     const old = grow.q && grow.q.day === grow.day ? grow.q : null;   // missions from before this update: keep what was done today
-    if (old && old.all) { old.v = 2; saveGrow(); return old; }
+    if (old && old.all) { old.v = 3; saveGrow(); return old; }
     const prev = (grow.qPrev && grow.qPrev.day !== grow.day ? grow.qPrev.fam : []) || [];
     // a well mixed number from the date, so neighbouring days are not alike
     let h = 2166136261; for (const c of grow.day + 'yongi') { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
     const rnd = () => { h ^= h >>> 16; h = Math.imul(h, 0x85ebca6b) >>> 0; h ^= h >>> 13; h = Math.imul(h, 0xc2b2ae35) >>> 0; h ^= h >>> 16; h = (h + 0x9e3779b9) >>> 0; return h / 4294967296; };
-    const ids = Object.keys(QUESTS).filter(id => !prev.includes(QUESTS[id][3])), pick = [], fam = [];
+    // the bubble sends players to the iOLO site: it comes back every third day, counted from their first day
+    const dk = k => { const [y, m, d] = k.split('-').map(Number); return Date.UTC(y, m - 1, d) / 864e5; };
+    if (!grow.first) grow.first = grow.day;
+    const nth = Math.round(dk(grow.day) - dk(grow.first)), bubbleDay = nth % 3 === 0;
+    const ids = Object.keys(QUESTS).filter(id => !prev.includes(QUESTS[id][3]) && QUESTS[id][3] !== 'bubble'), pick = [], fam = [];
+    if (nth === 0) { pick.push('eat', 'drink', 'vase', 'bubble'); fam.push('eat', 'drink', 'vase', 'bubble'); }   // the first day: the basics, and the bubble
+    else if (bubbleDay) { pick.push('bubble'); fam.push('bubble'); }
     for (let k = 0; pick.length < 3 && k < 200; k++) { const id = ids[Math.floor(rnd() * ids.length)]; if (!fam.includes(QUESTS[id][3])) { pick.push(id); fam.push(QUESTS[id][3]); } }
     const n = {}; if (old) for (const id of pick) if (old.n[id]) n[id] = old.n[id];
-    grow.q = { day: grow.day, ids: pick, n, all: false, v: 2 };
+    grow.q = { day: grow.day, ids: pick, n, all: false, v: 3 };
     grow.qPrevToday = fam; saveGrow();
     return grow.q;
   }
