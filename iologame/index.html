@@ -1277,23 +1277,18 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
       spr(bb, -(SPRIG_STEM[sg] || 0) * kk, 0, 120); ctx.restore();
     });
     ctx.restore();
-    // how many flowers are held (up to eight): small black dots, filled or just outlined, like the bar's type
     const ink = lampK > 0.5 ? '242,242,242' : '17,17,17';
-    if (!garden.bouquet) for (let k = 0; k < HAND_MAX; k++) {
-      ctx.beginPath(); ctx.arc(226, 872 - k * 15, 3.2, 0, Math.PI * 2);
-      if (k < n) { ctx.fillStyle = `rgb(${ink})`; ctx.fill(); } else { ctx.strokeStyle = `rgba(${ink},.35)`; ctx.lineWidth = 1; ctx.stroke(); }
-    }
     // and what to do with them, in the bar's type: English, with the Korean lighter beneath
     ctx.save();
     ctx.textBaseline = 'alphabetic'; ctx.fillStyle = `rgb(${ink})`;
     ctx.font = `500 ${13 * TK}px "Helvetica Neue", Helvetica, Arial, sans-serif`;
     try { ctx.letterSpacing = '1.6px'; } catch (e) {}
-    const hy0 = 852 - (TK - 1) * 40;
-    ctx.fillText('CLICK A MOON JAR, A BUD VASE', 246, hy0);
-    ctx.fillText('OR THE JUG TO PUT THEM IN', 246, hy0 + 18 * TK);
+    const hy0 = 768 - 37 * TK, hx0 = 214;   // above the gauges, beside the top of the flowers: it never sits on the bar
+    ctx.fillText('CLICK A MOON JAR, A BUD VASE', hx0, hy0);
+    ctx.fillText('OR THE JUG TO PUT THEM IN', hx0, hy0 + 18 * TK);
     try { ctx.letterSpacing = '0.4px'; } catch (e) {}
     ctx.font = `500 ${12 * TK}px "Noto Sans KR", "Apple SD Gothic Neo", sans-serif`; ctx.fillStyle = `rgba(${ink},.55)`;
-    ctx.fillText('달항아리, 꽃병, 물주전자를 눌러 꽃을 꽂아 주세요', 246, hy0 + 37 * TK);
+    ctx.fillText('달항아리, 꽃병, 물주전자를 눌러 꽃을 꽂아 주세요', hx0, hy0 + 37 * TK);
     ctx.restore();
   }
   // the user's standpipe tap and soban table (anchor points measured on the sprites, in px)
@@ -2753,7 +2748,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   const pedTop = () => iso(PED.x, PED.y, PED.z + Math.sin(t * 1.3) * 2.5);
   function pedAt(px, py, k = 1) { const [x, y] = pedTop(); return Math.hypot(px - x, py - (y - 26)) < 70 * k; }
   // the piece's page on iolo.paris (the shop sends a variant link on to its product page)
-  function openPiece(o) { const P = PRODUCTS.get(prodKey(o)); if (P && P[3]) window.open('https://iolo.paris/variants/' + P[3], '_blank', 'noopener'); }
+  function openPiece(o) { quest('bubble'); const P = PRODUCTS.get(prodKey(o)); if (P && P[3]) window.open('https://iolo.paris/variants/' + P[3], '_blank', 'noopener'); }
   function pedTick(dt) {
     if (ped.idx != null) { ped.o = SMALL()[ped.idx] || null; ped.idx = null; }
     if (ped.o && !(dragging && dragging.o === ped.o)) { ped.o.x = PED.x; ped.o.y = PED.y; ped.o.rest = 0; ped.o.stored = null; ped.o.lift = PED.z + Math.sin(t * 1.3) * 2.5; }
@@ -3007,6 +3002,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   }
   function sendToBed() {
     if (['sleep', 'toBed', 'evolve'].includes(dragon.state)) return;
+    if (typeof quest === 'function') quest('bed');
     if (ball.carried) { ball.carried = false; ball.fetchable = false; ball.x = clampX(dragon.x + 0.3); ball.y = clampY(dragon.y + 0.3); ball.z = 0; }
     setState('toBed');
   }
@@ -3161,7 +3157,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       ped.hot = false;
       if (!dragging.moved && o === crate) { if (!crate.open) { crate.open = true; const [x, y] = iso(crate.x, crate.y); puff('dust', x, y - 60, { size: 5 }); } else if (crate.f > 0.9) takeNewBox(); }
       if (BAGS.includes(o) && Math.hypot(o.x - bin.x, o.y - bin.y) < 0.8) {
-        o.present = false; o.pour = false; bin.lid = 1;
+        o.present = false; o.pour = false; bin.lid = 1; quest('bin');
         const [x, y] = iso(bin.x, bin.y); puff('dust', x, y - 50, { size: 6 }); puff('dust', x + 6, y - 52, { size: 5 });
       }
       if (o.pour) { const isBag = BAGS.includes(o), to = o.pourTo || (isBag ? plate2 : bowl); o.pour = false; o.rest = 0; o.x = clampX(to.x + (isBag ? 0.9 : -0.3)); o.y = clampY(to.y + 1.1); }
@@ -3200,7 +3196,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   cv.addEventListener('pointercancel', release);
 
   // ---------- buttons ----------
-  function takeNewBox() {
+  function takeNewBox() { quest('crate');
     const [cx, cy] = iso(crate.x, crate.y);
     const b = BAGS.find(b => !b.present);
     if (!b) { crate.shake = 0.4; return; }   // three bags out already
@@ -3778,27 +3774,48 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     for (let i = 0; i < 5; i++) setTimeout(() => puff('dust', x + rand(-60, 60), y + rand(-60, 40), { size: 5 }), i * 70);
     sfx('etagere' + (1 + Math.floor(Math.random() * 4)), 0.8);
   }
-  { const b = document.getElementById('bTidy'); if (b) b.onclick = () => { tidyUp(); applyLocks(false); save(); }; }
+  { const b = document.getElementById('bTidy'); if (b) b.onclick = () => { tidyUp(); applyLocks(false); save(); quest('tidy'); }; }
   // ---------- progression: missions of the day, iOLO objects unlocked by growing, the sticker album, streak milestones ----------
   // 1) three small missions a day, the same for everyone on a given day
+  // [english, korean, how many, family]: a day never holds two of one family, and never repeats yesterday's families
   const QUESTS = {
-    pick: ['Pick 6 flowers', '꽃 6송이 따기', 6],
-    vase: ['Put flowers in a vase', '꽃병에 꽃 꽂기', 1],
-    fetch: ['Play ball 3 times', '공놀이 3번 하기', 3],
-    eat: ['Feed Yongi', '용이에게 밥 주기', 1],
-    drink: ['Give Yongi water', '용이에게 물 주기', 1],
-    pet: ['Pet Yongi', '용이 쓰다듬기', 6],
+    pick: ['Pick 6 flowers', '꽃 6송이 따기', 6, 'flowers'],
+    pick12: ['Pick 12 flowers', '꽃 12송이 따기', 12, 'flowers'],
+    vase: ['Put flowers in a vase', '꽃병에 꽃 꽂기', 1, 'vase'],
+    vase2: ['Make 2 bouquets for the vases', '꽃다발 2개 꽂기', 2, 'vase'],
+    fetch: ['Play ball 3 times', '공놀이 3번 하기', 3, 'ball'],
+    fetch5: ['Play ball 5 times', '공놀이 5번 하기', 5, 'ball'],
+    eat: ['Feed Yongi', '용이에게 밥 주기', 1, 'eat'],
+    drink: ['Give Yongi water', '용이에게 물 주기', 1, 'drink'],
+    pet: ['Pet Yongi', '용이 쓰다듬기', 6, 'pet'],
+    pet12: ['Give Yongi a long cuddle', '용이 오래 쓰다듬기', 12, 'pet'],
+    bed: ['Put Yongi to bed', '용이 재우기', 1, 'bed'],
+    bubble: ['Drop an object in the bubble', '비눗방울에 물건 넣기', 1, 'bubble'],
+    crate: ['Open a new bag of food', '새 사료 봉지 열기', 1, 'crate'],
+    bin: ['Throw an empty bag in the bin', '빈 봉지 버리기', 1, 'bin'],
+    tidy: ['Tidy up the garden', '정원 정리하기', 1, 'tidy'],
   };
+  const QUEST_ALIAS = { pick: ['pick', 'pick12'], vase: ['vase', 'vase2'], fetch: ['fetch', 'fetch5'], pet: ['pet', 'pet12'] };
   const QUEST_REWARD = 8, QUEST_ALL = 15;
   function todayQuests() {
-    if (grow.q && grow.q.day === grow.day) return grow.q;
-    const ids = Object.keys(QUESTS), pick = [];
-    let h = 7; for (const c of grow.day) h = (h * 31 + c.charCodeAt(0)) >>> 0;
-    while (pick.length < 3) { h = (Math.imul(h, 1103515245) + 12345) >>> 0; const id = ids[(h >>> 8) % ids.length]; if (!pick.includes(id)) pick.push(id); }
-    grow.q = { day: grow.day, ids: pick, n: {}, all: false }; saveGrow();
+    if (grow.q && grow.q.day === grow.day && grow.q.v === 2) return grow.q;
+    const old = grow.q && grow.q.day === grow.day ? grow.q : null;   // missions from before this update: keep what was done today
+    if (old && old.all) { old.v = 2; saveGrow(); return old; }
+    const prev = (grow.qPrev && grow.qPrev.day !== grow.day ? grow.qPrev.fam : []) || [];
+    // a well mixed number from the date, so neighbouring days are not alike
+    let h = 2166136261; for (const c of grow.day + 'yongi') { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
+    const rnd = () => { h ^= h >>> 16; h = Math.imul(h, 0x85ebca6b) >>> 0; h ^= h >>> 13; h = Math.imul(h, 0xc2b2ae35) >>> 0; h ^= h >>> 16; h = (h + 0x9e3779b9) >>> 0; return h / 4294967296; };
+    const ids = Object.keys(QUESTS).filter(id => !prev.includes(QUESTS[id][3])), pick = [], fam = [];
+    for (let k = 0; pick.length < 3 && k < 200; k++) { const id = ids[Math.floor(rnd() * ids.length)]; if (!fam.includes(QUESTS[id][3])) { pick.push(id); fam.push(QUESTS[id][3]); } }
+    const n = {}; if (old) for (const id of pick) if (old.n[id]) n[id] = old.n[id];
+    grow.q = { day: grow.day, ids: pick, n, all: false, v: 2 };
+    grow.qPrevToday = fam; saveGrow();
     return grow.q;
   }
+  // when a new day starts, today's families become "yesterday's"
+  if (grow.q && grow.q.day && grow.q.day !== grow.day) grow.qPrev = { day: grow.q.day, fam: grow.q.ids.map(id => (QUESTS[id] || [])[3]).filter(Boolean) };
   function quest(id, k = 1) {
+    if (QUEST_ALIAS[id] && !quest.inner) { quest.inner = true; try { for (const a of QUEST_ALIAS[id]) quest(a, k); } finally { quest.inner = false; } return; }
     const q = todayQuests(), Q = QUESTS[id];
     if (!Q || !q.ids.includes(id)) return;
     const was = q.n[id] || 0; if (was >= Q[2]) return;
@@ -3840,7 +3857,12 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   // 2) the shelf starts almost empty: each step of growing (and the long streaks) brings one more iOLO piece
   // [the object, love needed, its shelf cell or null for furniture on the lawn]; the fire bowl (water) and the blue plate (kibble) are there from the start
   const UNLOCKS = [[() => bottle, 10, 3], [() => bowl2, 20, 4], [() => garden.jars[0], 30, 10], [() => soli2, 45, 1], [() => garden.jars[1], 70, 0], [() => sock, 100, 'lawn'], [() => mirror, 125, 11], [() => soban2, 150, null], [() => bowl3, 200, 8], [() => soli3, 260, 5], [() => bowl4, 330, 2]];
-  const unlockedCount = () => Math.min(UNLOCKS.length, UNLOCKS.filter(u => grow.xp >= u[1]).length + (grow.bonusUnl || 0));
+  // at most one new piece a day: the count may grow by one over what the day started with
+  const unlockedCount = () => {
+    const raw = Math.min(UNLOCKS.length, UNLOCKS.filter(u => grow.xp >= u[1]).length + (grow.bonusUnl || 0));
+    if (!grow.ub || grow.ub.day !== grow.day) { grow.ub = { day: grow.day, n: grow.unl == null ? 0 : grow.unl }; saveGrow(); }
+    return Math.max(Math.min(raw, grow.ub.n + 1), Math.min(raw, grow.unl == null ? 0 : grow.unl));
+  };
   const prodName = o => (PRODUCTS.get(prodKey(o)) || ['an iOLO object'])[0];
   function placeInShelf(o, si) {
     const free = i => SLOTS[i] && !SMALL().some(it => it !== o && it.stored === i);
