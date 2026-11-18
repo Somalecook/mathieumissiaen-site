@@ -6,16 +6,31 @@
 <link rel="canonical" href="https://mathieumissiaen.fr/stickoo/">
 <script>
 (function(){
-  var ua = navigator.userAgent || '', ios = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  var url = ios ? 'https://apps.apple.com/app/id6833900691'
-          : /Android/i.test(ua) ? 'https://play.google.com/store/apps/details?id=paris.iolo.stickoo'
-          : '/stickoo/';
-  location.replace(url);
+  var IOS = 'https://apps.apple.com/app/id6833900691',
+      PLAY = 'https://play.google.com/store/apps/details?id=paris.iolo.stickoo',
+      // intent URL opens the Play Store app directly (a plain https redirect opens the Play web page on Samsung/Chrome)
+      INTENT = 'intent://details?id=paris.iolo.stickoo#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=' + encodeURIComponent(PLAY) + ';end';
+  var ua = navigator.userAgent || '', touch = navigator.maxTouchPoints > 1;
+  var ios = /iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && touch);
+  var android = /Android/i.test(ua) || (/Linux/.test(ua) && touch);   // also Samsung Internet in "desktop mode"
+  window.__st = { ios: ios, android: android, IOS: IOS, PLAY: PLAY, INTENT: INTENT };
+  if (ios) location.replace(IOS);
+  else if (android) location.replace(INTENT);
+  else location.replace('/stickoo/');
 })();
 </script>
-<style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#3d1d63;color:#fff;font:16px system-ui,sans-serif;text-align:center}a{color:#fff;display:block;margin:12px}</style>
+<style>
+html,body{margin:0;min-height:100%}
+body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(ellipse at 50% 0%,#7a3fb0,#3d1d63 55%,#24103e);color:#fff;font:600 17px system-ui,-apple-system,sans-serif;text-align:center;padding:24px;box-sizing:border-box}
+img{width:min(78vw,340px);height:auto}
+a.b{display:flex;align-items:center;gap:12px;width:min(78vw,300px);padding:14px 20px;border-radius:16px;background:#130a22;border:2px solid #fff;color:#fff;text-decoration:none;box-sizing:border-box}
+a.b small{display:block;font-weight:400;font-size:12px;opacity:.85}
+a.b span{font-size:20px;line-height:1.1;text-align:left}
+svg{width:30px;height:30px;fill:#fff;flex:none}
+</style>
 </head><body>
-<div><p>Stickoo</p>
-<a href="https://apps.apple.com/app/id6833900691">App Store</a>
-<a href="https://play.google.com/store/apps/details?id=paris.iolo.stickoo">Google Play</a></div>
+<img src="/stickoo/assets/logo-kids.webp" alt="Stickoo">
+<a class="b" id="ga" href="https://play.google.com/store/apps/details?id=paris.iolo.stickoo"><svg viewBox="0 0 576 512"><path d="M420.55 301.93a24 24 0 1 1 24-24 24 24 0 0 1-24 24m-265.1 0a24 24 0 1 1 24-24 24 24 0 0 1-24 24m273.7-144.48 47.94-83a10 10 0 1 0-17.27-10l-48.54 84.07a301.25 301.25 0 0 0-246.56 0l-48.54-84.07a10 10 0 1 0-17.27 10l47.94 83C64.53 202.22 8.24 285.55 0 384h576c-8.24-98.45-64.54-181.78-146.85-226.55"/></svg><span><small>Disponible sur</small>Google Play</span></a>
+<a class="b" href="https://apps.apple.com/app/id6833900691"><svg viewBox="0 0 384 512"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9m-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.5 71.9 26.1 2 49.9-11.4 69.4-34.3"/></svg><span><small>Disponible sur</small>App Store</span></a>
+<script>if (window.__st && window.__st.android) document.getElementById('ga').href = window.__st.INTENT;</script>
 </body></html>
