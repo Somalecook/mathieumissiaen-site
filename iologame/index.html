@@ -218,17 +218,19 @@ html.phone body { background: linear-gradient(rgb(154,216,252), rgb(191,228,248)
 html.phone .app { max-width: none; }
 html.phone .frame { position: fixed; inset: 0; width: 100vw; height: 100dvh; min-width: 0; aspect-ratio: auto; border-radius: 0; box-shadow: none; overflow: hidden;
   background: linear-gradient(rgb(154,216,252), rgb(191,228,248) 50%, rgb(240,245,245)); }
-html.phone canvas { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: var(--cw, 100vw); height: var(--ch, 56.25vw); }
+html.phone canvas { position: absolute; left: calc(50% + var(--cx, 0px) * .9); top: 50%; transform: translate(-50%, -50%); width: var(--cw, 100vw); height: var(--ch, 56.25vw); }
 html.phone .panel, html.phone .frame.night .panel { position: absolute; flex-wrap: nowrap; padding: 0; align-items: flex-end; }
 html.phone .stats { flex: 0 1 auto; }
-html.phone h1 { font-size: 1rem; left: calc(var(--cx, 0px) + 10px); top: 8px; }
-html.phone h1 .logo { width: 118px; }
+html.phone h1 { font-size: 1rem; left: max(10px, env(safe-area-inset-left)); top: 8px; }
+html.phone h1 .logo { width: 108px; opacity: 1; }   /* the garden is pushed right into the side bar: the type gets the room on the left */
+html.phone h1 .quests .qs { display: none; }   /* streak and perfect days: in the album on a phone */
 html.phone h1 .rules { display: none; }
 html.phone h1 .quests { margin-top: .5em; font-size: 8px; letter-spacing: .1em; line-height: 1.55; }
 html.phone h1 .quests i[lang="ko"] { margin-left: .4em; }
+html.phone h1 .quests .qs i[lang="ko"] { display: block; margin: .1em 0 0; }   /* the long lines break before the Korean so they stay off the lawn */
 html.phone .panel { left: max(12px, env(safe-area-inset-left)); right: max(12px, env(safe-area-inset-right)); bottom: max(6px, env(safe-area-inset-bottom)); gap: 10px; }
-html.phone .stats { gap: 10px; }
-html.phone .stat { flex: 0 1 74px; min-width: 60px; width: auto; }
+html.phone .stats { gap: 8px; }
+html.phone .stat { flex: 0 1 58px; min-width: 48px; width: auto; }
 html.phone .stat label { font-size: 7.5px; letter-spacing: .06em; flex-direction: column; align-items: flex-start; gap: 1px; margin-bottom: 3px; }
 html.phone .panel i[lang="ko"] { display: block; margin: 1px 0 0; }
 html.phone .actions { gap: 12px; }
@@ -732,7 +734,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
     const W = innerWidth, H = innerHeight, root = document.documentElement;
     root.classList.add('phone'); root.classList.toggle('portrait', H > W);
     // the whole 16:9 garden fits the screen; the sky colour fills the sides
-    const cw = Math.min(W, H * 16 / 9 * 1.1), ch = cw * 9 / 16;   // a thin strip of sky may be cut top and bottom so less of the screen is empty
+    const cw = Math.min(W, H * 16 / 9 * 1.14), ch = cw * 9 / 16;   // zoomed a little into the side bars: only sky is cut, top and bottom
     root.style.setProperty('--cw', cw + 'px'); root.style.setProperty('--cx', Math.max(0, (W - cw) / 2) + 'px'); root.style.setProperty('--ch', ch + 'px');
     TK = Math.max(1, Math.min(1.9, 1250 / cw));
   }
@@ -2799,7 +2801,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   // the game's logo, painted into the canvas where the (invisible, clickable) one sits, so the hand cursor passes over it
   const LOGO_EL = document.querySelector('h1 .logo');
   function drawLogo() {
-    if (!LOGO_EL || !LOGO_EL.complete || !LOGO_EL.naturalWidth) return;
+    if (PHONE || !LOGO_EL || !LOGO_EL.complete || !LOGO_EL.naturalWidth) return;   // on a phone (no hand cursor) the logo is the page's own image
     const c = cv.getBoundingClientRect(), r = LOGO_EL.getBoundingClientRect(), k = cv.width / c.width;
     if (!r.width) return;
     ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none';
@@ -2861,7 +2863,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     // a soft shadow on the grass under the bubble, and what to do beneath it
     const [gx, gy] = iso(PED.x, PED.y, 0), bob = Math.sin(t * 1.3);
     ell(gx, gy - 2, 34 - bob * 2, 9 - bob * 0.6, 'rgba(40,30,60,.10)');
-    if (TK > 1.15 && performance.now() < toastUntil) return;   // on a small screen the message on the right needs the room
+    if (PHONE || (TK > 1.15 && performance.now() < toastUntil)) return;   // on a phone the bubble speaks for itself (and its mission says it)   // on a small screen the message on the right needs the room
     const ink = lampK > 0.5 ? '242,242,242' : '17,17,17';
     // on a phone the type is bigger: it sits on the left of the bubble so it stays clear of the buttons below
     const side = TK > 1, [bx, by] = bubbleCentre(), tx = side ? bx - BUB_R - 14 : gx, ty = side ? by - 32 - 12 * TK : gy;
