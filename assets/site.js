@@ -188,8 +188,8 @@
       var poster = fm.poster || fm.thumb, ratio = fm.format === '4:5' ? '4 / 5' : '16 / 9';
       return '<section class="feature"><div class="wrap"><div class="feature-grid' + (i % 2 ? ' flip' : '') + '">' +
         '<div class="f-text">' + (f.label ? '<span class="muted">' + esc(f.label) + '</span>' : '') +
-        '<span class="serif it" style="font-size:24px">' + esc(fm.client) + '</span>' +
-        '<a href="film.html" style="font-family:var(--serif);font-weight:700;font-size:clamp(44px,5.4vw,96px);line-height:.85;letter-spacing:-.045em;text-transform:uppercase;overflow-wrap:break-word">' + esc(fm.title) + '</a>' +
+        '<a href="film.html" style="font-family:var(--serif);font-weight:700;font-size:' + (fm.client.length > 5 ? 'clamp(40px,4.4vw,80px)' : 'clamp(56px,7vw,120px)') + ';line-height:.9;letter-spacing:-.045em">' + esc(fm.client) + '</a>' +
+        '<span class="serif" style="font-size:24px">' + esc(fm.title) + '</span>' +
         ((f.role || fm.role) ? '<p class="f-role">' + esc(f.role || fm.role) + '</p>' : '') +
         '<span style="display:flex;gap:10px;flex-wrap:wrap"><a class="pill" href="film.html">All films →</a><a class="pill" href="https://vimeo.com/' + fm.vimeo + '" target="_blank" rel="noopener">Vimeo ↗</a></span></div>' +
         '<div class="player" data-film="' + fm.vimeo + '" style="aspect-ratio:' + ratio + ';width:100%;align-self:center"><img src="' + poster + '" data-fallback="' + fm.thumb + '" alt="" style="opacity:.75"><button type="button" class="playbtn" aria-label="Play ' + esc(fm.title) + '">' + playIcon + '</button></div>' +
