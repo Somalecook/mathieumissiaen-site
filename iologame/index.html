@@ -218,10 +218,10 @@ html.phone body { background: linear-gradient(rgb(154,216,252), rgb(191,228,248)
 html.phone .app { max-width: none; }
 html.phone .frame { position: fixed; inset: 0; width: 100vw; height: 100dvh; min-width: 0; aspect-ratio: auto; border-radius: 0; box-shadow: none; overflow: hidden;
   background: linear-gradient(rgb(154,216,252), rgb(191,228,248) 50%, rgb(240,245,245)); }
-html.phone canvas { position: absolute; left: calc(50% + var(--cx, 0px) * .9); top: 50%; transform: translate(-50%, -50%); width: var(--cw, 100vw); height: var(--ch, 56.25vw); }
+html.phone canvas { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: var(--cw, 100vw); height: var(--ch, 56.25vw); }
 html.phone .panel, html.phone .frame.night .panel { position: absolute; flex-wrap: nowrap; padding: 0; align-items: flex-end; }
 html.phone .stats { flex: 0 1 auto; }
-html.phone h1 { font-size: 1rem; left: max(10px, env(safe-area-inset-left)); top: 8px; }
+html.phone h1 { font-size: 1rem; left: calc(env(safe-area-inset-left, 0px) * .4 + 8px); top: 8px; }
 html.phone h1 .logo { width: 108px; opacity: 1; }   /* the garden is pushed right into the side bar: the type gets the room on the left */
 html.phone h1 .quests .qs { display: none; }   /* streak and perfect days: in the album on a phone */
 html.phone h1 .rules { display: none; }
@@ -436,7 +436,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
     const c = cv.classList.contains('grabbing') ? CUR_IMG[CUR.grab] : CUR_IMG[st] || CUR_IMG[CUR.point];
     if (!c || !c.img.naturalWidth) return;
     // same size on screen as a system cursor would be, a touch bigger
-    const k = 1.1 * W / (cv.clientWidth * ZOOM);
+    const k = 1.1 * VW / (cv.clientWidth * ZOOM);
     ctx.drawImage(c.img, mouse[0] - c.hx * k, mouse[1] - c.hy * k, c.img.naturalWidth * k, c.img.naturalHeight * k);
   }
   // returns [image, box, mirrored] for what the dragon is doing right now
@@ -729,14 +729,17 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
   // ---------- phones: full screen and landscape ----------
   const PHONE = matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 600;
   let TK = 1;   // canvas type is set bigger on a phone so it stays readable
+  let VX = 0, VW = 1600;   // the canvas can be wider than the scene (a phone): VX px of sky on its left, VW its whole width, in scene px
   function fitPhone() {
     if (!PHONE) { const fw = (document.querySelector('.frame') || {}).clientWidth || 1600; TK = Math.max(1, Math.min(1.9, 1250 / fw)); return; }
     const W = innerWidth, H = innerHeight, root = document.documentElement;
     root.classList.add('phone'); root.classList.toggle('portrait', H > W);
-    // the whole 16:9 garden fits the screen; the sky colour fills the sides
-    const cw = Math.min(W, H * 16 / 9 * 1.14), ch = cw * 9 / 16;   // zoomed a little into the side bars: only sky is cut, top and bottom
-    root.style.setProperty('--cw', cw + 'px'); root.style.setProperty('--cx', Math.max(0, (W - cw) / 2) + 'px'); root.style.setProperty('--ch', ch + 'px');
-    TK = Math.max(1, Math.min(1.9, 1250 / cw));
+    // the canvas covers the whole screen; the garden is zoomed a little (only sky is cut, top and bottom)
+    // and sits towards the right, so the type on the left has sky under it
+    const ch = Math.min(H * 1.14, W * 9 / 16), sc = ch / 900, gw = 1600 * sc;   // css px per scene px, the garden's width
+    VW = Math.max(1600, W / sc); VX = Math.max(0, (VW - 1600) * 0.8);
+    root.style.setProperty('--cw', W + 'px'); root.style.setProperty('--cx', '0px'); root.style.setProperty('--ch', ch + 'px');
+    TK = Math.max(1, Math.min(1.9, 1250 / gw));
   }
   fitPhone();
   if (PHONE) {
@@ -751,10 +754,10 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
     const r = cv.getBoundingClientRect();
     // at least twice the screen pixels: on a plain 1x screen the browser then shrinks a sharp image (supersampling)
     // capped (a huge canvas is what makes big screens lag), and lowered step by step if the computer can't keep up
-    const dev = window.devicePixelRatio || 1, native = r.width * dev / W;
-    dpr = clamp(Math.max(Math.min(r.width * Math.max(2, dev) / W, 2.2) * quality, Math.min(native, 1.2)), 0.5, 3);
-    if (Math.abs(cv.width - Math.round(W * dpr)) < 2 && terrain) return;
-    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    const dev = window.devicePixelRatio || 1, native = r.width * dev / VW;
+    dpr = clamp(Math.max(Math.min(r.width * Math.max(2, dev) / VW, 2.2) * quality, Math.min(native, 1.2)), 0.5, 3);
+    if (Math.abs(cv.width - Math.round(VW * dpr)) < 2 && terrain) return;
+    cv.width = Math.round(VW * dpr); cv.height = Math.round(H * dpr);
     terrain = buildTerrain();
   }
 
@@ -765,7 +768,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
     c.width = cv.width; c.height = cv.height;
     const g = c.getContext('2d');
     // built straight at its zoomed size, so it's drawn 1:1 each frame (no blurry or jaggy resampling)
-    g.setTransform(dpr * ZOOM, 0, 0, dpr * ZOOM, dpr * W / 2 * (1 - ZOOM), dpr * H / 2 * (1 - ZOOM));
+    g.setTransform(dpr * ZOOM, 0, 0, dpr * ZOOM, dpr * (VX + W / 2 * (1 - ZOOM)), dpr * H / 2 * (1 - ZOOM));
     g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
 
     // the sky is painted unzoomed every frame (see ZOOM), so the terrain layer stays transparent around it
@@ -1270,7 +1273,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
   function drawHand() {
     const n = garden.hand.length;
     if (!n && !garden.bouquet) return;
-    const hx = 96, hy = PHONE ? 640 : 740, sway = Math.sin(t * 1.6) * 0.03;
+    const hx = PHONE ? (-VX - 800) / ZOOM + 800 + 95 : 96, hy = PHONE ? 600 : 740, sway = Math.sin(t * 1.6) * 0.03;
     ctx.save(); ctx.translate(hx, hy - 40); ctx.rotate(sway); ctx.translate(-hx, -(hy - 40));
     if (garden.bouquet) drawBouquet(hx, hy, garden.bouquet, 130);
     else garden.hand.forEach((sg, k) => {
@@ -1581,8 +1584,8 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   const STARS = (() => {
     const L = iso(0, NY), T = iso(0, 0), Rr = iso(NX, 0), F = iso(NX, NY), lerpY = (a, b, x) => a[1] + (b[1] - a[1]) * (x - a[0]) / (b[0] - a[0]);
     const out = [];
-    for (let i = 0; out.length < 150 && i < 4000; i++) {
-      const x = -90 + hash(i, 501) * 1780, y = -50 + hash(i, 502) * 1000;
+    for (let i = 0; out.length < 150 * VW / 1600 && i < 6000; i++) {
+      const XL = (-VX - 800) / 0.9 + 780, XR = (VW - VX - 800) / 0.9 + 820, x = XL + hash(i, 501) * (XR - XL), y = -50 + hash(i, 502) * 1000;
       const inX = x > L[0] - 30 && x < Rr[0] + 30, xc = clamp(x, L[0], Rr[0]);
       const top = xc < T[0] ? lerpY(L, T, xc) : lerpY(T, Rr, xc), bot = (xc < F[0] ? lerpY(L, F, xc) : lerpY(F, Rr, xc)) + DEPTH;
       if (inX && y > top - 150 && y < bot + 25) continue;
@@ -2583,7 +2586,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   const ZOOM = 0.9;
   const pointerPos = e => {
     const r = cv.getBoundingClientRect();
-    const sx = (e.clientX - r.left) * W / r.width, sy = (e.clientY - r.top) * H / r.height;
+    const sx = (e.clientX - r.left) * VW / r.width - VX, sy = (e.clientY - r.top) * H / r.height;
     return [(sx - W / 2) / ZOOM + W / 2, (sy - H / 2) / ZOOM + H / 2];   // back to scene coordinates
   };
   const trackMouse = e => { mouse = e.pointerType === 'mouse' ? pointerPos(e) : null; };
@@ -2762,8 +2765,8 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   if (!Array.isArray(grow.st)) grow.st = [];
   if (!(grow.pend >= 0)) grow.pend = null;
   if (grow.welcome) {
-    delete grow.welcome; grow.pend = 22; saveGrow();   // the first sticker is always the corn dog
-    setTimeout(() => toast('Welcome! Here is your first sticker, tap the sky to stick it', '환영해요! 첫 스티커예요, 하늘을 눌러 붙여 보세요', 7), 1200);
+    delete grow.welcome; saveGrow();
+    setTimeout(() => { autoStick(22); gotSticker(22); toast('Welcome! Your first sticker is in the sky, tap it to move it', '환영해요! 첫 스티커가 하늘에 붙었어요, 눌러서 옮길 수 있어요', 7); }, 1200);   // the first sticker is always the corn dog
   }
   const STW = 50;   // a sticker's width in the scene (75% of the first size)
   const stickerSize = i => { const im = STICKERS[i]; return im.naturalWidth ? [STW, STW * im.naturalHeight / im.naturalWidth] : [STW, STW]; };
@@ -2813,6 +2816,25 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     if (k < 0) return false;
     grow.pend = grow.st.splice(k, 1)[0].i; saveGrow(); return true;
   }
+  // a sticker goes straight into the sky, in an empty spot (off the lawn, clear of the type and of the other stickers); it can be moved after
+  function autoStick(i) {
+    const x0 = (-VX - 800) / ZOOM + 800, x1 = (VW - VX - 800) / ZOOM + 800;   // the canvas edges, in scene px
+    let best = null;
+    for (let k = 0; k < 400; k++) {
+      const x = rand(x0 + 40, x1 - 40), y = rand(40, 640);
+      if (y < 330 && x < x0 + 620) continue;   // the logo and the missions
+      if (x < x0 + 340 && y > 460) continue;   // where the picked flowers are held
+      if ([[0, 0], [-40, -40], [40, -40], [-40, 40], [40, 40], [0, -55], [0, 55], [-55, 0], [55, 0]].some(([a, b]) => !inSky(x + a, y + b))) continue;
+      if (x > 1080 && x < 1560 && y < 560) continue;   // the shelf stands up into the sky there
+      const d = Math.min(999, ...grow.st.map(q => Math.hypot(q.x - x, q.y - y)));
+      if (!best || d > best[2]) best = [x, y, d];
+      if (d > 140) break;
+    }
+    const [x, y] = best || [1560, 80];
+    grow.st.push({ i, x: Math.round(x), y: Math.round(y), r: +(rand(-0.22, 0.22)).toFixed(3) }); saveGrow();
+    for (let k = 0; k < 6; k++) setTimeout(() => puff('heart', x + rand(-24, 24), y - 20), k * 90);
+    for (let k = 0; k < 14; k++) particles.push({ kind: 'spark', x: x + rand(-20, 20), y: y + rand(-20, 20), vx: rand(-50, 50), vy: rand(-70, -20), life: .8, max: .8, size: rand(2, 3.5) });
+  }
   function openGift() {
     grow.gift = false;
     const n = 10 + 5 * Math.min(grow.streak, 4);
@@ -2823,10 +2845,10 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     sfx('sachet-ouvre', 0.8);
     // and a sticker for the sky: one he hasn't got yet while some are left
     const have = new Set([...grow.st.map(q => q.i), ...(grow.got || [])]), left = STICKERS.map((_, i) => i).filter(i => !have.has(i));
-    grow.pend = left.length ? left[(Math.random() * left.length) | 0] : (Math.random() * STICKERS.length) | 0; saveGrow();
-    gotSticker(grow.pend);
+    const si = left.length ? left[(Math.random() * left.length) | 0] : (Math.random() * STICKERS.length) | 0;
+    gotSticker(si); setTimeout(() => autoStick(si), 500);
     streakMilestone();
-    toast(`${grow.streak > 1 ? `${grow.streak} day${grow.streak > 1 ? 's' : ''} in a row` : 'Daily gift'} · +${n} love · a sticker! Tap the sky to stick it`, `${grow.streak > 1 ? `연속 ${grow.streak}일째` : '오늘의 선물'} · 사랑 +${n} · 하늘을 눌러 스티커를 붙여요`, 6);
+    toast(`Daily gift · +${n} love · a new sticker in the sky`, `오늘의 선물 · 사랑 +${n} · 하늘에 새 스티커`, 6);
     updateHud();
   }
   // the user's painted gift box, standing in the grass, blades growing over its foot
@@ -3601,12 +3623,12 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     // sprites are painted much bigger than they show: the best downscaling filter keeps their lines clean
     ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.drawImage(skyCanvas(), 0, 0, W, H);
-    ctx.setTransform(dpr * ZOOM, 0, 0, dpr * ZOOM, dpr * W / 2 * (1 - ZOOM), dpr * H / 2 * (1 - ZOOM));
+    { const k = VW / W; ctx.drawImage(skyCanvas(), 0, H / 2 * (1 - k), VW, H * k); }   // a wider canvas: the painted sky covers it all
+    ctx.setTransform(dpr * ZOOM, 0, 0, dpr * ZOOM, dpr * (VX + W / 2 * (1 - ZOOM)), dpr * H / 2 * (1 - ZOOM));
     drawStickers();
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.drawImage(terrain, 0, 0);
-    ctx.setTransform(dpr * ZOOM, 0, 0, dpr * ZOOM, dpr * W / 2 * (1 - ZOOM), dpr * H / 2 * (1 - ZOOM));
+    ctx.setTransform(dpr * ZOOM, 0, 0, dpr * ZOOM, dpr * (VX + W / 2 * (1 - ZOOM)), dpr * H / 2 * (1 - ZOOM));
     // moving clouds removed: the painted sky has its own
     drawFlowers();
 
