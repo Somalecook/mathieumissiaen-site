@@ -1988,6 +1988,372 @@
       ]
     },
     {
+      "slug": "object-set-design",
+      "title": "Object & Set design",
+      "display": "Object & Set design",
+      "kind": "commission",
+      "feature": false,
+      "client": "Le Creative — 5Fruits / 5Services",
+      "year": "2019",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Objects, props and sets designed and produced for brands: sculpture, furniture, packaging and window pieces, made by hand and shot in the studio.",
+      "medium": "Objects, props & sets — design and production",
+      "cover": "images/object-set-design/01.jpg",
+      "theme": {
+        "bg": "#E9E8E4",
+        "fg": "#161513",
+        "muted": "#77746D",
+        "line": "#D5D3CC",
+        "accent": "#161513",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
+        "titleItalic": false,
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
+      },
+      "essay": null,
+      "credits": [
+        {
+          "role": "Studio",
+          "name": "Le Creative — 5Fruits / 5Services"
+        },
+        {
+          "role": "Art direction, design & production",
+          "name": "Mathieu Missiaen"
+        }
+      ],
+      "chapters": null,
+      "role": "Art direction, design & production",
+      "sections": [
+        {
+          "layout": "grid",
+          "images": [
+            {
+              "src": "images/object-set-design/01.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1305 / 2000",
+              "bg": "#5D5E62"
+            },
+            {
+              "src": "images/object-set-design/02.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "800 / 1200",
+              "bg": "#E2E2EC"
+            },
+            {
+              "src": "images/object-set-design/03.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1333 / 2000",
+              "bg": "#12121A"
+            },
+            {
+              "src": "images/object-set-design/04.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1441 / 1920",
+              "bg": "#020202"
+            },
+            {
+              "src": "images/object-set-design/05.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "2000 / 2000",
+              "bg": "#E0E1DB"
+            },
+            {
+              "src": "images/object-set-design/06.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1533 / 1920",
+              "bg": "#FEFEFE"
+            },
+            {
+              "src": "images/object-set-design/07.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1500 / 2000",
+              "bg": "#54545E"
+            },
+            {
+              "src": "images/object-set-design/08.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1000 / 1500",
+              "bg": "#E6EAF3"
+            },
+            {
+              "src": "images/object-set-design/09.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1342 / 1920",
+              "bg": "#8897CE"
+            },
+            {
+              "src": "images/object-set-design/10.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1315 / 2000",
+              "bg": "#050F2A"
+            },
+            {
+              "src": "images/object-set-design/11.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1101 / 730",
+              "bg": "#18434A"
+            },
+            {
+              "src": "images/object-set-design/12.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1354 / 2000",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/object-set-design/13.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "2000 / 2000",
+              "bg": "#010101"
+            },
+            {
+              "src": "images/object-set-design/14.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1500 / 2000",
+              "bg": "#B9CFDD"
+            },
+            {
+              "src": "images/object-set-design/15.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1067 / 1600",
+              "bg": "#6B768A"
+            },
+            {
+              "src": "images/object-set-design/16.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "800 / 1200",
+              "bg": "#0A0A0A"
+            },
+            {
+              "src": "images/object-set-design/17.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "929 / 1200",
+              "bg": "#69A8F7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "matter-texture",
+      "title": "Matter & Texture",
+      "display": "Matter & Texture",
+      "kind": "commission",
+      "feature": false,
+      "client": "Le Creative — 5Fruits / 5Services",
+      "year": "2019",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Research on matter and surface: liquid metal, glass, resin, light and reflections — real materials and CGI.",
+      "medium": "Material research — real matter & CGI",
+      "cover": "images/matter-texture/01.jpg",
+      "theme": {
+        "bg": "#0C0C0C",
+        "fg": "#EDEBE6",
+        "muted": "#8D8A84",
+        "line": "#2A2A2A",
+        "accent": "#F3B13A",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
+        "titleItalic": false,
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
+      },
+      "essay": null,
+      "credits": [
+        {
+          "role": "Studio",
+          "name": "Le Creative — 5Fruits / 5Services"
+        },
+        {
+          "role": "Art direction, design & production",
+          "name": "Mathieu Missiaen"
+        }
+      ],
+      "chapters": null,
+      "role": "Art direction, design & production",
+      "sections": [
+        {
+          "layout": "grid",
+          "images": [
+            {
+              "src": "images/matter-texture/01.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1439 / 1920",
+              "bg": "#0F0402"
+            },
+            {
+              "src": "images/matter-texture/02.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1492 / 1920",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/matter-texture/03.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1440 / 1920",
+              "bg": "#E6DBDF"
+            },
+            {
+              "src": "images/matter-texture/04.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1280 / 1894",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/matter-texture/05.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "2000 / 2000",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/matter-texture/06.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1503 / 2000",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/matter-texture/07.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1333 / 2000",
+              "bg": "#010582"
+            },
+            {
+              "src": "images/matter-texture/08.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1333 / 2000",
+              "bg": "#010100"
+            },
+            {
+              "src": "images/matter-texture/09.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1072 / 1429",
+              "bg": "#010302"
+            },
+            {
+              "src": "images/matter-texture/10.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1333 / 2000",
+              "bg": "#C2C0D5"
+            },
+            {
+              "src": "images/matter-texture/11.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1439 / 1920",
+              "bg": "#0B0B0B"
+            },
+            {
+              "src": "images/matter-texture/12.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1000 / 1500",
+              "bg": "#BFBEBA"
+            },
+            {
+              "src": "images/matter-texture/13.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1138 / 1600",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/matter-texture/14.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1500 / 2000",
+              "bg": "#2B1C1F"
+            },
+            {
+              "src": "images/matter-texture/15.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1500 / 2000",
+              "bg": "#45576B"
+            },
+            {
+              "src": "images/matter-texture/16.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1440 / 1920",
+              "bg": "#B4A3AB"
+            },
+            {
+              "src": "images/matter-texture/17.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "1920 / 1440",
+              "bg": "#DAB8AF"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "slug": "rolls-royce",
       "title": "Rolls-Royce Dawn",
       "display": "Rolls-Royce",

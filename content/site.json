@@ -146,6 +146,44 @@
         ],
         "carouselRatio": 0.658,
         "smallRatio": 0.8
+      },
+      {
+        "type": "project",
+        "slug": "object-set-design",
+        "display": "Object & Set design",
+        "label": "",
+        "text": "Objects, props & sets — design and production",
+        "carousel": [
+          "images/object-set-design/01.jpg",
+          "images/object-set-design/02.jpg",
+          "images/object-set-design/03.jpg",
+          "images/object-set-design/04.jpg"
+        ],
+        "images": [
+          "images/object-set-design/05.jpg",
+          "images/object-set-design/06.jpg",
+          "images/object-set-design/07.jpg"
+        ],
+        "carouselRatio": 0.751
+      },
+      {
+        "type": "project",
+        "slug": "matter-texture",
+        "display": "Matter & Texture",
+        "label": "",
+        "text": "Material research — real matter & CGI",
+        "carousel": [
+          "images/matter-texture/01.jpg",
+          "images/matter-texture/02.jpg",
+          "images/matter-texture/03.jpg",
+          "images/matter-texture/04.jpg"
+        ],
+        "images": [
+          "images/matter-texture/05.jpg",
+          "images/matter-texture/06.jpg",
+          "images/matter-texture/07.jpg"
+        ],
+        "carouselRatio": 0.777
       }
     ],
     "latest": {
