@@ -533,7 +533,8 @@
       '<section class="wrap" style="padding-block:96px 120px"><div class="about-intro"><div style="display:flex;flex-direction:column;gap:40px"><h1 style="margin:0;font-family:var(--serif);font-style:normal;font-weight:300;font-size:clamp(72px,10vw,168px);line-height:.85;letter-spacing:-.03em">About</h1>' +
       (a.portrait ? '<img src="' + a.portrait + '" alt="Mathieu Missiaen" style="width:100%;aspect-ratio:4 / 5;object-fit:cover">' : '') + '</div>' +
       '<div style="display:flex;flex-direction:column;gap:28px;padding-top:12px"><p class="serif" style="margin:0;font-size:clamp(28px,2.6vw,40px);line-height:1.15">' + esc(a.short) + '</p>' +
-      a.bio.map(function (b) { return '<p style="margin:0;font-size:13px;line-height:1.8;max-width:640px;opacity:.85">' + esc(b) + '</p>'; }).join('') + '</div></div></section>' +
+      a.bio.map(function (b) { return '<p style="margin:0;font-size:13px;line-height:1.8;max-width:640px;opacity:.85">' + esc(b) + '</p>'; }).join('') +
+      '<a class="pill" style="align-self:flex-start" href="mailto:' + esc(c.email) + '?subject=' + encodeURIComponent('Hello Mathieu') + '">Contact me — ' + esc(c.email) + '</a></div></div></section>' +
       (a.wide && a.wide.src ? '<section style="padding-bottom:120px"><a href="' + esc(a.wide.href || '#') + '" target="_blank" rel="noopener" style="display:block"><img src="' + esc(a.wide.src) + '" alt="' + esc(a.wide.alt || '') + '" style="display:block;width:100%;height:auto;aspect-ratio:' + esc(a.wide.ratio || '16 / 9') + ';object-fit:cover"></a></section>' : '') +
       '<section class="wrap" style="padding-bottom:120px"><div class="facts rule" style="padding-top:24px">' +
       ((a.path || []).length ? '<div style="display:flex;flex-direction:column;gap:14px"><span class="muted">Path</span>' + list(a.path) + '</div>' : '') +
