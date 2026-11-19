@@ -3,7 +3,7 @@
   "tagline": "Art direction IRL & CGI — Paris",
   "seo": {
     "title": "Mathieu Missiaen — Creative Director, CGI Artist, Photographer & Director in Paris",
-    "description": "Paris-based creative director, CGI / 3D artist, still life photographer and film director. Campaigns for Kenzo, Hermès, Loewe, Amazon Japan, Suntory — and app developer."
+    "description": "Paris-based creative director, CGI / 3D artist, still life photographer and film director. Campaigns for Kenzo, Hermès, Loewe, Amazon Japan, Suntory — and games for brands (branded games) and educational games."
   },
   "home": {
     "features": [
@@ -191,11 +191,11 @@
   },
   "info": "",
   "about": {
-    "short": "Creative director, photographer, director and CGI artist, based in Paris — and, more and more, an app developer.",
+    "short": "Creative director, photographer, director and CGI artist, based in Paris — and an app developer specialised in educational games and games for brands.",
     "bio": [
       "Trained in painting and furniture design, he co-founded the set design studio Le Creative Sweatshop before moving into photography, film and CGI.",
       "He works for houses such as Hermès, Kenzo, Loewe, Dior, Acne Paper, Suntory and Amazon Japan — and on long personal series, from the masks of TAL to Aichmophobia.",
-      "He is also an app developer: AI-assisted development of his own tools, apps, games and sites, from Houdini setups to this website.",
+      "He is also an app and game developer, specialised in educational games and games for brands (branded games): he designs and develops them himself, AI-assisted — like Yongi for iOLO and Stickoo for children.",
       "With Hyojeong Han, he runs iolo.paris, a shop of objects for which he also signs the art direction."
     ],
     "portrait": "",
@@ -239,7 +239,7 @@
       "Redshift",
       "Motion control",
       "Hand-made sets",
-      "App development"
+      "Branded games & app development"
     ]
   },
   "contact": {

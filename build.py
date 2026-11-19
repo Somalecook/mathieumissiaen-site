@@ -55,15 +55,15 @@ def og_image(src):
 
 PERSON = {
     '@type': 'Person', '@id': SITE_URL + '/#person', 'name': NAME, 'url': SITE_URL + '/',
-    'jobTitle': 'Creative director, CGI artist, photographer and director',
+    'jobTitle': 'Creative director, CGI artist, photographer, director and branded game developer',
     'description': site['about']['short'],
     'hasOccupation': [{'@type': 'Occupation', 'name': n, 'occupationLocation': {'@type': 'City', 'name': 'Paris'}} for n in
-                      ['Creative director', 'CGI artist', '3D artist', 'Photographer', 'Film director']],
+                      ['Creative director', 'CGI artist', '3D artist', 'Photographer', 'Film director', 'Game developer', 'App developer']],
     'email': 'mailto:' + C.get('email', ''),
     'address': {'@type': 'PostalAddress', 'addressLocality': 'Paris', 'addressCountry': 'FR'},
     'sameAs': [u for u in [C.get('instagram'), C.get('vimeo'), C.get('tiktok'), C.get('iolo')] if u],
     'knowsAbout': ['Art direction', 'CGI', '3D', 'Houdini', 'Cinema 4D', 'Still life photography', 'Campaign photography',
-                   'Film direction', 'Motion design', 'App development', 'Creative coding'],
+                   'Film direction', 'Motion design', 'App development', 'Game development', 'Branded games', 'Games for brands', 'Advergames', 'Gamification', 'Educational games', 'Creative coding'],
 }
 
 FONT_LINKS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'

@@ -1,9 +1,9 @@
 {
-  "intro": "Apps, games and tools I design and develop myself, AI-assisted. Art direction, illustration and code — as an app developer.",
+  "intro": "App and game developer, specialised in educational games and games for brands. I design, illustrate and develop them myself, AI-assisted.",
   "apps": [
     {
       "title": "Stickoo",
-      "kicker": "Language game for kids",
+      "kicker": "Educational game for kids",
       "text": "A quiz game to learn first words in 6 languages by collecting stickers. Android & iOS.",
       "href": "stickoo/",
       "cta": "Discover Stickoo →",
@@ -22,7 +22,7 @@
     },
     {
       "title": "Yongi 용이",
-      "kicker": "iOLO GOTCHI — browser game",
+      "kicker": "Branded game for iOLO — browser game",
       "text": "A little dragon to raise, free in your browser. Feed him, play ball, make bouquets, collect stickers and iOLO ceramics.",
       "href": "iologame/",
       "cta": "Play Yongi →",

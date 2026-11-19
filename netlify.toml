@@ -40,6 +40,12 @@
 
 [[redirects]]
   from = "/services/vibe-coding/*"
-  to = "/services/app-development/"
+  to = "/services/branded-games/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/services/app-development/*"
+  to = "/services/branded-games/"
   status = 301
   force = true
