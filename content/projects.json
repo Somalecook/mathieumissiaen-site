@@ -29,6 +29,36 @@
           "layout": "sequence",
           "images": [
             {
+              "src": "images/tal/30-picasso.jpg",
+              "title": "Cat, after Picasso",
+              "caption": "",
+              "tag": "",
+              "ratio": "1760 / 2200",
+              "bg": "#D7D6DA",
+              "inset": {
+                "video": "images/tal/30-picasso-timelapse.mp4",
+                "poster": "images/tal/30-picasso-timelapse.jpg",
+                "ratio": "4 / 5",
+                "caption": "After Picasso"
+              }
+            },
+            {
+              "src": "images/tal/31-picasso-2.jpg",
+              "title": "Cat, after Picasso II",
+              "caption": "",
+              "tag": "",
+              "ratio": "1760 / 2200",
+              "bg": "#FDE5E7"
+            },
+            {
+              "src": "images/tal/32-picasso-3.jpg",
+              "title": "Cat, after Picasso III",
+              "caption": "",
+              "tag": "",
+              "ratio": "1760 / 2200",
+              "bg": "#2D241E"
+            },
+            {
               "src": "images/tal/22-neo-1.jpg",
               "title": "NEO I",
               "caption": "",

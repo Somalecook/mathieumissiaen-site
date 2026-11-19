@@ -47,12 +47,13 @@
         "label": "See the series in Tal →"
       },
       "carousel": [
+        "images/tal/30-picasso.jpg",
         "images/tal/25-neo-mouth-2.jpg",
         "images/tal/23-neo-blur.jpg",
         "images/tal/28-neo-full-face.jpg"
       ],
       "images": [
-        "images/tal/29-cheval-timelapse.mp4",
+        "images/tal/30-picasso-timelapse.mp4",
         "images/tal/29-cheval.jpg",
         "images/tal/22-neo-1.jpg"
       ],

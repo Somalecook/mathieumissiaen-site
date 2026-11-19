@@ -10,19 +10,19 @@
       {
         "type": "project",
         "slug": "tal",
-        "display": "Timeless Painting",
+        "display": "What I'm working on",
         "label": "",
-        "text": "After Mike Kelley. Glossy blob faces made with NEO Blob Studio, an app I developed.",
+        "text": "Live sculpting and app creation: I build my own tools to find my own style, through UI and experimentation. Latest pieces, after Picasso and Mike Kelley.",
         "carousel": [
+          "images/tal/30-picasso.jpg",
           "images/tal/29-cheval.jpg",
-          "images/tal/22-neo-1.jpg",
-          "images/tal/28-neo-full-face.jpg",
-          "images/tal/26-neo-2.jpg"
+          "images/tal/31-picasso-2.jpg",
+          "images/tal/28-neo-full-face.jpg"
         ],
         "images": [
-          "images/tal/29-cheval-timelapse.mp4",
-          "images/tal/27-neo-lips.jpg",
-          "images/tal/24-neo-mouth-1.jpg"
+          "images/tal/30-picasso-timelapse.mp4",
+          "images/tal/32-picasso-3.jpg",
+          "images/tal/29-cheval-timelapse.mp4"
         ],
         "carouselRatio": 0.8
       },
