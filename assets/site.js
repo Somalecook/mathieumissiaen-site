@@ -171,7 +171,7 @@
         '<a href="work/' + p.slug + '/" ' + (p.displayLang ? 'lang="' + p.displayLang + '" ' : '') + 'style="font-family:' + esc(t.fontCss) + ';font-weight:' + t.titleWeight + ';font-style:' + (t.titleItalic ? 'italic' : 'normal') + ';font-size:' + ((f.display || p.display).length > 5 ? 'clamp(40px,4.4vw,80px)' : 'clamp(56px,7vw,120px)') + ';line-height:.9;letter-spacing:' + (t.titleTracking || '-.02em') + ';overflow-wrap:break-word">' + esc(f.display || p.display) + '</a>' +
         (p.subtitle && !f.display ? '<span class="serif" style="font-size:24px;line-height:1.15">' + (p.slug === 'tal' ? 'TAL — ' : '') + rich(p.subtitle) + '</span>' : '') +
         (f.text ? '<p class="f-role">' + esc(f.text) + '</p>' : (p.role ? '<p class="f-role">' + esc(p.role) + '</p>' : '')) +
-        '<a class="pill" href="work/' + p.slug + '/">' + (p.kind === 'research' ? 'Enter the series →' : 'See the project →') + '</a></div>' +
+        '</div>' +
         (f.carousel && f.carousel.length
           ? '<a class="f-imgs quad' + (f.smallRatio ? ' fit' : '') + '" href="work/' + p.slug + '/" aria-label="' + esc(p.title) + '" style="--r:' + (f.carouselRatio || 0.8) + (f.smallRatio ? ';--sr:' + f.smallRatio + ';--n:' + Math.min(3, imgs.length) : '') + '"><span class="f-car">' + f.carousel.map(function (src, n) {
               return '<img' + (n ? ' loading="lazy"' : '') + ' class="' + (n ? '' : 'on') + '" src="' + esc(src) + '" alt="' + esc(plain(p.title)) + '">';
