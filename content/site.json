@@ -133,22 +133,6 @@
       },
       {
         "type": "project",
-        "slug": "hermes-windows",
-        "display": "Hermès",
-        "label": "",
-        "text": "Window displays — art direction & production",
-        "carousel": [
-          "images/hermes-windows/01-hourglass.jpg"
-        ],
-        "images": [
-          "images/hermes-windows/02-window.jpg",
-          "images/hermes-windows/03-chairs.jpg"
-        ],
-        "carouselRatio": 0.658,
-        "smallRatio": 0.8
-      },
-      {
-        "type": "project",
         "slug": "object-set-design",
         "display": "Object & Set design",
         "label": "",

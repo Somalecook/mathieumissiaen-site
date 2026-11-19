@@ -49,3 +49,9 @@
   to = "/services/branded-games/"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/work/hermes-windows/*"
+  to = "/work/object-set-design/"
+  status = 301
+  force = true
