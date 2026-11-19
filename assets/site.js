@@ -13,7 +13,8 @@
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
   function getJSON(name) { return fetch('content/' + name + '.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(name); return r.json(); }); }
   var loadedFonts = {};
-  function loadFont(spec) {
+  function loadFont(spec) { return; // single type system: Familjen Grotesk + IBM Plex Mono
+
     if (!spec || loadedFonts[spec]) return;
     loadedFonts[spec] = true;
     var l = document.createElement('link');
@@ -187,7 +188,7 @@
       return '<section class="feature"><div class="wrap"><div class="feature-grid' + (i % 2 ? ' flip' : '') + '">' +
         '<div class="f-text">' + (f.label ? '<span class="muted">' + esc(f.label) + '</span>' : '') +
         '<span class="serif it" style="font-size:24px">' + esc(fm.client) + '</span>' +
-        '<a href="film.html" style="font-family:\'Big Shoulders Display\',sans-serif;font-weight:800;font-size:clamp(64px,8vw,136px);line-height:.82;text-transform:uppercase">' + esc(fm.title) + '</a>' +
+        '<a href="film.html" style="font-family:var(--serif);font-weight:800;font-size:clamp(64px,8vw,136px);line-height:.82;text-transform:uppercase">' + esc(fm.title) + '</a>' +
         ((f.role || fm.role) ? '<p class="f-role">' + esc(f.role || fm.role) + '</p>' : '') +
         '<span style="display:flex;gap:10px;flex-wrap:wrap"><a class="pill" href="film.html">All films →</a><a class="pill" href="https://vimeo.com/' + fm.vimeo + '" target="_blank" rel="noopener">Vimeo ↗</a></span></div>' +
         '<div class="player" data-film="' + fm.vimeo + '" style="aspect-ratio:' + ratio + ';width:100%;align-self:center"><img src="' + poster + '" data-fallback="' + fm.thumb + '" alt="" style="opacity:.75"><button type="button" class="playbtn" aria-label="Play ' + esc(fm.title) + '">' + playIcon + '</button></div>' +
@@ -201,7 +202,7 @@
 
     var lab = site.lab.items.map(function (it) {
       var sq = it.image ? '<img loading="lazy" src="' + it.image + '" alt="">' :
-        '<div style="height:100%;background:#141414;display:flex;flex-direction:column;justify-content:space-between;padding:14px"><span style="display:flex;height:6px"><span style="flex:1;background:#F4F3EF"></span><span style="flex:1;background:#1F4FBF"></span><span style="flex:1;background:#6B2FA3"></span><span style="flex:1;background:#6B4226"></span><span style="flex:.6;background:#C8102E"></span></span><span style="font-family:\'Saira Stencil One\',sans-serif;font-size:34px;line-height:.9;color:#E9E8E4">Rash<br>Lab</span></div>';
+        '<div style="height:100%;background:#141414;display:flex;flex-direction:column;justify-content:space-between;padding:14px"><span style="display:flex;height:6px"><span style="flex:1;background:#F4F3EF"></span><span style="flex:1;background:#1F4FBF"></span><span style="flex:1;background:#6B2FA3"></span><span style="flex:1;background:#6B4226"></span><span style="flex:.6;background:#C8102E"></span></span><span style="font-family:var(--serif);font-size:34px;line-height:.9;color:#E9E8E4">Rash<br>Lab</span></div>';
       return '<a href="' + it.href + '" style="display:flex;flex-direction:column;gap:10px"><div class="sq">' + sq + '</div><span>' + esc(it.title) + '</span><span style="color:#9C9991">' + esc(it.meta) + '</span></a>';
     }).join('');
 
@@ -232,7 +233,7 @@
           return '<a class="car-card" href="work/' + p.slug + '/"' + (clone ? ' aria-hidden="true" tabindex="-1"' : '') + '><div class="car-ph"><img loading="lazy" src="' + cover + '" alt=""></div>' +
             '<span class="car-name">' + esc(p.title) + '</span></a>';
         };
-        return '<section class="car" aria-label="Commissions"><div class="wrap"><div class="car-head"><span style="font-family:\'Syne\',sans-serif;font-weight:800;font-size:clamp(28px,3.4vw,48px);letter-spacing:-.04em;line-height:1">Commissions</span>' +
+        return '<section class="car" aria-label="Commissions"><div class="wrap"><div class="car-head"><span style="font-family:var(--serif);font-weight:800;font-size:clamp(28px,3.4vw,48px);letter-spacing:-.04em;line-height:1">Commissions</span>' +
           '<span class="car-nav"><button type="button" class="tog car-prev" aria-label="Previous">←</button><button type="button" class="tog car-next" aria-label="Next">→</button></span></div>' +
           '<div class="car-view"><div class="car-track">' + cs.map(function (p) { return card(p, false); }).join('') + cs.slice(0, 3).map(function (p) { return card(p, true); }).join('') + '</div></div></div></section>';
       })() +
@@ -248,8 +249,8 @@
           '</div></section>';
       })() +
       '<section class="wrap" style="padding-top:120px"><div class="panels rule">' +
-      '<button type="button" class="panel" data-kind="research"><span style="font-family:\'Bodoni Moda\',serif;font-style:italic;font-size:clamp(40px,11vw,64px);line-height:1">Research</span><span style="line-height:1.7;max-width:440px">' + esc(site.panels.research) + '</span></button>' +
-      '<button type="button" class="panel" data-kind="commission"><span style="font-family:\'Syne\',sans-serif;font-weight:800;font-size:clamp(26px,8vw,54px);line-height:1;letter-spacing:-.04em">Commissions</span><span style="line-height:1.7;max-width:440px">' + esc(site.panels.commission) + '</span></button>' +
+      '<button type="button" class="panel" data-kind="research"><span style="font-family:var(--serif);font-style:normal;font-size:clamp(40px,11vw,64px);line-height:1">Research</span><span style="line-height:1.7;max-width:440px">' + esc(site.panels.research) + '</span></button>' +
+      '<button type="button" class="panel" data-kind="commission"><span style="font-family:var(--serif);font-weight:800;font-size:clamp(26px,8vw,54px);line-height:1;letter-spacing:-.04em">Commissions</span><span style="line-height:1.7;max-width:440px">' + esc(site.panels.commission) + '</span></button>' +
       '</div></section>' +
       '<section class="wrap" id="work" style="padding-top:104px;padding-bottom:24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center">' +
       '<span class="muted" id="wallHead"></span><span style="display:flex;gap:2px;flex-wrap:wrap">' +
@@ -257,7 +258,7 @@
       '<span class="sep" style="align-self:center"></span><button type="button" class="tog" data-v="images">Images</button><button type="button" class="tog" data-v="index">Index</button></span></section>' +
       '<section class="wrap" style="padding-bottom:200px" id="wallBox"></section>' +
       (site.lab && site.lab.show !== false ? '<section id="lab" style="background:#161513;color:#E9E8E4"><div class="wrap" style="padding-block:96px 112px">' +
-      '<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:48px"><h2 style="margin:0;font-family:\'Silkscreen\',monospace;font-weight:400;font-size:80px;line-height:1">Lab</h2><p style="margin:0;max-width:420px;line-height:1.7;color:#B3B0A9">' + esc(site.lab.intro) + '</p></div>' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:48px"><h2 style="margin:0;font-family:var(--serif);font-weight:400;font-size:80px;line-height:1">Lab</h2><p style="margin:0;max-width:420px;line-height:1.7;color:#B3B0A9">' + esc(site.lab.intro) + '</p></div>' +
       '<div class="lab">' + lab + '</div></div></section>' : '') +
       '<section class="wrap ig" id="ig" style="padding-top:112px"><div class="ig-head"><span style="display:flex;flex-direction:column;gap:6px"><span class="muted">Live from Instagram</span><a href="' + esc(c.instagram) + '" target="_blank" rel="noopener" class="serif" style="font-size:clamp(32px,3.4vw,52px);line-height:1">' + esc(c.instagramHandle) + '</a></span><a class="pill" href="' + esc(c.instagram) + '" target="_blank" rel="noopener">Follow ↗</a></div><div class="ig-grid" id="igGrid"></div></section>' +
       '<section class="wrap" style="padding-block:120px 64px"><div class="split rule" style="padding-top:24px"><span></span><div style="display:flex;flex-direction:column;gap:24px">' +
@@ -465,7 +466,7 @@
       var list = items.filter(function (x) { return st.k === 'all' || x.kind === st.k; });
       var c = function (k) { return k === 'all' ? items.length : items.filter(function (x) { return x.kind === k; }).length; };
       document.getElementById('app').innerHTML = header('gallery', site) +
-        '<section class="wrap" style="padding-block:96px 56px;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap"><h1 style="margin:0;font-family:\'Unbounded\',sans-serif;font-weight:300;font-size:clamp(56px,9vw,140px);line-height:.9;letter-spacing:-.04em">Gallery</h1></section>' +
+        '<section class="wrap" style="padding-block:96px 56px;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap"><h1 style="margin:0;font-family:var(--serif);font-weight:300;font-size:clamp(56px,9vw,140px);line-height:.9;letter-spacing:-.04em">Gallery</h1></section>' +
         '<section class="wrap" style="padding-bottom:40px"><div class="rule" style="padding-top:14px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap"><span>' +
         ['all', 'research', 'commission'].map(function (k) { return '<button type="button" class="tog" data-k="' + k + '" aria-pressed="' + (st.k === k) + '">' + (k === 'all' ? 'All' : k === 'research' ? 'Research' : 'Commissions') + '</button>'; }).join('') +
         '</span></div></section>' +
@@ -498,15 +499,15 @@
         ? '<iframe src="https://player.vimeo.com/video/' + n.vimeo + '?autoplay=1&title=0&byline=0&portrait=0&color=E9E8E4&dnt=1" allow="autoplay; fullscreen; picture-in-picture" title="' + esc(n.title) + '"></iframe>'
         : '<img src="' + n.thumb + '" alt=""><button type="button" class="playbtn" id="play" aria-label="Play ' + esc(n.title) + '"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111110" stroke-width="2" stroke-linejoin="round"><path d="M7 4l13 8-13 8z"></path></svg></button>';
       document.getElementById('app').innerHTML = header('film', site) +
-        '<section class="wrap" style="padding-block:72px 48px;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap"><h1 style="margin:0;font-family:\'Big Shoulders Display\',sans-serif;font-weight:800;font-size:clamp(72px,12vw,200px);line-height:.82;text-transform:uppercase">Moving<br>image</h1></section>' +
+        '<section class="wrap" style="padding-block:72px 48px;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap"><h1 style="margin:0;font-family:var(--serif);font-weight:800;font-size:clamp(72px,12vw,200px);line-height:.82;text-transform:uppercase">Moving<br>image</h1></section>' +
         '<section class="wrap"><div class="stage-grid"><div class="player" style="' + (vertical ? 'aspect-ratio:4 / 5;height:min(78vh,760px);margin:0 auto;max-width:100%' : 'aspect-ratio:16 / 9;width:100%') + '">' + player + '</div>' +
-        '<div style="display:flex;flex-direction:column;gap:14px;padding-bottom:6px"><span style="font-family:\'Big Shoulders Display\',sans-serif;font-weight:300;font-size:clamp(36px,3.4vw,54px);line-height:.95;text-transform:uppercase">' + esc(n.title) + '</span><span class="serif it" style="font-size:22px">' + esc(n.client) + '</span>' + (n.role ? '<span class="role">' + esc(n.role) + '</span>' : '') + '<span class="muted" style="line-height:1.7">' + esc(n.note) + '</span><a class="pill" href="https://vimeo.com/' + n.vimeo + '" target="_blank" rel="noopener">Watch on Vimeo ↗</a></div></div></section>' +
+        '<div style="display:flex;flex-direction:column;gap:14px;padding-bottom:6px"><span style="font-family:var(--serif);font-weight:300;font-size:clamp(36px,3.4vw,54px);line-height:.95;text-transform:uppercase">' + esc(n.title) + '</span><span class="serif it" style="font-size:22px">' + esc(n.client) + '</span>' + (n.role ? '<span class="role">' + esc(n.role) + '</span>' : '') + '<span class="muted" style="line-height:1.7">' + esc(n.note) + '</span><a class="pill" href="https://vimeo.com/' + n.vimeo + '" target="_blank" rel="noopener">Watch on Vimeo ↗</a></div></div></section>' +
         '<section class="wrap" style="padding-block:72px 40px"><div style="border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap"><span></span><span>' +
         ['all', 'commission', 'research'].map(function (k) { return '<button type="button" class="tog" data-k="' + k + '" aria-pressed="' + (st.k === k) + '">' + (k === 'all' ? 'All' : k === 'commission' ? 'Commissions' : 'Research') + '</button>'; }).join('') + '</span></div></section>' +
         '<section class="wrap" style="padding-bottom:120px"><div class="films">' + list.map(function (f) {
           var on = f === n;
           return '<button type="button" class="film" data-id="' + f.vimeo + '"><span class="th" style="outline:' + (on ? '1px solid #E9E8E4' : 'none') + ';outline-offset:4px"><img loading="lazy" src="' + f.thumb + '" alt="">' + (on ? '<span class="badge" style="left:8px">●</span>' : '') + '</span>' +
-            '<span style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><span style="font-family:\'Big Shoulders Display\',sans-serif;font-weight:300;font-size:24px;text-transform:uppercase;line-height:1">' + esc(f.title) + '</span><span class="serif it" style="font-size:15px">' + esc(f.client) + '</span></span></button>';
+            '<span style="display:flex;justify-content:space-between;gap:12px;align-items:baseline"><span style="font-family:var(--serif);font-weight:300;font-size:24px;text-transform:uppercase;line-height:1">' + esc(f.title) + '</span><span class="serif it" style="font-size:15px">' + esc(f.client) + '</span></span></button>';
         }).join('') + '</div></section>' + footer(site);
       var pb = document.getElementById('play'); if (pb) pb.onclick = function () { st.playing = true; draw(); };
       $$('.film').forEach(function (b) { b.onclick = function () { st.now = F.filter(function (f) { return f.vimeo === b.dataset.id; })[0]; st.playing = true; draw(); window.scrollTo({ top: 0, behavior: 'smooth' }); }; });
@@ -522,7 +523,7 @@
     loadFont('Cormorant+Garamond:ital,wght@1,300');
     function list(xs) { return '<ul>' + xs.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>'; }
     document.getElementById('app').innerHTML = header('about', site) +
-      '<section class="wrap" style="padding-block:96px 120px"><div class="about-intro"><div style="display:flex;flex-direction:column;gap:40px"><h1 style="margin:0;font-family:\'Cormorant Garamond\',serif;font-style:italic;font-weight:300;font-size:clamp(72px,10vw,168px);line-height:.85;letter-spacing:-.03em">About</h1>' +
+      '<section class="wrap" style="padding-block:96px 120px"><div class="about-intro"><div style="display:flex;flex-direction:column;gap:40px"><h1 style="margin:0;font-family:var(--serif);font-style:normal;font-weight:300;font-size:clamp(72px,10vw,168px);line-height:.85;letter-spacing:-.03em">About</h1>' +
       (a.portrait ? '<img src="' + a.portrait + '" alt="Mathieu Missiaen" style="width:100%;aspect-ratio:4 / 5;object-fit:cover">' : '') + '</div>' +
       '<div style="display:flex;flex-direction:column;gap:28px;padding-top:12px"><p class="serif" style="margin:0;font-size:clamp(28px,2.6vw,40px);line-height:1.15">' + esc(a.short) + '</p>' +
       a.bio.map(function (b) { return '<p style="margin:0;font-size:13px;line-height:1.8;max-width:640px;opacity:.85">' + esc(b) + '</p>'; }).join('') + '</div></div></section>' +

@@ -18,10 +18,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "Gowun+Dodum",
-        "fontCss": "'Gowun Dodum', sans-serif",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -285,10 +286,11 @@
         "fg": "#ECE8E1",
         "muted": "#8F8B83",
         "line": "#4A4844",
-        "font": "Cinzel:wght@400",
-        "fontCss": "'Cinzel', serif",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -457,11 +459,11 @@
         "muted": "#FFD0D5",
         "line": "#FF5A6E",
         "accent": "#FFFFFF",
-        "font": "Barlow+Condensed:ital,wght@1,900",
-        "fontCss": "'Barlow Condensed', sans-serif",
-        "titleItalic": true,
-        "titleWeight": 900,
-        "titleTracking": "-0.01em"
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
+        "titleItalic": false,
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -639,10 +641,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "Italiana",
-        "fontCss": "'Italiana', serif",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -723,11 +726,11 @@
         "muted": "#6B6C70",
         "line": "#C6C7CB",
         "accent": "#9E1B2C",
-        "font": "Archivo+Black",
-        "fontCss": "'Archivo Black', sans-serif",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400,
-        "titleTracking": "-0.03em"
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -782,10 +785,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "",
-        "fontCss": "var(--serif)",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -827,10 +831,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "",
-        "fontCss": "var(--serif)",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -872,10 +877,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "",
-        "fontCss": "var(--serif)",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -917,10 +923,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "",
-        "fontCss": "var(--serif)",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -962,10 +969,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "",
-        "fontCss": "var(--serif)",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -1023,10 +1031,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "",
-        "fontCss": "var(--serif)",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -1068,10 +1077,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "",
-        "fontCss": "var(--serif)",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -1113,10 +1123,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "",
-        "fontCss": "var(--serif)",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -1158,8 +1169,8 @@
         "muted": "#6E6862",
         "line": "#C9C3BC",
         "accent": "#C9665A",
-        "font": "Familjen+Grotesk:wght@500;700",
-        "fontCss": "'Familjen Grotesk', sans-serif",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
         "titleWeight": 700,
         "titleTracking": "-0.045em"
@@ -1308,11 +1319,11 @@
         "muted": "#CFE0FF",
         "line": "#4F93FA",
         "accent": "#FFFFFF",
-        "font": "Dela+Gothic+One",
-        "fontCss": "'Dela Gothic One', sans-serif",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400,
-        "titleTracking": "-0.02em"
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -1542,11 +1553,11 @@
         "muted": "#A8A296",
         "line": "#2E2C28",
         "accent": "#F5C400",
-        "font": "Rubik+Dirt",
-        "fontCss": "'Rubik Dirt', sans-serif",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400,
-        "titleTracking": "-0.01em"
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -1732,11 +1743,11 @@
         "muted": "#8C90A3",
         "line": "#22253A",
         "accent": "#C9A35A",
-        "font": "Cormorant+Garamond:wght@300",
-        "fontCss": "'Cormorant Garamond', serif",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 300,
-        "titleTracking": "-0.02em"
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -1895,11 +1906,11 @@
         "muted": "#8E90A6",
         "line": "#262A44",
         "accent": "#E2361F",
-        "font": "Playfair+Display+SC:wght@400",
-        "fontCss": "'Playfair Display SC', serif",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400,
-        "titleTracking": "0.02em"
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -2039,10 +2050,11 @@
         "fg": "#DDE3EA",
         "muted": "#8A93A0",
         "line": "#262D36",
-        "font": "Fraunces:ital,opsz,wght@1,9..144,200",
-        "fontCss": "'Fraunces', serif",
-        "titleItalic": true,
-        "titleWeight": 200
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
+        "titleItalic": false,
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -2230,10 +2242,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#D0CEC8",
-        "font": "Instrument+Serif:ital@0;1",
-        "fontCss": "'Instrument Serif', serif",
-        "titleItalic": true,
-        "titleWeight": 400
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
+        "titleItalic": false,
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -2308,10 +2321,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "Bodoni+Moda:ital,opsz,wght@1,6..96,400",
-        "fontCss": "'Bodoni Moda', serif",
-        "titleItalic": true,
-        "titleWeight": 400
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
+        "titleItalic": false,
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -2374,11 +2388,11 @@
         "fg": "#E6E6E6",
         "muted": "#8C8C8C",
         "line": "#333333",
-        "font": "Syne:wght@800",
-        "fontCss": "'Syne', sans-serif",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 800,
-        "titleTracking": "-0.04em"
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -2428,10 +2442,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "",
-        "fontCss": "var(--serif)",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -2481,10 +2496,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "",
-        "fontCss": "var(--serif)",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -2526,10 +2542,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "",
-        "fontCss": "var(--serif)",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {
@@ -2571,10 +2588,11 @@
         "fg": "#161513",
         "muted": "#5E5B55",
         "line": "#C9C7C1",
-        "font": "",
-        "fontCss": "var(--serif)",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
         "titleItalic": false,
-        "titleWeight": 400
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
       },
       "sections": [
         {

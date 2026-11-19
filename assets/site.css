@@ -1,7 +1,7 @@
 /* mathieumissiaen.fr — gallery-wall grey, tiny mono type, one display face per title */
 :root{
   --bg:#E9E8E4; --fg:#161513; --muted:#5E5B55; --line:#C9C7C1; --panel:#DDDBD6; --accent:#C8102E;
-  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace; --serif:'Instrument Serif',Georgia,serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace; --serif:'Familjen Grotesk',Helvetica,Arial,sans-serif;
   --title-font:var(--serif);
   --max:1440px; --gut:32px;
   color-scheme:light;
@@ -18,8 +18,8 @@ button{font:inherit;color:inherit}
 @media (max-width:760px){:root{--gut:16px}}
 .muted{color:var(--muted)}
 .serif{font-family:var(--serif)}
-.it{font-style:italic}
-em{font-style:italic}
+.it{font-style:normal}
+em{font-style:normal}
 
 /* header */
 .site-head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-block:24px}
@@ -200,8 +200,8 @@ em{font-style:italic}
 .app-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:center}
 .app-text{display:flex;flex-direction:column;gap:20px;max-width:460px}
 .app-kicker{color:#D9B8F2}
-.app-title{margin:0;font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(64px,8vw,128px);line-height:.9;letter-spacing:-.01em;background:linear-gradient(90deg,#FF8FD8,#FFD36E,#8FE3FF);-webkit-background-clip:text;background-clip:text;color:transparent}
-.app-tag{margin:0;font-family:'Fredoka',sans-serif;font-weight:500;font-size:26px;color:#FFE3F7}
+.app-title{margin:0;font-family:var(--serif);font-weight:700;font-size:clamp(64px,8vw,128px);line-height:.9;letter-spacing:-.01em;background:linear-gradient(90deg,#FF8FD8,#FFD36E,#8FE3FF);-webkit-background-clip:text;background-clip:text;color:transparent}
+.app-tag{margin:0;font-family:var(--serif);font-weight:500;font-size:26px;color:#FFE3F7}
 .app-desc{margin:0;line-height:1.75;font-size:13px;color:#F1E4FA}
 .app-stage{position:relative;display:flex;justify-content:center;align-items:center;min-height:560px}
 .app-cloud{position:absolute;width:min(620px,100%);left:50%;top:50%;transform:translate(-50%,-50%) rotate(-6deg);opacity:.95;pointer-events:none}
@@ -307,7 +307,7 @@ img,video,iframe{max-width:100%}
 .svc h1{font-size:clamp(40px,7vw,104px);line-height:.95;max-width:1100px;letter-spacing:-.02em}
 .svc .svc-lead{margin:8px 0 0;font-family:var(--serif);font-size:clamp(22px,2.4vw,34px);line-height:1.2;max-width:900px}
 .svc p{max-width:640px;line-height:1.75;margin:0;font-size:13px}
-.svc .svc-fr{color:var(--muted);font-style:italic}
+.svc .svc-fr{color:var(--muted)}
 .svc h2{margin-top:36px;font-size:30px}
 .svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:8px}
 .svc-card{position:relative;display:block;aspect-ratio:4/5;overflow:hidden;background:var(--panel)}
@@ -352,3 +352,7 @@ img,video,iframe{max-width:100%}
   .f-imgs.quad[style*="--r"] .f-car{grid-row:1 / span 3;height:auto;background:transparent}
   .f-imgs.quad[style*="--r"] .f-car img{object-fit:contain;object-position:center bottom}
 }
+
+/* single type system: Familjen Grotesk (titles) + IBM Plex Mono (text) */
+.hero-title,.p-title,.seo-pre h1{font-weight:700;letter-spacing:-.045em}
+.f-text a[style*="--serif"],.f-text a{letter-spacing:-.045em}
