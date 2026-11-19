@@ -41,13 +41,15 @@
     function l(href, label, key) { return '<a class="navlink" href="' + href + '"' + (active === key ? ' aria-current="page"' : '') + '>' + label + '</a>'; }
     return '<header class="wrap site-head"><a href="index.html">' + esc(site.name) + '</a><nav aria-label="Site">' +
       l('index.html', 'Work', 'work') + (window.__TABS || []).map(function (t) { return l('work/' + t.slug + '/', esc(t.tab), 'tab-' + t.slug); }).join('') + l('gallery.html', 'Gallery', 'gallery') + l('film.html', 'Moving image', 'film') + l('about.html', 'About', 'about') + (site.links || []).map(function (k) { return l(esc(k.href), esc(k.label), 'x-' + k.label); }).join('') +
-      '<span class="sep" aria-hidden="true"></span>' +
-      '<a class="navlink" href="' + esc(c.instagram) + '" target="_blank" rel="noopener">Instagram ↗</a>' +
-      (c.vimeo ? '<a class="navlink" href="' + esc(c.vimeo) + '" target="_blank" rel="noopener">Vimeo ↗</a>' : '') +
-      (c.tiktok ? '<a class="navlink" href="' + esc(c.tiktok) + '" target="_blank" rel="noopener">TikTok ↗</a>' : '') +
-      (c.iolo ? '<span class="sep" aria-hidden="true"></span><a class="navlink" href="' + esc(c.iolo) + '" target="_blank" rel="noopener" title="Objects — art direction by Mathieu Missiaen">iolo.paris ↗</a>' : '') +
+      '<details class="navdrop"><summary class="navlink">Link</summary><span class="navdrop-menu">' +
+      '<a href="' + esc(c.instagram) + '" target="_blank" rel="noopener">Instagram ↗</a>' +
+      (c.vimeo ? '<a href="' + esc(c.vimeo) + '" target="_blank" rel="noopener">Vimeo ↗</a>' : '') +
+      (c.tiktok ? '<a href="' + esc(c.tiktok) + '" target="_blank" rel="noopener">TikTok ↗</a>' : '') +
+      (c.iolo ? '<a href="' + esc(c.iolo) + '" target="_blank" rel="noopener" title="Objects — art direction by Mathieu Missiaen">iolo.paris ↗</a>' : '') +
+      '</span></details>' +
       '</nav></header>';
   }
+  document.addEventListener('click', function (e) { $$('details.navdrop[open]').forEach(function (d) { if (!d.contains(e.target)) d.removeAttribute('open'); }); });
   function footer(site) {
     var m = site.contact.email;
     return '<section class="wrap mail-cta"><a class="mail-btn" href="mailto:' + esc(m) + '?subject=' + encodeURIComponent('Hello Mathieu') + '">Write to me <span aria-hidden="true">→</span></a><span class="mail">' + esc(m) + '</span></section>' +

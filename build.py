@@ -76,8 +76,11 @@ def nav_html():
     links = [('/', 'Work')] + [('/work/%s/' % p['slug'], p['tab']) for p in tabs] + \
             [('/gallery.html', 'Gallery'), ('/film.html', 'Moving image'), ('/about.html', 'About')] + \
             [('/' + k['href'].lstrip('/'), k['label']) for k in site.get('links', [])]
-    return ('<header class="wrap site-head"><a href="/">%s</a><nav aria-label="Site">%s</nav></header>'
-            % (e(NAME), ''.join('<a class="navlink" href="%s">%s</a>' % (h, e(t)) for h, t in links)))
+    ext = [(C.get('instagram'), 'Instagram ↗'), (C.get('vimeo'), 'Vimeo ↗'), (C.get('iolo'), 'iolo.paris ↗')]
+    drop = '<details class="navdrop"><summary class="navlink">Link</summary><span class="navdrop-menu">%s</span></details>' % ''.join(
+        '<a href="%s" target="_blank" rel="noopener me">%s</a>' % (e(h), t) for h, t in ext if h)
+    return ('<header class="wrap site-head"><a href="/">%s</a><nav aria-label="Site">%s%s</nav></header>'
+            % (e(NAME), ''.join('<a class="navlink" href="%s">%s</a>' % (h, e(t)) for h, t in links), drop))
 
 
 def services_html():
