@@ -167,7 +167,7 @@
       return '<section class="feature"><div class="wrap"><div class="feature-grid' + (i % 2 ? ' flip' : '') + '">' +
         '<div class="f-text">' + (f.label ? '<span class="muted">' + esc(f.label) + '</span>' : '') +
         (p.kicker ? '<span style="font-family:' + esc(t.fontCss) + ';font-size:22px" class="muted">' + esc(p.kicker) + '</span>' : '') +
-        '<a href="work/' + p.slug + '/" ' + (p.displayLang ? 'lang="' + p.displayLang + '" ' : '') + 'style="font-family:' + esc(t.fontCss) + ';font-weight:' + t.titleWeight + ';font-style:' + (t.titleItalic ? 'italic' : 'normal') + ';font-size:' + (p.display.length > 6 ? 'clamp(44px,4.6vw,84px)' : 'clamp(56px,7vw,120px)') + ';line-height:.9;letter-spacing:' + (t.titleTracking || '-.02em') + ';overflow-wrap:break-word">' + esc(p.display) + '</a>' +
+        '<a href="work/' + p.slug + '/" ' + (p.displayLang ? 'lang="' + p.displayLang + '" ' : '') + 'style="font-family:' + esc(t.fontCss) + ';font-weight:' + t.titleWeight + ';font-style:' + (t.titleItalic ? 'italic' : 'normal') + ';font-size:' + ((f.display || p.display).length > 6 ? 'clamp(44px,4.6vw,84px)' : 'clamp(56px,7vw,120px)') + ';line-height:.9;letter-spacing:' + (t.titleTracking || '-.02em') + ';overflow-wrap:break-word">' + esc(f.display || p.display) + '</a>' +
         (p.subtitle ? '<span class="serif" style="font-size:24px;line-height:1.15">' + (p.slug === 'tal' ? 'TAL — ' : '') + rich(p.subtitle) + '</span>' : '') +
         (p.role ? '<p class="f-role">' + esc(p.role) + '</p>' : (f.text ? '<p class="f-role">' + esc(f.text) + '</p>' : '')) +
         '<a class="pill" href="work/' + p.slug + '/">' + (p.kind === 'research' ? 'Enter the series →' : 'See the project →') + '</a></div>' +

@@ -89,7 +89,8 @@
           "images/suntory/03-lemons.webp",
           "images/suntory/08-burst.jpg"
         ],
-        "carouselRatio": 1
+        "carouselRatio": 1,
+        "display": "Suntory -196"
       },
       {
         "type": "project",
