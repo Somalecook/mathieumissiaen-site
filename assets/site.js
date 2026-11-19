@@ -167,15 +167,16 @@
       var label = f.label || (p.kind === 'research' ? 'Series in focus — A / Research' : 'Commission in focus — B / Commissions');
       return '<section class="feature"><div class="wrap"><div class="feature-grid' + (i % 2 ? ' flip' : '') + '">' +
         '<div class="f-text">' + (f.label ? '<span class="muted">' + esc(f.label) + '</span>' : '') +
-        (p.kicker ? '<span style="font-family:' + esc(t.fontCss) + ';font-size:22px" class="muted">' + esc(p.kicker) + '</span>' : '') +
+        (p.kicker && !f.display ? '<span style="font-family:' + esc(t.fontCss) + ';font-size:22px" class="muted">' + esc(p.kicker) + '</span>' : '') +
         '<a href="work/' + p.slug + '/" ' + (p.displayLang ? 'lang="' + p.displayLang + '" ' : '') + 'style="font-family:' + esc(t.fontCss) + ';font-weight:' + t.titleWeight + ';font-style:' + (t.titleItalic ? 'italic' : 'normal') + ';font-size:' + ((f.display || p.display).length > 6 ? 'clamp(44px,4.6vw,84px)' : 'clamp(56px,7vw,120px)') + ';line-height:.9;letter-spacing:' + (t.titleTracking || '-.02em') + ';overflow-wrap:break-word">' + esc(f.display || p.display) + '</a>' +
-        (p.subtitle ? '<span class="serif" style="font-size:24px;line-height:1.15">' + (p.slug === 'tal' ? 'TAL — ' : '') + rich(p.subtitle) + '</span>' : '') +
-        (p.role ? '<p class="f-role">' + esc(p.role) + '</p>' : (f.text ? '<p class="f-role">' + esc(f.text) + '</p>' : '')) +
+        (p.subtitle && !f.display ? '<span class="serif" style="font-size:24px;line-height:1.15">' + (p.slug === 'tal' ? 'TAL — ' : '') + rich(p.subtitle) + '</span>' : '') +
+        (f.text ? '<p class="f-role">' + esc(f.text) + '</p>' : (p.role ? '<p class="f-role">' + esc(p.role) + '</p>' : '')) +
         '<a class="pill" href="work/' + p.slug + '/">' + (p.kind === 'research' ? 'Enter the series →' : 'See the project →') + '</a></div>' +
         (f.carousel && f.carousel.length
           ? '<a class="f-imgs quad" href="work/' + p.slug + '/" aria-label="' + esc(p.title) + '" style="--r:' + (f.carouselRatio || 0.8) + '"><span class="f-car">' + f.carousel.map(function (src, n) {
               return '<img' + (n ? ' loading="lazy"' : '') + ' class="' + (n ? '' : 'on') + '" src="' + esc(src) + '" alt="' + esc(plain(p.title)) + '">';
             }).join('') + '</span>' + imgs.slice(0, 3).map(function (im) {
+              if (/\.(mp4|webm)$/.test(im.src)) return '<video src="' + esc(im.src) + '" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;background:#000"></video>';
               return '<img loading="lazy" src="' + im.src + '" alt="' + esc(plain(im.title) || plain(p.title)) + '" style="background:' + (im.bg || '#000') + '">';
             }).join('') + '</a>'
           : '<a class="f-imgs' + (imgs.length === 2 ? ' duo' : imgs.length === 4 ? ' quad' : '') + '" href="work/' + p.slug + '/" aria-label="' + esc(p.title) + '">' + imgs.map(function (im) {
@@ -196,7 +197,7 @@
     }
     var features = order.map(function (f, i) {
       if (f.type === 'film') { var fm = F.filter(function (x) { return x.vimeo === f.vimeo; })[0]; return fm ? filmFeature(fm, i, f) : ''; }
-      var p = P.filter(function (x) { return x.slug === f.slug; })[0];
+      var p = data.projects.filter(function (x) { return x.slug === f.slug; })[0];
       return p ? projectFeature(p, i, f) : '';
     }).join('');
 

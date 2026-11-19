@@ -9,6 +9,25 @@
     "features": [
       {
         "type": "project",
+        "slug": "tal",
+        "display": "Timeless Painting",
+        "label": "",
+        "text": "After Mike Kelley. Glossy blob faces made with NEO Blob Studio, an app I built (vibe coded).",
+        "carousel": [
+          "images/tal/29-cheval.jpg",
+          "images/tal/22-neo-1.jpg",
+          "images/tal/28-neo-full-face.jpg",
+          "images/tal/26-neo-2.jpg"
+        ],
+        "images": [
+          "images/tal/29-cheval-timelapse.mp4",
+          "images/tal/27-neo-lips.jpg",
+          "images/tal/24-neo-mouth-1.jpg"
+        ],
+        "carouselRatio": 0.8
+      },
+      {
+        "type": "project",
         "slug": "acne-paper",
         "label": "",
         "text": "",
@@ -112,18 +131,7 @@
       }
     ],
     "latest": {
-      "items": [
-        {
-          "src": "images/tal/29-cheval.jpg",
-          "ratio": "1760 / 2200",
-          "title": "Timeless Painting",
-          "text": "After Mike Kelley.",
-          "href": "work/tal/",
-          "video": "images/tal/29-cheval-timelapse.mp4",
-          "poster": "images/tal/29-cheval-timelapse.jpg",
-          "videoRatio": "4 / 5"
-        }
-      ]
+      "items": []
     },
     "app": {
       "title": "Stickoo",
