@@ -50,9 +50,16 @@
       '</nav></header>';
   }
   document.addEventListener('click', function (e) { $$('details.navdrop[open]').forEach(function (d) { if (!d.contains(e.target)) d.removeAttribute('open'); }); });
+  // mailto does nothing when no mail app is set up: also copy the address and say so
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a.mailcopy'); if (!a) return;
+    var addr = a.getAttribute('href').replace(/^mailto:/, '').split('?')[0];
+    var done = function () { if (a.dataset.label == null) a.dataset.label = a.innerHTML; a.innerHTML = 'Copied — ' + addr + ' ✓'; setTimeout(function () { a.innerHTML = a.dataset.label; }, 2600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(addr).then(done, done); else done();
+  });
   function footer(site) {
     var m = site.contact.email;
-    return '<section class="wrap mail-cta"><a class="mail-btn" href="mailto:' + esc(m) + '?subject=' + encodeURIComponent('Hello Mathieu') + '">Write to me <span aria-hidden="true">→</span></a><span class="mail">' + esc(m) + '</span></section>' +
+    return '<section class="wrap mail-cta"><a class="mail-btn mailcopy" href="mailto:' + esc(m) + '?subject=' + encodeURIComponent('Hello Mathieu') + '">Write to me <span aria-hidden="true">→</span></a><span class="mail">' + esc(m) + '</span></section>' +
       (window.__SERVICES && window.__SERVICES.length ? '<nav class="wrap svc-links" aria-label="Services">' + window.__SERVICES.map(function (v) { return '<a href="services/' + v.slug + '/">' + esc(v.label) + '</a>'; }).join('') + '</nav>' : '') +
       '<footer class="wrap site-foot"><span class="mail">' + esc(site.contact.email) + '</span>' + (site.contact.iolo ? '<a href="' + esc(site.contact.iolo) + '" target="_blank" rel="noopener">Also: iolo.paris — objects, art direction ↗</a>' : '') + '<span>© ' + new Date().getFullYear() + ' — Paris</span></footer>';
   }
@@ -534,7 +541,7 @@
       (a.portrait ? '<img src="' + a.portrait + '" alt="Mathieu Missiaen" style="width:100%;aspect-ratio:4 / 5;object-fit:cover">' : '') + '</div>' +
       '<div style="display:flex;flex-direction:column;gap:28px;padding-top:12px"><p class="serif" style="margin:0;font-size:clamp(28px,2.6vw,40px);line-height:1.15">' + esc(a.short) + '</p>' +
       a.bio.map(function (b) { return '<p style="margin:0;font-size:13px;line-height:1.8;max-width:640px;opacity:.85">' + esc(b) + '</p>'; }).join('') +
-      '<a class="pill" style="align-self:flex-start" href="mailto:' + esc(c.email) + '?subject=' + encodeURIComponent('Hello Mathieu') + '">Contact me — ' + esc(c.email) + '</a></div></div></section>' +
+      '<a class="pill mailcopy" style="align-self:flex-start" href="mailto:' + esc(c.email) + '?subject=' + encodeURIComponent('Hello Mathieu') + '">Contact me — ' + esc(c.email) + '</a></div></div></section>' +
       (a.wide && a.wide.src ? '<section style="padding-bottom:120px"><a href="' + esc(a.wide.href || '#') + '" target="_blank" rel="noopener" style="display:block"><img src="' + esc(a.wide.src) + '" alt="' + esc(a.wide.alt || '') + '" style="display:block;width:100%;height:auto;aspect-ratio:' + esc(a.wide.ratio || '16 / 9') + ';object-fit:cover"></a></section>' : '') +
       '<section class="wrap" style="padding-bottom:120px"><div class="facts rule" style="padding-top:24px">' +
       ((a.path || []).length ? '<div style="display:flex;flex-direction:column;gap:14px"><span class="muted">Path</span>' + list(a.path) + '</div>' : '') +
