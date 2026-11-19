@@ -245,6 +245,10 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
   font: 500 11px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; }
 #turn .ph { width: 34px; height: 58px; border: 1.5px solid #111; border-radius: 7px; animation: turn 2.4s ease-in-out infinite; }
 #turn i { font-style: normal; font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; letter-spacing: .04em; text-transform: none; opacity: .55; }
+#turn.tap { cursor: pointer; font-size: 15px; }
+#turn.tap .ph { animation: tapph 1.6s ease-in-out infinite; }
+#turn b { font-weight: 500; margin-top: 18px; font-size: 10px; opacity: .8; }
+@keyframes tapph { 0%, 100% { transform: rotate(-90deg) scale(1); } 50% { transform: rotate(-90deg) scale(.88); } }
 @keyframes turn { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
 </style>
 </head>
@@ -747,7 +751,15 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
       const el = document.documentElement, rq = el.requestFullscreen || el.webkitRequestFullscreen;
       if (!document.fullscreenElement && rq) { try { const pr = rq.call(el, { navigationUI: 'hide' }); if (pr && pr.then) pr.then(() => { try { screen.orientation.lock('landscape').catch(() => {}); } catch (e) {} }).catch(() => {}); } catch (e) {} }
     };
-    addEventListener('pointerdown', goFull, { capture: true });
+    // a touch's pointerdown is not a "user gesture" for the browser: full screen must start on the finger lift
+    ['pointerup', 'touchend', 'click'].forEach(ev => addEventListener(ev, goFull, { capture: true }));
+    // portrait: where the phone can do it, one tap goes full screen and turns the game to landscape by itself
+    const ios = /iP(hone|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const canFull = !ios && !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
+    const tn = document.getElementById('turn');
+    if (tn && canFull) { tn.classList.add('tap'); tn.innerHTML = '<div class="ph"></div><div>Tap to play</div><i>눌러서 시작</i>'; }
+    else if (tn && ios && !navigator.standalone) tn.insertAdjacentHTML('beforeend', '<b>Share ↑ · Add to Home Screen</b><i>홈 화면에 추가 → 전체 화면</i>');
+    addEventListener('fullscreenchange', () => setTimeout(() => { fitPhone(); resize(); }, 250));
     addEventListener('orientationchange', () => setTimeout(() => { fitPhone(); resize(); }, 250));
   }
   function resize() {
