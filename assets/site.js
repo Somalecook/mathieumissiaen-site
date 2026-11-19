@@ -536,7 +536,7 @@
       a.bio.map(function (b) { return '<p style="margin:0;font-size:13px;line-height:1.8;max-width:640px;opacity:.85">' + esc(b) + '</p>'; }).join('') + '</div></div></section>' +
       (a.wide && a.wide.src ? '<section style="padding-bottom:120px"><a href="' + esc(a.wide.href || '#') + '" target="_blank" rel="noopener" style="display:block"><img src="' + esc(a.wide.src) + '" alt="' + esc(a.wide.alt || '') + '" style="display:block;width:100%;height:auto;aspect-ratio:' + esc(a.wide.ratio || '16 / 9') + ';object-fit:cover"></a></section>' : '') +
       '<section class="wrap" style="padding-bottom:120px"><div class="facts rule" style="padding-top:24px">' +
-      '<div style="display:flex;flex-direction:column;gap:14px"><span class="muted">Path</span>' + list(a.path) + '</div>' +
+      ((a.path || []).length ? '<div style="display:flex;flex-direction:column;gap:14px"><span class="muted">Path</span>' + list(a.path) + '</div>' : '') +
       '<div style="display:flex;flex-direction:column;gap:14px"><span class="muted">Selected clients</span>' + list(a.clients) + '</div>' +
       '<div style="display:flex;flex-direction:column;gap:14px"><span class="muted">Press &amp; editorials</span>' + list(a.press) + '<span class="muted" style="margin-top:24px">Tools</span>' + list(a.tools) + '</div>' +
       '<div style="display:flex;flex-direction:column;gap:12px"><span class="muted">Contact</span><span class="mail">' + esc(c.email) + '</span>' + (c.asia ? '<span class="muted" style="margin-top:12px">Asia</span><span class="mail">' + esc(c.asia) + '</span>' : '') +
