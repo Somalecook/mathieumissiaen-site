@@ -173,10 +173,10 @@
         (f.text ? '<p class="f-role">' + esc(f.text) + '</p>' : (p.role ? '<p class="f-role">' + esc(p.role) + '</p>' : '')) +
         '<a class="pill" href="work/' + p.slug + '/">' + (p.kind === 'research' ? 'Enter the series →' : 'See the project →') + '</a></div>' +
         (f.carousel && f.carousel.length
-          ? '<a class="f-imgs quad" href="work/' + p.slug + '/" aria-label="' + esc(p.title) + '" style="--r:' + (f.carouselRatio || 0.8) + '"><span class="f-car">' + f.carousel.map(function (src, n) {
+          ? '<a class="f-imgs quad' + (f.smallRatio ? ' fit' : '') + '" href="work/' + p.slug + '/" aria-label="' + esc(p.title) + '" style="--r:' + (f.carouselRatio || 0.8) + (f.smallRatio ? ';--sr:' + f.smallRatio + ';--n:' + Math.min(3, imgs.length) : '') + '"><span class="f-car">' + f.carousel.map(function (src, n) {
               return '<img' + (n ? ' loading="lazy"' : '') + ' class="' + (n ? '' : 'on') + '" src="' + esc(src) + '" alt="' + esc(plain(p.title)) + '">';
             }).join('') + '</span>' + imgs.slice(0, 3).map(function (im) {
-              if (/\.(mp4|webm)$/.test(im.src)) return '<video src="' + esc(im.src) + '" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;background:#000"></video>';
+              if (/\.(mp4|webm)$/.test(im.src)) return '<video src="' + esc(im.src) + '" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:' + (f.smallRatio ? 'contain' : 'cover') + ';background:transparent"></video>';
               return '<img loading="lazy" src="' + im.src + '" alt="' + esc(plain(im.title) || plain(p.title)) + '" style="background:' + (im.bg || '#000') + '">';
             }).join('') + '</a>'
           : '<a class="f-imgs' + (imgs.length === 2 ? ' duo' : imgs.length === 4 ? ' quad' : '') + '" href="work/' + p.slug + '/" aria-label="' + esc(p.title) + '">' + imgs.map(function (im) {

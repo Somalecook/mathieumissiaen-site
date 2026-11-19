@@ -360,3 +360,11 @@ img,video,iframe{max-width:100%}
 @media (max-width:820px){.f-imgs.quad>*{min-width:0}.f-imgs.quad video{width:100%;max-width:100%;grid-column:auto!important}}
 @media (max-width:820px){.f-imgs.quad[style*="--r"]{grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:auto!important}.f-imgs.quad[style*="--r"] .f-car{grid-column:1 / -1}.f-imgs.quad[style*="--r"]>img,.f-imgs.quad[style*="--r"]>video{aspect-ratio:4/5;height:auto!important}}
 .f-text{min-width:0}
+
+/* mini-gallery whose small items keep their own ratio (e.g. 4:5 videos, never cropped) */
+@media (min-width:821px){
+  .f-imgs.quad.fit[style*="--r"]{grid-template-columns:min(calc(var(--H) * var(--r)), var(--H)) calc((var(--H) - (var(--n) - 1) * 10px) / var(--n) * var(--sr));
+    grid-template-rows:repeat(var(--n),calc((var(--H) - (var(--n) - 1) * 10px) / var(--n)))}
+  .f-imgs.quad.fit[style*="--r"] .f-car{grid-row:1 / -1}
+}
+@media (max-width:820px){.f-imgs.quad.fit[style*="--r"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}.f-imgs.quad.fit[style*="--r"]>video{aspect-ratio:var(--sr)}}
