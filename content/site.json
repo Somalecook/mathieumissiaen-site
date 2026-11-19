@@ -3,7 +3,7 @@
   "tagline": "Art direction IRL & CGI — Paris",
   "seo": {
     "title": "Mathieu Missiaen — Creative Director, CGI Artist, Photographer & Director in Paris",
-    "description": "Paris-based creative director, CGI / 3D artist, still life photographer and film director. Campaigns for Kenzo, Hermès, Loewe, Amazon Japan, Suntory — plus vibe coding."
+    "description": "Paris-based creative director, CGI / 3D artist, still life photographer and film director. Campaigns for Kenzo, Hermès, Loewe, Amazon Japan, Suntory — and app developer."
   },
   "home": {
     "features": [
@@ -12,7 +12,7 @@
         "slug": "tal",
         "display": "Timeless Painting",
         "label": "",
-        "text": "After Mike Kelley. Glossy blob faces made with NEO Blob Studio, an app I built (vibe coded).",
+        "text": "After Mike Kelley. Glossy blob faces made with NEO Blob Studio, an app I developed.",
         "carousel": [
           "images/tal/29-cheval.jpg",
           "images/tal/22-neo-1.jpg",
@@ -137,8 +137,8 @@
     "app": {
       "title": "Stickoo",
       "tagline": "Words you can collect.",
-      "text": "A language app for children, vibe coded from scratch. Each child picks a hero, hears a word — 엄마, maman, mother — and answers a little quiz by touching the right picture. Every right answer unlocks a sticker for their album; fill a page and new words arrive. Korean, French, English and Spanish, one word at a time, with characters that grow up alongside the player — from pyjamas to superpowers.",
-      "meta": "Vibe coding · App · iolo.paris",
+      "text": "A language app for children, developed from scratch. Each child picks a hero, hears a word — 엄마, maman, mother — and answers a little quiz by touching the right picture. Every right answer unlocks a sticker for their album; fill a page and new words arrive. Korean, French, English and Spanish, one word at a time, with characters that grow up alongside the player — from pyjamas to superpowers.",
+      "meta": "App development · App · iolo.paris",
       "video": "images/stickoo/stickoo.mp4",
       "poster": "images/stickoo/stickoo-poster.jpg",
       "ratio": "628 / 900",
@@ -191,11 +191,11 @@
   },
   "info": "",
   "about": {
-    "short": "Creative director, photographer, director and CGI artist, based in Paris — and, more and more, a vibe coder.",
+    "short": "Creative director, photographer, director and CGI artist, based in Paris — and, more and more, an app developer.",
     "bio": [
       "Trained in painting and furniture design, he co-founded the set design studio Le Creative Sweatshop before moving into photography, film and CGI.",
       "He works for houses such as Hermès, Kenzo, Loewe, Dior, Acne Paper, Suntory and Amazon Japan — and on long personal series, from the masks of TAL to Aichmophobia.",
-      "He also vibe codes: AI-assisted development of his own tools, apps and sites, from Houdini setups to this website.",
+      "He is also an app developer: AI-assisted development of his own tools, apps, games and sites, from Houdini setups to this website.",
       "With Hyojeong Han, he runs iolo.paris, a shop of objects for which he also signs the art direction."
     ],
     "portrait": "",
@@ -239,7 +239,7 @@
       "Redshift",
       "Motion control",
       "Hand-made sets",
-      "Vibe coding"
+      "App development"
     ]
   },
   "contact": {

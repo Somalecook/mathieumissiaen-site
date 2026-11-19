@@ -37,3 +37,9 @@
   for = "/stickoo/_i18n/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
+
+[[redirects]]
+  from = "/services/vibe-coding/*"
+  to = "/services/app-development/"
+  status = 301
+  force = true

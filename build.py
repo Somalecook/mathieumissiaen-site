@@ -63,7 +63,7 @@ PERSON = {
     'address': {'@type': 'PostalAddress', 'addressLocality': 'Paris', 'addressCountry': 'FR'},
     'sameAs': [u for u in [C.get('instagram'), C.get('vimeo'), C.get('tiktok'), C.get('iolo')] if u],
     'knowsAbout': ['Art direction', 'CGI', '3D', 'Houdini', 'Cinema 4D', 'Still life photography', 'Campaign photography',
-                   'Film direction', 'Motion design', 'Vibe coding', 'Creative coding'],
+                   'Film direction', 'Motion design', 'App development', 'Creative coding'],
 }
 
 FONT_LINKS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
