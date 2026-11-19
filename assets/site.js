@@ -175,7 +175,11 @@
         (f.carousel && f.carousel.length
           ? '<a class="f-imgs quad' + (f.smallRatio ? ' fit' : '') + '" href="work/' + p.slug + '/" aria-label="' + esc(p.title) + '" style="--r:' + (f.carouselRatio || 0.8) + (f.smallRatio ? ';--sr:' + f.smallRatio + ';--n:' + Math.min(3, imgs.length) : '') + '"><span class="f-car">' + f.carousel.map(function (src, n) {
               return '<img' + (n ? ' loading="lazy"' : '') + ' class="' + (n ? '' : 'on') + '" src="' + esc(src) + '" alt="' + esc(plain(p.title)) + '">';
-            }).join('') + '</span>' + imgs.slice(0, 3).map(function (im) {
+            }).join('') + '</span>' + (f.rotateSmall && imgs.length > 3 ? [0, 1, 2].map(function (slot) {
+              return '<span class="f-mini">' + imgs.filter(function (im, n) { return n % 3 === slot; }).map(function (im, n) {
+                return '<img loading="lazy" class="' + (n ? '' : 'on') + '" src="' + esc(im.src) + '" alt="' + esc(plain(im.title) || plain(p.title)) + '">';
+              }).join('') + '</span>';
+            }).join('') : '') + (f.rotateSmall && imgs.length > 3 ? [] : imgs.slice(0, 3)).map(function (im) {
               if (/\.(mp4|webm)$/.test(im.src)) return '<video src="' + esc(im.src) + '" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:' + (f.smallRatio ? 'contain' : 'cover') + ';background:transparent"></video>';
               return '<img loading="lazy" src="' + im.src + '" alt="' + esc(plain(im.title) || plain(p.title)) + '" style="background:' + (im.bg || '#000') + '">';
             }).join('') + '</a>'
@@ -299,9 +303,9 @@
     $$('.panel').forEach(function (b) { b.onclick = function () { st.kind = st.kind === b.dataset.kind ? 'all' : b.dataset.kind; drawWall(); $('#work').scrollIntoView({ behavior: 'smooth' }); }; });
     drawWall();
     // home carousels: the big image of each feature cycles on its own
-    $$('.f-car').forEach(function (car, k) {
+    $$('.f-car, .f-mini').forEach(function (car, k) {
       var ims = $$('img', car), i = 0; if (ims.length < 2) return;
-      setTimeout(function () { setInterval(function () { ims[i].classList.remove('on'); i = (i + 1) % ims.length; ims[i].classList.add('on'); }, 3200); }, k * 900);
+      setTimeout(function () { setInterval(function () { ims[i].classList.remove('on'); i = (i + 1) % ims.length; ims[i].classList.add('on'); }, 3200); }, k * 700);
     });
     stickers(site);
     (function () {

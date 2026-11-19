@@ -33,19 +33,21 @@
         "label": "",
         "text": "",
         "images": [
+          "images/acne-paper/window-tokyo.jpg",
           "images/acne-paper/kv-pink.jpg",
           "images/acne-paper/window-new-york.jpg",
-          "images/acne-paper/detail.jpg"
-        ],
-        "carousel": [
-          "images/acne-paper/window-5.jpg",
-          "images/acne-paper/window-tokyo.jpg",
           "images/acne-paper/window-west-hollywood.jpg",
+          "images/acne-paper/detail.jpg",
           "images/acne-paper/window-2.jpg",
           "images/acne-paper/window-6.jpg",
-          "images/acne-paper/kv-white.jpg"
+          "images/acne-paper/kv-white.jpg",
+          "images/acne-paper/story-pink.jpg"
         ],
-        "carouselRatio": 0.8
+        "carousel": [
+          "images/acne-paper/window-5.jpg"
+        ],
+        "carouselRatio": 0.8,
+        "rotateSmall": true
       },
       {
         "type": "film",
