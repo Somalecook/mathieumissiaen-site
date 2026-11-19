@@ -210,7 +210,7 @@
     document.getElementById('app').innerHTML = header('work', site) +
       (function () {
         var L = site.home && site.home.latest;
-        var title = '<div class="hero-wrap"><h1 class="hero-title">Image <em>IRL</em><br>&amp; <em>CGI</em></h1></div>';
+        var title = '<div class="hero-wrap"><h1 class="hero-title">Art direction<br>IRL &amp; CGI</h1></div>';
         var items = L && (L.items || (L.src ? [L] : []));
         if (!items || !items.length) return '<section class="wrap" style="padding-block:112px 96px">' + title + '</section>';
         loadFont('Gowun+Dodum');

@@ -145,7 +145,7 @@ pages = []
 home_desc = site.get('seo', {}).get('description') or site['about']['short']
 lst = ''.join('<li><a href="/work/%s/">%s</a>%s%s</li>' % (
     p['slug'], e(p['title']), (' — ' + e(p['client'])) if p.get('client') else '', (' — ' + e(p['year'])) if p.get('year') else '') for p in visible)
-home_content = ('<h1>%s — Image IRL &amp; CGI</h1><p>%s</p><h2>Services</h2><ul>%s</ul><h2>Selected work</h2><ul>%s</ul>'
+home_content = ('<h1>%s — Art direction IRL &amp; CGI</h1><p>%s</p><h2>Services</h2><ul>%s</ul><h2>Selected work</h2><ul>%s</ul>'
                 '<p>Clients: %s.</p>' % (e(NAME), e(home_desc), ''.join('<li><a href="/services/%s/">%s</a></li>' % (s['slug'], e(s['title'])) for s in SERVICES), lst, e(', '.join(site['about']['clients']))))
 home_ld = {'@context': 'https://schema.org', '@graph': [
     PERSON,
