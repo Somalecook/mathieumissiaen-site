@@ -168,7 +168,7 @@
       return '<section class="feature"><div class="wrap"><div class="feature-grid' + (i % 2 ? ' flip' : '') + '">' +
         '<div class="f-text">' + (f.label ? '<span class="muted">' + esc(f.label) + '</span>' : '') +
         (p.kicker && !f.display ? '<span style="font-family:' + esc(t.fontCss) + ';font-size:22px" class="muted">' + esc(p.kicker) + '</span>' : '') +
-        '<a href="work/' + p.slug + '/" ' + (p.displayLang ? 'lang="' + p.displayLang + '" ' : '') + 'style="font-family:' + esc(t.fontCss) + ';font-weight:' + t.titleWeight + ';font-style:' + (t.titleItalic ? 'italic' : 'normal') + ';font-size:' + ((f.display || p.display).length > 6 ? 'clamp(44px,4.6vw,84px)' : 'clamp(56px,7vw,120px)') + ';line-height:.9;letter-spacing:' + (t.titleTracking || '-.02em') + ';overflow-wrap:break-word">' + esc(f.display || p.display) + '</a>' +
+        '<a href="work/' + p.slug + '/" ' + (p.displayLang ? 'lang="' + p.displayLang + '" ' : '') + 'style="font-family:' + esc(t.fontCss) + ';font-weight:' + t.titleWeight + ';font-style:' + (t.titleItalic ? 'italic' : 'normal') + ';font-size:' + ((f.display || p.display).length > 5 ? 'clamp(40px,4.4vw,80px)' : 'clamp(56px,7vw,120px)') + ';line-height:.9;letter-spacing:' + (t.titleTracking || '-.02em') + ';overflow-wrap:break-word">' + esc(f.display || p.display) + '</a>' +
         (p.subtitle && !f.display ? '<span class="serif" style="font-size:24px;line-height:1.15">' + (p.slug === 'tal' ? 'TAL — ' : '') + rich(p.subtitle) + '</span>' : '') +
         (f.text ? '<p class="f-role">' + esc(f.text) + '</p>' : (p.role ? '<p class="f-role">' + esc(p.role) + '</p>' : '')) +
         '<a class="pill" href="work/' + p.slug + '/">' + (p.kind === 'research' ? 'Enter the series →' : 'See the project →') + '</a></div>' +
@@ -189,7 +189,7 @@
       return '<section class="feature"><div class="wrap"><div class="feature-grid' + (i % 2 ? ' flip' : '') + '">' +
         '<div class="f-text">' + (f.label ? '<span class="muted">' + esc(f.label) + '</span>' : '') +
         '<span class="serif it" style="font-size:24px">' + esc(fm.client) + '</span>' +
-        '<a href="film.html" style="font-family:var(--serif);font-weight:800;font-size:clamp(64px,8vw,136px);line-height:.82;text-transform:uppercase">' + esc(fm.title) + '</a>' +
+        '<a href="film.html" style="font-family:var(--serif);font-weight:700;font-size:clamp(44px,5.4vw,96px);line-height:.85;letter-spacing:-.045em;text-transform:uppercase;overflow-wrap:break-word">' + esc(fm.title) + '</a>' +
         ((f.role || fm.role) ? '<p class="f-role">' + esc(f.role || fm.role) + '</p>' : '') +
         '<span style="display:flex;gap:10px;flex-wrap:wrap"><a class="pill" href="film.html">All films →</a><a class="pill" href="https://vimeo.com/' + fm.vimeo + '" target="_blank" rel="noopener">Vimeo ↗</a></span></div>' +
         '<div class="player" data-film="' + fm.vimeo + '" style="aspect-ratio:' + ratio + ';width:100%;align-self:center"><img src="' + poster + '" data-fallback="' + fm.thumb + '" alt="" style="opacity:.75"><button type="button" class="playbtn" aria-label="Play ' + esc(fm.title) + '">' + playIcon + '</button></div>' +
@@ -564,9 +564,35 @@
     });
   }
 
+
+  // ---------- apps page: one mini-gallery per app (same composition as home) ----------
+  function renderApps(site, A) {
+    var media = function (src, cls) {
+      if (/\.(mp4|webm)$/.test(src)) return '<video src="' + esc(src) + '" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;background:#000"></video>';
+      return '<img loading="lazy"' + (cls ? ' class="' + cls + '"' : '') + ' src="' + esc(src) + '" alt="">';
+    };
+    var blocks = (A.apps || []).map(function (a, i) {
+      return '<section class="feature"><div class="wrap"><div class="feature-grid' + (i % 2 ? ' flip' : '') + '">' +
+        '<div class="f-text">' + (a.kicker ? '<span class="muted">' + esc(a.kicker) + '</span>' : '') +
+        '<a href="' + esc(a.href) + '" style="font-family:var(--serif);font-weight:700;font-size:' + (a.title.length > 10 ? 'clamp(44px,4.6vw,84px)' : 'clamp(56px,7vw,120px)') + ';line-height:.9;letter-spacing:-.045em">' + esc(a.title) + '</a>' +
+        (a.text ? '<p class="f-role">' + esc(a.text) + '</p>' : '') +
+        '<span style="display:flex;gap:10px;flex-wrap:wrap"><a class="pill" href="' + esc(a.href) + '">' + esc(a.cta || 'Open →') + '</a>' + (a.more ? '<a class="pill" href="' + esc(a.more.href) + '">' + esc(a.more.label) + '</a>' : '') + '</span></div>' +
+        '<a class="f-imgs quad" href="' + esc(a.href) + '" aria-label="' + esc(a.title) + '" style="--r:' + (a.carouselRatio || 0.8) + '"><span class="f-car">' + (a.carousel || []).map(function (src, n) {
+          return '<img' + (n ? ' loading="lazy"' : '') + ' class="' + (n ? '' : 'on') + '" src="' + esc(src) + '" alt="' + esc(a.title) + '">';
+        }).join('') + '</span>' + (a.images || []).slice(0, 3).map(function (src) { return media(src); }).join('') + '</a></div></div></section>';
+    }).join('');
+    document.getElementById('app').innerHTML = header('x-Apps', site) +
+      '<section class="wrap" style="padding-block:112px 40px"><h1 class="hero-title">Apps</h1>' + (A.intro ? '<p class="f-role" style="margin-top:24px">' + esc(A.intro) + '</p>' : '') + '</section>' +
+      blocks + footer(site);
+    $$('.f-car').forEach(function (car, k) {
+      var ims = $$('img', car), i = 0; if (ims.length < 2) return;
+      setTimeout(function () { setInterval(function () { ims[i].classList.remove('on'); i = (i + 1) % ims.length; ims[i].classList.add('on'); }, 3200); }, k * 900);
+    });
+  }
+
   // ---------- boot ----------
   var page = document.body.getAttribute('data-page');
-  var need = { home: ['site', 'projects', 'films'], project: ['site', 'projects'], gallery: ['site', 'projects'], film: ['site', 'films', 'projects'], about: ['site', 'projects'] }[page] || ['site', 'projects'];
+  var need = { home: ['site', 'projects', 'films'], project: ['site', 'projects'], gallery: ['site', 'projects'], film: ['site', 'films', 'projects'], about: ['site', 'projects'], apps: ['site', 'projects', 'apps'] }[page] || ['site', 'projects'];
   var svcP = fetch('content/services.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : { services: [] }; }).then(function (d) { window.__SERVICES = d.services || []; }, function () { window.__SERVICES = []; });
   Promise.all(need.map(getJSON).concat([svcP])).then(function (r) {
     var site = r[0], data = r[1];
@@ -579,6 +605,7 @@
     else if (page === 'gallery') renderGallery(site, data);
     else if (page === 'film') renderFilm(site, data);
     else if (page === 'about') renderAbout(site);
+    else if (page === 'apps') renderApps(site, r[2]);
     else if (page === 'service') {
       // service pages are written by build.py: keep their content, swap in the live header and footer
       var app = document.getElementById('app'), pre = app.querySelector('.seo-pre');

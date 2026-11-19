@@ -127,7 +127,8 @@
           "images/amazon-japan/08-dorayaki.jpg",
           "images/amazon-japan/12-target.jpg"
         ],
-        "carouselRatio": 1.5
+        "carouselRatio": 1.5,
+        "display": "Amazon"
       }
     ],
     "latest": {
@@ -254,8 +255,8 @@
   },
   "links": [
     {
-      "label": "Stickoo",
-      "href": "stickoo/"
+      "label": "Apps",
+      "href": "apps.html"
     }
   ],
   "stickerTray": []

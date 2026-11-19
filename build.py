@@ -211,6 +211,19 @@ write('about.html', page('about.html', 'About — ' + NAME, A['short'], 'data-pa
                          {'@context': 'https://schema.org', '@type': 'ProfilePage', 'url': SITE_URL + '/about.html', 'mainEntity': PERSON}))
 pages.append(('about.html', '0.6'))
 
+
+# ---------- apps ----------
+try:
+    APPS = json.load(open(os.path.join(ROOT, 'content', 'apps.json'), encoding='utf-8'))
+except Exception:
+    APPS = {'apps': []}
+if APPS.get('apps'):
+    ap = '<h1>Apps by %s</h1><p>%s</p>%s' % (e(NAME), e(APPS.get('intro', '')), ''.join(
+        '<h2><a href="/%s">%s</a></h2><p>%s — %s</p>' % (e(a['href']), e(a['title']), e(a.get('kicker', '')), e(a.get('text', ''))) for a in APPS['apps']))
+    write('apps.html', page('apps.html', 'Apps & games — ' + NAME, APPS.get('intro', ''), 'data-page="apps"', ap, default_img,
+                            {'@context': 'https://schema.org', '@type': 'CollectionPage', 'url': SITE_URL + '/apps.html', 'name': 'Apps by ' + NAME}))
+    pages.append(('apps.html', '0.7'))
+
 # ---------- service pages (keyword landing pages) ----------
 byslug = {p['slug']: p for p in visible}
 for s in SERVICES:

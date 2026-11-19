@@ -1,0 +1,62 @@
+{
+  "intro": "Apps, games and tools I design and build myself, AI-assisted (vibe coding). Art direction, illustration and code.",
+  "apps": [
+    {
+      "title": "Stickoo",
+      "kicker": "Language game for kids",
+      "text": "A quiz game to learn first words in 6 languages by collecting stickers. Android & iOS.",
+      "href": "stickoo/",
+      "cta": "Discover Stickoo →",
+      "carousel": [
+        "stickoo/assets/shot-home.webp",
+        "stickoo/assets/shot-quiz.webp",
+        "stickoo/assets/shot-album.webp",
+        "stickoo/assets/shot-win.webp"
+      ],
+      "images": [
+        "stickoo/assets/shot-quiz.webp",
+        "stickoo/assets/shot-album.webp",
+        "stickoo/assets/shot-win.webp"
+      ],
+      "carouselRatio": 0.462
+    },
+    {
+      "title": "Yongi 용이",
+      "kicker": "iOLO GOTCHI — browser game",
+      "text": "A little dragon to raise, free in your browser. Feed him, play ball, make bouquets, collect stickers and iOLO ceramics.",
+      "href": "iologame/",
+      "cta": "Play Yongi →",
+      "carousel": [
+        "images/apps/yongi-island.jpg"
+      ],
+      "images": [
+        "images/apps/yongi-dragon.jpg",
+        "images/apps/yongi-shelf.jpg",
+        "images/apps/yongi-box.jpg"
+      ],
+      "carouselRatio": 1.039
+    },
+    {
+      "title": "Timeless Painting",
+      "kicker": "NEO Blob Studio — web app",
+      "text": "My tool to build glossy blob faces, after Mike Kelley. The NEO series is made with it.",
+      "href": "timelesspainting/",
+      "cta": "Open the app →",
+      "more": {
+        "href": "work/tal/",
+        "label": "See the series in Tal →"
+      },
+      "carousel": [
+        "images/tal/25-neo-mouth-2.jpg",
+        "images/tal/23-neo-blur.jpg",
+        "images/tal/28-neo-full-face.jpg"
+      ],
+      "images": [
+        "images/tal/29-cheval-timelapse.mp4",
+        "images/tal/29-cheval.jpg",
+        "images/tal/22-neo-1.jpg"
+      ],
+      "carouselRatio": 0.8
+    }
+  ]
+}
