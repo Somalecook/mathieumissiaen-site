@@ -1917,6 +1917,77 @@
       "role": "Photography & CGI"
     },
     {
+      "slug": "hermes-windows",
+      "title": "Hermès window displays",
+      "display": "Hermès",
+      "kind": "commission",
+      "feature": false,
+      "client": "Hermès",
+      "year": "",
+      "kicker": "",
+      "subtitle": "",
+      "tagline": "",
+      "intro": "Window displays for Hermès: art direction and production.",
+      "medium": "Window display · Set design",
+      "cover": "images/hermes-windows/01-hourglass.jpg",
+      "theme": {
+        "bg": "#0E1B3D",
+        "fg": "#EEF0F6",
+        "muted": "#9AA3BE",
+        "line": "#26335A",
+        "accent": "#F37021",
+        "font": "Familjen+Grotesk:wght@400;500;700",
+        "fontCss": "'Familjen Grotesk', Helvetica, Arial, sans-serif",
+        "titleItalic": false,
+        "titleWeight": 700,
+        "titleTracking": "-0.045em"
+      },
+      "essay": null,
+      "credits": [
+        {
+          "role": "Client",
+          "name": "Hermès"
+        },
+        {
+          "role": "Art direction & production",
+          "name": "Mathieu Missiaen"
+        }
+      ],
+      "chapters": null,
+      "role": "Art direction & production",
+      "sections": [
+        {
+          "layout": "grid",
+          "images": [
+            {
+              "src": "images/hermes-windows/01-hourglass.jpg",
+              "title": "Hourglass",
+              "caption": "",
+              "tag": "",
+              "ratio": "1447 / 2200",
+              "bg": "#040E27"
+            },
+            {
+              "src": "images/hermes-windows/02-window.jpg",
+              "title": "The window",
+              "caption": "",
+              "tag": "",
+              "ratio": "1333 / 2000",
+              "bg": "#000000"
+            },
+            {
+              "src": "images/hermes-windows/03-chairs.jpg",
+              "title": "Chairs",
+              "caption": "",
+              "tag": "",
+              "ratio": "2200 / 2200",
+              "bg": "#DFE2DB"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "slug": "rolls-royce",
       "title": "Rolls-Royce Dawn",
       "display": "Rolls-Royce",
