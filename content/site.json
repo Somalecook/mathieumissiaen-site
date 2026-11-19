@@ -25,7 +25,7 @@
           "images/acne-paper/window-6.jpg",
           "images/acne-paper/kv-white.jpg"
         ],
-        "carouselRatio": 1
+        "carouselRatio": 0.8
       },
       {
         "type": "film",
@@ -52,7 +52,7 @@
           "images/anti/motion-02.webp",
           "images/anti/motion-04.webp"
         ],
-        "carouselRatio": 1
+        "carouselRatio": 0.8
       },
       {
         "type": "project",
@@ -71,7 +71,7 @@
           "images/kenzo-move/04-green-duo.jpg",
           "images/kenzo-move/12-striped-girl.jpg"
         ],
-        "carouselRatio": 1
+        "carouselRatio": 0.75
       },
       {
         "type": "project",
@@ -89,7 +89,7 @@
           "images/suntory/03-lemons.webp",
           "images/suntory/08-burst.jpg"
         ],
-        "carouselRatio": 1,
+        "carouselRatio": 1.278,
         "display": "Suntory -196"
       },
       {
@@ -108,7 +108,7 @@
           "images/amazon-japan/08-dorayaki.jpg",
           "images/amazon-japan/12-target.jpg"
         ],
-        "carouselRatio": 1
+        "carouselRatio": 1.5
       }
     ],
     "latest": {

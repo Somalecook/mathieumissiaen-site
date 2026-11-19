@@ -343,3 +343,12 @@ img,video,iframe{max-width:100%}
 .sticker-drag.placed{z-index:45}
 @media (max-width:1100px),(hover:none){.stk-tray{display:none}}
 
+/* mini-galleries: same height everywhere (Suntory = square), main image never cropped */
+@media (min-width:821px){
+  .f-imgs.quad[style*="--r"]{--W:calc((min(100vw,1440px) - 2 * var(--gut) - 32px) * .75 - 10px);--H:calc(var(--W) * 2 / 3);
+    aspect-ratio:auto;gap:10px;grid-template-columns:min(calc(var(--H) * var(--r)), var(--H)) calc(var(--W) / 3);
+    grid-template-rows:repeat(3,calc((var(--H) - 20px) / 3));justify-content:end}
+  .feature-grid.flip .f-imgs.quad[style*="--r"]{justify-content:start}
+  .f-imgs.quad[style*="--r"] .f-car{grid-row:1 / span 3;height:auto;background:transparent}
+  .f-imgs.quad[style*="--r"] .f-car img{object-fit:contain;object-position:center bottom}
+}
