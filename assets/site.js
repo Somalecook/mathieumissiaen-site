@@ -231,7 +231,7 @@
       })() +
       features +
       (function () {
-        var cs = P.filter(function (p) { return p.kind === 'commission'; });
+        var cs = []; // Commissions carousel removed
         if (!cs.length) return '';
         var card = function (p, clone) {
           var cover = p.cover || (allImages(p)[0] || {}).src;
