@@ -340,6 +340,42 @@ textarea{background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:10
       <div class="chips" id="chips"></div>
       <div class="row"><button class="b primary" id="newFace">New face</button><button class="b" id="blank">Blank page</button><button class="b" id="addBlob">Add blob</button><button class="b" id="addCut" title="Add a shape that carves into the others">Add cutter</button><span class="seed" id="seed"></span></div>
     </section>
+    <section id="txSec">
+      <h2>Text</h2>
+      <div class="row"><button class="b primary" id="txAdd">Add text</button><span class="seed" id="txInfo"></span></div>
+      <p class="empty" id="txNone">Add a text, or click a letter on the image to edit its text.</p>
+      <div id="txCtl" hidden style="display:grid;gap:12px">
+        <textarea id="txStr" rows="3" spellcheck="false" aria-label="Text" style="font:500 15px/1.35 var(--body);min-height:64px"></textarea>
+        <div class="pair"><span>Pick</span><div class="tools" id="txPick" role="group" aria-label="What a click selects"><button class="tool" data-m="text">Whole text</button><button class="tool" data-m="letter">Letter</button><button class="tool" data-m="part">Part</button></div></div>
+        <div class="pair"><span>Align</span><div class="tools" id="txAlign" role="group" aria-label="Alignment"><button class="tool" data-a="left">Left</button><button class="tool" data-a="center">Centre</button><button class="tool" data-a="right">Right</button></div></div>
+        <div class="sl"><label for="tx_size">Size</label><output id="tx_sizeo"></output><input type="range" id="tx_size" data-k="size" min="0.06" max="1" step="0.005"></div>
+        <div class="sl"><label for="tx_track">Letter spacing</label><output id="tx_tracko"></output><input type="range" id="tx_track" data-k="track" min="-0.4" max="1.5" step="0.01"></div>
+        <div class="sl"><label for="tx_lead">Line spacing</label><output id="tx_leado"></output><input type="range" id="tx_lead" data-k="lead" min="0.7" max="3" step="0.01"></div>
+        <div class="sl"><label for="tx_wrap">Paragraph width · 0 = no wrap</label><output id="tx_wrapo"></output><input type="range" id="tx_wrap" data-k="wrap" min="0" max="2.6" step="0.01"></div>
+        <div class="sl"><label for="tx_weight">Weight</label><output id="tx_weighto"></output><input type="range" id="tx_weight" data-k="weight" min="0.03" max="0.26" step="0.002"></div>
+        <div class="sl"><label for="tx_depth">Depth</label><output id="tx_deptho"></output><input type="range" id="tx_depth" data-k="depth" min="0.3" max="3" step="0.01"></div>
+        <div class="sl"><label for="tx_slant">Slant</label><output id="tx_slanto"></output><input type="range" id="tx_slant" data-k="slant" min="-0.7" max="0.7" step="0.01"></div>
+        <div class="sl"><label for="tx_rot">Rotation</label><output id="tx_roto"></output><input type="range" id="tx_rot" data-k="rot" min="-3.142" max="3.142" step="0.01"></div>
+        <div class="sl"><label for="tx_k">Merge</label><output id="tx_ko"></output><input type="range" id="tx_k" data-k="k" min="0.05" max="2" step="0.01"></div>
+        <div class="sl"><label for="tx_x">Position X</label><output id="tx_xo"></output><input type="range" id="tx_x" data-k="x" min="-1.2" max="1.2" step="0.005"></div>
+        <div class="sl"><label for="tx_y">Position Y</label><output id="tx_yo"></output><input type="range" id="tx_y" data-k="y" min="-1.4" max="1.4" step="0.005"></div>
+        <div class="sl"><label for="tx_z">Push / pull</label><output id="tx_zo"></output><input type="range" id="tx_z" data-k="z" min="-0.7" max="0.7" step="0.005"></div>
+        <div class="pair"><label for="txCm">Colours</label><select id="txCm" class="sel"><option value="single">Single</option><option value="gradient">Gradient</option><option value="alternate">Alternate</option><option value="rainbow">Rainbow</option></select></div>
+        <div class="pair"><span>Colour A · B · C</span><span class="row" style="gap:8px"><input type="color" id="txC1"><input type="color" id="txC2"><input type="color" id="txC3"></span></div>
+        <div class="row"><button class="b" id="txResetCol" title="Forget colours picked by hand on letters and parts">Reset hand colours</button><button class="b" id="txResetPos" title="Put moved letters back in line">Re-align letters</button></div>
+        <div class="sl"><label for="tx_gl">Shine</label><output id="tx_glo"></output><input type="range" id="tx_gl" data-k="gl" min="0" max="3" step="0.01"></div>
+        <div class="sl"><label for="tx_ro">Roughness · sharp → matte</label><output id="tx_roo"></output><input type="range" id="tx_ro" data-k="ro" min="0" max="1" step="0.01"></div>
+        <div class="sl"><label for="tx_disp">Bump</label><output id="tx_dispo"></output><input type="range" id="tx_disp" data-k="disp" min="0" max="1" step="0.01"></div>
+        <h2 style="margin-top:6px">Text animation</h2>
+        <div class="pair"><label for="txAnim">Motion</label><select id="txAnim" class="sel"><option value="none">None (scene motion)</option><option value="wave">Wave</option><option value="bounce">Bounce</option><option value="float">Float</option><option value="jelly">Jelly</option><option value="pulse">Pulse</option><option value="swing">Swing</option><option value="spin">Spin</option><option value="jitter">Jitter</option><option value="type">Typewriter</option><option value="assemble">Assemble / explode</option><option value="scroll">Scroll ←</option><option value="scrollR">Scroll →</option><option value="scrollU">Scroll ↑</option></select></div>
+        <div class="pair"><label for="txAcol">Colour motion</label><select id="txAcol" class="sel"><option value="none">None</option><option value="rainbow">Rainbow cycle</option><option value="flash">Flash</option></select></div>
+        <div class="sl"><label for="txAamt">Amount</label><output id="txAamto"></output><input type="range" id="txAamt" min="0" max="2" step="0.01"></div>
+        <div class="sl"><label for="txAspd">Cycles per loop</label><output id="txAspdo"></output><input type="range" id="txAspd" min="1" max="6" step="1"></div>
+        <div class="sl"><label for="txAstag">Stagger between letters</label><output id="txAstago"></output><input type="range" id="txAstag" min="0" max="2" step="0.01"></div>
+        <div class="row"><button class="b primary" id="txPlay">Play</button><span class="seed">Uses the loop length and recording in Animate</span></div>
+        <div class="row"><button class="b" id="txDup">Duplicate text</button><button class="b" id="txFlat" title="Keep the blobs, drop the text controls">Convert to blobs</button><button class="b" id="txDel">Delete text</button></div>
+      </div>
+    </section>
     <section id="listSec">
       <h2 id="listTitle">Blobs</h2>
       <div class="blist" id="blobList" role="listbox" aria-multiselectable="true" aria-label="Blobs in the scene"></div>
@@ -579,6 +615,7 @@ float sdE(vec3 p,vec3 r){float k0=length(p/r);float k1=length(p/(r*r))+1e-6;retu
 float wob(vec3 p){vec3 q=p*uWobF;return sin(q.x+1.7*sin(q.y*.8+uSeed))*sin(q.y*1.1+1.3*sin(q.z*.9+uSeed*.7))*sin(q.z*.7+q.x*.6+uSeed*1.3);}
 float sdRBox(vec3 p,vec3 b,float r){vec3 q=abs(p)-b+r;return length(max(q,0.))+min(max(q.x,max(q.y,q.z)),0.)-r;}
 float shapeD(vec3 q,vec3 r,float sh){
+  if(sh>2.5){vec3 c=vec3(max(abs(q.x)-max(r.x-r.y,0.),0.),q.y,q.z*r.y/max(r.z,1e-4));return(length(c)-r.y)*min(1.,r.z/r.y);}   /* capsule: text strokes */
   if(sh>1.5){ /* donut, hole facing the camera; stretched by the blob's width/height */
     float m=.5*(r.x+r.y);vec3 s=vec3(q.x*m/r.x,q.y*m/r.y,q.z);float R=m*.66,tb=min(m*.34,r.z);
     return (length(vec2(length(s.xy)-R,s.z))-tb)*min(1.,min(r.x,r.y)/m);}
@@ -862,11 +899,78 @@ const U={};for(const n of['uB','uN','uRes','uCamZ','uTan','uK','uWob','uWobF','u
 const BU={uT:gl.getUniformLocation(BP,'uT'),uR:gl.getUniformLocation(BP,'uR')};
 gl.bindVertexArray(gl.createVertexArray());
 
-let selU=[-1,-1],maxStr=0;const SHAPES=['sphere','cube','donut'];const PATS=['none','stripes','dots','checker','waves','rings'];const MAXP=10;const MAXB=256,btex=gl.createTexture(),bdata=new Float32Array(MAXB*27*4);let nUp=0;
+let selU=[-1,-1],maxStr=0;const SHAPES=['sphere','cube','donut','capsule'];const PATS=['none','stripes','dots','checker','waves','rings'];const MAXP=10;const MAXB=256,btex=gl.createTexture(),bdata=new Float32Array(MAXB*27*4);let nUp=0;
 gl.bindTexture(gl.TEXTURE_2D,btex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA32F,MAXB,27,0,gl.RGBA,gl.FLOAT,null);
 for(const[p,v]of[[gl.TEXTURE_MIN_FILTER,gl.NEAREST],[gl.TEXTURE_MAG_FILTER,gl.NEAREST],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,p,v);
 const hex=h=>{const n=parseInt(h.slice(1),16);return[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255]};
 /* ---------- Animation: every motion completes a whole number of cycles per loop, so recordings loop seamlessly ---------- */
+/* Blob font: each glyph is a set of strokes (polylines) on a cap-height-1 grid, y up. Arcs are A(cx,cy,rx,ry,from°,to°). */
+const TXF=(()=>{
+  const A=(cx,cy,rx,ry,a0,a1)=>{const n=Math.max(3,Math.round(Math.abs(a1-a0)/15)),o=[];for(let i=0;i<=n;i++){const a=(a0+(a1-a0)*i/n)*Math.PI/180;o.push([cx+rx*Math.cos(a),cy+ry*Math.sin(a)])}return o};
+  const P=(...p)=>[].concat(...p);
+  const G={
+    A:{w:.8,s:[[[0,0],[.4,1],[.8,0]],[[.17,.36],[.63,.36]]]},
+    B:{w:.68,s:[P([[0,0],[0,1],[.36,1]],A(.36,.76,.25,.24,90,-90),[[.36,.52],[0,.52]]),P([[.36,.52]],A(.4,.26,.28,.26,90,-90),[[.4,0],[0,0]])]},
+    C:{w:.82,s:[A(.47,.5,.47,.5,42,318)]},
+    D:{w:.78,s:[P([[0,0],[0,1],[.3,1]],A(.3,.5,.48,.5,90,-90),[[.3,0],[0,0]])]},
+    E:{w:.62,s:[[[.62,1],[0,1],[0,0],[.62,0]],[[0,.52],[.5,.52]]]},
+    F:{w:.6,s:[[[.62,1],[0,1],[0,0]],[[0,.52],[.48,.52]]]},
+    G:{w:.86,s:[P(A(.46,.5,.46,.5,40,360),[[.92,.5],[.52,.5]])]},
+    H:{w:.7,s:[[[0,0],[0,1]],[[.7,0],[.7,1]],[[0,.52],[.7,.52]]]},
+    I:{w:0,s:[[[0,0],[0,1]]]},
+    J:{w:.56,s:[P([[.56,1],[.56,.3]],A(.29,.3,.27,.3,0,-180))]},
+    K:{w:.66,s:[[[0,0],[0,1]],[[.64,1],[0,.38]],[[.2,.57],[.68,0]]]},
+    L:{w:.58,s:[[[0,1],[0,0],[.58,0]]]},
+    M:{w:.86,s:[[[0,0],[0,1],[.43,.34],[.86,1],[.86,0]]]},
+    N:{w:.72,s:[[[0,0],[0,1],[.72,0],[.72,1]]]},
+    O:{w:.94,s:[A(.47,.5,.47,.5,0,360)]},
+    P:{w:.62,s:[P([[0,0],[0,1],[.36,1]],A(.36,.74,.26,.26,90,-90),[[.36,.48],[0,.48]])]},
+    Q:{w:.94,s:[A(.47,.5,.47,.5,0,360),[[.6,.24],[.98,-.1]]]},
+    R:{w:.66,s:[P([[0,0],[0,1],[.36,1]],A(.36,.74,.26,.26,90,-90),[[.36,.48],[0,.48]]),[[.3,.48],[.68,0]]]},
+    S:{w:.68,s:[P(A(.34,.75,.31,.25,20,270),A(.35,.25,.33,.25,90,-155))]},
+    T:{w:.7,s:[[[0,1],[.7,1]],[[.35,1],[.35,0]]]},
+    U:{w:.72,s:[P([[0,1],[0,.36]],A(.36,.36,.36,.36,180,360),[[.72,.36],[.72,1]])]},
+    V:{w:.76,s:[[[0,1],[.38,0],[.76,1]]]},
+    W:{w:1.06,s:[[[0,1],[.25,0],[.53,.66],[.81,0],[1.06,1]]]},
+    X:{w:.7,s:[[[0,1],[.7,0]],[[.7,1],[0,0]]]},
+    Y:{w:.72,s:[[[0,1],[.36,.5],[.72,1]],[[.36,.5],[.36,0]]]},
+    Z:{w:.68,s:[[[0,1],[.68,1],[0,0],[.7,0]]]},
+    '0':{w:.66,s:[A(.33,.5,.33,.5,0,360)]},
+    '1':{w:.32,s:[[[.02,.76],[.3,1],[.3,0]]]},
+    '2':{w:.66,s:[P(A(.32,.68,.31,.31,160,-32),[[0,0],[.68,0]])]},
+    '3':{w:.64,s:[P(A(.3,.76,.29,.24,150,-90),A(.3,.27,.33,.27,90,-155))]},
+    '4':{w:.7,s:[[[.52,0],[.52,1],[0,.32],[.72,.32]]]},
+    '5':{w:.66,s:[P([[.62,1],[.08,1],[.03,.56]],A(.33,.33,.33,.33,135,-155))]},
+    '6':{w:.66,s:[A(.33,.3,.32,.3,0,360),A(.62,.32,.58,.66,180,108)]},
+    '7':{w:.66,s:[[[0,1],[.68,1],[.24,0]]]},
+    '8':{w:.64,s:[A(.32,.76,.26,.24,0,360),A(.32,.27,.32,.27,0,360)]},
+    '9':{w:.66,s:[A(.33,.7,.32,.3,0,360),A(.04,.68,.58,.66,0,-72)]},
+    '.':{w:.02,s:[[[.01,0]]]},
+    ',':{w:.1,s:[[[.06,.04],[-.04,-.16]]]},
+    '!':{w:.02,s:[[[.01,1],[.01,.32]],[[.01,0]]]},
+    '?':{w:.58,s:[P(A(.29,.72,.29,.27,160,-55),[[.31,.36],[.31,.26]]),[[.31,0]]]},
+    '-':{w:.38,s:[[[0,.44],[.38,.44]]]},
+    '_':{w:.6,s:[[[0,-.06],[.6,-.06]]]},
+    "'":{w:.02,s:[[[.01,1],[.01,.74]]]},
+    '"':{w:.2,s:[[[0,1],[0,.74]],[[.2,1],[.2,.74]]]},
+    ':':{w:.02,s:[[[.01,.62]],[[.01,0]]]},
+    ';':{w:.1,s:[[[.06,.62]],[[.06,.04],[-.04,-.16]]]},
+    '+':{w:.52,s:[[[0,.44],[.52,.44]],[[.26,.18],[.26,.7]]]},
+    '=':{w:.52,s:[[[0,.58],[.52,.58]],[[0,.3],[.52,.3]]]},
+    '/':{w:.5,s:[[[0,0],[.5,1]]]},
+    '(':{w:.22,s:[A(.62,.5,.6,.62,145,215)]},
+    ')':{w:.22,s:[A(-.4,.5,.6,.62,35,-35)]},
+    '*':{w:.5,s:[[[.25,.94],[.25,.42]],[[.03,.81],[.47,.55]],[[.47,.81],[.03,.55]]]},
+    '#':{w:.66,s:[[[.2,0],[.3,1]],[[.44,0],[.54,1]],[[.02,.66],[.66,.66]],[[0,.34],[.64,.34]]]},
+    '%':{w:.7,s:[A(.14,.8,.14,.18,0,360),[[0,0],[.7,1]],A(.56,.2,.14,.18,0,360)]},
+    '&':{w:.78,s:[P([[.78,0]],A(.3,.76,.2,.22,-40,230),A(.34,.28,.34,.28,135,330),[[.66,.12],[.8,.34]])]},
+    '@':{w:.92,s:[A(.46,.45,.16,.18,0,360),P(A(.46,.45,.46,.5,0,330))]},
+    '$':{w:.66,s:[P(A(.33,.73,.3,.22,20,270),A(.34,.27,.32,.24,90,-155)),[[.33,1.1],[.33,-.1]]]},
+    '♥':{w:.9,s:[P([[.45,0],[.05,.44]],A(.25,.68,.22,.24,215,-5),A(.65,.68,.22,.24,185,-35),[[.45,0]])]},
+    '<':{w:.5,s:[[[.5,.86],[0,.46],[.5,.06]]]},'>':{w:.5,s:[[[0,.86],[.5,.46],[0,.06]]]},
+  };
+  return G})();
+
 const AN={on:false,t0:0,t:0,style:'bounce',speed:1,amt:1,blink:true,q:.33,fb:null,blur:null,raf:0,rec:null,fpsT:0,fpsN:0};
 const loopLen=()=>2/AN.speed;   /* seconds */
 const hashI=i=>{let h=Math.imul(i+1,2654435761)>>>0;h^=h>>>15;return(h%10000)/10000};
@@ -911,7 +1015,7 @@ function upload(){
       bdata[iv]=mx?-q.v[0]:q.v[0];bdata[iv+1]=q.v[1];bdata[iv+2]=q.v[2];bdata[iv+3]=q.h||2;
       ext=Math.max(ext,vl*1.15+.03);str=Math.max(str,vl/Math.max(q.r,.01))});
     bdata[m]=ps.length;bdata[m+1]=ext;bdata[m+2]=b.op==='sub'?(b.tint===false?1:2):0;bdata[m+3]=Math.max(0,SHAPES.indexOf(b.shape||'sphere'));maxStr=Math.max(maxStr,str);nUp++};
-  selU=[-1,-1];S.blobs.forEach((b0,bi)=>{const b=AN.on?animBlob(b0,bi):b0;if(bi===sel)selU[0]=nUp;put(b,false);if(b.m&&Math.abs(b.x)>1e-3){if(bi===sel)selU[1]=nUp;put(b,true)}})
+  selU=[-1,-1];S.blobs.forEach((b0,bi)=>{const b=AN.on?(b0.txt?animText(b0,bi):animBlob(b0,bi)):b0;if(bi===sel)selU[0]=nUp;put(b,false);if(b.m&&Math.abs(b.x)>1e-3){if(bi===sel)selU[1]=nUp;put(b,true)}})
   gl.bindTexture(gl.TEXTURE_2D,btex);gl.texSubImage2D(gl.TEXTURE_2D,0,0,0,MAXB,27,gl.RGBA,gl.FLOAT,bdata);
 }
 const tanH=()=>Math.tan(S.g.fov*Math.PI/360), camZ=()=>1.24/tanH();
@@ -1457,10 +1561,10 @@ function syncBlob(){if(sel<0||!S.blobs[sel])extra.clear();renderList();const b=S
 const extra=new Set();
 const selList=()=>[sel,...extra].filter((i,k,a)=>i>=0&&S.blobs[i]&&a.indexOf(i)===k);
 const others=()=>[...extra].filter(i=>i!==sel&&S.blobs[i]).map(i=>S.blobs[i]);
-function select(i){sel=i;extra.clear();hovCut=-1;msk=null;syncBlob();requestRender()}
+function select(i){sel=i;extra.clear();hovCut=-1;msk=null;if(typeof txOnSelect==='function')txOnSelect();syncBlob();requestRender()}
 /* ---------- Blob list: every shape in the scene, click to select ---------- */
 var ROLE_N={flow:'Flow',core:'Core',plate:'Plate',field:'Field',brow:'Brow',eye:'Eye',lid:'Lid',cheek:'Cheek',bridge:'Bridge',nose:'Nose',nostril:'Nostril',lip:'Lip',philtrum:'Philtrum',chin:'Chin'};
-function blobName(i){const b=S.blobs[i];if(b.name)return b.name;
+function blobName(i){const b=S.blobs[i];if(b.name)return b.name;if(b.txt)return`“${b.txt.ch}” ${b.txt.ci+1}·${b.txt.pi+1}`;
   const base=b.op==='sub'?'Cutter':ROLE_N[b.role]||'Blob',same=S.blobs.filter((o,j)=>j<=i&&!o.name&&(o.op==='sub'?'Cutter':ROLE_N[o.role]||'Blob')===base).length;return`${base} ${same}`}
 var listKey='';
 function renderList(){const host=$('#blobList');if(!host)return;const L=new Set(selList());
@@ -1939,6 +2043,122 @@ rngAll();setInterval(()=>{if(!document.hidden)rngAll()},350);
   btn.addEventListener('click',e=>{e.stopPropagation();pop.style.left=Math.max(12,btn.getBoundingClientRect().left)+'px';pop.hidden=!pop.hidden;btn.setAttribute('aria-expanded',!pop.hidden)});
   addEventListener('pointerdown',e=>{if(!pop.hidden&&!pop.contains(e.target)&&e.target!==btn){pop.hidden=true;btn.setAttribute('aria-expanded','false')}});
   addEventListener('keydown',e=>{if(e.key==='Escape'&&!pop.hidden){pop.hidden=true;btn.setAttribute('aria-expanded','false')}})}
+
+/* ---------- Text: type words, built from blobs. Each stroke segment is one blob, so every part of a letter can be picked and recoloured ---------- */
+const TXD=()=>({id:'t'+Date.now().toString(36)+Math.floor(Math.random()*1e3),str:'HELLO',x:0,y:0,z:.15,size:.3,track:.16,lead:1.4,wrap:0,weight:.1,depth:1,slant:0,rot:0,align:'center',k:.16,
+  cm:'gradient',c1:'#ff5fa2',c2:'#ffb35c',c3:'#7fb7ff',gl:1.4,ro:.12,disp:0,anim:{type:'none',amt:1,spd:1,stag:.6,col:'none'},loff:{},parts:{}});
+var TX={cur:null,mode:'letter'};
+const txAll=()=>S.texts||(S.texts=[]);
+const txById=id=>(S.texts||[]).find(t=>t.id===id);
+const txNorm=ch=>ch.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace('Œ','OE').replace('Æ','AE').replace('ß','SS');
+function txHsl(h,s,l){const f=n=>{const k=(n+h*12)%12,a=s*Math.min(l,1-l);return l-a*Math.max(-1,Math.min(k-3,9-k,1))};const c=v=>Math.round(v*255).toString(16).padStart(2,'0');return'#'+c(f(0))+c(f(8))+c(f(4))}
+function txToHsl(hx){const [r,g,b]=hex(hx),mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,d=mx-mn;let h=0,s=0;if(d){s=d/(1-Math.abs(2*l-1));h=mx===r?((g-b)/d)%6:mx===g?(b-r)/d+2:(r-g)/d+4;h/=6;if(h<0)h+=1}return[h,s,l]}
+function txMix(a,b,f){const A=hex(a),B=hex(b);return'#'+A.map((v,i)=>Math.round((v+(B[i]-v)*f)*255).toString(16).padStart(2,'0')).join('')}
+function txLetterCol(t,ci,n){const f=n>1?ci/(n-1):0;
+  if(t.cm==='single')return t.c1;if(t.cm==='gradient')return f<.5?txMix(t.c1,t.c2,f*2):txMix(t.c2,t.c3,(f-.5)*2);
+  if(t.cm==='alternate')return[t.c1,t.c2,t.c3][ci%3];
+  const [h,s,l]=txToHsl(t.c1);return txHsl((h+f*.85)%1,Math.max(.55,s),Math.min(.72,Math.max(.5,l)))}
+/* break the text into lines: hard returns, then word wrap to the paragraph width */
+function txLines(t){const s=t.size,T=t.weight*s,adv=ch=>{if(ch===' ')return .42*s+t.track*s;const g=TXF[txNorm(ch)];return g?(g.w*s+2*T+t.track*s):(.5*s+t.track*s)};
+  const out=[];for(const raw of String(t.str).split('\n')){if(!(t.wrap>0)){out.push(raw);continue}
+    let line='';for(const word of raw.split(' ')){const cand=line?line+' '+word:word,w=[...cand].reduce((a,c)=>a+adv(c),0);if(w>t.wrap&&line){out.push(line);line=word}else line=cand}out.push(line)}
+  return{lines:out,adv}}
+function txGen(t){const s=t.size,T=Math.max(.004,t.weight*s),{lines,adv}=txLines(t),L=T*1.35,cr=Math.cos(t.rot||0),sr=Math.sin(t.rot||0);
+  const lineW=lines.map(l=>{const w=[...l].reduce((a,c)=>a+adv(c),0);return Math.max(0,w-(l.length?t.track*s:0))}),blockW=Math.max(0,...lineW),H=(lines.length-1)*t.lead*s+s;
+  const R=(x,y)=>[t.x+x*cr-y*sr,t.y+x*sr+y*cr];let ci=0,n=0;lines.forEach(l=>{for(const c of l)if(c!==' '&&TXF[txNorm(c)])n++});
+  const out=[];
+  lines.forEach((l,li)=>{const base=H/2-s-li*t.lead*s;let pen=t.align==='left'?-blockW/2:t.align==='right'?blockW/2-lineW[li]:-lineW[li]/2;
+    for(const c of l){const g=TXF[txNorm(c)];if(c===' '||!g){pen+=adv(c);continue}
+      const off=t.loff[ci]||[0,0],col=txLetterCol(t,ci,n),lc=R(pen+T+g.w*s/2,base+s/2);let pi=0;
+      const P=(px,py)=>{const X=pen+T+px*s,Y=base+py*s;return[X+(Y-base)*t.slant,Y]};
+      const mk=(x,y,rx,ry,rot)=>{const key=ci+'.'+pi,cg=t.parts[key]||col;pi++;
+        return{x,y,z:t.z,rx,ry,rz:T*t.depth,rot,k:t.k,m:false,col:cg,role:'text',gl:t.gl,ro:t.ro,disp:t.disp,
+          txt:{id:t.id,ci,pi:pi-1,ch:c,lx:lc[0]+off[0],ly:lc[1]+off[1],gx:x,gy:y,cg,s}}};
+      const seg=(p,q)=>{const mx=(p[0]+q[0])/2,my=(p[1]+q[1])/2,len=Math.hypot(q[0]-p[0],q[1]-p[1]),[wx,wy]=R(mx,my);
+        {const o=mk(wx+off[0],wy+off[1],len/2+T*1.05,T,Math.atan2(q[1]-p[1],q[0]-p[0])+(t.rot||0));o.shape='capsule';out.push(o)}};
+      const turnAt=(pts,k)=>{const a=pts[k-1],b=pts[k],c2=pts[k+1];if(!c2)return 9;const t1=Math.atan2(b[1]-a[1],b[0]-a[0]),t2=Math.atan2(c2[1]-b[1],c2[0]-b[0]);return Math.abs(((t2-t1)+Math.PI*3)%(Math.PI*2)-Math.PI)};
+      for(const st of g.s){const pts=st.map(p=>P(p[0],p[1]));
+        if(pts.length===1){const [wx,wy]=R(pts[0][0],pts[0][1]);out.push(mk(wx+off[0],wy+off[1],T*1.25,T*1.25,0));continue}
+        /* merge short, gently turning steps (arcs) into one blob; keep the corners */
+        let a=pts[0];
+        for(let k=1;k<pts.length;k++){const b=pts[k],len=Math.hypot(b[0]-a[0],b[1]-a[1]);
+          if(k===pts.length-1||len>=L||turnAt(pts,k)>.7){seg(a,b);a=b}}
+      }
+      pen+=adv(c);ci++}});
+  t._n=n;return out}
+/* keep what was edited by hand on the blobs (colours, letters dragged) before rebuilding */
+function txHarvest(t){const per={};S.blobs.forEach(b=>{if(!b.txt||b.txt.id!==t.id)return;const k=b.txt.ci+'.'+b.txt.pi;if(b.col!==b.txt.cg)t.parts[k]=b.col;
+  const d=per[b.txt.ci]||(per[b.txt.ci]=[0,0,0]);d[0]+=b.x-b.txt.gx;d[1]+=b.y-b.txt.gy;d[2]++});
+  for(const ci in per){const d=per[ci],dx=d[0]/d[2],dy=d[1]/d[2];if(Math.hypot(dx,dy)>1e-4){const o=t.loff[ci]||[0,0];t.loff[ci]=[o[0]+dx,o[1]+dy]}}}
+function txBuild(t,keepSel=true){txHarvest(t);const oldKey=keepSel&&sel>=0&&S.blobs[sel]&&S.blobs[sel].txt&&S.blobs[sel].txt.id===t.id?S.blobs[sel].txt.ci+'.'+S.blobs[sel].txt.pi:null;
+  let at=S.blobs.findIndex(b=>b.txt&&b.txt.id===t.id);const rest=S.blobs.filter(b=>!(b.txt&&b.txt.id===t.id));if(at<0)at=rest.length;else at=Math.min(at,rest.length);
+  let gen=txGen(t);const room=MAXB-rest.filter(b=>!b.m).length-rest.filter(b=>b.m).length*2;if(gen.length>room){gen=gen.slice(0,Math.max(0,room));t._cut=true}else t._cut=false;
+  S.blobs=rest.slice(0,at).concat(gen,rest.slice(at));extra.clear();
+  if(oldKey){const i=S.blobs.findIndex(b=>b.txt&&b.txt.id===t.id&&b.txt.ci+'.'+b.txt.pi===oldKey);sel=i>=0?i:S.blobs.findIndex(b=>b.txt&&b.txt.id===t.id);txExpand()}
+  else if(sel>=S.blobs.length)sel=-1;msk=null;txInfo();return gen.length}
+function txExpand(){const b=S.blobs[sel];if(!b||!b.txt||TX.mode==='part')return;S.blobs.forEach((o,j)=>{if(j!==sel&&o.txt&&o.txt.id===b.txt.id&&(TX.mode==='text'||o.txt.ci===b.txt.ci))extra.add(j)})}
+function txInfo(){const t=txById(TX.cur);const n=S.blobs.length;$('#txInfo').textContent=t?`${S.blobs.filter(b=>b.txt&&b.txt.id===t.id).length} blobs · ${n}/${MAXB} in scene${t._cut?' · text cut: too many blobs':''}`:'';}
+/* ---------- text animation (plays with Play; loops cleanly so recordings are seamless) ---------- */
+function animText(b,bi){const t=txById(b.txt.id);if(!t)return animBlob(b,bi);const a=t.anim||{};const ty=a.type||'none';
+  if(ty==='none'&&(a.col||'none')==='none')return animBlob(b,bi);
+  const TAU=Math.PI*2,m=Math.max(1,Math.round(a.spd||1)),u=AN.t/loopLen(),w=TAU*u,A=a.amt??1,ci=b.txt.ci,n=Math.max(1,t._n||1),st=a.stag??.6,ph=ci*st*TAU/Math.max(n,4);
+  const o=Object.assign({},b),cx=b.txt.lx,cy=b.txt.ly,s=b.txt.s||t.size;let rx=b.x-cx,ry=b.y-cy,dx=0,dy=0,ang=0,sc=1,sx=1,sy=1,pvx=0,pvy=0;
+  const fr=v=>v-Math.floor(v),cl=v=>Math.max(0,Math.min(1,v)),back=p=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+  if(ty==='wave')dy=.09*A*s*3*Math.sin(m*w-ph);
+  else if(ty==='bounce'){const th=m*w/2-ph/2,hop=Math.abs(Math.sin(th*2));dy=.12*A*s*3*hop;const land=Math.pow(1-hop,6);sy=1-.25*A*land;sx=1/Math.sqrt(Math.max(.3,sy))}
+  else if(ty==='float'){dy=.05*A*s*3*Math.sin(m*w+ph*1.3);dx=.02*A*s*3*Math.sin(2*m*w+ph);ang=.08*A*Math.sin(m*w+ph+1)}
+  else if(ty==='jelly'){sx=1+.2*A*Math.sin(2*m*w-ph);sy=1/sx}
+  else if(ty==='pulse'){sc=Math.max(.2,1+.3*A*Math.sin(m*w-ph))}
+  else if(ty==='spin')ang=m*w+(st>0?ph:0);
+  else if(ty==='swing'){ang=.4*A*Math.sin(m*w-ph);pvy=s*.5}
+  else if(ty==='jitter'){const k=Math.floor(AN.t*10*m);dx=(hashI(ci*977+k)-.5)*.05*A*s*3;dy=(hashI(ci*131+k*7)-.5)*.05*A*s*3;ang=(hashI(ci*59+k*3)-.5)*.3*A}
+  else if(ty==='scroll'||ty==='scrollR'||ty==='scrollU'){const span=2.8,off=fr(m*u)*span*(ty==='scrollR'?1:-1);
+    if(ty==='scrollU'){const ny=((cy+off*-1+1.4)%span+span)%span-1.4;dy=ny-cy}else{const nx=((cx+off+1.4)%span+span)%span-1.4;dx=nx-cx}}
+  else if(ty==='type'){const uu=fr(u*m),r=cl(uu/.7)*n,p=cl(r-ci);sc=p<=0?0:back(p);if(uu>.88)sc*=1-cl((uu-.88)/.1)}
+  else if(ty==='assemble'){const uu=fr(u*m),p=cl(uu*1.7-ci/n*.6),e=1-Math.pow(1-p,3),q=cl((uu-.82)/.18),a1=hashI(ci*17)*TAU,d1=(.8+hashI(ci*29)*.8)*A,a2=hashI(ci*41)*TAU;
+    dx=Math.cos(a1)*d1*(1-e)+Math.cos(a2)*d1*q*q;dy=Math.sin(a1)*d1*(1-e)+Math.sin(a2)*d1*q*q;ang=(1-e)*(hashI(ci*7)-.5)*6+q*q*3;sc=Math.max(.05,e*(1-q*q*.8))}
+  /* move the part around its letter centre */
+  const ca=Math.cos(ang),sa=Math.sin(ang);rx=rx*sx*sc;ry=(ry-pvy)*sy*sc;const nx=rx*ca-ry*sa,ny=rx*sa+ry*ca+pvy;
+  o.x=cx+nx+dx;o.y=cy+ny+dy;o.rot=b.rot+ang;o.rx=b.rx*sc*Math.sqrt(sx);o.ry=b.ry*sc*Math.sqrt(sy);o.rz=b.rz*sc;
+  if(sc<=0){o.rx=o.ry=o.rz=.0001}
+  if(a.col==='rainbow'){const [h,s2,l]=txToHsl(b.col);o.col=txHsl(fr(h+m*u+ci/n*.3),Math.max(.6,s2),Math.min(.7,Math.max(.5,l)))}
+  else if(a.col==='flash'){o.br=(b.br??1)*(1+.9*Math.max(0,Math.sin(m*w*2-ph)))}
+  return o}
+
+/* ---------- Text panel ---------- */
+function txOnSelect(){const b=S.blobs[sel];if(b&&b.txt&&txById(b.txt.id)){TX.cur=b.txt.id;txExpand()}else if(b)TX.cur=null;txPanel()}
+const txSL=['size','track','lead','wrap','weight','depth','slant','rot','k','x','y','z','gl','ro','disp'];
+function txPanel(){const t=txById(TX.cur);$('#txCtl').hidden=!t;$('#txNone').hidden=!!t;txInfo();if(!t)return;
+  if(document.activeElement!==$('#txStr'))$('#txStr').value=t.str;
+  txSL.forEach(k=>{const el=$('#tx_'+k);el.value=t[k];$('#tx_'+k+'o').textContent=(+t[k]).toFixed(k==='size'||k==='weight'?3:2)});
+  $('#txPick').querySelectorAll('.tool').forEach(x=>x.setAttribute('aria-pressed',x.dataset.m===TX.mode));
+  $('#txAlign').querySelectorAll('.tool').forEach(x=>x.setAttribute('aria-pressed',x.dataset.a===t.align));
+  $('#txCm').value=t.cm;$('#txC1').value=t.c1;$('#txC2').value=t.c2;$('#txC3').value=t.c3;
+  const a=t.anim;$('#txAnim').value=a.type;$('#txAcol').value=a.col||'none';
+  [['amt','Aamt',2],['spd','Aspd',0],['stag','Astag',2]].forEach(([k,id,d])=>{$('#tx'+id).value=a[k];$('#tx'+id+'o').textContent=(+a[k]).toFixed(d)+(k==='spd'?'×':'')});
+  $('#txPlay').textContent=AN.on?'Pause':'Play'}
+let txT=0;const txRe=(now)=>{const t=txById(TX.cur);if(!t)return;clearTimeout(txT);const go=()=>{txBuild(t);syncBlob();requestRender()};if(now)go();else txT=setTimeout(go,40)};
+$('#txAdd').addEventListener('click',()=>{const t=TXD();const ref=PAL[S.pal];if(ref){t.c1=ref.nose||t.c1;t.c2=ref.cheek||t.c2;t.c3=ref.eye||t.c3}
+  txAll().push(t);TX.cur=t.id;txBuild(t,false);const i=S.blobs.findIndex(b=>b.txt&&b.txt.id===t.id);if(i>=0){sel=-1;select(i)}txPanel();requestRender();commitSoon();setTimeout(()=>{$('#txStr').focus();$('#txStr').select()},0)});
+$('#txStr').addEventListener('input',e=>{const t=txById(TX.cur);if(!t)return;t.str=e.target.value||' ';txRe()});$('#txStr').addEventListener('change',commitSoon);
+$('#txStr').addEventListener('keydown',e=>e.stopPropagation());
+txSL.forEach(k=>{const el=$('#tx_'+k);el.addEventListener('input',()=>{const t=txById(TX.cur);if(!t)return;t[k]=+el.value;$('#tx_'+k+'o').textContent=(+t[k]).toFixed(k==='size'||k==='weight'?3:2);txRe(true)});el.addEventListener('change',commitSoon)});
+$('#txPick').addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(!b)return;TX.mode=b.dataset.m;extra.clear();txExpand();txPanel();syncBlob();requestRender()});
+$('#txAlign').addEventListener('click',e=>{const b=e.target.closest('[data-a]');const t=txById(TX.cur);if(!b||!t)return;t.align=b.dataset.a;txRe(true);txPanel();commitSoon()});
+$('#txCm').addEventListener('change',e=>{const t=txById(TX.cur);if(!t)return;t.cm=e.target.value;txRe(true);commitSoon()});
+['C1','C2','C3'].forEach(c=>{$('#tx'+c).addEventListener('input',e=>{const t=txById(TX.cur);if(!t)return;t[c.toLowerCase()]=e.target.value;txRe()});$('#tx'+c).addEventListener('change',commitSoon)});
+$('#txResetCol').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;S.blobs.forEach(b=>{if(b.txt&&b.txt.id===t.id)b.col=b.txt.cg});t.parts={};txRe(true);commitSoon()});
+$('#txResetPos').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;S.blobs.forEach(b=>{if(b.txt&&b.txt.id===t.id){b.x=b.txt.gx;b.y=b.txt.gy}});t.loff={};txRe(true);commitSoon()});
+$('#txAnim').addEventListener('change',e=>{const t=txById(TX.cur);if(!t)return;t.anim.type=e.target.value;commitSoon();if(t.anim.type!=='none'&&!AN.on)setPlay(true);txPanel();requestRender()});
+$('#txAcol').addEventListener('change',e=>{const t=txById(TX.cur);if(!t)return;t.anim.col=e.target.value;commitSoon();if(t.anim.col!=='none'&&!AN.on)setPlay(true);txPanel()});
+[['amt','Aamt',2],['spd','Aspd',0],['stag','Astag',2]].forEach(([k,id,d])=>{const el=$('#tx'+id);el.addEventListener('input',()=>{const t=txById(TX.cur);if(!t)return;t.anim[k]=+el.value;$('#tx'+id+'o').textContent=(+el.value).toFixed(d)+(k==='spd'?'×':'');requestRender()});el.addEventListener('change',commitSoon)});
+$('#txPlay').addEventListener('click',()=>{setPlay(!AN.on);txPanel()});
+$('#txDup').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;txHarvest(t);const c=JSON.parse(JSON.stringify(t));c.id=TXD().id;c.y=t.y-t.size*1.6;txAll().push(c);TX.cur=c.id;txBuild(c,false);const i=S.blobs.findIndex(b=>b.txt&&b.txt.id===c.id);if(i>=0){sel=-1;select(i)}requestRender();commitSoon()});
+$('#txFlat').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;S.blobs.forEach(b=>{if(b.txt&&b.txt.id===t.id){delete b.txt;b.role=''}});S.texts=txAll().filter(x=>x!==t);TX.cur=null;extra.clear();txPanel();syncBlob();requestRender();commitSoon();toast('Converted to plain blobs.')});
+$('#txDel').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;S.blobs=S.blobs.filter(b=>!(b.txt&&b.txt.id===t.id));S.texts=txAll().filter(x=>x!==t);TX.cur=null;sel=-1;extra.clear();msk=null;txPanel();syncBlob();requestRender();commitSoon()});
+/* keep the panel honest after undo, loads and deletions */
+setInterval(()=>{if(document.hidden)return;if(S.texts)S.texts=S.texts.filter(t=>S.blobs.some(b=>b.txt&&b.txt.id===t.id));if(TX.cur&&!txById(TX.cur)){TX.cur=null;txPanel()}},800);
+txPanel();
 
 syncAll();fit();
 })();
