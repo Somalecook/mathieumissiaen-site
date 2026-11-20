@@ -346,6 +346,9 @@ textarea{background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:10
       <p class="empty" id="txNone">Add a text, or click a letter on the image to edit its text.</p>
       <div id="txCtl" hidden style="display:grid;gap:12px">
         <textarea id="txStr" rows="3" spellcheck="false" aria-label="Text" style="font:500 15px/1.35 var(--body);min-height:64px"></textarea>
+        <div class="pair"><label for="txFont">Typeface</label><select id="txFont" class="sel" style="max-width:190px"></select></div>
+        <div class="pair" id="txCustomRow" hidden><input id="txCustom" placeholder="Font name on your computer" style="flex:1;font:500 12px var(--body);background:var(--chip);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:6px 9px"><button class="b" id="txCustomGo">Use</button></div>
+        <div class="sl" id="txDetailRow"><label for="txDetail">Stroke detail</label><output id="txDetailo"></output><input type="range" id="txDetail" min="0" max="1" step="0.01"></div>
         <div class="pair"><span>Pick</span><div class="tools" id="txPick" role="group" aria-label="What a click selects"><button class="tool" data-m="text">Whole text</button><button class="tool" data-m="letter">Letter</button><button class="tool" data-m="part">Part</button></div></div>
         <div class="pair"><span>Align</span><div class="tools" id="txAlign" role="group" aria-label="Alignment"><button class="tool" data-a="left">Left</button><button class="tool" data-a="center">Centre</button><button class="tool" data-a="right">Right</button></div></div>
         <div class="sl"><label for="tx_size">Size</label><output id="tx_sizeo"></output><input type="range" id="tx_size" data-k="size" min="0.06" max="1" step="0.005"></div>
@@ -362,7 +365,7 @@ textarea{background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:10
         <div class="sl"><label for="tx_z">Push / pull</label><output id="tx_zo"></output><input type="range" id="tx_z" data-k="z" min="-0.7" max="0.7" step="0.005"></div>
         <div class="pair"><label for="txCm">Colours</label><select id="txCm" class="sel"><option value="single">Single</option><option value="gradient">Gradient</option><option value="alternate">Alternate</option><option value="rainbow">Rainbow</option></select></div>
         <div class="pair"><span>Colour A · B · C</span><span class="row" style="gap:8px"><input type="color" id="txC1"><input type="color" id="txC2"><input type="color" id="txC3"></span></div>
-        <div class="row"><button class="b" id="txResetCol" title="Forget colours picked by hand on letters and parts">Reset hand colours</button><button class="b" id="txResetPos" title="Put moved letters back in line">Re-align letters</button></div>
+        <div class="row"><button class="b" id="txResetCol" title="Forget colours picked by hand on letters and parts">Reset hand colours</button><button class="b" id="txResetPos" title="Put moved letters back in line">Re-align letters</button><button class="b" id="txResetDef" title="Forget pulls, scaling and other hand deformations">Reset deformations</button></div>
         <div class="sl"><label for="tx_gl">Shine</label><output id="tx_glo"></output><input type="range" id="tx_gl" data-k="gl" min="0" max="3" step="0.01"></div>
         <div class="sl"><label for="tx_ro">Roughness · sharp → matte</label><output id="tx_roo"></output><input type="range" id="tx_ro" data-k="ro" min="0" max="1" step="0.01"></div>
         <div class="sl"><label for="tx_disp">Bump</label><output id="tx_dispo"></output><input type="range" id="tx_disp" data-k="disp" min="0" max="1" step="0.01"></div>
@@ -2044,9 +2047,10 @@ rngAll();setInterval(()=>{if(!document.hidden)rngAll()},350);
   addEventListener('pointerdown',e=>{if(!pop.hidden&&!pop.contains(e.target)&&e.target!==btn){pop.hidden=true;btn.setAttribute('aria-expanded','false')}});
   addEventListener('keydown',e=>{if(e.key==='Escape'&&!pop.hidden){pop.hidden=true;btn.setAttribute('aria-expanded','false')}})}
 
-/* ---------- Text: type words, built from blobs. Each stroke segment is one blob, so every part of a letter can be picked and recoloured ---------- */
-const TXD=()=>({id:'t'+Date.now().toString(36)+Math.floor(Math.random()*1e3),str:'HELLO',x:0,y:0,z:.15,size:.3,track:.16,lead:1.4,wrap:0,weight:.1,depth:1,slant:0,rot:0,align:'center',k:.16,
-  cm:'gradient',c1:'#ff5fa2',c2:'#ffb35c',c3:'#7fb7ff',gl:1.4,ro:.12,disp:0,anim:{type:'none',amt:1,spd:1,stag:.6,col:'none'},loff:{},parts:{}});
+/* ---------- Text: type words, built from blobs. Each stroke segment is one blob, so every part of a letter can be picked, recoloured and deformed.
+   Hand edits are stored on the text (per letter and per part) and re-applied on every rebuild, so spacing, size or even the typeface can change afterwards. ---------- */
+const TXD=()=>({id:'t'+Date.now().toString(36)+Math.floor(Math.random()*1e3),str:'HELLO',font:'blob',detail:.5,x:0,y:0,z:.15,size:.3,track:.16,lead:1.4,wrap:0,weight:.1,depth:1,slant:0,rot:0,align:'center',k:.16,
+  cm:'gradient',c1:'#ff5fa2',c2:'#ffb35c',c3:'#7fb7ff',gl:1.4,ro:.12,disp:0,anim:{type:'none',amt:1,spd:1,stag:.6,col:'none'},loff:{},le:{},pe:{}});
 var TX={cur:null,mode:'letter'};
 const txAll=()=>S.texts||(S.texts=[]);
 const txById=id=>(S.texts||[]).find(t=>t.id===id);
@@ -2058,43 +2062,113 @@ function txLetterCol(t,ci,n){const f=n>1?ci/(n-1):0;
   if(t.cm==='single')return t.c1;if(t.cm==='gradient')return f<.5?txMix(t.c1,t.c2,f*2):txMix(t.c2,t.c3,(f-.5)*2);
   if(t.cm==='alternate')return[t.c1,t.c2,t.c3][ci%3];
   const [h,s,l]=txToHsl(t.c1);return txHsl((h+f*.85)%1,Math.max(.55,s),Math.min(.72,Math.max(.5,l)))}
+/* ---- typefaces: the built-in blob font, or any font the browser can draw, turned into strokes by thinning its letters ---- */
+const TXFONTS={sys:['Helvetica Neue','Arial','Futura','Avenir Next','Gill Sans','Optima','Georgia','Times New Roman','Didot','Baskerville','Hoefler Text','Rockwell','Courier New','American Typewriter','Menlo','Impact','Arial Rounded MT Bold','Cooper Black','Copperplate','Chalkboard SE','Marker Felt','Comic Sans MS','Snell Roundhand','Brush Script MT','Zapfino','Papyrus','Segoe UI','Verdana','Trebuchet MS','Palatino'],
+  web:['Bebas Neue','Archivo Black','Syne','Righteous','Bungee','Fredoka','Playfair Display','Abril Fatface','Lobster','Pacifico','Caveat','Space Mono','Rubik','Monoton']};
+const txHasFont=(()=>{const c=document.createElement('canvas').getContext('2d'),T='mmmmmmmmmmlli WQ@#';return f=>['monospace','serif','sans-serif'].some(b=>{c.font=`40px ${b}`;const w0=c.measureText(T).width;c.font=`40px "${f}",${b}`;return c.measureText(T).width!==w0})})();
+const TXR=new Map(),txWebReady=new Set();
+function txLoadWeb(f){if(txWebReady.has(f))return Promise.resolve(true);
+  if(!document.querySelector(`link[data-txf="${f}"]`)){const l=document.createElement('link');l.rel='stylesheet';l.dataset.txf=f;l.href='https://fonts.googleapis.com/css2?family='+encodeURIComponent(f).replace(/%20/g,'+')+'&display=block';document.head.appendChild(l)}
+  return Promise.race([document.fonts.load(`120px "${f}"`,'AaBbHh').then(r=>!!r.length),new Promise(r=>setTimeout(()=>r(false),6000))]).then(ok=>{if(ok){txWebReady.add(f);[...TXR.keys()].forEach(k=>{if(k.startsWith(f+'|'))TXR.delete(k)})}return ok})}
+function txRaster(fam,ch,detail){const key=fam+'|'+detail+'|'+ch;if(TXR.has(key))return TXR.get(key);
+  const F=120,c=document.createElement('canvas'),x=c.getContext('2d',{willReadFrequently:true}),font=`${F}px "${fam}",sans-serif`;x.font=font;
+  const capPx=x.measureText('H').actualBoundingBoxAscent||F*.7,m=x.measureText(ch),pad=Math.ceil(F*.2);
+  const L=Math.ceil(m.actualBoundingBoxLeft||0),Rr=Math.ceil(m.actualBoundingBoxRight||m.width),W=Math.max(8,L+Rr+pad*2),H=Math.ceil(F*1.7);
+  c.width=W;c.height=H;x.font=font;x.fillStyle='#000';x.textBaseline='alphabetic';const bx=pad+L,by=Math.ceil(F*1.2);x.fillText(ch,bx,by);
+  const d=x.getImageData(0,0,W,H).data,N=W*H,B=new Uint8Array(N);for(let i=0;i<N;i++)B[i]=d[i*4+3]>110?1:0;
+  /* distance to the edge (chamfer 3-4), gives the stroke thickness */
+  const D=new Float32Array(N);for(let i=0;i<N;i++)D[i]=B[i]?1e9:0;
+  for(let y=1;y<H-1;y++)for(let X=1;X<W-1;X++){const i=y*W+X;if(!D[i])continue;D[i]=Math.min(D[i],D[i-1]+3,D[i-W]+3,D[i-W-1]+4,D[i-W+1]+4)}
+  for(let y=H-2;y>0;y--)for(let X=W-2;X>0;X--){const i=y*W+X;if(!D[i])continue;D[i]=Math.min(D[i],D[i+1]+3,D[i+W]+3,D[i+W+1]+4,D[i+W-1]+4)}
+  for(let i=0;i<N;i++)D[i]/=3;
+  /* Zhang-Suen thinning down to a 1-pixel skeleton */
+  const S_=B.slice(),nb=i=>[S_[i-W],S_[i-W+1],S_[i+1],S_[i+W+1],S_[i+W],S_[i+W-1],S_[i-1],S_[i-W-1]];
+  for(let it=0,ch_=1;ch_&&it<80;it++){ch_=0;for(const pass of[0,1]){const del=[];
+    for(let y=1;y<H-1;y++)for(let X=1;X<W-1;X++){const i=y*W+X;if(!S_[i])continue;const p=nb(i),b=p.reduce((a,v)=>a+v,0);if(b<2||b>6)continue;
+      let a=0;for(let k=0;k<8;k++)if(!p[k]&&p[(k+1)%8])a++;if(a!==1)continue;
+      if(pass===0?(p[0]*p[2]*p[4]===0&&p[2]*p[4]*p[6]===0):(p[0]*p[2]*p[6]===0&&p[0]*p[4]*p[6]===0))del.push(i)}
+    del.forEach(i=>S_[i]=0);if(del.length)ch_=1}}
+  /* trace the skeleton into polylines; branches start from a pixel already used so strokes stay joined */
+  const vis=new Uint8Array(N),NB=[-W,-W+1,1,W+1,W,W-1,-1,-W-1],cnt=i=>NB.reduce((a,o)=>a+S_[i+o],0),polys=[];
+  const walk=(start,pre)=>{const P=pre?[pre,start]:[start];vis[start]=1;let cur=start,dir=pre!=null?[start%W-pre%W,((start/W)|0)-((pre/W)|0)]:null;
+    for(;;){let best=-1,bs=-9;for(const o of NB){const j=cur+o;if(!S_[j]||vis[j])continue;const v=[j%W-cur%W,((j/W)|0)-((cur/W)|0)],sc=(dir?(v[0]*dir[0]+v[1]*dir[1])/Math.hypot(...v):0)+(Math.abs(v[0])+Math.abs(v[1])===1?.3:0);if(sc>bs){bs=sc;best=j}}
+      if(best<0)break;vis[best]=1;dir=[best%W-cur%W,((best/W)|0)-((cur/W)|0)];P.push(best);cur=best}return P};
+  const sk=[];for(let i=0;i<N;i++)if(S_[i])sk.push(i);
+  sk.filter(i=>cnt(i)===1).forEach(i=>{if(!vis[i])polys.push(walk(i,null))});
+  for(let guard=0;guard<400;guard++){let st=-1,pre=null;
+    for(const i of sk){if(vis[i])continue;const v=NB.map(o=>i+o).find(j=>S_[j]&&vis[j]);if(v!=null){st=i;pre=v;break}}
+    if(st<0){st=sk.find(i=>!vis[i]);if(st==null)break}
+    polys.push(walk(st,pre))}
+  /* simplify (Douglas-Peucker), drop thinning spurs, convert to cap-height units with a radius per point */
+  const eps=1+3.2*(1-detail),rdp=(P,a,b,out)=>{let mx=0,mi=-1;const [ax,ay]=P[a],[bx2,by2]=P[b],L2=Math.hypot(bx2-ax,by2-ay)||1;
+    for(let k=a+1;k<b;k++){const dd=Math.abs((by2-ay)*P[k][0]-(bx2-ax)*P[k][1]+bx2*ay-by2*ax)/L2;if(dd>mx){mx=dd;mi=k}}
+    if(mx>eps){rdp(P,a,mi,out);rdp(P,mi,b,out)}else out.push(P[b])};
+  const maxD=sk.reduce((a,i)=>Math.max(a,D[i]),1),strokes=[];
+  for(const poly of polys){const P=poly.map(i=>[i%W,(i/W)|0,D[i]]);let len=0;for(let k=1;k<P.length;k++)len+=Math.hypot(P[k][0]-P[k-1][0],P[k][1]-P[k-1][1]);
+    const ends=[poly[0],poly[poly.length-1]].filter(i=>cnt(i)===1).length;
+    if(len<maxD*1.3&&ends>0&&P.length<sk.length)continue;      /* a little spur or tick left by thinning */
+    const out=[P[0]];if(P.length>2)rdp(P,0,P.length-1,out);else if(P.length===2)out.push(P[1]);
+    strokes.push(out.map(([X,Y,r])=>[(X-bx)/capPx,(by-Y)/capPx,Math.max(.6,r)/capPx]))}
+  if(!strokes.length&&sk.length){const i=sk.reduce((a,j)=>D[j]>D[a]?j:a,sk[0]);strokes.push([[(i%W-bx)/capPx,(by-((i/W)|0))/capPx,D[i]/capPx]])}
+  const g={w:m.width/capPx,s:strokes,raster:true};TXR.set(key,g);return g}
+function txGlyph(t,c){if(!t.font||t.font==='blob'){const g=TXF[txNorm(c)];return g||null}
+  if(c===' ')return null;return txRaster(t.font,c,t.detail??.5)}
+function txSpace(t){if(!t.font||t.font==='blob')return .42;const x=document.createElement('canvas').getContext('2d');x.font=`120px "${t.font}",sans-serif`;return x.measureText(' ').width/(x.measureText('H').actualBoundingBoxAscent||84)}
 /* break the text into lines: hard returns, then word wrap to the paragraph width */
-function txLines(t){const s=t.size,T=t.weight*s,adv=ch=>{if(ch===' ')return .42*s+t.track*s;const g=TXF[txNorm(ch)];return g?(g.w*s+2*T+t.track*s):(.5*s+t.track*s)};
+function txLines(t){const s=t.size,T=t.weight*s,sp=txSpace(t),adv=ch=>{if(ch===' ')return sp*s+t.track*s;const g=txGlyph(t,ch);if(!g)return .5*s+t.track*s;return g.raster?g.w*s+t.track*s:g.w*s+2*T+t.track*s};
   const out=[];for(const raw of String(t.str).split('\n')){if(!(t.wrap>0)){out.push(raw);continue}
     let line='';for(const word of raw.split(' ')){const cand=line?line+' '+word:word,w=[...cand].reduce((a,c)=>a+adv(c),0);if(w>t.wrap&&line){out.push(line);line=word}else line=cand}out.push(line)}
   return{lines:out,adv}}
-function txGen(t){const s=t.size,T=Math.max(.004,t.weight*s),{lines,adv}=txLines(t),L=T*1.35,cr=Math.cos(t.rot||0),sr=Math.sin(t.rot||0);
+const TXP=['col','sx','sy','sz','drot','dz','pulls','br','gl','ro','disp','dispS','pat','op','tint','shape'];
+function txApply(b,e){if(!e)return;if(e.col)b.col=e.col;if(e.sx)b.rx*=e.sx;if(e.sy)b.ry*=e.sy;if(e.sz)b.rz*=e.sz;if(e.drot)b.rot+=e.drot;if(e.dz)b.z+=e.dz;
+  if(e.pulls)b.pulls=JSON.parse(JSON.stringify(e.pulls));for(const k of['br','gl','ro','disp','dispS','op','tint','shape'])if(e[k]!==undefined)b[k]=e[k];if(e.pat)b.pat=JSON.parse(JSON.stringify(e.pat))}
+function txGen(t){const s=t.size,T0=Math.max(.004,t.weight*s),wm=t.weight/.1,{lines,adv}=txLines(t),L=T0*1.35,cr=Math.cos(t.rot||0),sr=Math.sin(t.rot||0),fk=t.font||'blob';
+  t.le=t.le||{};t.pe=t.pe||{};t.loff=t.loff||{};
   const lineW=lines.map(l=>{const w=[...l].reduce((a,c)=>a+adv(c),0);return Math.max(0,w-(l.length?t.track*s:0))}),blockW=Math.max(0,...lineW),H=(lines.length-1)*t.lead*s+s;
-  const R=(x,y)=>[t.x+x*cr-y*sr,t.y+x*sr+y*cr];let ci=0,n=0;lines.forEach(l=>{for(const c of l)if(c!==' '&&TXF[txNorm(c)])n++});
+  const R=(x,y)=>[t.x+x*cr-y*sr,t.y+x*sr+y*cr];let ci=0,n=0;lines.forEach(l=>{for(const c of l)if(c!==' '&&txGlyph(t,c))n++});
   const out=[];
   lines.forEach((l,li)=>{const base=H/2-s-li*t.lead*s;let pen=t.align==='left'?-blockW/2:t.align==='right'?blockW/2-lineW[li]:-lineW[li]/2;
-    for(const c of l){const g=TXF[txNorm(c)];if(c===' '||!g){pen+=adv(c);continue}
-      const off=t.loff[ci]||[0,0],col=txLetterCol(t,ci,n),lc=R(pen+T+g.w*s/2,base+s/2);let pi=0;
-      const P=(px,py)=>{const X=pen+T+px*s,Y=base+py*s;return[X+(Y-base)*t.slant,Y]};
-      const mk=(x,y,rx,ry,rot)=>{const key=ci+'.'+pi,cg=t.parts[key]||col;pi++;
-        return{x,y,z:t.z,rx,ry,rz:T*t.depth,rot,k:t.k,m:false,col:cg,role:'text',gl:t.gl,ro:t.ro,disp:t.disp,
-          txt:{id:t.id,ci,pi:pi-1,ch:c,lx:lc[0]+off[0],ly:lc[1]+off[1],gx:x,gy:y,cg,s}}};
-      const seg=(p,q)=>{const mx=(p[0]+q[0])/2,my=(p[1]+q[1])/2,len=Math.hypot(q[0]-p[0],q[1]-p[1]),[wx,wy]=R(mx,my);
-        {const o=mk(wx+off[0],wy+off[1],len/2+T*1.05,T,Math.atan2(q[1]-p[1],q[0]-p[0])+(t.rot||0));o.shape='capsule';out.push(o)}};
+    for(const c of l){const g=txGlyph(t,c);if(c===' '||!g){pen+=adv(c);continue}
+      const pad=g.raster?0:T0,off=t.loff[ci]||[0,0],col=(t.le[ci]&&t.le[ci].col)||txLetterCol(t,ci,n),lc=R(pen+pad+g.w*s/2,base+s/2);let pi=0;
+      const P=(px,py)=>{const X=pen+pad+px*s,Y=base+py*s;return[X+(Y-base)*t.slant,Y]};
+      const mk=(x,y,rx,ry,rot,shape)=>{const key=ci+'.'+pi;pi++;
+        const b={x,y,z:t.z,rx,ry,rz:ry*t.depth,rot,k:t.k,m:false,col,role:'text',gl:t.gl,ro:t.ro,disp:t.disp};if(shape)b.shape=shape;
+        txApply(b,t.le[ci]);txApply(b,t.pe[fk+'|'+key]);if(t.parts&&t.parts[key]&&fk==='blob')b.col=t.parts[key];   /* older saves */
+        b.txt={id:t.id,ci,pi:pi-1,ch:c,lx:lc[0]+off[0],ly:lc[1]+off[1],gx:x,gy:y,s,g:{rx:b.rx,ry:b.ry,rz:b.rz,rot:b.rot,z:b.z,col:b.col,br:b.br,gl:b.gl,ro:b.ro,disp:b.disp,dispS:b.dispS,op:b.op,tint:b.tint,shape:b.shape,pat:b.pat?JSON.stringify(b.pat):'',pulls:JSON.stringify(b.pulls||[])}};
+        return b};
+      const seg=(p,q,T)=>{const mx=(p[0]+q[0])/2,my=(p[1]+q[1])/2,len=Math.hypot(q[0]-p[0],q[1]-p[1]),[wx,wy]=R(mx,my);
+        out.push(mk(wx+off[0],wy+off[1],len/2+T*1.05,T,Math.atan2(q[1]-p[1],q[0]-p[0])+(t.rot||0),'capsule'))};
       const turnAt=(pts,k)=>{const a=pts[k-1],b=pts[k],c2=pts[k+1];if(!c2)return 9;const t1=Math.atan2(b[1]-a[1],b[0]-a[0]),t2=Math.atan2(c2[1]-b[1],c2[0]-b[0]);return Math.abs(((t2-t1)+Math.PI*3)%(Math.PI*2)-Math.PI)};
-      for(const st of g.s){const pts=st.map(p=>P(p[0],p[1]));
-        if(pts.length===1){const [wx,wy]=R(pts[0][0],pts[0][1]);out.push(mk(wx+off[0],wy+off[1],T*1.25,T*1.25,0));continue}
-        /* merge short, gently turning steps (arcs) into one blob; keep the corners */
-        let a=pts[0];
-        for(let k=1;k<pts.length;k++){const b=pts[k],len=Math.hypot(b[0]-a[0],b[1]-a[1]);
-          if(k===pts.length-1||len>=L||turnAt(pts,k)>.7){seg(a,b);a=b}}
-      }
+      for(const st of g.s){const pts=st.map(p=>{const q=P(p[0],p[1]);q.push(g.raster?Math.max(.002,p[2]*s*wm):T0);return q});
+        if(pts.length===1){const [wx,wy]=R(pts[0][0],pts[0][1]),T=pts[0][2]*1.15;out.push(mk(wx+off[0],wy+off[1],T,T,0));continue}
+        if(g.raster){for(let k=1;k<pts.length;k++)seg(pts[k-1],pts[k],(pts[k-1][2]+pts[k][2])/2);continue}
+        /* built-in font: merge short, gently turning steps (arcs) into one blob; keep the corners */
+        let a=pts[0];for(let k=1;k<pts.length;k++){const b=pts[k],len=Math.hypot(b[0]-a[0],b[1]-a[1]);if(k===pts.length-1||len>=L||turnAt(pts,k)>.7){seg(a,b,T0);a=b}}}
       pen+=adv(c);ci++}});
   t._n=n;return out}
-/* keep what was edited by hand on the blobs (colours, letters dragged) before rebuilding */
-function txHarvest(t){const per={};S.blobs.forEach(b=>{if(!b.txt||b.txt.id!==t.id)return;const k=b.txt.ci+'.'+b.txt.pi;if(b.col!==b.txt.cg)t.parts[k]=b.col;
-  const d=per[b.txt.ci]||(per[b.txt.ci]=[0,0,0]);d[0]+=b.x-b.txt.gx;d[1]+=b.y-b.txt.gy;d[2]++});
-  for(const ci in per){const d=per[ci],dx=d[0]/d[2],dy=d[1]/d[2];if(Math.hypot(dx,dy)>1e-4){const o=t.loff[ci]||[0,0];t.loff[ci]=[o[0]+dx,o[1]+dy]}}}
+/* read hand edits off the blobs (anything that differs from what the text generated) and file them on the text */
+function txHarvest(t){const fk=t.font||'blob',per={},parts={};t.le=t.le||{};t.pe=t.pe||{};t.loff=t.loff||{};
+  S.blobs.forEach(b=>{if(!b.txt||b.txt.id!==t.id||!b.txt.g)return;const g=b.txt.g,ci=b.txt.ci,e={},r=(a,b2)=>Math.abs(a/b2-1)>1e-4;
+    if(b.col!==g.col)e.col=b.col;if(r(b.rx,g.rx))e.sx=b.rx/g.rx;if(r(b.ry,g.ry))e.sy=b.ry/g.ry;if(r(b.rz,g.rz))e.sz=b.rz/g.rz;
+    if(Math.abs(b.rot-g.rot)>1e-4)e.drot=b.rot-g.rot;if(Math.abs(b.z-g.z)>1e-4)e.dz=b.z-g.z;
+    if(JSON.stringify(b.pulls||[])!==g.pulls)e.pulls=JSON.parse(JSON.stringify(b.pulls||[]));
+    for(const k of['br','gl','ro','disp','dispS','op','tint','shape'])if(b[k]!==g[k])e[k]=b[k];
+    if((b.pat?JSON.stringify(b.pat):'')!==g.pat)e.pat=b.pat?JSON.parse(JSON.stringify(b.pat)):undefined;
+    const d=per[ci]||(per[ci]={dx:0,dy:0,n:0,es:[]});d.dx+=b.x-b.txt.gx;d.dy+=b.y-b.txt.gy;d.n++;d.es.push(e);parts[fk+'|'+ci+'.'+b.txt.pi]=e});
+  for(const ci in per){const d=per[ci],dx=d.dx/d.n,dy=d.dy/d.n;if(Math.hypot(dx,dy)>1e-4){const o=t.loff[ci]||[0,0];t.loff[ci]=[o[0]+dx,o[1]+dy]}
+    /* an edit shared by every part of a letter belongs to the letter, so it survives a change of typeface */
+    const le=Object.assign({},t.le[ci]||{});
+    for(const k of TXP){const v0=d.es[0][k];if(v0===undefined)continue;const same=d.es.every(e=>JSON.stringify(e[k])===JSON.stringify(v0));if(!same)continue;
+      if(k==='sx'||k==='sy'||k==='sz')le[k]=(le[k]||1)*v0;else if(k==='drot'||k==='dz')le[k]=(le[k]||0)+v0;else le[k]=v0;d.es.forEach(e=>delete e[k]);
+      for(const pk in t.pe){const rest=pk.split('|')[1];if(rest&&rest.split('.')[0]===String(ci))delete t.pe[pk][k]}}
+    if(Object.keys(le).length)t.le[ci]=le}
+  for(const k in parts){const e=parts[k];if(!Object.keys(e).length)continue;const o=t.pe[k]||{};
+    for(const p in e){if(p==='sx'||p==='sy'||p==='sz')o[p]=(o[p]||1)*e[p];else if(p==='drot'||p==='dz')o[p]=(o[p]||0)+e[p];else o[p]=e[p]}t.pe[k]=o}}
 function txBuild(t,keepSel=true){txHarvest(t);const oldKey=keepSel&&sel>=0&&S.blobs[sel]&&S.blobs[sel].txt&&S.blobs[sel].txt.id===t.id?S.blobs[sel].txt.ci+'.'+S.blobs[sel].txt.pi:null;
   let at=S.blobs.findIndex(b=>b.txt&&b.txt.id===t.id);const rest=S.blobs.filter(b=>!(b.txt&&b.txt.id===t.id));if(at<0)at=rest.length;else at=Math.min(at,rest.length);
   let gen=txGen(t);const room=MAXB-rest.filter(b=>!b.m).length-rest.filter(b=>b.m).length*2;if(gen.length>room){gen=gen.slice(0,Math.max(0,room));t._cut=true}else t._cut=false;
   S.blobs=rest.slice(0,at).concat(gen,rest.slice(at));extra.clear();
-  if(oldKey){const i=S.blobs.findIndex(b=>b.txt&&b.txt.id===t.id&&b.txt.ci+'.'+b.txt.pi===oldKey);sel=i>=0?i:S.blobs.findIndex(b=>b.txt&&b.txt.id===t.id);txExpand()}
+  if(oldKey){let i=S.blobs.findIndex(b=>b.txt&&b.txt.id===t.id&&b.txt.ci+'.'+b.txt.pi===oldKey);if(i<0)i=S.blobs.findIndex(b=>b.txt&&b.txt.id===t.id&&b.txt.ci===+oldKey.split('.')[0]);sel=i>=0?i:S.blobs.findIndex(b=>b.txt&&b.txt.id===t.id);txExpand()}
   else if(sel>=S.blobs.length)sel=-1;msk=null;txInfo();return gen.length}
 function txExpand(){const b=S.blobs[sel];if(!b||!b.txt||TX.mode==='part')return;S.blobs.forEach((o,j)=>{if(j!==sel&&o.txt&&o.txt.id===b.txt.id&&(TX.mode==='text'||o.txt.ci===b.txt.ci))extra.add(j)})}
 function txInfo(){const t=txById(TX.cur);const n=S.blobs.length;$('#txInfo').textContent=t?`${S.blobs.filter(b=>b.txt&&b.txt.id===t.id).length} blobs · ${n}/${MAXB} in scene${t._cut?' · text cut: too many blobs':''}`:'';}
@@ -2130,6 +2204,8 @@ function txOnSelect(){const b=S.blobs[sel];if(b&&b.txt&&txById(b.txt.id)){TX.cur
 const txSL=['size','track','lead','wrap','weight','depth','slant','rot','k','x','y','z','gl','ro','disp'];
 function txPanel(){const t=txById(TX.cur);$('#txCtl').hidden=!t;$('#txNone').hidden=!!t;txInfo();if(!t)return;
   if(document.activeElement!==$('#txStr'))$('#txStr').value=t.str;
+  {const f=t.font||'blob',o=[...$('#txFont').options].find(x=>x.value===f||x.value==='web:'+f);if(o)$('#txFont').value=o.value;else{$('#txFont').value='custom';$('#txCustomRow').hidden=false;$('#txCustom').value=f}
+   $('#txDetailRow').hidden=f==='blob';$('#txDetail').value=t.detail??.5;$('#txDetailo').textContent=(+(t.detail??.5)).toFixed(2)}
   txSL.forEach(k=>{const el=$('#tx_'+k);el.value=t[k];$('#tx_'+k+'o').textContent=(+t[k]).toFixed(k==='size'||k==='weight'?3:2)});
   $('#txPick').querySelectorAll('.tool').forEach(x=>x.setAttribute('aria-pressed',x.dataset.m===TX.mode));
   $('#txAlign').querySelectorAll('.tool').forEach(x=>x.setAttribute('aria-pressed',x.dataset.a===t.align));
@@ -2147,7 +2223,8 @@ $('#txPick').addEventListener('click',e=>{const b=e.target.closest('[data-m]');i
 $('#txAlign').addEventListener('click',e=>{const b=e.target.closest('[data-a]');const t=txById(TX.cur);if(!b||!t)return;t.align=b.dataset.a;txRe(true);txPanel();commitSoon()});
 $('#txCm').addEventListener('change',e=>{const t=txById(TX.cur);if(!t)return;t.cm=e.target.value;txRe(true);commitSoon()});
 ['C1','C2','C3'].forEach(c=>{$('#tx'+c).addEventListener('input',e=>{const t=txById(TX.cur);if(!t)return;t[c.toLowerCase()]=e.target.value;txRe()});$('#tx'+c).addEventListener('change',commitSoon)});
-$('#txResetCol').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;S.blobs.forEach(b=>{if(b.txt&&b.txt.id===t.id)b.col=b.txt.cg});t.parts={};txRe(true);commitSoon()});
+$('#txResetCol').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;S.blobs.forEach(b=>{if(b.txt&&b.txt.id===t.id){b.col=txLetterCol(t,b.txt.ci,t._n||1);if(b.txt.g)b.txt.g.col=b.col}});t.parts={};for(const k in t.le)delete t.le[k].col;for(const k in t.pe)delete t.pe[k].col;txRe(true);commitSoon()});
+$('#txResetShape')?.addEventListener('click',()=>{});
 $('#txResetPos').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;S.blobs.forEach(b=>{if(b.txt&&b.txt.id===t.id){b.x=b.txt.gx;b.y=b.txt.gy}});t.loff={};txRe(true);commitSoon()});
 $('#txAnim').addEventListener('change',e=>{const t=txById(TX.cur);if(!t)return;t.anim.type=e.target.value;commitSoon();if(t.anim.type!=='none'&&!AN.on)setPlay(true);txPanel();requestRender()});
 $('#txAcol').addEventListener('change',e=>{const t=txById(TX.cur);if(!t)return;t.anim.col=e.target.value;commitSoon();if(t.anim.col!=='none'&&!AN.on)setPlay(true);txPanel()});
@@ -2157,6 +2234,23 @@ $('#txDup').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;tx
 $('#txFlat').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;S.blobs.forEach(b=>{if(b.txt&&b.txt.id===t.id){delete b.txt;b.role=''}});S.texts=txAll().filter(x=>x!==t);TX.cur=null;extra.clear();txPanel();syncBlob();requestRender();commitSoon();toast('Converted to plain blobs.')});
 $('#txDel').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;S.blobs=S.blobs.filter(b=>!(b.txt&&b.txt.id===t.id));S.texts=txAll().filter(x=>x!==t);TX.cur=null;sel=-1;extra.clear();msk=null;txPanel();syncBlob();requestRender();commitSoon()});
 /* keep the panel honest after undo, loads and deletions */
+/* typeface menu: built-in blob font, fonts found on this computer, web fonts loaded on demand, or any font by name */
+{const sel_=$('#txFont');const avail=TXFONTS.sys.filter(txHasFont);
+  sel_.innerHTML='<option value="blob">Blob (built-in)</option>'+(avail.length?'<optgroup label="On this computer">'+avail.map(f=>`<option value="${f}">${f}</option>`).join('')+'</optgroup>':'')+
+    '<optgroup label="Web fonts">'+TXFONTS.web.map(f=>`<option value="web:${f}">${f}</option>`).join('')+'</optgroup><option value="custom">Other font by name…</option>';
+  const setFont=async f=>{const t=txById(TX.cur);if(!t)return;
+    if(f.startsWith('web:')){f=f.slice(4);toast(`Loading ${f}…`);const ok=await txLoadWeb(f);if(!ok){toast(`${f} could not be loaded here.`);txPanel();return}}
+    else if(f!=='blob'&&!txHasFont(f)){toast(`“${f}” is not installed on this computer.`);txPanel();return}
+    txHarvest(t);t.font=f;txRe(true);commitSoon();txPanel()};
+  sel_.addEventListener('change',()=>{const v=sel_.value;$('#txCustomRow').hidden=v!=='custom';if(v==='custom'){$('#txCustom').focus();return}setFont(v)});
+  $('#txCustomGo').addEventListener('click',()=>{const v=$('#txCustom').value.trim();if(v)setFont(v)});
+  $('#txCustom').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter')$('#txCustomGo').click()});
+  $('#txDetail').addEventListener('input',e=>{const t=txById(TX.cur);if(!t)return;t.detail=+e.target.value;$('#txDetailo').textContent=t.detail.toFixed(2);txRe()});$('#txDetail').addEventListener('change',commitSoon)}
+$('#txResetDef').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;txHarvest(t);const strip=e=>{for(const k of['sx','sy','sz','drot','dz','pulls','disp','dispS','shape'])delete e[k]};
+  Object.values(t.le).forEach(strip);Object.values(t.pe).forEach(strip);S.blobs=S.blobs.filter(b=>!(b.txt&&b.txt.id===t.id));txBuild(t,false);syncBlob();requestRender();commitSoon()});
+/* web fonts used by a saved scene are fetched again when it opens */
+setInterval(()=>{(S.texts||[]).forEach(t=>{if(t.font&&t.font!=='blob'&&TXFONTS.web.includes(t.font)&&!txWebReady.has(t.font)&&!t._loading){t._loading=1;txLoadWeb(t.font).then(ok=>{t._loading=0;if(ok){TXR.forEach((v,k)=>{if(k.startsWith(t.font+'|'))TXR.delete(k)});txBuild(t);requestRender()}})}})},1500);
+
 setInterval(()=>{if(document.hidden)return;if(S.texts)S.texts=S.texts.filter(t=>S.blobs.some(b=>b.txt&&b.txt.id===t.id));if(TX.cur&&!txById(TX.cur)){TX.cur=null;txPanel()}},800);
 txPanel();
 
