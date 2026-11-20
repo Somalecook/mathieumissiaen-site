@@ -2620,7 +2620,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     if (ball.carried) { const [dx, dy] = iso(dragon.x, dragon.y); bx = dx + dragon.face * 50 * K(); by = dy - 30 * K(); }
     else { const p = iso(ball.x, ball.y, ball.z); bx = p[0]; by = p[1] - 13; }
     if (Math.hypot(px - bx, py - by) > 46) {
-      if (onDragon(px, py)) startPet(e, px, py);
+      if (dragonHit(px, py)) startPet(e, px, py);
       else if (potAt(px, py) >= 0 && !(!garden.bouquet && !garden.hand.length && objectAt(px, py) && depthOf(objectAt(px, py)) > depthOf(garden.jars[potAt(px, py)]))) {
         const i = potAt(px, py);
         if (garden.bouquet || garden.hand.length) placeBouquet(i);
@@ -3147,6 +3147,16 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     const [x, y] = iso(dragon.x, dragon.y);
     return Math.abs(px - x) < 58 * K() && py < y + 10 && py > y - 85 * K();
   }
+  // he only takes the touch when nothing drawn in front of him is under the finger (an object, the tap, the lamp)
+  function dragonHit(px, py) {
+    if (!onDragon(px, py)) return false;
+    const dd = dragon.x + dragon.y;
+    if (tapAt(px, py) && TAP.x + TAP.y > dd - 0.3) return false;
+    if (lampAt(px, py)) return false;
+    const o = objectAt(px, py);
+    if (o && o !== dragon && depthOf(o) > dd) return false;
+    return true;
+  }
   function startPet(e, px, py) {
     petting = true; petLast = [px, py]; petAcc = 0;
     cv.setPointerCapture(e.pointerId);
@@ -3231,7 +3241,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       showProduct(px, py);
       if (garden.bouquet) { cv.style.cursor = potAt(px, py) >= 0 || objectAt(px, py) === bin ? CUR.click : ''; return; }
       const [bx, by] = ball.carried ? [-999, -999] : iso(ball.x, ball.y, ball.z);
-      cv.style.cursor = onDragon(px, py) ? CUR.pet : tapAt(px, py) || lampAt(px, py) ? CUR.click
+      cv.style.cursor = dragonHit(px, py) ? CUR.pet : tapAt(px, py) || lampAt(px, py) ? CUR.click
         : potAt(px, py) >= 0 || objectAt(px, py) || Math.hypot(px - bx, py - by + 13) < 46 ? CUR.move : '';
       return;
     }
