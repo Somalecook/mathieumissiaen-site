@@ -2655,7 +2655,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     holdAt(px, py);
   });
   // ---------- petting ----------
-  let petting = false, petLast = null, petAcc = 0;
+  let petting = false, petLast = null, petAcc = 0, petRub = 0, petSec = 0;
   // ---------- flowers and bouquets ----------
   function pickFlower(px, py) {
     let best = null, bd = 22;
@@ -3219,7 +3219,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       const dist = Math.hypot(px - petLast[0], py - petLast[1]);
       petLast = [px, py];
       if (onDragon(px, py)) {
-        petAcc += dist;
+        petAcc += dist; if (dist > 0.5) petRub = performance.now();
         stats.joy = clamp(stats.joy + dist * 0.012, 0, 100);
         if (petAcc > 70) { petAcc = 0; petHeart(); love(0.5); quest('pet'); }
       }
@@ -3865,6 +3865,8 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     drawLogo();
     drawCursor();
     audioTick(dt);
+    // the long cuddle mission: one count per second spent rubbing him
+    if (petting && performance.now() - petRub < 250) { petSec += dt; if (petSec >= 1) { petSec -= 1; quest('pet12'); } }
 
     hudT += dt; if (hudT > 0.2) { hudT = 0; updateHud(); }
     saveT += dt; if (saveT > 5) { saveT = 0; save(); }
@@ -3923,14 +3925,14 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     eat: ['Feed Yongi', '용이에게 밥 주기', 1, 'eat'],
     drink: ['Give Yongi water', '용이에게 물 주기', 1, 'drink'],
     pet: ['Pet Yongi', '용이 쓰다듬기', 6, 'pet'],
-    pet12: ['Give Yongi a long cuddle', '용이 오래 쓰다듬기', 12, 'pet'],
+    pet12: ['Give Yongi a long cuddle', '용이 오래 쓰다듬기', 5, 'pet'],   // counted in seconds of rubbing
     bed: ['Put Yongi to bed', '용이 재우기', 1, 'bed'],
     bubble: ['Drop an object in the bubble', '비눗방울에 물건 넣기', 1, 'bubble'],
     crate: ['Open a new bag of food', '새 사료 봉지 열기', 1, 'crate'],
     bin: ['Throw an empty bag in the bin', '빈 봉지 버리기', 1, 'bin'],
     tidy: ['Tidy up the garden', '정원 정리하기', 1, 'tidy'],
   };
-  const QUEST_ALIAS = { pick: ['pick', 'pick12'], vase: ['vase', 'vase2'], fetch: ['fetch', 'fetch5'], pet: ['pet', 'pet12'] };
+  const QUEST_ALIAS = { pick: ['pick', 'pick12'], vase: ['vase', 'vase2'], fetch: ['fetch', 'fetch5'], pet: ['pet'] };
   const QUEST_REWARD = 8, QUEST_ALL = 15;
   function todayQuests() {
     if (grow.q && grow.q.day === grow.day && grow.q.v === 3) return grow.q;
