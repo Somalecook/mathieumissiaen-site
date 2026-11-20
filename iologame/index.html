@@ -2852,15 +2852,17 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     for (let k = 0; k < 14; k++) particles.push({ kind: 'spark', x: x + rand(-20, 20), y: y + rand(-20, 20), vx: rand(-50, 50), vy: rand(-70, -20), life: .8, max: .8, size: rand(2, 3.5) });
   }
   // a secret: the three food bags lined up on a diagonal of the shelf (once, ever) = three gifts, three stickers, three perfect days
+  // any row, column or diagonal of the 3×3 cells (index = row·3 + column)
+  const SECRET_LINES = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
   let secretArmed = false, secretSeen = 0;
   function checkSecret() {
     if (grow.secret) return;
-    if (secretSeen < 30) { secretSeen++; const c0 = BAGS.map(b => b.present ? b.stored : null), st0 = new Set(c0), dg = d => d.every(c => st0.has(c)); if (!dg([0, 4, 8]) && !dg([2, 4, 6])) secretArmed = true; return; }
+    if (secretSeen < 30) { secretSeen++; const c0 = BAGS.map(b => b.present ? b.stored : null), st0 = new Set(c0), dg = d => d.every(c => st0.has(c)); if (!SECRET_LINES.some(dg)) secretArmed = true; return; }
     if (dragging) return;
     const cells = BAGS.map(b => b.present && !b.held ? b.stored : null);
     if (cells.some(c => c == null || c > 8)) return;
     const set = new Set(cells), diag = d => d.every(c => set.has(c));
-    if (!diag([0, 4, 8]) && !diag([2, 4, 6])) { secretArmed = true; return; }
+    if (!SECRET_LINES.some(diag)) { secretArmed = true; return; }
     // only when the player lines the bags up now, not a shelf that already had them on a diagonal when the game opened
     if (!secretArmed) return;
     grow.secret = true;
