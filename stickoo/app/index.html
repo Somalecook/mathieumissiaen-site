@@ -1817,6 +1817,59 @@ html.klang-screen .klp-row .kreset{width:auto;min-width:0;height:34px;padding:0 
 
 /* pink puffy text -> readable white with purple outline (like the language page) */
 html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kpuffy.kp-ink,html[data-mode="kids"] body .kachpop b.kpuffy.kp-ink,html body .kpuffy.kp-ink{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:#fff!important;-webkit-text-fill-color:#fff!important;filter:none!important;font-family:"Baloo 2","Jua","Noto Sans KR",sans-serif!important;font-weight:800!important;letter-spacing:.02em;text-shadow:2px 0 0 #7b2d8e,-2px 0 0 #7b2d8e,0 2px 0 #7b2d8e,0 -2px 0 #7b2d8e,1.5px 1.5px 0 #7b2d8e,-1.5px 1.5px 0 #7b2d8e,1.5px -1.5px 0 #7b2d8e,-1.5px -1.5px 0 #7b2d8e,0 4px 0 #4a1d66!important}
+
+/* v1.0.98: sticker book restyled like the settings / player-choice panels */
+html body #kids .kbook-cover{--gb:linear-gradient(100deg,#f04fd8,#a24cf0 48%,#4a6cf5);max-width:440px;margin:4px auto 30px;padding:16px 22px 18px;border-radius:36px;border:5px solid transparent;background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,0) 45%) padding-box,linear-gradient(100deg,#ffe4f4,#eedcff 50%,#dcd6ff) padding-box,var(--gb) border-box;box-shadow:inset 0 0 0 2px rgba(255,255,255,.85),0 5px 0 rgba(70,30,150,.55),0 12px 22px rgba(20,0,50,.35);color:#6a24d6;gap:6px;text-align:center}
+html body #kids .kbook-cover b{font:400 1.3rem/1.15 "Mochiy Pop One","Jua",sans-serif!important;color:#6a24d6;-webkit-text-fill-color:#6a24d6;text-shadow:0 2px 0 #fff}
+html body #kids .kbook-cover small{font-weight:700;color:#8a4fd8;opacity:1;font-size:.85rem}
+html body #kids .kcover-gem{font-size:2rem;filter:drop-shadow(0 2px 0 #fff)}
+html body #kids .kcover-bar{display:block;height:12px;margin:4px 6px 0;border-radius:99px;background:rgba(162,76,240,.18);box-shadow:inset 0 1px 2px rgba(70,30,150,.25),0 0 0 2px #fff;position:relative;overflow:hidden}
+html body #kids .kcover-bar::before{content:"";position:absolute;inset:0 auto 0 0;width:var(--p,0%);min-width:12px;border-radius:99px;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 60%),linear-gradient(90deg,#ff7ec4,#b16cff 60%,#6f8cff)}
+html body #kids .kpage{--gb:linear-gradient(100deg,#f04fd8,#a24cf0 48%,#4a6cf5);max-width:440px;margin:0 auto 34px;padding:34px 14px 26px;border-radius:36px;border:5px solid transparent;background:radial-gradient(circle at 1px 1px,rgba(162,76,240,.16) 1px,transparent 1.6px) 0 0/16px 16px padding-box,linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,0) 30%) padding-box,linear-gradient(170deg,#fff6fc,#f3ebff 55%,#ebeaff) padding-box,var(--gb) border-box;box-shadow:inset 0 0 0 2px rgba(255,255,255,.9),0 5px 0 rgba(70,30,150,.55),0 12px 22px rgba(20,0,50,.35);color:#6a24d6}
+html body #kids .kpage::after,html body #kids .kpage .krings{display:none}
+html body #kids .kpage .ktape{--gb:linear-gradient(100deg,#f04fd8,#a24cf0 48%,#4a6cf5);margin:-54px auto 6px;padding:6px 20px 7px;transform:none;clip-path:none;border-radius:999px;border:4px solid transparent;background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,0) 50%) padding-box,linear-gradient(100deg,#ffe4f4,#eedcff 50%,#dcd6ff) padding-box,var(--gb) border-box;box-shadow:inset 0 0 0 2px rgba(255,255,255,.85),0 4px 0 rgba(70,30,150,.5),0 8px 14px rgba(20,0,50,.25);font:400 1.02rem/1.2 "Mochiy Pop One","Jua",sans-serif!important;color:#6a24d6;-webkit-text-fill-color:#6a24d6;white-space:nowrap}
+html body #kids .kpage.gold{--gb:linear-gradient(100deg,#ffb52e,#ff7ec4 50%,#ffd34d)}
+html body #kids .kpage.gold .ktape{--gb:linear-gradient(100deg,#ffb52e,#ff7ec4 50%,#ffd34d);color:#b4560a;-webkit-text-fill-color:#b4560a}
+html body #kids .kpage.diam{--gb:linear-gradient(100deg,#6fd6ff,#a28cff 50%,#ff9ee0)}
+html body #kids .kpage.diam .ktape{--gb:linear-gradient(100deg,#6fd6ff,#a28cff 50%,#ff9ee0);color:#3d5bc4;-webkit-text-fill-color:#3d5bc4}
+html body #kids .kpage.rare{--gb:linear-gradient(100deg,#ff7ec4,#ffd34d 33%,#6fe3c1 66%,#6f8cff)}
+html body #kids .kpage.rare .ktape{--gb:linear-gradient(100deg,#ff7ec4,#ffd34d 33%,#6fe3c1 66%,#6f8cff)}
+html body #kids .kpage .kpage-sub{color:#8a4fd8!important;font-weight:700;margin:0 0 14px}
+html body #kids .kpage .kpage-no{color:#b48ee6}
+
+/* v1.0.98 win screen: prize sticker 20% bigger */
+#kids .kframe2 .kprize:not(.khunt-box)>img{scale:1.2}
+
+/* v1.0.98 win screen: rewards step by step in the same frame */
+#kids .kwinbtns.kwait,#kids .kstepnav.kwait{visibility:hidden}
+#kids .kwinbtns.kshow{animation:kTuIn .45s cubic-bezier(.3,1.6,.5,1) both}
+#kids .kstepnav{display:flex;justify-content:center;margin:14px 0 0;position:relative;z-index:4}
+#kids .kstepnav .ktuto-btn{min-width:min(70vw,300px);animation:kTuIn .4s cubic-bezier(.3,1.6,.5,1) both}
+#kids .kframe2 .kstep{position:absolute;inset:6% 7%;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;animation:kTuIn .45s cubic-bezier(.3,1.6,.5,1) both}
+#kids .kstep .kst-img{width:52%;max-height:46%;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(40,10,70,.25))}
+#kids .kstep .kst-pic{width:52%;cursor:pointer}#kids .kstep .kst-pic .kpic-sp{width:100%!important;max-width:none!important}
+#kids .kstep .kst-row{display:flex;gap:8px;justify-content:center}#kids .kstep .kst-row .kintro-mini{width:64px}#kids .kstep .kst-row .kpic-sp{width:64px!important}
+#kids .kstep .kst-t{font:400 clamp(18px,5.4vw,24px)/1.2 "Mochiy Pop One","Jua",sans-serif;color:#6a24d6;-webkit-text-fill-color:#6a24d6;text-shadow:0 2px 0 #fff}
+#kids .kstep .kst-w{font:800 clamp(26px,8vw,38px)/1.1 "Gowun Dodum","Varela Round",sans-serif;color:#6a24d6}
+#kids .kstep .kst-p{margin:0;font:700 clamp(14px,4vw,18px)/1.3 "Varela Round",sans-serif;color:#7b2d8e}
+#kids .kstep .kst-tag{font-style:normal;font:800 15px/1 "Varela Round",sans-serif;color:#fff;padding:6px 14px;border-radius:999px;background:linear-gradient(100deg,#ff8fc7,#b16cff)}
+#kids .kstep .kst-say{display:grid;place-items:center;align-self:center;border:0;padding:0;margin:2px auto 0;background:none;box-shadow:none;cursor:pointer;-webkit-tap-highlight-color:transparent}#kids .kstep .kst-say img{width:78px;height:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(70,30,150,.35));transition:transform .15s}#kids .kstep .kst-say:active img{transform:scale(.9)}
+
+/* v1.0.98 end of win screen: just the two big icons side by side, no pill, no text */
+html body #kids#kids#kids .kwinbtns{display:flex!important;flex-direction:row!important;justify-content:center!important;align-items:center!important;gap:0 min(9vw,44px)!important;margin:12px 0 0!important;height:auto!important}
+html body #kids#kids#kids .kwinbtns .kbig{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;width:auto!important;min-width:0!important;height:auto!important;flex:none!important;-webkit-tap-highlight-color:transparent}
+html body #kids#kids#kids .kwinbtns .kbig::before,html body #kids#kids#kids .kwinbtns .kbig::after{display:none!important}
+html body #kids#kids#kids .kwinbtns .kbig>span{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;white-space:nowrap!important}
+html body #kids#kids#kids .kwinbtns .khome-st{width:min(32vw,15vh,150px)!important;width:min(32vw,15dvh,150px)!important;height:min(32vw,15vh,150px)!important;height:min(32vw,15dvh,150px)!important;object-fit:contain!important;margin:0!important;filter:drop-shadow(0 6px 10px rgba(20,0,50,.4));transition:transform .15s}
+html body #kids#kids#kids .kwinbtns .kbig:active .khome-st{transform:scale(.9)}
+
+/* v1.0.98 notebook: smoother tray scrolling + first-time demo */
+#kids .kbtray{scroll-snap-type:none!important;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scroll-behavior:auto;touch-action:pan-x;will-change:scroll-position}
+#kids .kbtray-st{scroll-snap-align:none!important;touch-action:pan-x}
+.kbdemo-st{transition:none!important}
+.kbdemo-finger{position:fixed;z-index:10000;width:44px;height:44px;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 40% 35%,rgba(255,255,255,.95),rgba(255,255,255,.75) 45%,rgba(255,200,240,.55) 70%,rgba(255,200,240,0) 72%);box-shadow:0 0 0 4px rgba(255,255,255,.55),0 0 18px rgba(255,160,230,.9)}
+/* v1.0.98 rare-animal hunt card */
+#kids .khunt .khunt-box{display:grid;place-items:center;position:relative}#kids .khunt .khunt-sil{filter:brightness(0) saturate(0) opacity(.55);animation:kHuntBob 1.6s ease-in-out infinite alternate}#kids .khunt .khunt-q{position:absolute;inset:0;display:grid;place-items:center;font:400 4.2rem/1 "Mochiy Pop One","Jua",sans-serif;color:#fff;text-shadow:0 3px 0 #7b3fd0,0 0 18px rgba(200,160,255,.9)}#kids .khunt-luck{display:flex;gap:7px;justify-content:center;margin-top:6px}#kids .khunt-luck i{width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.3);box-shadow:inset 0 1px 2px rgba(60,20,110,.4)}#kids .khunt-luck i.on{background:radial-gradient(circle at 35% 30%,#fff 0 18%,#ffd34d 40%,#ff9f2e);box-shadow:0 0 8px rgba(255,210,80,.9)}@keyframes kHuntBob{to{transform:translateY(-6px) rotate(3deg)}}
 </style>
 
 <div class="deco" aria-hidden="true"><img class="stk dstk" src="stickers/mug.png" alt="" style="left:2%;top:30%;--d:10s"><img class="stk dstk" src="stickers/heart.png" alt="" style="right:3%;top:44%;--d:12s;--dl:-4s"><img class="stk dstk" src="stickers/duo.png" alt="" style="left:1%;top:76%;--d:14s;--dl:-7s;width:120px"><img class="stk dstk" src="stickers/eyes.png" alt="" style="right:2%;top:84%;--d:11s;--dl:-2s;width:100px"><span style="left:4%;top:12%;--c:var(--o2);--d:8s">♡</span><span style="right:5%;top:22%;--c:var(--o3);--d:10s;--dl:-3s;--s:26px">★</span><span style="left:7%;top:58%;--c:var(--o5);--d:11s;--dl:-5s">✿</span><span style="right:8%;top:70%;--c:var(--o1);--d:9s;--dl:-2s;--s:18px">♡</span><span style="left:46%;top:92%;--c:var(--o3);--d:12s;--dl:-6s;--s:16px">✦</span><span style="right:30%;top:4%;--c:var(--o5);--d:13s;--dl:-1s;--s:14px">✦</span></div>
@@ -6174,7 +6227,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     K.screen = "settings";
     $("#kids").innerHTML = kidsHeader(true) + '<div class="kset">\n    <button class="kset-b" data-k="slots"><i><img class="kic2" src="kid/sky/ic3_user.webp" alt=""></i><span><b>Joueur</b><small>'.concat(esc(slotInfo(SLOT).nm || String(SLOT + 1)), " · Niveau ").concat(slotInfo(SLOT).lvl, '</small></span></button>\n    <button class="kset-b" data-k="lang"><i><img class="kic2" src="kid/sky/ic3_globe.webp" alt=""></i><span><b>Langues</b><small>').concat(LNAME[UIL], " → ").concat(LNAME[LL], '</small></span></button>\n    <button class="kset-b" data-k="tuto"><i><img class="kic2" src="kid/sky/ic3_help.webp" alt=""></i><span><b>Revoir le tutoriel</b></span></button>\n    <div class="kset-vol">').concat([["mus", '<img class="kic2" src="kid/sky/ic3_music.webp" alt="">', "Musique", musStep], ["sfx", '<img class="kic2" src="kid/sky/ic3_sound.webp" alt="">', "Sons", sfxStep]].map(([k, ic, lb, v]) => '<div class="kvol-row"><i>'.concat(ic, "</i><b>").concat(lb, '</b><button class="kvol-btn" data-kvol="').concat(k, ':-1" aria-label="moins">−</button><span class="kvol-bar">').concat(Array.from({ length: 5 }, (_, j) => '<em class="'.concat(j < v ? "on" : "", '"></em>')).join(""), '</span><button class="kvol-btn" data-kvol="').concat(k, ':1" aria-label="plus">+</button></div>')).join(""), '</div>\n    <p class="kset-ver">Stickoo · v').concat(APP_VER, "</p>\n  </div>");
   }
-  const APP_VER = "1.0.97";
+  const APP_VER = "1.0.98";
   const KGEAR = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2-1.6a.5.5 0 0 0 .1-.6l-1.9-3.3a.5.5 0 0 0-.6-.2l-2.4 1a7.3 7.3 0 0 0-1.7-1l-.4-2.6a.5.5 0 0 0-.5-.4h-3.8a.5.5 0 0 0-.5.4l-.4 2.6a7.3 7.3 0 0 0-1.7 1l-2.4-1a.5.5 0 0 0-.6.2L2.5 8.8a.5.5 0 0 0 .1.6l2 1.6a7.5 7.5 0 0 0 0 2l-2 1.6a.5.5 0 0 0-.1.6l1.9 3.3a.5.5 0 0 0 .6.2l2.4-1a7.3 7.3 0 0 0 1.7 1l.4 2.6a.5.5 0 0 0 .5.4h3.8a.5.5 0 0 0 .5-.4l.4-2.6a7.3 7.3 0 0 0 1.7-1l2.4 1a.5.5 0 0 0 .6-.2l1.9-3.3a.5.5 0 0 0-.1-.6zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
   function kidsThemes(next2) {
     K.screen = "themes";
@@ -6565,7 +6618,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     const sp = document.querySelector("#kids .kspeak"), pr = document.querySelector("#kids .kprog"), op = document.querySelector("#kids .kopt");
     if (!sp || !pr || !op || K.screen !== "quiz") return;
     sp.style.translate = "0 0";
-    const st = [...pr.children].map((e) => e.getBoundingClientRect()).filter((r) => r.height), s = sp.getBoundingClientRect(), o = op.getBoundingClientRect();
+    const st = [...pr.children].map((e) => e.getBoundingClientRect()).filter((r) => r.height), s = sp.getBoundingClientRect(), ph = op.parentNode.classList.contains("kphys"), o = ph ? { top: op.parentNode.getBoundingClientRect().top + 36 } : op.getBoundingClientRect();
     const starsMid = st.length ? st.reduce((m, r) => m + r.top + r.height / 2, 0) / st.length : pr.getBoundingClientRect().top, target = (starsMid + o.top) / 2, cur = s.top + s.height / 2;
     sp.style.translate = "0 ".concat(Math.round(target - cur), "px");
   }
@@ -6576,6 +6629,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     }
   });
   function kidsQuestion() {
+    var _a2;
     const R = K.round;
     K.screen = "quiz";
     document.documentElement.classList.add("kquiz");
@@ -6601,7 +6655,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     R.opts = opts;
     R.tries = 0;
     R.lock = false;
-    $("#kids").innerHTML = kidsHeader(true) + '\n    <div class="kprog '.concat((R.n || KID_ROUND) > 7 ? "many" : "", '" style="--n:').concat(R.n || KID_ROUND, '">').concat(Array.from({ length: R.n || KID_ROUND }, (_, i, _a2, N = R.n || KID_ROUND) => '<span class="'.concat(i < R.done ? "on" : "", '" style="--arc:').concat((Math.pow((i - (N - 1) / 2) / ((N - 1) / 2 || 1), 2) * 22).toFixed(1), 'px"><img class="kst-ic" src="kid/nature/nature02.png" alt=""></span>')).join(""), '</div>\n    <button class="kspeak" data-k="again" aria-label="Réécouter"><img class="ksky-spk" src="kid/sky/speaker.webp?v=2" alt=""><span class="kbubble big" hidden><svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><path d="M10 24h10l14-12v40L20 40H10z" fill="#f7e6ff"/><path d="M42 22c4 3 6 6 6 10s-2 7-6 10M48 15c6 5 9 11 9 17s-3 12-9 17" fill="none" stroke="#f7e6ff" stroke-width="4.5" stroke-linecap="round"/></svg></span></button>\n    <div class="kopts ').concat(opts.length === 4 ? "four" : opts.length === 3 ? "three" : "", '">').concat(opts.map((o, i) => '<button class="kopt" data-ko="'.concat(i, '" aria-label="').concat(esc(gl(o)), '" style="--ob:url(kid/sky/bub').concat(i % 4, '.webp?v=1)">').concat(kidPic(o), "</button>")).join(""), '</div>\n    <p class="khint">Pour les parents : « ').concat(esc(tw(target)), " » = ").concat(esc(gl(target)), '</p><button class="khelp-tg ').concat(kHelpOn() ? "on" : "", '" data-k="helptg" aria-label="Aides"></button><button class="kmus-tg ').concat(musStep ? "on" : "", '" data-k="mustg" aria-label="Musique"></button>');
+    $("#kids").innerHTML = kidsHeader(true) + '\n    <div class="kprog '.concat((R.n || KID_ROUND) > 7 ? "many" : "", '" style="--n:').concat(R.n || KID_ROUND, '">').concat(Array.from({ length: R.n || KID_ROUND }, (_, i, _a3, N = R.n || KID_ROUND) => '<span class="'.concat(i < R.done ? "on" : "", '" style="--arc:').concat((Math.pow((i - (N - 1) / 2) / ((N - 1) / 2 || 1), 2) * 22).toFixed(1), 'px"><img class="kst-ic" src="kid/nature/nature02.png" alt=""></span>')).join(""), '</div>\n    <button class="kspeak" data-k="again" aria-label="Réécouter"><img class="ksky-spk" src="kid/sky/speaker.webp?v=2" alt=""><span class="kbubble big" hidden><svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><path d="M10 24h10l14-12v40L20 40H10z" fill="#f7e6ff"/><path d="M42 22c4 3 6 6 6 10s-2 7-6 10M48 15c6 5 9 11 9 17s-3 12-9 17" fill="none" stroke="#f7e6ff" stroke-width="4.5" stroke-linecap="round"/></svg></span></button>\n    <div class="kopts ').concat(((_a2 = KID_TIERS[R.tier]) == null ? void 0 : _a2.move) ? "kphys three" : opts.length === 4 ? "four" : opts.length === 3 ? "three" : "", '">').concat(opts.map((o, i) => '<button class="kopt" data-ko="'.concat(i, '" aria-label="').concat(esc(gl(o)), '" style="--ob:url(kid/sky/bub').concat(i % 4, '.webp?v=1)">').concat(kidPic(o), "</button>")).join(""), '</div>\n    <p class="khint">Pour les parents : « ').concat(esc(tw(target)), " » = ").concat(esc(gl(target)), '</p><button class="khelp-tg ').concat(kHelpOn() ? "on" : "", '" data-k="helptg" aria-label="Aides"></button><button class="kmus-tg ').concat(musStep ? "on" : "", '" data-k="mustg" aria-label="Musique"></button>');
     document.documentElement.classList.toggle("knohelp", !kHelpOn());
     kSizeOpts();
     kCenterSpk();
@@ -6968,8 +7022,10 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     const missF = KID_FRIENDS.filter(miss);
     const tierBefore = kidTier(k);
     const missP = KID_PRINCESS.filter(miss), missG2 = KID_GOLD.filter(miss), missD = KID_DIAM.filter(miss);
-    const prize = missF.length ? missF[0] : missP.length ? missP[0] : missG2.length ? missG2[0] : missD.length ? missD[0] : all[Math.floor(Math.random() * all.length)];
-    if (!k.album.includes(prize)) k.album.push(prize);
+    const hunt = !missF.length && !missP.length && !missG2.length && !missD.length && KID_RARE.some(miss);
+    const huntStart = !missF.length && !missP.length && !missG2.length && missD.length === 1;
+    let prize = hunt ? null : missF.length ? missF[0] : missP.length ? missP[0] : missG2.length ? missG2[0] : missD.length ? missD[0] : all[Math.floor(Math.random() * all.length)];
+    if (prize && !k.album.includes(prize)) k.album.push(prize);
     const Rw = K.round || {};
     const wBefore = kidWordsN(k);
     k.rounds++;
@@ -7016,15 +7072,19 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       k.nw[w.cat + "|" + w.ko] = 0;
     });
     k.rareDry = rareWin ? 0 : (k.rareDry || 0) + 1;
+    const huntIntro = (huntStart || hunt) && !k.huntIntro;
+    if (huntIntro) k.huntIntro = 1;
+    if (hunt && rareWin) prize = rareWin;
+    const huntTease = hunt && !rareWin ? KID_RARE.filter(miss).sort(() => Math.random() - 0.5)[0] || null : null;
     const freshAch = kidsCheckAch(k);
     const tierUp = kidTier(k) > tierBefore ? kidTier(k) : 0;
     putKids(k);
     K.screen = "win";
     K.round = null;
     const winLine = GENDER === "m" ? gText(kidPickNew(SPL().win, "usedWin" + LL)).split("공주님").join("영웅").split("요정").join("영웅") : kidPickNew(SPL().win, "usedWin" + LL);
-    const dancers = [kidFriend([prize]), null];
-    dancers[1] = kidFriend([prize, dancers[0]]);
-    $("#kids").innerHTML = kidsHeader(true) + '<div class="kwin kwin2">\n    <div class="kwc kwc-top">'.concat(cloudSvg("top"), '\n    <div class="kwin-title">').concat(winLine.split("!").map((x) => x.trim()).filter(Boolean).slice(0, 2).join("! "), '!</div></div>\n    <div class="kwc-prize kframe2"><div class="kf2-in"><span class="kf2-rays"></span></div><img class="kf2-img" src="kid/sky/frame2.webp?v=1" alt="" draggable="false"><div class="kprize closed" id="kprize"><span class="krays"></span><span class="kgift ').concat(kGiftFor(prize).pack ? "kpack" : "", '" style="background-image:url(').concat(kGiftFor(prize).src, ")").concat(kGiftFor(prize).pos ? ";background-size:1200% auto!important;background-position:".concat(kGiftFor(prize).pos, "!important") : "", '"></span><img src="').concat(kStickerSrc(prize), '" alt="" draggable="false"></div><p class="kf2-lab"><span class="kpuffy kp-ink kfit">').concat(tierOf(prize) === 3 ? "Une princesse licorne diamant 🦄💎 pour ton album !" : tierOf(prize) === 2 ? "Une princesse dorée ✨👑 pour ton album !" : tierOf(prize) === 1 ? "Une nouvelle princesse 👑 pour ton album !" : prize.startsWith("gold/") ? "Un sticker en or ✨ pour ton album !" : tierOf(prize) === 0 ? "Une nouvelle amie pour ton album !" : "Un nouveau sticker pour ton album !", '</span></p></div>\n    <div class="kplay row2 khome kwinbtns">\n      <button class="kbig" data-k="replay"><img class="khome-st" src="kid/home/play4.webp" alt=""><span>Encore !</span></button>\n      <button class="kbig alt2" data-k="album"><img class="khome-st" src="kid/home/stickers4.webp" alt=""><span>Mon album</span></button>\n    </div></div>');
+    const dancers = [kidFriend([prize].filter(Boolean)), null];
+    dancers[1] = kidFriend([prize, dancers[0]].filter(Boolean));
+    $("#kids").innerHTML = kidsHeader(true) + '<div class="kwin kwin2">\n    <div class="kwc kwc-top">'.concat(cloudSvg("top"), '\n    <div class="kwin-title">').concat(winLine.split("!").map((x) => x.trim()).filter(Boolean).slice(0, 2).join("! "), "!</div></div>\n    ").concat(huntTease ? '<div class="kwc-prize kframe2 khunt"><div class="kf2-in"><span class="kf2-rays"></span></div><img class="kf2-img" src="kid/sky/frame2.webp?v=1" alt="" draggable="false"><div class="kprize khunt-box" id="kprize"><img class="khunt-sil" src="'.concat(kStickerSrc(huntTease), '" alt="" draggable="false"><span class="khunt-q">?</span></div><p class="kf2-lab"><span class="kpuffy kp-ink kfit">Pas d’animal rare cette fois… continue la chasse !</span></p><div class="khunt-luck" aria-hidden="true">').concat(Array.from({ length: 7 }, (_, i) => '<i class="'.concat(i < Math.min(7, k.rareDry) ? "on" : "", '"></i>')).join(""), "</div></div>") : '<div class="kwc-prize kframe2"><div class="kf2-in"><span class="kf2-rays"></span></div><img class="kf2-img" src="kid/sky/frame2.webp?v=1" alt="" draggable="false"><div class="kprize closed" id="kprize"><span class="krays"></span><span class="kgift '.concat(kGiftFor(prize).pack ? "kpack" : "", '" style="background-image:url(').concat(kGiftFor(prize).src, ")").concat(kGiftFor(prize).pos ? ";background-size:1200% auto!important;background-position:".concat(kGiftFor(prize).pos, "!important") : "", '"></span><img src="').concat(kStickerSrc(prize), '" alt="" draggable="false"></div><p class="kf2-lab"><span class="kpuffy kp-ink kfit">Un nouveau sticker pour ton album !</span></p></div>'), '\n    <div class="kstepnav"><button class="ktuto-btn kstep-next" type="button">Suivant <span>▶</span></button></div>\n    <div class="kplay row2 khome kwinbtns kwait">\n      <button class="kbig" data-k="replay"><img class="khome-st" src="kid/home/play4.webp" alt=""><span>Encore !</span></button>\n      <button class="kbig alt2" data-k="album"><img class="khome-st" src="kid/home/stickers4.webp" alt=""><span>Mon album</span></button>\n    </div></div>');
     try {
       kFitText();
       setTimeout(kFitText, 400);
@@ -7038,15 +7098,15 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     setTimeout(() => say(winLine), 300);
     setTimeout(() => {
       const g = $("#kprize");
-      if (!g) return;
+      if (!g || huntTease) return;
       g.classList.add("shaking");
       tone(523, 0, 0.1, "square", 0.03);
       tone(659, 0.15, 0.1, "square", 0.03);
       tone(784, 0.3, 0.1, "square", 0.03);
-    }, 900);
+    }, 350);
     setTimeout(() => {
       const g = $("#kprize");
-      if (!g) return;
+      if (!g || huntTease) return;
       g.classList.remove("shaking", "closed");
       g.classList.add("open");
       setTimeout(() => kSparkle(g, 10), 250);
@@ -7063,20 +7123,17 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
         const pn = stickerName(prize);
         say(pn ? "우와! ".concat(pn, "!") : "우와! 스티커다!");
       }
-    }, 1900);
-    const t0 = (rareWin ? 9e3 : 4600) + (freshWords.length ? 4600 : 0) + ((Rw.goldNew || []).length ? 4600 : 0);
-    const tw2 = rareWin ? 9e3 : 4400;
-    if (rareWin) setTimeout(() => kidRarePopup(rareWin), 4400);
-    const afterWords = (start) => {
-      let t = start;
-      if (freshAch.length) setTimeout(() => kidAchPopup(freshAch), t);
-      if (tierUp) setTimeout(() => kidTierPopup(tierUp), t + freshAch.length * 4e3);
-    };
-    if (freshWords.length) setTimeout(() => {
-      if (K.screen === "win") kidNewWordsPopup(freshWords, () => afterWords(350));
-      else afterWords(0);
-    }, tw2);
-    else afterWords(tw2);
+    }, 950);
+    const steps = [];
+    if (rareWin) steps.push({ k: "rare", f: rareWin });
+    if (freshWords.length) {
+      steps.push({ k: "nw" });
+      freshWords.forEach((w) => steps.push({ k: "w", w }));
+    }
+    freshAch.forEach((a) => steps.push({ k: "ach", a }));
+    if (tierUp) steps.push({ k: "tier", t: tierUp });
+    if (huntIntro) steps.push({ k: "hunt" });
+    kWinSteps(steps, huntTease ? 400 : 1250);
     K.lastTheme = K.lastTheme;
   }
   const BOARD_PAGES = 4;
@@ -7087,9 +7144,10 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     document.documentElement.classList.add("kcahier");
     const k = kidsState();
     const owned = [...KS(), ...KID_RARE].filter((f) => k.album.includes(f));
-    $("#kids").innerHTML = kidsHeader(true) + '<div class="kcdeco" aria-hidden="true"><i style="left:6%;top:14%;--c:#ffd36b">★</i><i style="right:7%;top:20%;--c:#b9a3ff">✿</i><i style="left:4%;top:52%;--c:#ff9ec7">✦</i><i style="right:5%;top:58%;--c:#7fd8c4">★</i><i style="left:8%;bottom:10%;--c:#9fc7ff">✿</i><i style="right:9%;bottom:16%;--c:#ffc36b">✦</i><i style="left:46%;top:8%;--c:#c3a8ff">·</i><i style="right:24%;bottom:6%;--c:#ff9ec7">✿</i></div>\n    <div class="kbtabs">'.concat(Array.from({ length: BOARD_PAGES }, (_, i) => '<button class="kbtab '.concat(i === K.bp ? "on" : "", '" data-kbp="').concat(i, '">Page ').concat(i + 1, "</button>")).join(""), '</div>\n    <div class="kbwrap"><div class="kboard" id="kboard"><div class="kbpaper" aria-hidden="true"><span class="kwashi w1"></span><span class="kwashi w2"></span><span class="kwashi w3"></span><span class="kwashi w4"></span>').concat(GENDER === "m" ? '<span class="kdood d1 kroar">roar!</span><span class="kdood d2">wow!</span><span class="kdood d3">~cool~</span><svg class="kdsvg" viewBox="0 0 300 400" preserveAspectRatio="none"><g stroke="#3f9a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><g transform="translate(8,-12) scale(.86)"><path d="M66 82 l-8 -12 l14 2 M74 66 l-4 -15 l13 7 M88 55 l2 -15 l9 11 M104 50 l7 -12 l4 13" fill="#ffd84d"/><path d="M74 132 C66 112 60 90 70 72 C82 52 108 46 132 50 C152 53 168 58 172 72 C176 86 168 96 150 98 C138 99 128 98 122 100 C116 108 116 122 118 132" fill="#bfeaa0"/><path d="M128 99 l3 6 l3 -6 M140 98 l3 6 l3 -6" fill="#fff"/><path d="M126 86 q18 8 36 -2" fill="none"/><circle cx="116" cy="70" r="7" fill="#2f5d33" stroke="none"/><circle cx="118.5" cy="67.5" r="2.4" fill="#fff" stroke="none"/><circle cx="160" cy="66" r="1.8" fill="#3f9a45" stroke="none"/><ellipse cx="104" cy="88" rx="7" ry="4" fill="#ffb37a" opacity=".55" stroke="none"/><path d="M88 104 q4 4 0 8 M96 112 q4 4 0 8" fill="none" stroke="#8fd16f"/></g><path d="M226 330 q-30 22 -60 6 q-16 -10 -2 -18 q12 -4 8 10 q-6 18 -40 16" fill="none" stroke="#7cc95a"/><path d="M138 352 l-8 -2 l5 -7" fill="none" stroke="#7cc95a"/></g><g fill="#9ad87a"><ellipse cx="250" cy="160" rx="7" ry="8"/><circle cx="242" cy="148" r="3"/><circle cx="250" cy="145" r="3"/><circle cx="258" cy="148" r="3"/><ellipse cx="66" cy="256" rx="5.5" ry="6.5" transform="rotate(-15 66 256)"/><circle cx="59" cy="247" r="2.4"/><circle cx="65" cy="244" r="2.4"/><circle cx="71" cy="246" r="2.4"/></g><path d="M262 238 l4 9 l10 1 l-7 7 l2 10 l-9 -5 l-9 5 l2 -10 l-7 -7 l10 -1z" fill="#ffe08a" stroke="#f2b84a" stroke-width="1.2" stroke-linejoin="round"/><path d="M236 92 l-8 14 h8 l-5 13 l14 -18 h-8 l5 -9z" fill="#ffd84d" stroke="#e8a92a" stroke-width="1.2" stroke-linejoin="round"/><circle cx="92" cy="340" r="3" fill="#c8eeb0"/><circle cx="190" cy="120" r="2.6" fill="#ffe08a"/></svg>' : '<span class="kdood d1">kawaii</span><span class="kdood d2">wow!</span><span class="kdood d3">~cute~</span><svg class="kdsvg" viewBox="0 0 300 400" preserveAspectRatio="none"><path d="M70 72 q30 -26 58 -6 q20 16 6 26 q-12 6 -10 -10 q4 -20 38 -22" fill="none" stroke="#ff8fbf" stroke-width="2.4" stroke-linecap="round"/><path d="M168 86 l8 -2 l-4 8" fill="none" stroke="#ff8fbf" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M226 330 q-30 22 -60 6 q-16 -10 -2 -18 q12 -4 8 10 q-6 18 -40 16" fill="none" stroke="#a77bff" stroke-width="2.4" stroke-linecap="round"/><path d="M138 352 l-8 -2 l5 -7" fill="none" stroke="#a77bff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M250 150 c-6 -10 -20 -2 -12 8 l12 12 l12 -12 c8 -10 -6 -18 -12 -8z" fill="#ffb3cf"/><path d="M66 250 c-4 -7 -14 -1 -8 5 l8 8 l8 -8 c6 -6 -4 -12 -8 -5z" fill="#ffc8dc"/><path d="M262 238 l4 9 l10 1 l-7 7 l2 10 l-9 -5 l-9 5 l2 -10 l-7 -7 l10 -1z" fill="#ffe08a" stroke="#f2b84a" stroke-width="1.2" stroke-linejoin="round"/><circle cx="92" cy="340" r="3" fill="#b9e3ff"/><circle cx="240" cy="96" r="2.6" fill="#c9b6ff"/></svg>', '</div></div><div class="kbtools" id="kbtools" hidden>\n      <button class="kbt" data-kb="smaller" aria-label="Plus petit">➖</button>\n      <button class="kbt" data-kb="bigger" aria-label="Plus grand">➕</button>\n      <button class="kbt" data-kb="rotl" aria-label="Tourner">↺</button>\n      <button class="kbt" data-kb="rotr" aria-label="Tourner">↻</button>\n      <button class="kbt" data-kb="front" aria-label="Devant">⬆️</button>\n      <button class="kbt del" data-kb="del" aria-label="Enlever">🗑️</button>\n    </div></div>\n    <div class="kbdrawer"><p class="kbhint">').concat(owned.length ? "Prends un sticker en bas avec ton doigt et pose-le sur la page !" : "Gagne des parties pour avoir des stickers à coller ici !", '</p>\n    <div class="kbtray">').concat(owned.map((f) => '<button class="kbtray-st" data-kbdrag="'.concat(f, '"><img src="').concat(kStickerSrc(f), '" alt="" draggable="false"></button>')).join(""), "</div></div>");
+    $("#kids").innerHTML = kidsHeader(true) + '<div class="kcdeco" aria-hidden="true"><i style="left:6%;top:14%;--c:#ffd36b">★</i><i style="right:7%;top:20%;--c:#b9a3ff">✿</i><i style="left:4%;top:52%;--c:#ff9ec7">✦</i><i style="right:5%;top:58%;--c:#7fd8c4">★</i><i style="left:8%;bottom:10%;--c:#9fc7ff">✿</i><i style="right:9%;bottom:16%;--c:#ffc36b">✦</i><i style="left:46%;top:8%;--c:#c3a8ff">·</i><i style="right:24%;bottom:6%;--c:#ff9ec7">✿</i></div>\n    <div class="kbtabs">'.concat(Array.from({ length: BOARD_PAGES }, (_, i) => '<button class="kbtab '.concat(i === K.bp ? "on" : "", '" data-kbp="').concat(i, '">Page ').concat(i + 1, "</button>")).join(""), '</div>\n    <div class="kbwrap"><div class="kboard" id="kboard"><div class="kbpaper" aria-hidden="true"><span class="kwashi w1"></span><span class="kwashi w2"></span><span class="kwashi w3"></span><span class="kwashi w4"></span>').concat(GENDER === "m" ? '<span class="kdood d1 kroar">roar!</span><span class="kdood d2">wow!</span><span class="kdood d3">~cool~</span><svg class="kdsvg" viewBox="0 0 300 400" preserveAspectRatio="none"><g stroke="#3f9a45" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><g transform="translate(8,-12) scale(.86)"><path d="M66 82 l-8 -12 l14 2 M74 66 l-4 -15 l13 7 M88 55 l2 -15 l9 11 M104 50 l7 -12 l4 13" fill="#ffd84d"/><path d="M74 132 C66 112 60 90 70 72 C82 52 108 46 132 50 C152 53 168 58 172 72 C176 86 168 96 150 98 C138 99 128 98 122 100 C116 108 116 122 118 132" fill="#bfeaa0"/><path d="M128 99 l3 6 l3 -6 M140 98 l3 6 l3 -6" fill="#fff"/><path d="M126 86 q18 8 36 -2" fill="none"/><circle cx="116" cy="70" r="7" fill="#2f5d33" stroke="none"/><circle cx="118.5" cy="67.5" r="2.4" fill="#fff" stroke="none"/><circle cx="160" cy="66" r="1.8" fill="#3f9a45" stroke="none"/><ellipse cx="104" cy="88" rx="7" ry="4" fill="#ffb37a" opacity=".55" stroke="none"/><path d="M88 104 q4 4 0 8 M96 112 q4 4 0 8" fill="none" stroke="#8fd16f"/></g><path d="M226 330 q-30 22 -60 6 q-16 -10 -2 -18 q12 -4 8 10 q-6 18 -40 16" fill="none" stroke="#7cc95a"/><path d="M138 352 l-8 -2 l5 -7" fill="none" stroke="#7cc95a"/></g><g fill="#9ad87a"><ellipse cx="250" cy="160" rx="7" ry="8"/><circle cx="242" cy="148" r="3"/><circle cx="250" cy="145" r="3"/><circle cx="258" cy="148" r="3"/><ellipse cx="66" cy="256" rx="5.5" ry="6.5" transform="rotate(-15 66 256)"/><circle cx="59" cy="247" r="2.4"/><circle cx="65" cy="244" r="2.4"/><circle cx="71" cy="246" r="2.4"/></g><path d="M262 238 l4 9 l10 1 l-7 7 l2 10 l-9 -5 l-9 5 l2 -10 l-7 -7 l10 -1z" fill="#ffe08a" stroke="#f2b84a" stroke-width="1.2" stroke-linejoin="round"/><path d="M236 92 l-8 14 h8 l-5 13 l14 -18 h-8 l5 -9z" fill="#ffd84d" stroke="#e8a92a" stroke-width="1.2" stroke-linejoin="round"/><circle cx="92" cy="340" r="3" fill="#c8eeb0"/><circle cx="190" cy="120" r="2.6" fill="#ffe08a"/></svg>' : '<span class="kdood d1">kawaii</span><span class="kdood d2">wow!</span><span class="kdood d3">~cute~</span><svg class="kdsvg" viewBox="0 0 300 400" preserveAspectRatio="none"><path d="M70 72 q30 -26 58 -6 q20 16 6 26 q-12 6 -10 -10 q4 -20 38 -22" fill="none" stroke="#ff8fbf" stroke-width="2.4" stroke-linecap="round"/><path d="M168 86 l8 -2 l-4 8" fill="none" stroke="#ff8fbf" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M226 330 q-30 22 -60 6 q-16 -10 -2 -18 q12 -4 8 10 q-6 18 -40 16" fill="none" stroke="#a77bff" stroke-width="2.4" stroke-linecap="round"/><path d="M138 352 l-8 -2 l5 -7" fill="none" stroke="#a77bff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M250 150 c-6 -10 -20 -2 -12 8 l12 12 l12 -12 c8 -10 -6 -18 -12 -8z" fill="#ffb3cf"/><path d="M66 250 c-4 -7 -14 -1 -8 5 l8 8 l8 -8 c6 -6 -4 -12 -8 -5z" fill="#ffc8dc"/><path d="M262 238 l4 9 l10 1 l-7 7 l2 10 l-9 -5 l-9 5 l2 -10 l-7 -7 l10 -1z" fill="#ffe08a" stroke="#f2b84a" stroke-width="1.2" stroke-linejoin="round"/><circle cx="92" cy="340" r="3" fill="#b9e3ff"/><circle cx="240" cy="96" r="2.6" fill="#c9b6ff"/></svg>', '</div></div><div class="kbtools" id="kbtools" hidden>\n      <button class="kbt" data-kb="smaller" aria-label="Plus petit">➖</button>\n      <button class="kbt" data-kb="bigger" aria-label="Plus grand">➕</button>\n      <button class="kbt" data-kb="rotl" aria-label="Tourner">↺</button>\n      <button class="kbt" data-kb="rotr" aria-label="Tourner">↻</button>\n      <button class="kbt" data-kb="front" aria-label="Devant">⬆️</button>\n      <button class="kbt del" data-kb="del" aria-label="Enlever">🗑️</button>\n    </div></div>\n    <div class="kbdrawer">').concat(owned.length ? "" : '<p class="kbhint">Gagne des parties pour avoir des stickers à coller ici !</p>', '\n    <div class="kbtray">').concat(owned.map((f) => '<button class="kbtray-st" data-kbdrag="'.concat(f, '"><img src="').concat(kStickerSrc(f), '" alt="" draggable="false"></button>')).join(""), "</div></div>");
     renderBoard();
     bindBoard();
+    if (owned.length) kBoardDemo();
   }
   function boardPage(k) {
     k.board = Array.isArray(k.board) ? k.board : [];
@@ -7118,6 +7176,64 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     mut(pg, k);
     putKids(k);
     renderBoard();
+  }
+  let KBD = null;
+  function kBoardDemoStop() {
+    if (!KBD) return;
+    KBD.stop = 1;
+    KBD.els.forEach((e) => e.remove());
+    KBD = null;
+  }
+  function kBoardDemo() {
+    let seen = 0;
+    try {
+      seen = +localStorage.getItem(SK("stickoo-bdemo")) || 0;
+    } catch (e) {
+    }
+    if (seen) return;
+    setTimeout(() => {
+      const st = document.querySelector("#kids .kbtray-st"), bd = $("#kboard");
+      if (!st || !bd || K.screen !== "board") return;
+      try {
+        localStorage.setItem(SK("stickoo-bdemo"), "1");
+      } catch (e) {
+      }
+      const a = st.getBoundingClientRect(), r = bd.getBoundingClientRect(), x0 = a.left + a.width / 2, y0 = a.top + a.height / 2, x1 = r.left + r.width * 0.55, y1 = r.top + r.height * 0.45;
+      const g = document.createElement("img");
+      g.src = st.querySelector("img").src;
+      g.className = "kbghost kbdemo-st";
+      const fg = document.createElement("i");
+      fg.className = "kbdemo-finger";
+      KBD = { els: [g, fg], stop: 0 };
+      document.body.append(g, fg);
+      const T0 = performance.now(), D = 2600, ez = (u) => u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+      const step = (t) => {
+        if (!KBD || KBD.stop) return;
+        if (K.screen !== "board") return kBoardDemoStop();
+        const u = (t - T0) / D;
+        const v = Math.min(1, Math.max(0, (u - 0.2) / 0.55)), e = ez(v), x = x0 + (x1 - x0) * e, y = y0 + (y1 - y0) * e - Math.sin(e * Math.PI) * 60;
+        const press = u < 0.2 ? Math.min(1, u / 0.12) : 1, fade = u > 0.8 ? Math.max(0, 1 - (u - 0.8) / 0.2) : 1;
+        fg.style.left = x + "px";
+        fg.style.top = y + 26 + "px";
+        fg.style.opacity = Math.min(press, fade);
+        fg.style.transform = "translate(-50%,-50%) scale(".concat(u < 0.2 ? 1.25 - 0.25 * press : 1, ")");
+        g.style.left = x + "px";
+        g.style.top = y + "px";
+        g.style.opacity = u < 0.18 ? 0 : fade;
+        g.style.transform = "translate(-50%,-60%) rotate(".concat(-6 + 6 * e, "deg) scale(").concat(u < 0.2 ? 0.7 : 1.1 - 0.1 * Math.max(0, (u - 0.75) / 0.25), ")");
+        if (u >= 0.75 && !KBD.popped) {
+          KBD.popped = 1;
+          try {
+            kSparkle(bd, 10);
+            if (!playUi("stick", 0.4)) tone(523, 0, 0.08, "triangle", 0.05);
+          } catch (er) {
+          }
+        }
+        if (u < 1) requestAnimationFrame(step);
+        else kBoardDemoStop();
+      };
+      requestAnimationFrame(step);
+    }, 700);
   }
   function bindBoard() {
     const el = $("#kboard");
@@ -7199,9 +7315,22 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       const b = e.target.closest("[data-kbdrag]");
       if (!b) return;
       const f = b.dataset.kbdrag, sx = e.clientX, sy = e.clientY;
-      let ghost = null, moved = false;
+      let ghost = null, moved = false, scrolling = false;
+      kBoardDemoStop();
+      const done = () => {
+        document.removeEventListener("pointermove", mv);
+        document.removeEventListener("pointerup", up);
+        document.removeEventListener("pointercancel", up);
+      };
       const mv = (ev) => {
-        if (!moved && Math.hypot(ev.clientX - sx, ev.clientY - sy) < 8) return;
+        if (scrolling) return;
+        const dx = ev.clientX - sx, dy = ev.clientY - sy;
+        if (!moved && Math.hypot(dx, dy) < 8) return;
+        if (!moved && Math.abs(dx) > Math.abs(dy)) {
+          scrolling = true;
+          done();
+          return;
+        }
         if (!moved) {
           moved = true;
           ghost = document.createElement("img");
@@ -7214,10 +7343,12 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
         ghost.style.top = ev.clientY + "px";
       };
       const up = (ev) => {
-        document.removeEventListener("pointermove", mv);
-        document.removeEventListener("pointerup", up);
-        document.removeEventListener("pointercancel", up);
+        done();
         tray.style.overflowX = "";
+        if (ev.type === "pointercancel" || scrolling) {
+          ghost == null ? void 0 : ghost.remove();
+          return;
+        }
         if (!moved) return boardAdd(f);
         ghost == null ? void 0 : ghost.remove();
         const r = el.getBoundingClientRect();
@@ -7342,7 +7473,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
       return '<section class="kpage '.concat(cls, '"><div class="krings" aria-hidden="true">').concat("<i></i>".repeat(6), '</div><h3 class="ktape">').concat(title, '</h3><p class="kpage-sub">').concat(sub ? sub + " · " : "").concat(n, " / ").concat(list.length, '</p><div class="kalbum friends">').concat(list.map(cell).join(""), '</div><span class="kpage-no" aria-hidden="true"></span></section>');
     };
     const total = k.album.filter((f) => KS().includes(f)).length;
-    $("#kids").innerHTML = kidsHeader(true) + '<button class="kfab-play" data-k="listen" aria-label="Jouer"><img src="kid/home/play4.webp" alt=""><span>Jouer !</span></button><div class="kbook-cover"><span class="kcover-gem">💖</span><b>Mon livre de stickers</b><small>나의 스티커북 · '.concat(total, " / ").concat(KS().length, "</small></div>\n    ").concat(page("💖 Mes amies", "", KID_FRIENDS), "\n    ").concat(page("👑 Les princesses", "niveau plus difficile", KID_PRINCESS), "\n    ").concat(page("✨ Les princesses dorées", "encore plus difficile", KID_GOLD, "gold"), "\n    ").concat(page("🦄💎 Les princesses licornes", "le niveau le plus difficile", KID_DIAM, "diam"), "\n    ").concat(page("🐉 RARE animals", "parfois en cadeau quand tu gagnes", KID_RARE, "rare"), '\n    <p class="khint">Chaque partie gagnée donne un nouveau sticker. Les ').concat(KID_FRIENDS.length, " amies arrivent d’abord, puis les ").concat(KID_PRINCESS.length, " princesses avec des parties plus difficiles : 4 images et plus de mots difficiles, puis encore plus de mots difficiles et une aide qui arrive plus tard à partir de la 16ᵉ princesse. Une partie = 10 bonnes réponses = 10 étoiles. Enfin, les ").concat(KID_GOLD.length, " princesses dorées : il faut 15 étoiles par partie pour en gagner une. Et pour finir, les ").concat(KID_DIAM.length, " princesses licornes diamant, avec 18 étoiles par partie.</p>");
+    $("#kids").innerHTML = kidsHeader(true) + '<button class="kfab-play" data-k="listen" aria-label="Jouer"><img src="kid/home/play4.webp" alt=""><span>Jouer !</span></button><div class="kbook-cover" style="--p:'.concat(Math.round(total / KS().length * 100), '%"><span class="kcover-gem">💖</span><b>Mon livre de stickers</b><small>나의 스티커북 · ').concat(total, " / ").concat(KS().length, '</small><i class="kcover-bar" aria-hidden="true"></i></div>\n    ').concat(page("💖 Mes amies", "", KID_FRIENDS), "\n    ").concat(page("👑 Les princesses", "niveau plus difficile", KID_PRINCESS), "\n    ").concat(page("✨ Les princesses dorées", "encore plus difficile", KID_GOLD, "gold"), "\n    ").concat(page("🦄💎 Les princesses licornes", "le niveau le plus difficile", KID_DIAM, "diam"), "\n    ").concat(page("🐉 RARE animals", "parfois en cadeau quand tu gagnes", KID_RARE, "rare"), '\n    <p class="khint">Chaque partie gagnée donne un nouveau sticker. Les ').concat(KID_FRIENDS.length, " amies arrivent d’abord, puis les ").concat(KID_PRINCESS.length, " princesses avec des parties plus difficiles : 4 images et plus de mots difficiles, puis encore plus de mots difficiles et une aide qui arrive plus tard à partir de la 16ᵉ princesse. Une partie = 10 bonnes réponses = 10 étoiles. Enfin, les ").concat(KID_GOLD.length, " princesses dorées : il faut 15 étoiles par partie pour en gagner une. Et pour finir, les ").concat(KID_DIAM.length, " princesses licornes diamant, avec 18 étoiles par partie.</p>");
   }
   const KID_FRIENDS_F = ["friends/a00", "friends/a01", "friends/a02", "friends/a03", "friends/a04", "friends/a05", "friends/a06", "friends/a07", "friends/a08", "friends/a09", "friends/a10", "friends/a11", "friends/a12", "friends/a13", "friends/a14", "friends/a15", "friends/a16", "friends/a17", "friends/a18", "friends/a19", "friends/a20", "friends/a21", "friends/a22"];
   let _ks = null;
@@ -7388,8 +7519,8 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
     { n: 10, opts: 3, hint: 2, hard: 3, label: "" },
     { n: 10, opts: 4, hint: 2, hard: 5, label: "👑 Niveau princesse" },
     { n: 10, opts: 4, hint: 3, hard: 7, label: "👑👑 Niveau grande princesse" },
-    { n: 15, opts: 4, hint: 3, hard: 10, label: "✨👑 Niveau princesse dorée" },
-    { n: 18, opts: 4, hint: 3, hard: 13, label: "🦄💎 Niveau princesse licorne diamant" }
+    { n: 15, opts: 5, move: 1, hint: 3, hard: 10, label: "✨👑 Niveau princesse dorée" },
+    { n: 18, opts: 6, move: 2, hint: 3, hard: 13, label: "🦄💎 Niveau princesse licorne diamant" }
   ];
   function tierFrom(al, L2) {
     const [FR, PR, GO] = L2;
@@ -7401,6 +7532,128 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
   function kidTier(k) {
     const al = k.album || [];
     return Math.max(tierFrom(al, G_TIERS[GENDER]), tierFrom(al, OLD_TIERS[GENDER]));
+  }
+  function kWinSteps(steps, delay) {
+    const T = INTRO_TXT[UIL] || INTRO_TXT.fr, N = NW_TXT[UIL] || NW_TXT.fr;
+    let i = -1;
+    const nav = $(".kstepnav"), btns = $(".kwinbtns"), fr = $(".kwc-prize");
+    if (!nav || !btns || !fr) return;
+    const end = () => {
+      nav.remove();
+      btns.classList.remove("kwait");
+      btns.classList.add("kshow");
+    };
+    const boom = (cols, n) => {
+      try {
+        const r = fr.getBoundingClientRect();
+        confettiAt(r.left + r.width / 2, r.top + r.height * 0.42, cols, n);
+      } catch (e) {
+      }
+    };
+    const show = (st) => {
+      fr.querySelectorAll(".kprize,.kf2-lab,.khunt-luck,.kstep").forEach((e) => e.remove());
+      const el = document.createElement("div");
+      el.className = "kstep";
+      if (st.k === "rare") {
+        const ri = RARITY_INFO[RARITY(+st.f.slice(-2))], nm = stickerName(st.f);
+        el.innerHTML = '<em class="kst-tag '.concat(ri.cls, '">').concat(esc(ri.name), '</em><img class="kst-img" src="').concat(kStickerSrc(st.f), '" alt=""><b class="kst-t">Animal rare !</b><p class="kst-p">').concat(esc(nm), "</p>");
+        try {
+          if (!playSnd("rare", 0.6)) sfx.levelUp();
+        } catch (e) {
+        }
+        boom(ri.cls === "r3" ? ["#ffd34d", "#fff2a8", "#ff8fbf", "#9fd8ff"] : ["#c9a4ff", "#9fd8ff", "#ff8fbf"], 120);
+        setTimeout(() => VOICE_IDX[LL] ? sayParts([SPL().wow, SPL().rare]) : say(LL === "ko" ? "우와! ".concat(ri.ko, " 동물! ").concat(nm, "!") : SPL().wow + " " + SPL().rare), _sndBuf.rare ? 1300 : 0);
+      } else if (st.k === "nw") {
+        const fw = steps.filter((x) => x.k === "w").map((x) => x.w);
+        el.innerHTML = '<em class="kst-tag">'.concat(fw.length, '</em><div class="kst-row">').concat(fw.slice(0, 4).map((w) => '<span class="kintro-mini">'.concat(kidPic(w), "</span>")).join(""), '</div><b class="kst-t">Nouveaux mots !</b><p class="kst-p">').concat(esc(N[0]), "</p>");
+        try {
+          sfx.badge();
+        } catch (e) {
+        }
+        boom(["#9fd8ff", "#ffd34d", "#ff8fbf"], 70);
+        if (clipFor(UIL, "G09")) sayGuide("G09");
+        else say(SPL().nw);
+      } else if (st.k === "w") {
+        const w = st.w;
+        el.innerHTML = '<div class="kst-pic">'.concat(kidPic(w), '</div><b class="kst-w" lang="').concat(LL, '">').concat(esc(tw(w)), '</b><p class="kst-p">').concat(esc(gl(w)), '</p><button class="kst-say" type="button" aria-label="').concat(esc(T[2]), '"><img src="kid/sky/speaker.webp" alt=""></button>');
+        setTimeout(() => sayBoth(w), 250);
+        el.querySelector(".kst-say").onclick = (e) => {
+          kSparkle(e.currentTarget, 8);
+          say(tw(w));
+        };
+        const pc = el.querySelector(".kst-pic");
+        pc.onclick = () => {
+          kSparkle(pc, 12);
+          pc.classList.remove("kbounce");
+          void pc.offsetWidth;
+          pc.classList.add("kbounce");
+          say(tw(w));
+        };
+      } else if (st.k === "ach") {
+        el.innerHTML = '<img class="kst-img" src="'.concat(achImg(st.a), '" alt=""><b class="kst-t">Nouveau succès !</b><p class="kst-p">').concat(esc(st.a.name), "</p>");
+        if (!playUi("chime", 0.55)) try {
+          sfx.badge();
+        } catch (e) {
+        }
+        boom(["#ffd34d", "#ff8fb3", "#8fd19e"], 90);
+        say(SPL().ach);
+      } else if (st.k === "tier") {
+        const t = st.t, img = t === 4 ? KID_DIAM[0] : t === 3 ? KID_GOLD[0] : KID_PRINCESS[t === 2 ? Math.floor(KID_PRINCESS.length / 2) : 0];
+        const tt = t === 4 ? "Niveau princesse licorne diamant !" : t === 3 ? "Niveau princesse dorée !" : t === 2 ? "Niveau grande princesse !" : "Niveau princesse !";
+        const sub = t === 4 ? "De nouvelles princesses licornes à gagner !" : t === 3 ? "De nouvelles princesses dorées à gagner !" : t === 2 ? "Encore plus de mots difficiles, et l’aide arrive plus tard." : "Maintenant 4 images et des mots plus difficiles. Tu peux le faire !";
+        el.innerHTML = '<img class="kst-img" src="'.concat(kStickerSrc(img), '" alt=""><b class="kst-t">').concat(tt, '</b><p class="kst-p">').concat(sub, "</p>");
+        try {
+          sfx.levelUp();
+        } catch (e) {
+        }
+        boom(t === 4 ? ["#b9f2ff", "#ffffff", "#d7b8ff", "#ff9fd0"] : ["#ffd34d", "#fff2a8", "#ff8fb3"], 140);
+        if (t >= 3) say(GENDER === "m" ? t === 4 ? "우와! 이제 황금 영웅이야!" : "우와! 이제 로봇 영웅이야!" : t === 4 ? "우와! 이제 다이아몬드 유니콘 공주님이야!" : "우와! 이제 황금 공주님이야!");
+        else if (GENDER === "m" && clipFor(LL, "E06B")) sayParts(["E06B"]);
+        else say(GENDER === "m" ? LL === "ko" ? "우와! 이제 영웅이야!" : SPL().wow + " " + SPL().best : LL !== "ko" ? SPL().lvl : t === 2 ? "우와! 이제 큰 공주님이야!" : "우와! 이제 공주님이야! 조금 더 어려워!");
+      } else if (st.k === "hunt") {
+        el.innerHTML = '<img class="kst-img" src="'.concat(kStickerSrc(KID_DIAM[KID_DIAM.length - 1]), '" alt=""><b class="kst-t">Bravo ! ').concat(GENDER === "m" ? "Tu as tous les héros dorés !" : "Tu as toutes les princesses licornes !", '</b><p class="kst-p">Maintenant, la chasse aux animaux rares commence ! Joue pour les trouver.</p>');
+        try {
+          sfx.levelUp();
+        } catch (e) {
+        }
+        boom(["#b9f2ff", "#ffffff", "#d7b8ff", "#ff9fd0", "#ffd34d"], 160);
+        say(LL === "ko" ? "우와! 정말 대단해! 이제 희귀 동물을 찾아보자!" : SPL().wow + " " + SPL().best);
+      }
+      fr.appendChild(el);
+      try {
+        kFitText();
+      } catch (e) {
+      }
+    };
+    const next2 = () => {
+      tone(784, 0, 0.12, "sine", 0.06);
+      i++;
+      if (i < steps.length) show(steps[i]);
+      if (i >= steps.length - 1) end();
+    };
+    nav.querySelector(".kstep-next").innerHTML = "".concat(esc(T[3]), " <span>▶</span>");
+    nav.querySelector(".kstep-next").onclick = next2;
+    if (!steps.length) {
+      setTimeout(end, delay);
+      nav.classList.add("kwait");
+      return;
+    }
+    nav.classList.add("kwait");
+    setTimeout(() => nav.classList.remove("kwait"), delay);
+  }
+  function kidHuntPopup() {
+    const el = document.createElement("div");
+    el.className = "kachpop khuntpop";
+    el.innerHTML = '<span class="krays"></span><img src="'.concat(kStickerSrc(KID_DIAM[KID_DIAM.length - 1]), '" alt=""><b>Bravo ! ').concat(GENDER === "m" ? "Tu as tous les héros dorés !" : "Tu as toutes les princesses licornes !", "</b><small>Maintenant, la chasse aux animaux rares commence ! Joue pour les trouver.</small>");
+    document.body.appendChild(el);
+    try {
+      sfx.levelUp();
+      kPopBoom(el, ["#b9f2ff", "#ffffff", "#d7b8ff", "#ff9fd0", "#ffd34d"], 220);
+    } catch (e) {
+    }
+    say(LL === "ko" ? "우와! 정말 대단해! 이제 희귀 동물을 찾아보자!" : SPL().wow + " " + SPL().best);
+    el.onclick = () => el.remove();
+    setTimeout(() => el.remove(), 6e3);
   }
   function kidTierPopup(t) {
     const el = document.createElement("div");
@@ -8450,7 +8703,7 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
   function musLevel() {
     return soundOn ? MUS_BASE * musStep / 5 : 0;
   }
-  const MUS_FILES = { menu: ["snd/m_menu.mp3"], quiz: ["snd/m_quiz1.mp3", "snd/m_quiz2.mp3", "snd/m_quiz3.mp3"] };
+  const MUS_FILES = { menu: ["snd/m_menu.mp3"], quiz: ["snd/m_quiz1.mp3", "snd/m_quiz2.mp3", "snd/m_quiz3.mp3", "snd/m_quiz4.mp3", "snd/m_quiz5.mp3"] };
   let _musLastQuiz = -1, _musEl = null, _musNode = null, _musGen = 0, _musReady = false, _musFadeT = 0;
   const MUS_WA = /iPad|iPhone|iPod/.test(navigator.userAgent) || navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
   function musEl() {
@@ -9935,6 +10188,624 @@ html[data-mode="kids"] body .kpuffy.kp-ink,html[data-mode="kids"] body #kids .kp
   syncLangBtns();
   uiTrTree(document.body);
   initAI();
+  (() => {
+    let box = null, B2 = [], R = 60, raf = 0, last = 0, hits = 0, cv = null, cx = null, DPR = 1, G2 = 0, bad = 0, prev = null;
+    const N = 14, UX = [], UY = [], IMG = {};
+    for (let i = 0; i < N; i++) {
+      const a = i / N * Math.PI * 2;
+      UX.push(Math.cos(a));
+      UY.push(Math.sin(a));
+    }
+    const css = document.createElement("style");
+    css.textContent = "html.kquiz #kids .kopts.kphys:not(.kready) .kopt{opacity:0}html.kquiz #kids .kopts.kphys{display:block!important;position:relative!important;grid-template-columns:none!important;translate:none!important}html.kquiz #kids .kopts.kphys .kopt{position:absolute!important;margin:0!important;transition:none!important;z-index:1}html.kquiz #kids .kopts.kphys .kopt:not(.kwrong),html.kquiz #kids .kopts.kphys .kopt:nth-child(n):not(.kwrong){animation:none!important;translate:none!important}html.kquiz #kids .kopts.kphys.ksoft .kopt.ksb:not(.kwrong):not(.kright){background:none!important;filter:none!important}html.kquiz #kids .kopts.kphys .kopt.kswap>*{animation:kSwapIn .5s cubic-bezier(.3,1.6,.5,1) both}@keyframes kSwapIn{0%{opacity:0;transform:scale(.25) rotate(-12deg)}100%{opacity:1;transform:none}}.kbubcv{position:absolute;left:0;top:0;pointer-events:none;z-index:0}";
+    document.head.appendChild(css);
+    function img(url) {
+      if (!IMG[url]) {
+        const im = new Image();
+        im.decoding = "async";
+        im.src = url;
+        IMG[url] = im;
+      }
+      return IMG[url];
+    }
+    function snap() {
+      if (!B2.length) return;
+      const keep = B2.filter((b) => !b.el.classList.contains("kright"));
+      prev = keep.length < B2.length && typeof K !== "undefined" && K.round ? { round: K.round, R, W: B2[0].W, H: B2[0].H, list: keep.map((b) => ({ im: b.im, x: b.x, y: b.y, vx: b.vx, vy: b.vy, kv: b.kv, r: b.r, rv: b.rv, wob: b.wob, wph: b.wph, th: b.th })) } : null;
+      B2 = [];
+    }
+    function setup() {
+      const k = document.querySelector("#kids .kopts.kphys");
+      if (!k || k === box) return;
+      box = k;
+      if (B2.length && !document.body.contains(B2[0].el)) snap();
+      const opts = [...k.querySelectorAll(".kopt")];
+      if (!opts.length) return;
+      const pbot = parseFloat(getComputedStyle(k).paddingBottom) || 0, H = Math.max(220, k.clientHeight - pbot - 4);
+      const Y0 = 0, W = k.clientWidth || innerWidth;
+      R = Math.max(40, Math.min(W * 0.145, (H - Y0) * 0.16, 74)) * 0.96;
+      const BX = 2 * R / 0.885;
+      DPR = Math.min(2, devicePixelRatio || 1);
+      try {
+        G2 = Math.min(1, (kidsState().goldRounds || 0) / 29);
+      } catch (e) {
+        G2 = 0;
+      }
+      cv = document.createElement("canvas");
+      cv.className = "kbubcv";
+      cv.width = Math.round(W * DPR);
+      cv.height = Math.round(k.clientHeight * DPR);
+      cv.style.width = W + "px";
+      cv.style.height = k.clientHeight + "px";
+      k.insertBefore(cv, k.firstChild);
+      cx = cv.getContext("2d");
+      k.classList.add("ksoft");
+      const sp = speed(), pos = [], P = prev && prev.round === K.round && Math.abs(prev.R - R) < 1 && Math.abs(prev.W - W) < 2 && prev.list.length < opts.length ? prev.list.slice() : null;
+      prev = null;
+      const now = performance.now(), born = [];
+      B2 = opts.map((el, i) => {
+        if (P && P.length && i < opts.length) {
+          const q = P.splice(Math.floor(Math.random() * P.length), 1)[0];
+          el.style.setProperty("width", BX + "px", "important");
+          el.style.setProperty("height", BX + "px", "important");
+          el.style.setProperty("scale", "none", "important");
+          el._bx = BX;
+          if (q.im) el.style.setProperty("--ob", "url(".concat(q.im.getAttribute("src"), ")"));
+          const b2 = { el, im: q.im, x: q.x, y: q.y, kv: q.kv, vx: q.vx, vy: q.vy, W, H, Y0, r: q.r, rv: q.rv, lim: new Float32Array(N), wob: q.wob, wph: q.wph, th: q.th, g: 1 };
+          pos.push([q.x, q.y]);
+          el.classList.add("kswap");
+          if (q.im && q.im.complete && q.im.naturalWidth) el.classList.add("ksb");
+          return b2;
+        }
+        if (P) born.push(i);
+        el.style.setProperty("width", BX + "px", "important");
+        el.style.setProperty("height", BX + "px", "important");
+        el.style.setProperty("scale", "none", "important");
+        el._bx = BX;
+        let x, y, t = 0;
+        if (P) {
+          let best = -1;
+          for (let n = 0; n < 60; n++) {
+            const tx = R + Math.random() * (W - 2 * R), ty = Y0 + R + Math.random() * (H - Y0 - 2 * R), d = Math.min(...pos.map((p) => Math.hypot(p[0] - tx, p[1] - ty)), 1e9);
+            if (d > best) {
+              best = d;
+              x = tx;
+              y = ty;
+            }
+          }
+        } else do {
+          x = R + Math.random() * (W - 2 * R);
+          y = Y0 + R + Math.random() * (H - Y0 - 2 * R);
+          t++;
+        } while (t < 300 && pos.some((p) => Math.hypot(p[0] - x, p[1] - y) < 2.1 * R));
+        pos.push([x, y]);
+        const a = Math.random() * Math.PI * 2, v = sp * (0.75 + Math.random() * 0.5);
+        const m = (getComputedStyle(el).getPropertyValue("--ob") || "").match(/url\(\s*["']?([^"')]+)/), im = m ? img(m[1]) : null;
+        const b = { el, im, x, y, kv: 0.975 + Math.random() * 0.05, vx: Math.cos(a) * v, vy: Math.sin(a) * v, W, H, Y0, r: new Float32Array(N), rv: new Float32Array(N), lim: new Float32Array(N), g: P ? 0 : 1, born: P ? now : 0 };
+        if (im) {
+          const on = () => el.classList.add("ksb");
+          im.complete && im.naturalWidth ? on() : im.addEventListener("load", on, { once: true });
+        }
+        return b;
+      });
+      for (const b of B2) {
+        const h = BX / 2, st = b.el.style;
+        st.setProperty("left", "0px", "important");
+        st.setProperty("top", "0px", "important");
+        st.setProperty("will-change", "transform");
+        b.mv = 1;
+        st.setProperty("transform", "translate3d(".concat((b.x - h).toFixed(2), "px,").concat((b.y - h).toFixed(2), "px,0) scale(").concat(b.g, ")"), "important");
+      }
+      setTimeout(() => B2.forEach((b) => b.el.classList.remove("kswap")), 650);
+      if (born.length) try {
+        tone(1320, 0, 0.09, "sine", 0.05);
+        tone(1760, 0.07, 0.14, "sine", 0.045);
+        tone(2350, 0.15, 0.18, "sine", 0.03);
+      } catch (e) {
+      }
+      k.classList.add("kready");
+      if (!raf) {
+        last = 0;
+        raf = requestAnimationFrame(step);
+      }
+    }
+    function speed() {
+      const R0 = typeof K !== "undefined" && K.round || {}, mv = (KID_TIERS[R0.tier] || {}).move || 1;
+      const base = 36 * (mv >= 2 ? 1.2 : 1);
+      if (kMode() !== "hard") return base * (R / 70);
+      const g = G2, tl = R0.tl == null ? 6e4 : R0.tl, m = Math.min(1, Math.max(0, 1 - tl / 6e4));
+      return base * (1 + 0.2 * g) * (1 + 0.2 * m) * (R / 70);
+    }
+    function hit(b, nx, ny, f) {
+      if (f < 0.06) return;
+      const g = Math.max(f, 0.2) * R * 3.2;
+      for (let i = 0; i < N; i++) {
+        const d = UX[i] * nx + UY[i] * ny;
+        if (d > 0.3) b.rv[i] -= g * d * d;
+        else if (d < -0.3) b.rv[i] -= g * 0.35 * d * d;
+      }
+      b.wob = Math.min(1.2, (b.wob || 0) + f * 1.3);
+      if (b.wph == null) b.wph = Math.random() * 6.28;
+    }
+    function plane(b, nx, ny, dd) {
+      for (let i = 0; i < N; i++) {
+        const d = UX[i] * nx + UY[i] * ny;
+        if (d > 0.05) {
+          const m = dd / d - R;
+          if (m < b.lim[i]) b.lim[i] = m;
+        }
+      }
+    }
+    function ring(b, dt) {
+      const r = b.r, v = b.rv, l = b.lim;
+      let mean = 0;
+      for (let i = 0; i < N; i++) mean += r[i];
+      mean /= N;
+      for (let i = 0; i < N; i++) {
+        const a = -260 * r[i] + 420 * (r[(i + 1) % N] + r[(i + N - 1) % N] - 2 * r[i]) - 900 * mean - 9 * v[i];
+        v[i] += a * dt;
+      }
+      for (let i = 0; i < N; i++) {
+        r[i] += v[i] * dt;
+        if (r[i] > l[i]) {
+          r[i] = l[i];
+          if (v[i] > 0) v[i] = 0;
+        }
+        if (r[i] < -0.34 * R) {
+          r[i] = -0.34 * R;
+          if (v[i] < 0) v[i] = 0;
+        } else if (r[i] > 0.2 * R) {
+          r[i] = 0.2 * R;
+          if (v[i] > 0) v[i] = 0;
+        }
+      }
+    }
+    function tri(im, s0x, s0y, s1x, s1y, s2x, s2y, d0x, d0y, d1x, d1y, d2x, d2y) {
+      const den = (s1x - s0x) * (s2y - s0y) - (s2x - s0x) * (s1y - s0y);
+      if (!den) return;
+      const a = ((d1x - d0x) * (s2y - s0y) - (d2x - d0x) * (s1y - s0y)) / den, c = ((d2x - d0x) * (s1x - s0x) - (d1x - d0x) * (s2x - s0x)) / den;
+      const bb = ((d1y - d0y) * (s2y - s0y) - (d2y - d0y) * (s1y - s0y)) / den, dd = ((d2y - d0y) * (s1x - s0x) - (d1y - d0y) * (s2x - s0x)) / den;
+      const e = d0x - a * s0x - c * s0y, f = d0y - bb * s0x - dd * s0y;
+      const mx = (d1x + d2x) / 2 - d0x, my = (d1y + d2y) / 2 - d0y, ex = (d1x - d2x) * 0.03, ey = (d1y - d2y) * 0.03;
+      cx.save();
+      try {
+        cx.beginPath();
+        cx.moveTo(d0x - mx * 0.03, d0y - my * 0.03);
+        cx.lineTo(d1x + ex + mx * 0.02, d1y + ey + my * 0.02);
+        cx.lineTo(d2x - ex + mx * 0.02, d2y - ey + my * 0.02);
+        cx.closePath();
+        cx.clip();
+        cx.transform(a, bb, c, dd, e, f);
+        cx.drawImage(im, 0, 0);
+      } finally {
+        cx.restore();
+      }
+    }
+    let SH = null;
+    function shadow() {
+      if (SH) return SH;
+      const c = document.createElement("canvas");
+      c.width = c.height = 64;
+      const g2 = c.getContext("2d"), gr = g2.createRadialGradient(32, 32, 17, 32, 32, 32);
+      gr.addColorStop(0, "rgba(20,0,40,.22)");
+      gr.addColorStop(1, "rgba(20,0,40,0)");
+      g2.fillStyle = gr;
+      g2.fillRect(0, 0, 64, 64);
+      return SH = c;
+    }
+    function flash(b) {
+      const age = performance.now() - b.born, u = age / 1200;
+      if (u >= 1) {
+        b.born = 0;
+        b.parts = null;
+        return;
+      }
+      if (!b.parts) {
+        b.fx0 = b.x;
+        b.fy0 = b.y;
+        b.parts = [];
+        for (let i = 0; i < 10; i++) {
+          const a = i / 10 * 6.2832 + Math.random() * 0.4, sp = R * (1.4 + Math.random() * 1.6), bub = false;
+          b.parts.push({ a, sp, bub, f: bub ? KBUB[i % 4] : null, c: i % 5, s: bub ? R * (0.22 + Math.random() * 0.22) : R * (0.03 + Math.random() * 0.025), rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 6, d: Math.random() * 0.15 });
+        }
+      }
+      const x0 = b.fx0, y0 = b.fy0, PAL = ["255,196,230", "222,204,255", "196,232,255", "200,246,224", "255,242,198"];
+      cx.save();
+      cx.globalCompositeOperation = "source-over";
+      const fu = Math.min(1, age / 650), fa = Math.min(1, (1 - fu) * (1 - fu) * 1.3), fr = R * (0.5 + 2.4 * fu), g = cx.createRadialGradient(x0, y0, 0, x0, y0, fr);
+      g.addColorStop(0, "rgba(255,255,255,".concat(fa * 0.95, ")"));
+      g.addColorStop(0.22, "rgba(250,180,225,".concat(fa * 0.75, ")"));
+      g.addColorStop(0.42, "rgba(205,180,255,".concat(fa * 0.6, ")"));
+      g.addColorStop(0.62, "rgba(165,215,250,".concat(fa * 0.42, ")"));
+      g.addColorStop(0.82, "rgba(175,235,205,".concat(fa * 0.22, ")"));
+      g.addColorStop(1, "rgba(250,230,175,0)");
+      cx.fillStyle = g;
+      cx.beginPath();
+      cx.arc(x0, y0, fr, 0, 6.2832);
+      cx.fill();
+      cx.globalCompositeOperation = "screen";
+      const ra = Math.max(0, 1 - age / 800);
+      if (ra > 0) {
+        cx.translate(x0, y0);
+        cx.rotate(age / 900);
+        for (let i = 0; i < 10; i++) {
+          cx.rotate(6.2832 / 10);
+          const L2 = R * (1.2 + 1.6 * (1 - ra)), w = R * 0.16 * ra;
+          const lg = cx.createLinearGradient(0, 0, L2, 0);
+          lg.addColorStop(0, "rgba(255,255,255,".concat(ra * 0.95, ")"));
+          lg.addColorStop(1, "rgba(".concat(PAL[i % 5], ",0)"));
+          cx.fillStyle = lg;
+          cx.beginPath();
+          cx.moveTo(R * 0.3, -w);
+          cx.lineTo(L2, 0);
+          cx.lineTo(R * 0.3, w);
+          cx.closePath();
+          cx.fill();
+        }
+        cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      }
+      cx.globalCompositeOperation = "source-over";
+      for (const [d0, k] of [[0, 1], [140, 0.7]]) {
+        const ru = Math.min(1, Math.max(0, (age - d0) / 700));
+        if (ru <= 0 || ru >= 1) continue;
+        const al = (1 - ru) * k;
+        let st;
+        if (cx.createConicGradient) {
+          st = cx.createConicGradient(age / 300, x0, y0);
+          ["246,160,214", "190,165,250", "150,205,245", "160,225,195", "245,215,150", "246,160,214"].forEach((c, i, A) => st.addColorStop(i / (A.length - 1), "rgba(".concat(c, ",").concat(al, ")")));
+        } else st = "rgba(240,225,255,".concat(al, ")");
+        cx.strokeStyle = st;
+        cx.lineWidth = 6 * (1 - ru) + 1;
+        cx.beginPath();
+        cx.arc(x0, y0, R * (0.9 + 1.7 * ru), 0, 6.2832);
+        cx.stroke();
+      }
+      for (const q of b.parts) {
+        const pu = Math.min(1, Math.max(0, (u - q.d) / (1 - q.d)));
+        if (pu <= 0) continue;
+        const e2 = 1 - Math.pow(1 - pu, 3), px = x0 + Math.cos(q.a) * q.sp * e2, py = y0 + Math.sin(q.a) * q.sp * e2 - R * 0.5 * pu, al = pu > 0.6 ? (1 - pu) / 0.4 : 1, pop = pu < 0.12 ? pu / 0.12 * 1.15 : 1;
+        cx.globalAlpha = Math.max(0, al);
+        if (q.bub) {
+          const z = q.s * 2 * pop;
+          cx.drawImage(KBUB_IMG, q.f * 256, 0, 256, 256, px - z / 2, py - z / 2, z, z);
+        } else {
+          const z = q.s * pop * (1 + 0.25 * Math.sin(age / 60 + q.rot));
+          cx.save();
+          cx.translate(px, py);
+          cx.rotate(q.rot + q.vr * pu);
+          cx.fillStyle = "#fff";
+          cx.shadowColor = "rgb(".concat(["246,160,214", "190,165,250", "150,205,245", "160,225,195", "245,215,150"][q.c], ")");
+          cx.shadowBlur = z * 1.2;
+          cx.beginPath();
+          cx.moveTo(0, -z * 2);
+          cx.quadraticCurveTo(0, 0, z * 2, 0);
+          cx.quadraticCurveTo(0, 0, 0, z * 2);
+          cx.quadraticCurveTo(0, 0, -z * 2, 0);
+          cx.quadraticCurveTo(0, 0, 0, -z * 2);
+          cx.fill();
+          cx.restore();
+        }
+      }
+      cx.globalAlpha = 1;
+      cx.restore();
+    }
+    function art(b) {
+      const px = Math.max(8, Math.ceil(2 * R / 0.885 * DPR)), key = b.im.src + "|" + px;
+      if (b.art && b.artKey === key) return b.art;
+      const c = document.createElement("canvas");
+      c.width = c.height = px;
+      c.getContext("2d").drawImage(b.im, 0, 0, px, px);
+      b.art = c;
+      b.artKey = key;
+      return c;
+    }
+    function draw(b) {
+      const im = art(b), iw = im.width, ih = im.height, sx = iw / 2, sy = ih / 2, sr = iw / 2, k = 1 / 0.885, r = b.r;
+      let ax = 0, ay = 0, ar = 0;
+      for (let i = 0; i < N; i++) ar += r[i];
+      ar = R + ar / N;
+      const sh = shadow(), sw = ar * 2.16, shh = sw * 0.82;
+      cx.drawImage(sh, b.x - sw / 2, b.y + R * 0.16 - shh / 2, sw, shh);
+      let mx = 0;
+      for (let i = 0; i < N; i++) {
+        const q = Math.abs(r[i]);
+        if (q > mx) mx = q;
+      }
+      if (mx < 0.4) {
+        const h = R * k;
+        cx.drawImage(im, b.x - h, b.y - h, 2 * h, 2 * h);
+        return;
+      }
+      for (let i = 0; i < N; i++) {
+        const j = (i + 1) % N, ri = (R + r[i]) * k, rj = (R + r[j]) * k;
+        tri(im, sx, sy, sx + UX[i] * sr, sy + UY[i] * sr, sx + UX[j] * sr, sy + UY[j] * sr, b.x, b.y, b.x + UX[i] * ri, b.y + UY[i] * ri, b.x + UX[j] * rj, b.y + UY[j] * rj);
+      }
+    }
+    function step(t) {
+      raf = 0;
+      if (!box || !document.body.contains(box)) {
+        snap();
+        box = null;
+        cv = cx = null;
+        return;
+      }
+      raf = requestAnimationFrame(step);
+      const dt = Math.min(0.033, (t - last) / 1e3 || 0);
+      last = t;
+      const sp = speed();
+      let ob = null;
+      {
+        const spk = document.querySelector("#kids .kspeak .ksky-spk") || document.querySelector("#kids .kspeak");
+        if (spk) {
+          const r = spk.getBoundingClientRect(), o = box.getBoundingClientRect(), ix = r.width * 0.12, iy = r.height * 0.14;
+          ob = { l: r.left - o.left + ix, r: r.right - o.left - ix, t: r.top - o.top + iy, b: r.bottom - o.top - iy };
+        }
+      }
+      for (const b of B2) {
+        b.lim.fill(1e9);
+        if (b.el.classList.contains("kright")) continue;
+        const v = Math.hypot(b.vx, b.vy) || 1, k = 1 + (sp * b.kv / v - 1) * Math.min(1, dt * 0.8);
+        b.vx *= k;
+        b.vy *= k;
+        if (b.wob > 0.01) {
+          b.wph += dt * 6.5;
+          const tr = b.wob * 1.8 * Math.cos(b.wph) * dt, cs = Math.cos(tr), sn = Math.sin(tr), vx = b.vx;
+          b.vx = vx * cs - b.vy * sn;
+          b.vy = vx * sn + b.vy * cs;
+          b.wob *= Math.exp(-1.3 * dt);
+        } else b.wob = 0;
+        b.x += b.vx * dt;
+        b.y += b.vy * dt;
+        const m = R * 0.9;
+        if (b.x < m) {
+          b.x = m;
+          if (b.vx < 0) {
+            hit(b, -1, 0, Math.min(1, -b.vx / 120));
+            b.vx = -b.vx;
+          }
+        }
+        if (b.x > b.W - m) {
+          b.x = b.W - m;
+          if (b.vx > 0) {
+            hit(b, 1, 0, Math.min(1, b.vx / 120));
+            b.vx = -b.vx;
+          }
+        }
+        if (b.y < b.Y0 + m) {
+          b.y = b.Y0 + m;
+          if (b.vy < 0) {
+            hit(b, 0, -1, Math.min(1, -b.vy / 120));
+            b.vy = -b.vy;
+          }
+        }
+        if (b.y > b.H - m) {
+          b.y = b.H - m;
+          if (b.vy > 0) {
+            hit(b, 0, 1, Math.min(1, b.vy / 120));
+            b.vy = -b.vy;
+          }
+        }
+        plane(b, -1, 0, b.x);
+        plane(b, 1, 0, b.W - b.x);
+        plane(b, 0, -1, b.y - b.Y0);
+        plane(b, 0, 1, b.H - b.y);
+        if (ob) {
+          const px = Math.max(ob.l, Math.min(b.x, ob.r)), py = Math.max(ob.t, Math.min(b.y, ob.b)), dx = b.x - px, dy = b.y - py, d = Math.hypot(dx, dy);
+          if (d < m) {
+            const nx = d ? dx / d : 0, ny = d ? dy / d : 1;
+            b.x = px + nx * m;
+            b.y = py + ny * m;
+            const vn = b.vx * nx + b.vy * ny;
+            if (vn < 0) {
+              b.vx -= 2 * vn * nx;
+              b.vy -= 2 * vn * ny;
+              hit(b, -nx, -ny, Math.min(1, -vn / 120));
+            }
+          }
+          if (d < R * 1.3) {
+            const nx = d ? dx / d : 0, ny = d ? dy / d : 1, dd = Math.hypot(b.x - px, b.y - py);
+            plane(b, -nx, -ny, dd);
+          }
+        }
+      }
+      for (let i = 0; i < B2.length; i++) for (let j = i + 1; j < B2.length; j++) {
+        const a = B2[i], c = B2[j];
+        if (a.el.classList.contains("kright") || c.el.classList.contains("kright")) continue;
+        const dx = c.x - a.x, dy = c.y - a.y, d = Math.hypot(dx, dy), min = 2 * R * 0.86;
+        if (d < min && d > 0) {
+          const nx = dx / d, ny = dy / d, ov = (min - d) / 2;
+          a.x -= nx * ov;
+          a.y -= ny * ov;
+          c.x += nx * ov;
+          c.y += ny * ov;
+          const rv = (c.vx - a.vx) * nx + (c.vy - a.vy) * ny;
+          if (rv < 0) {
+            a.vx += rv * nx;
+            a.vy += rv * ny;
+            c.vx -= rv * nx;
+            c.vy -= rv * ny;
+            const f = Math.min(1, -rv / 150);
+            hit(a, nx, ny, f);
+            hit(c, -nx, -ny, f);
+            if (f > 0.3 && typeof playBubPop === "function" && Date.now() - hits > 160) {
+              hits = Date.now();
+              try {
+                playBubPop(0.15 + f * 0.2);
+              } catch (e) {
+              }
+            }
+          }
+        }
+        const dd = Math.hypot(c.x - a.x, c.y - a.y);
+        if (dd < 2.3 * R && dd > 0) {
+          const nx = (c.x - a.x) / dd, ny = (c.y - a.y) / dd;
+          plane(a, nx, ny, dd / 2);
+          plane(c, -nx, -ny, dd / 2);
+        }
+      }
+      if (cx) {
+        if (cx.reset && bad) {
+          cx.reset();
+          bad = 0;
+        }
+        cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        cx.clearRect(0, 0, cv.width / DPR + 2, cv.height / DPR + 2);
+      }
+      for (const b of B2) {
+        if (b.el.classList.contains("kright")) {
+          if (b.mv) {
+            const h2 = b.el._bx / 2;
+            b.el.style.setProperty("left", b.x - h2 + "px", "important");
+            b.el.style.setProperty("top", b.y - h2 + "px", "important");
+            b.el.style.removeProperty("transform");
+            b.mv = 0;
+          }
+          b.r.fill(0);
+          b.rv.fill(0);
+          continue;
+        }
+        if (b.g < 1) {
+          const u = Math.min(1, (performance.now() - b.born) / 520), c1 = 1.9;
+          b.g = u >= 1 ? 1 : 1 + (c1 + 1) * Math.pow(u - 1, 3) + c1 * Math.pow(u - 1, 2);
+        }
+        const wrong = b.el.classList.contains("kwrong");
+        if (wrong) {
+          b.r.fill(0);
+          b.rv.fill(0);
+        } else ring(b, dt);
+        let c2 = 0, s2 = 0;
+        for (let i = 0; i < N; i++) {
+          c2 += b.r[i] * (UX[i] * UX[i] - UY[i] * UY[i]);
+          s2 += b.r[i] * 2 * UX[i] * UY[i];
+        }
+        c2 *= 2 / N;
+        s2 *= 2 / N;
+        let sq = Math.min(0.22, Math.hypot(c2, s2) / R);
+        sq = sq < 0.012 ? 0 : sq - 0.012;
+        b.sq = (b.sq || 0) + (sq - (b.sq || 0)) * Math.min(1, dt * 14);
+        if (b.sq < 2e-3) b.sq = 0;
+        sq = b.sq;
+        const an = sq ? b.an = Math.atan2(s2, c2) * 28.6479 : b.an || 0;
+        const h = b.el._bx / 2, st = b.el.style, X = (b.x - h).toFixed(2) + "px", Y = (b.y - h).toFixed(2) + "px";
+        if (wrong) {
+          st.setProperty("left", X, "important");
+          st.setProperty("top", Y, "important");
+          st.removeProperty("transform");
+          b.mv = 0;
+        } else {
+          if (!b.mv) {
+            st.setProperty("left", "0px", "important");
+            st.setProperty("top", "0px", "important");
+            st.setProperty("will-change", "transform");
+            b.mv = 1;
+          }
+          st.setProperty("transform", "translate3d(".concat(X, ",").concat(Y, ",0) rotate(").concat(an.toFixed(1), "deg) scale(").concat(((1 + sq) * b.g).toFixed(3), ",").concat(((1 - sq * 0.9) * b.g).toFixed(3), ") rotate(").concat((-an + (b.wob || 0) * 7 * Math.sin(b.wph || 0)).toFixed(1), "deg)"), "important");
+          if (cx && b.im && b.im.naturalWidth && b.el.classList.contains("ksb")) {
+            try {
+              if (b.g < 0.999) {
+                cx.save();
+                cx.translate(b.x, b.y);
+                cx.scale(b.g, b.g);
+                cx.translate(-b.x, -b.y);
+                try {
+                  draw(b);
+                } finally {
+                  cx.restore();
+                }
+              } else draw(b);
+            } catch (e) {
+              bad = 1;
+              b.el.classList.remove("ksb");
+            }
+          }
+          if (cx && b.born) flash(b);
+        }
+      }
+    }
+    const kd = document.getElementById("kids");
+    if (kd) new MutationObserver(() => {
+      if (typeof K !== "undefined" && K.screen === "quiz") setTimeout(setup, 30);
+    }).observe(kd, { childList: true, subtree: true });
+    addEventListener("resize", () => {
+      if (!box) return;
+      box = null;
+      const o = document.querySelector("#kids .kbubcv");
+      o && o.remove();
+      setup();
+    });
+  })();
+  (() => {
+    const LIM = 6e4;
+    const TR = { en: ["Time’s up!", "Try again to win your sticker!"], es: ["¡Se acabó el tiempo!", "¡Inténtalo otra vez para ganar tu pegatina!"], it: ["Tempo scaduto!", "Riprova per vincere il tuo sticker!"], pt: ["O tempo acabou!", "Tente de novo para ganhar sua figurinha!"], ko: ["시간 끝!", "다시 해서 스티커를 받아요!"], ja: ["じかんぎれ！", "もういちどあそんでシールをもらおう！"], zh: ["时间到！", "再玩一次，赢得你的贴纸！"] };
+    try {
+      for (const l in TR) if (UI_D[l]) {
+        UI_D[l]["Temps écoulé !"] = TR[l][0];
+        UI_D[l]["Rejoue pour gagner ton sticker !"] = TR[l][1];
+      }
+    } catch (e) {
+    }
+    const css = document.createElement("style");
+    css.textContent = '.ktimer{position:fixed;z-index:40;right:12px;transform:translateY(-50%);display:flex;align-items:center;gap:6px;padding:5px 13px 5px 9px;border-radius:999px;border:4px solid transparent;background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,0) 50%) padding-box,linear-gradient(100deg,#ffe4f4,#eedcff 50%,#dcd6ff) padding-box,linear-gradient(100deg,#f04fd8,#a24cf0 48%,#4a6cf5) border-box;box-shadow:inset 0 0 0 2px rgba(255,255,255,.85),0 4px 0 rgba(70,30,150,.5),0 8px 14px rgba(20,0,50,.25);font:400 1.05rem/1 "Mochiy Pop One","Jua","Varela Round",sans-serif;color:#6a24d6;pointer-events:none;font-variant-numeric:tabular-nums}.ktimer i{font-style:normal;font-size:1.1rem}.ktimer.low{color:#e8336f;animation:kTimerPulse .5s ease-in-out infinite alternate}.ktimer.low{background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,0) 50%) padding-box,linear-gradient(100deg,#ffe4ec,#ffdcef) padding-box,linear-gradient(100deg,#ff4f7b,#f04fd8) border-box}@keyframes kTimerPulse{to{transform:translateY(-50%) scale(1.12)}}.ktimeup{position:relative;z-index:6;max-width:440px;margin:20px auto 0;padding:0 14px;display:flex;flex-direction:column;gap:26px}.ktu-card{display:grid;justify-items:center;gap:8px;padding:20px 16px 18px;border-radius:36px;border:5px solid transparent;background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,0) 45%) padding-box,linear-gradient(100deg,#ffe4f4,#eedcff 50%,#dcd6ff) padding-box,linear-gradient(100deg,#f04fd8,#a24cf0 48%,#4a6cf5) border-box;box-shadow:inset 0 0 0 2px rgba(255,255,255,.85),0 5px 0 rgba(70,30,150,.55),0 12px 22px rgba(20,0,50,.35);animation:kTuIn .5s cubic-bezier(.3,1.6,.5,1) both}.ktu-t{font:400 1.5rem/1.15 "Mochiy Pop One","Jua",sans-serif!important;color:#6a24d6;-webkit-text-fill-color:#6a24d6;text-shadow:0 2px 0 #fff;text-align:center}.ktu-stars{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;max-width:100%}.ktu-stars span{filter:grayscale(1) brightness(.8) opacity(.45)}.ktu-stars span.on{filter:drop-shadow(0 0 5px rgba(255,200,80,.8))}.ktu-stars .kst-ic{width:24px;height:24px}.ktu-n{font-weight:800;color:#8a4fd8;font-size:.95rem}.ktu-sub{margin:0;text-align:center;color:#7b2d8e;font-weight:700}@keyframes kTuIn{from{transform:scale(.6);opacity:0}}';
+    document.head.appendChild(css);
+    let el = null, prev = 0;
+    function lose(R) {
+      R.lock = true;
+      R.timeUp = true;
+      K.screen = "timeup";
+      K.round = null;
+      const N = R.n || KID_ROUND, D = Math.max(0, Math.min(N, R.done || 0));
+      $("#kids").innerHTML = kidsHeader(true) + '<div class="ktimeup"><div class="ktu-card"><b class="ktu-t">Temps écoulé !</b>\n      <div class="ktu-stars" style="--n:'.concat(N, '">').concat(Array.from({ length: N }, (_, i) => '<span class="'.concat(i < D ? "on" : "", '"><img class="kst-ic" src="kid/nature/nature02.png" alt=""></span>')).join(""), '</div>\n      <small class="ktu-n">').concat(D, " / ").concat(N, '</small><p class="ktu-sub">Rejoue pour gagner ton sticker !</p></div>\n      <div class="kplay row2 khome kwinbtns"><button class="kbig" data-k="replay"><img class="khome-st" src="kid/home/play4.webp" alt=""><span>Encore !</span></button>\n      <button class="kbig alt2" data-k="album"><img class="khome-st" src="kid/home/stickers4.webp" alt=""><span>Mon album</span></button></div></div>');
+      try {
+        kFitText();
+      } catch (e) {
+      }
+      try {
+        tone(523, 0, 0.14, "triangle", 0.07);
+        tone(415, 0.16, 0.14, "triangle", 0.07);
+        tone(330, 0.32, 0.3, "triangle", 0.07);
+      } catch (e) {
+      }
+    }
+    setInterval(() => {
+      const now = performance.now(), dt = prev ? Math.min(500, now - prev) : 0;
+      prev = now;
+      const R = K.round, on = R && K.screen === "quiz" && kMode() === "hard";
+      if (!on) {
+        if (el) {
+          el.remove();
+          el = null;
+        }
+        return;
+      }
+      if (R.tl == null) R.tl = LIM;
+      if (!R.lock && !document.hidden) R.tl -= dt;
+      const spk = document.querySelector("#kids .kback") || document.querySelector("#kids .kspeak");
+      if (!spk) return;
+      if (!el || !document.body.contains(el)) {
+        el = document.createElement("div");
+        el.className = "ktimer";
+        el.setAttribute("aria-hidden", "true");
+        document.body.appendChild(el);
+      }
+      const r = spk.getBoundingClientRect();
+      el.style.top = r.top + r.height / 2 + "px";
+      const s = Math.max(0, Math.ceil(R.tl / 1e3)), txt = "<i>⏱</i>".concat(Math.floor(s / 60), ":").concat(String(s % 60).padStart(2, "0"));
+      if (el._t !== txt) {
+        el.innerHTML = txt;
+        el._t = txt;
+        if (s <= 10 && s > 0 && R.tl < LIM - 500) try {
+          tone(880, 0, 0.05, "sine", 0.04);
+        } catch (e) {
+        }
+      }
+      el.classList.toggle("low", s <= 10);
+      if (R.tl <= 0 && (R.done || 0) < (R.n || KID_ROUND)) {
+        el.remove();
+        el = null;
+        lose(R);
+      }
+    }, 100);
+  })();
 })();
 ;
 window.__stickooOK = 1;
