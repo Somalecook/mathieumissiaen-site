@@ -2366,7 +2366,8 @@ const put=async(i,o,newSel)=>{const prev=await p.evaluate(i=>window.__neo.S.blob
 if(!RESUME)await p.evaluate(()=>{const N=window.__neo;N.S.blobs=[];N.stop()});
 function mix(a,b,f){const h=x=>parseInt(x.slice(1),16),A=h(a),B=h(b),c=s=>((A>>s&255)+((B>>s&255)-(A>>s&255))*f)|0;return'#'+[16,8,0].map(s=>c(s).toString(16).padStart(2,'0')).join('')}
 const smallN=flat.length-NB,smallFrames=Math.ceil(smallN/2.2)+40;
-const per=Math.max(12,Math.min(70,Math.floor((TARGET-n-smallFrames-60)/NB)));log('per-big '+per+' small '+smallN);
+const pullFr=flat.slice(0,NB).reduce((a,b)=>a+(b.pulls&&b.pulls.length?b.pulls.length*9:0)+(b.pat?1:0),0);
+const per=Math.max(10,Math.min(70,Math.floor((TARGET-n-smallFrames-110-pullFr)/NB/1.16)));log('per-big '+per+' small '+smallN);
 let prevCol='#e48fb8';
 if(RESUME){n=RESUME;await p.evaluate(B=>{const N=window.__neo;N.S.blobs=B;N.S.sketch=[];N.drawSketch(true);N.select(B.length-1);N.renderNow()},flat.slice(0,NB));cur=[R.w*.6,R.h*.5]}
 for(let i=RESUME?NB:0;i<NB;i++){const T0=flat[i];const dup=i>0&&rnd()<.5;
@@ -2401,7 +2402,7 @@ const order=[];let pos=[0,0];const left=small.slice();while(left.length){let bi=
 // indices in the scene must stay in order, so blobs are placed into their final slots; empty slots are tiny invisible blobs until filled
 let slot=NB;order.forEach(s=>s.j=slot++);await p.evaluate(NB=>{window.__neo.S.blobs.length=NB},NB);
 let pending=[];fastSel=true;
-for(let k=0;k<order.length;){const per=1+Math.floor(rnd()*3);const batch=order.slice(k,k+per);k+=per;
+for(let k=0;k<order.length;){const need=Math.ceil((order.length-k)/Math.max(1,TARGET-90-n));const per=Math.max(need,1+Math.floor(rnd()*3));const batch=order.slice(k,k+per);k+=per;
   for(const pd of pending){await p.evaluate(([i,o])=>{window.__neo.S.blobs[i]=o},[pd.j,pd.b]);await addBox(pd.b)}
   pending=[];
   for(const s of batch){const o=JSON.parse(JSON.stringify(s.b));o.rx*=.55;o.ry*=.55;o.rz*=.55;await p.evaluate(([i,o])=>{window.__neo.S.blobs[i]=o},[s.j,o]);await addBox(s.b);pending.push(s)}
