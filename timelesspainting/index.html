@@ -6,7 +6,7 @@
 <meta property="og:title" content="Timeless Painting — Mathieu Missiaen"><meta property="og:url" content="https://mathieumissiaen.fr/timelesspainting/">
 <link rel="icon" type="image/png" href="/images/sticker.png">
 <style>:root{color-scheme:dark}body{margin:0;font:14px system-ui,sans-serif;background:#09090b}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
-
+<title>Timeless Painting</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 /* Layout: one-screen tool. Canvas stage on the left at 4:5, control rail on the right; stacks on phones. */
@@ -1141,78 +1141,36 @@ function outline(p){if(!msk)return null;const N=128,rmax=Math.max(p.rx,p.ry)*1.7
   return r.map((d,k)=>{const a=k/N*Math.PI*2;return[p.cx+Math.cos(a)*d,p.cy+Math.sin(a)*d]})}
 function ellipsePts(p){const N=96,R=-p.rot,cr=Math.cos(R),sr=Math.sin(R),o=[];
   for(let k=0;k<N;k++){const a=k/N*Math.PI*2,lx=p.rx*Math.cos(a),ly=p.ry*Math.sin(a);o.push([p.cx+lx*cr-ly*sr,p.cy+lx*sr+ly*cr])}return o}
-function drawBird(x,y,ang,flip,sc,flap,tint){
-  /* side silhouette facing +x; flap in [-1,1] swings the near wing up and down */
-  octx.save();octx.translate(x,y);octx.rotate(ang);octx.scale(sc,sc*flip);
-  octx.shadowColor='rgba(0,0,0,.35)';octx.shadowBlur=4;octx.shadowOffsetY=1.2*flip;
-  const g=octx.createLinearGradient(0,-7,0,4);g.addColorStop(0,'#ffffff');g.addColorStop(1,tint);
-  octx.fillStyle=g;
-  /* far wing (a touch darker, opposite phase) */
-  const wing=(w,fx)=>{octx.beginPath();octx.moveTo(1.4,-.8);octx.quadraticCurveTo(.2,-3.8*w,-2.2*fx,-4.6*w);octx.quadraticCurveTo(-4.4*fx,-5.4*w,-7.4*fx,-8*w);octx.quadraticCurveTo(-4.6*fx,-4.2*w,-3.2*fx,-3.4*w);octx.quadraticCurveTo(-2,-1.6*w,-1.8,-.2);octx.closePath();octx.fill()};
-  octx.globalAlpha*=.7;wing(-flap*.55+.15,.85);
-  octx.globalAlpha/=.75;
-  octx.beginPath();
-  octx.ellipse(-.3,0,4.6,1.9,0,0,Math.PI*2);                       /* body */
-  octx.moveTo(5.6,-.6);octx.arc(4.4,-.7,1.8,0,Math.PI*2);          /* head */
-  octx.moveTo(6.1,-1.1);octx.lineTo(8,-.6);octx.lineTo(6.1,-.1);   /* beak */
-  octx.moveTo(-4,-.4);octx.lineTo(-7.6,-2.4);octx.lineTo(-6.6,0);octx.lineTo(-7.6,2.2);octx.lineTo(-4,.5); /* tail */
-  octx.fill();
-  wing(flap*.85+.3,1);                                              /* near wing */
-  octx.shadowColor='transparent';octx.fillStyle='rgba(40,30,35,.75)';octx.beginPath();octx.arc(4.9,-1.1,.42,0,Math.PI*2);octx.fill(); /* eye */
-  octx.restore()}
 function drawAnts(pts,alpha,col){
-  const oc=hex(col).map(v=>v*255);
-  /* pearl-like dots along the outline; light travels clockwise and a small bird flies at the head of each glow */
+  /* selection: a green energy ball runs along the outline, dragging a long glowing trail (more than half the shape) */
   const N=pts.length,L=[0];for(let i=0;i<N;i++){const a=pts[i],b=pts[(i+1)%N];L.push(L[i]+Math.hypot(b[0]-a[0],b[1]-a[1]))}
   const per=L[N];if(per<4)return;
-  const gap=13,n=Math.max(10,Math.round(per/gap)),sp=per/n;
   const at=s=>{s=((s%per)+per)%per;let i=0;while(L[i+1]<s)i++;const f=(s-L[i])/Math.max(1e-6,L[i+1]-L[i]),a=pts[i],b=pts[(i+1)%N];return[a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f]};
-  const still=RM.matches,T=performance.now()/1000,head=still?0:(T/3.8)*per,heads=3,tail=per*.1;
-  const heads_s=[];for(let h=0;h<heads;h++)heads_s.push(((head+h*per/heads)%per+per)%per);
-  let cxm=0,cym=0;for(const p of pts){cxm+=p[0];cym+=p[1]}cxm/=N;cym/=N;
-  const mixw=t=>[0,1,2].map(i=>Math.round(oc[i]+(255-oc[i])*t));
-  octx.save();octx.globalAlpha=alpha;const flames=[];
-  for(let j=0;j<n;j++){const s=j*sp,q=at(s);
-    let lit=0,near=1e9;for(const hs of heads_s){let d=(hs-s)%per;if(d<0)d+=per;near=Math.min(near,d,per-d);if(!still)lit=Math.max(lit,Math.exp(-d/tail*3))}
-    if(still)lit=.5;
-    if(near<sp*1.1)continue;                                 /* the bird takes this spot */
-    /* upper part of the outline: little flames rising instead of pearls */
-    {const pa=at(s-3),pb=at(s+3);let nx=pb[1]-pa[1],ny=-(pb[0]-pa[0]);const nl=Math.hypot(nx,ny)||1;nx/=nl;ny/=nl;
-      if(nx*(q[0]-cxm)+ny*(q[1]-cym)<0){nx=-nx;ny=-ny}const top=-ny;
-      if(top>.2){flames.push([q,top,lit,j]);continue}}
-    const r=1.9+3.1*Math.pow(lit,1.3),c=mixw(lit),dk=c.map(v=>Math.round(v*.62));
-    /* soft drop shadow, then a shaded sphere with a specular dot */
-    octx.fillStyle='rgba(0,0,0,.22)';octx.beginPath();octx.arc(q[0]+r*.25,q[1]+r*.45,r*1.02,0,Math.PI*2);octx.fill();
-    const g=octx.createRadialGradient(q[0]-r*.38,q[1]-r*.42,r*.08,q[0],q[1],r);
-    g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.32,`rgb(${c.join(',')})`);g.addColorStop(1,`rgb(${dk.join(',')})`);
-    octx.fillStyle=g;octx.beginPath();octx.arc(q[0],q[1],r,0,Math.PI*2);octx.fill();
-    if(lit>.4){octx.save();octx.globalCompositeOperation='lighter';const gg=octx.createRadialGradient(q[0],q[1],0,q[0],q[1],r*2.6);
-      gg.addColorStop(0,`rgba(255,255,255,${.35*lit})`);gg.addColorStop(1,'rgba(255,255,255,0)');octx.fillStyle=gg;octx.beginPath();octx.arc(q[0],q[1],r*2.6,0,Math.PI*2);octx.fill();octx.restore()}}
-  /* flames: the higher on the outline, the taller, brighter and wider they get, so near the top they melt into one fire.
-     Drawn in layers (glow, rim, body, core) across all flames so overlapping ones fuse instead of outlining each other. */
-  {const fire=[255,122,40],mixc=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t)),outer=mixc(oc.map(Math.round),fire,.5);
-   const F=flames.map(([q,top,lit,j])=>{const k=Math.min(1,Math.max(0,(top-.2)/.8)),fl=still?0:Math.sin(T*11+j*1.7)*.6+Math.sin(T*17.3+j*2.9)*.4,
-     rnd=1-(1-k*.7)*.35*((Math.sin(j*12.9898)*43758.5453%1+1)%1),h=(3.5+15*Math.pow(k,1.2))*rnd*(1+.2*fl)*(1+.4*lit),
-     w=(3.2+7*Math.pow(k,.7))*(1+.1*fl),hh=Math.max(h,w*1.7),sway=still?0:Math.sin(T*2.3+j*.6)*hh*.16+fl*hh*.06;return{bx:q[0],by:q[1]+1.5,h:hh,w,sway,k,lit}});
-   const shape=(f,sc)=>{const hh=f.h*sc,ww=f.w*sc,tx=f.bx+f.sway*sc,ty=f.by-hh;octx.moveTo(f.bx-ww,f.by);
-     octx.bezierCurveTo(f.bx-ww*1.1,f.by-hh*.45,tx-ww*.35,ty+hh*.3,tx,ty);octx.bezierCurveTo(tx+ww*.35,ty+hh*.3,f.bx+ww*1.1,f.by-hh*.45,f.bx+ww,f.by);
-     octx.arc(f.bx,f.by,ww,0,Math.PI,false);octx.closePath()};
-   octx.save();octx.globalCompositeOperation='lighter';
-   for(const f of F){const R_=f.h*(.8+.5*f.k),cy=f.by-f.h*.38,g=octx.createRadialGradient(f.bx,cy,0,f.bx,cy,R_);
-     g.addColorStop(0,`rgba(${fire.join(',')},${(.16+.42*f.k)*(.7+.3*f.lit)})`);g.addColorStop(1,'rgba(255,120,40,0)');octx.fillStyle=g;octx.beginPath();octx.arc(f.bx,cy,R_,0,Math.PI*2);octx.fill()}
-   octx.restore();
-   const top_=Math.min(...F.map(f=>f.by-f.h)),bot_=Math.max(...F.map(f=>f.by));
-   const layer=(sc,stops)=>{if(!F.length)return;const g=octx.createLinearGradient(0,bot_,0,top_+(bot_-top_)*(1-sc));stops.forEach(([o,c])=>g.addColorStop(o,c));
-     octx.beginPath();for(const f of F)shape(f,sc);octx.fillStyle=g;octx.fill('nonzero')};
-   layer(1,[[0,`rgb(${outer.join(',')})`],[.5,'rgb(255,140,46)'],[1,'rgba(255,80,40,.25)']]);
-   layer(.68,[[0,'rgb(255,206,84)'],[1,'rgba(255,170,60,.4)']]);
-   octx.beginPath();for(const f of F)if(f.k>.15)shape(f,.22+.08*f.k);octx.fillStyle='rgba(255,244,200,.8)';octx.fill('nonzero')}
-  /* birds */
-  const tint=`rgb(${mixw(.55).join(',')})`;
-  heads_s.forEach((hs,h)=>{const q=at(hs),a=at(hs-2),b=at(hs+2),ang=Math.atan2(b[1]-a[1],b[0]-a[0]);
-    const up=[Math.sin(ang),-Math.cos(ang)],out=[q[0]-cxm,q[1]-cym],flip=(up[0]*out[0]+up[1]*out[1])>=0?1:-1;
-    const flap=still?.4:Math.sin(T*9+h*2.1);
-    drawBird(q[0],q[1],ang,flip,1.55,flap,tint)});
+  const still=RM.matches,T=performance.now()/1000,speed=Math.max(160,per*.42),head=still?per*.25:T*speed,trail=per*.7;
+  const R=Math.max(4.5,Math.min(9,per/70)),steps=Math.max(60,Math.round(trail/1.6));
+  const P=[];for(let k=0;k<=steps;k++){const u=k/steps,q=at(head-u*trail),w=still?0:Math.sin(T*9-u*26)*R*.18*u;P.push([q,u,w])}
+  octx.save();octx.globalAlpha=alpha;octx.lineCap='round';octx.lineJoin='round';
+  /* faint full outline so the selection reads even where the trail isn't */
+  octx.strokeStyle='rgba(120,255,150,.18)';octx.lineWidth=1.2;octx.beginPath();pts.forEach((q,i)=>i?octx.lineTo(q[0],q[1]):octx.moveTo(q[0],q[1]));octx.closePath();octx.stroke();
+  octx.globalCompositeOperation='lighter';
+  /* trail: segments drawn tail first, thinning and fading toward the end */
+  const pass=(wMul,col,aMul)=>{for(let k=steps;k>0;k--){const [q0,u]=P[k],[q1]=P[k-1],f=1-u;
+      octx.strokeStyle=`rgba(${col},${aMul*Math.pow(f,.85)})`;octx.lineWidth=Math.max(.6,R*wMul*(.15+.85*Math.pow(f,.8)));
+      octx.beginPath();octx.moveTo(q0[0],q0[1]);octx.lineTo(q1[0],q1[1]);octx.stroke()}};
+  pass(3.2,'40,255,110',.10);pass(1.7,'70,255,130',.28);pass(.75,'170,255,190',.75);pass(.25,'245,255,240',.9);
+  /* sparks shed along the trail */
+  for(let j=0;j<26;j++){const h=((Math.sin(j*91.7)*43758.5)%1+1)%1,u=((h+(still?0:T*.35))%1),q=at(head-u*trail),f=1-u,
+      d=(still?.5:((T*1.7+h*7)%1))*R*2.2,an=h*40+T*(still?0:3),x=q[0]+Math.cos(an)*d,y=q[1]+Math.sin(an)*d,r=.6+1.4*f;
+    octx.fillStyle=`rgba(190,255,200,${.8*f*(1-d/(R*2.4))})`;octx.beginPath();octx.arc(x,y,r,0,Math.PI*2);octx.fill()}
+  /* the ball: halo, body, hot core */
+  const [hq]=P[0],pulse=still?1:1+.12*Math.sin(T*14);
+  let g=octx.createRadialGradient(hq[0],hq[1],0,hq[0],hq[1],R*4.2*pulse);g.addColorStop(0,'rgba(80,255,130,.55)');g.addColorStop(.4,'rgba(40,230,100,.18)');g.addColorStop(1,'rgba(20,200,80,0)');
+  octx.fillStyle=g;octx.beginPath();octx.arc(hq[0],hq[1],R*4.2*pulse,0,Math.PI*2);octx.fill();
+  g=octx.createRadialGradient(hq[0],hq[1],0,hq[0],hq[1],R*1.25*pulse);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.35,'rgba(200,255,210,.95)');g.addColorStop(.75,'rgba(70,255,120,.8)');g.addColorStop(1,'rgba(30,220,90,0)');
+  octx.fillStyle=g;octx.beginPath();octx.arc(hq[0],hq[1],R*1.25*pulse,0,Math.PI*2);octx.fill();
+  /* little electric arcs around the ball */
+  if(!still){octx.strokeStyle='rgba(210,255,220,.7)';octx.lineWidth=.8;for(let j=0;j<3;j++){const a0=T*7+j*2.1,r1=R*1.1,r2=R*(1.9+.5*Math.sin(T*23+j));
+    octx.beginPath();octx.moveTo(hq[0]+Math.cos(a0)*r1,hq[1]+Math.sin(a0)*r1);octx.lineTo(hq[0]+Math.cos(a0+.35)*(r1+r2)/2+Math.sin(T*40+j)*1.5,hq[1]+Math.sin(a0+.35)*(r1+r2)/2);octx.lineTo(hq[0]+Math.cos(a0+.1)*r2,hq[1]+Math.sin(a0+.1)*r2);octx.stroke()}}
   octx.restore()}
 function drawBrush(d){if(tool!=='pull'||!hov)return;let b=drag&&drag.mode==='pull'?drag.b:null;
   if(!b){const h=pickSel(hov[0],hov[1])||pick(hov[0],hov[1]);b=h.i>=0?S.blobs[h.i]:S.blobs[sel]}if(!b)return;
@@ -2257,5 +2215,4 @@ txPanel();
 syncAll();fit();
 })();
 </script>
-
 </body></html>
