@@ -2080,48 +2080,71 @@ function txLines(t){const s=t.size,T=t.weight*s,sp=txSpace(t),adv=ch=>{if(ch==='
 const TXP=['col','sx','sy','sz','drot','dz','pulls','br','gl','ro','disp','dispS','pat','op','tint','shape'];
 function txApply(b,e){if(!e)return;if(e.col)b.col=e.col;if(e.sx)b.rx*=e.sx;if(e.sy)b.ry*=e.sy;if(e.sz)b.rz*=e.sz;if(e.drot)b.rot+=e.drot;if(e.dz)b.z+=e.dz;
   if(e.pulls)b.pulls=JSON.parse(JSON.stringify(e.pulls));for(const k of['br','gl','ro','disp','dispS','op','tint','shape'])if(e[k]!==undefined)b[k]=e[k];if(e.pat)b.pat=JSON.parse(JSON.stringify(e.pat))}
+/* ---- deformation field: every hand edit is stored at its place in the text block (u,v normalised to the block),
+   so when the words or the typeface change, each new part takes the edits of the part that sat at the same place. ---- */
+const TXK=['br','gl','ro','disp','dispS','op','tint','shape'];
+function txPullsNorm(b){const ar=(b.rx+b.ry)/2||1e-4,c=Math.cos(b.rot),s=Math.sin(b.rot);
+  return(b.pulls||[]).map(p=>{const v=p.v||[0,0,0];return Object.assign({},p,{a:[p.a[0]/(b.rx||1e-4),p.a[1]/(b.ry||1e-4),p.a[2]/(b.rz||1e-4)],v:[(v[0]*c-v[1]*s)/ar,(v[0]*s+v[1]*c)/ar,v[2]/ar],r:p.r/ar,r0:(p.r0??p.r)/ar})})}
+function txPullsDenorm(b,P){const ar=(b.rx+b.ry)/2,c=Math.cos(b.rot),s=Math.sin(b.rot);
+  return P.map(p=>Object.assign({},p,{a:[p.a[0]*b.rx,p.a[1]*b.ry,p.a[2]*b.rz],v:[(p.v[0]*c+p.v[1]*s)*ar,(-p.v[0]*s+p.v[1]*c)*ar,p.v[2]*ar],r:p.r*ar,r0:p.r0*ar}))}
+function txFieldAt(t,u,v,Wn,Hn){const F=t.field;if(!F||!F.length)return null;const eps=1e-10;
+  const near=[];for(const f of F){const d=((f[0]-u)*Wn)**2+((f[1]-v)*Hn)**2;near.push([d,f[2]])}near.sort((a,b)=>a[0]-b[0]);
+  const e0=near[0][1],out={};for(const k in e0)out[k]=e0[k];
+  if(near[0][0]<eps*Wn*Wn)return out;                       /* the very same spot: exact */
+  const nb=near.slice(0,4),W=nb.map(([d])=>1/(d+1e-6*Wn*Wn)),SW=W.reduce((a,b)=>a+b,0);
+  const avg=(k,def,log)=>{let a=0;nb.forEach(([,e],i)=>{const x=e[k]??def;a+=W[i]*(log?Math.log(x):x)});a/=SW;return log?Math.exp(a):a};
+  for(const k of['sx','sy','sz'])if(nb.some(([,e])=>e[k]!==undefined)){const x=avg(k,1,true);if(Math.abs(x-1)>1e-4)out[k]=x;else delete out[k]}
+  for(const k of['drot','dz','ox','oy'])if(nb.some(([,e])=>e[k]!==undefined)){const x=avg(k,0,false);if(Math.abs(x)>1e-6)out[k]=x;else delete out[k]}
+  return out}
 function txGen(t){const s=t.size,T0=Math.max(.004,t.weight*s),wm=t.weight/.1,{lines,adv}=txLines(t),L=T0*1.35,cr=Math.cos(t.rot||0),sr=Math.sin(t.rot||0),fk=t.font||'blob';
   t.le=t.le||{};t.pe=t.pe||{};t.loff=t.loff||{};
   const lineW=lines.map(l=>{const w=[...l].reduce((a,c)=>a+adv(c),0);return Math.max(0,w-(l.length?t.track*s:0))}),blockW=Math.max(0,...lineW),H=(lines.length-1)*t.lead*s+s;
   const R=(x,y)=>[t.x+x*cr-y*sr,t.y+x*sr+y*cr];let ci=0,n=0;lines.forEach(l=>{for(const c of l)if(c!==' '&&txGlyph(t,c))n++});
-  const out=[];
+  const out=[],Wn=Math.max(blockW,s*.5),Hn=Math.max(H,s*.5),useF=!!(t.field&&t.field.length);
   lines.forEach((l,li)=>{const base=H/2-s-li*t.lead*s;let pen=t.align==='left'?-blockW/2:t.align==='right'?blockW/2-lineW[li]:-lineW[li]/2;
     for(const c of l){const g=txGlyph(t,c);if(c===' '||!g){pen+=adv(c);continue}
       const pad=g.raster?0:T0,off=t.loff[ci]||[0,0],col=(t.le[ci]&&t.le[ci].col)||txLetterCol(t,ci,n),lc=R(pen+pad+g.w*s/2,base+s/2);let pi=0;
       const P=(px,py)=>{const X=pen+pad+px*s,Y=base+py*s;return[X+(Y-base)*t.slant,Y]};
-      const mk=(x,y,rx,ry,rot,shape)=>{const key=ci+'.'+pi;pi++;
-        const b={x,y,z:t.z,rx,ry,rz:ry*t.depth,rot,k:t.k,m:false,col,role:'text',gl:t.gl,ro:t.ro,disp:t.disp};if(shape)b.shape=shape;
-        txApply(b,t.le[ci]);txApply(b,t.pe[fk+'|'+key]);if(t.parts&&t.parts[key]&&fk==='blob')b.col=t.parts[key];   /* older saves */
-        b.txt={id:t.id,ci,pi:pi-1,ch:c,lx:lc[0]+off[0],ly:lc[1]+off[1],gx:x,gy:y,s,g:{rx:b.rx,ry:b.ry,rz:b.rz,rot:b.rot,z:b.z,col:b.col,br:b.br,gl:b.gl,ro:b.ro,disp:b.disp,dispS:b.dispS,op:b.op,tint:b.tint,shape:b.shape,pat:b.pat?JSON.stringify(b.pat):'',pulls:JSON.stringify(b.pulls||[])}};
+      const mk=(x,y,rx,ry,rot,shape,mx,my)=>{const key=ci+'.'+pi;pi++;
+        const rawCol=txLetterCol(t,ci,n),b={x,y,z:t.z,rx,ry,rz:ry*t.depth,rot,k:t.k,m:false,col:useF?rawCol:col,role:'text',gl:t.gl,ro:t.ro,disp:t.disp};if(shape)b.shape=shape;
+        if(useF)b.x-=off[0],b.y-=off[1];
+        const g0={x:b.x,y:b.y,rx:b.rx,ry:b.ry,rz:b.rz,rot:b.rot,z:b.z,col:b.col,gl:b.gl,ro:b.ro,disp:b.disp,shape:b.shape},u=mx/Wn,v=my/Hn;
+        if(useF){const e=txFieldAt(t,u,v,Wn,Hn);if(e){if(e.col)b.col=e.col;if(e.sx)b.rx*=e.sx;if(e.sy)b.ry*=e.sy;if(e.sz)b.rz*=e.sz;if(e.drot)b.rot+=e.drot;if(e.dz)b.z+=e.dz;
+            if(e.ox||e.oy){const ox=(e.ox||0)*s,oy=(e.oy||0)*s;b.x+=ox*cr-oy*sr;b.y+=ox*sr+oy*cr}
+            for(const k of TXK)if(e[k]!==undefined)b[k]=e[k];if(e.pat)b.pat=JSON.parse(JSON.stringify(e.pat));if(e.pulls&&e.pulls.length)b.pulls=txPullsDenorm(b,e.pulls)}}
+        else{txApply(b,t.le[ci]);txApply(b,t.pe[fk+'|'+key]);if(t.parts&&t.parts[key]&&fk==='blob')b.col=t.parts[key]}   /* older saves: edits by letter index */
+        b.txt={id:t.id,ci,pi:pi-1,ch:c,lx:lc[0]+(useF?0:off[0]),ly:lc[1]+(useF?0:off[1]),gx:b.x,gy:b.y,s,u,v,g0,g:{rx:b.rx,ry:b.ry,rz:b.rz,rot:b.rot,z:b.z,col:b.col,br:b.br,gl:b.gl,ro:b.ro,disp:b.disp,dispS:b.dispS,op:b.op,tint:b.tint,shape:b.shape,pat:b.pat?JSON.stringify(b.pat):'',pulls:JSON.stringify(b.pulls||[])}};
         return b};
       const seg=(p,q,T)=>{const mx=(p[0]+q[0])/2,my=(p[1]+q[1])/2,len=Math.hypot(q[0]-p[0],q[1]-p[1]),[wx,wy]=R(mx,my);
-        out.push(mk(wx+off[0],wy+off[1],len/2+T*1.05,T,Math.atan2(q[1]-p[1],q[0]-p[0])+(t.rot||0),'capsule'))};
+        out.push(mk(wx+off[0],wy+off[1],len/2+T*1.05,T,Math.atan2(q[1]-p[1],q[0]-p[0])+(t.rot||0),'capsule',mx,my))};
       const turnAt=(pts,k)=>{const a=pts[k-1],b=pts[k],c2=pts[k+1];if(!c2)return 9;const t1=Math.atan2(b[1]-a[1],b[0]-a[0]),t2=Math.atan2(c2[1]-b[1],c2[0]-b[0]);return Math.abs(((t2-t1)+Math.PI*3)%(Math.PI*2)-Math.PI)};
       for(const st of g.s){const pts=st.map(p=>{const q=P(p[0],p[1]);q.push(g.raster?Math.max(.002,p[2]*s*wm):T0);return q});
-        if(pts.length===1){const [wx,wy]=R(pts[0][0],pts[0][1]),T=pts[0][2]*1.15;out.push(mk(wx+off[0],wy+off[1],T,T,0));continue}
+        if(pts.length===1){const [wx,wy]=R(pts[0][0],pts[0][1]),T=pts[0][2]*1.15;out.push(mk(wx+off[0],wy+off[1],T,T,0,null,pts[0][0],pts[0][1]));continue}
         if(g.raster){for(let k=1;k<pts.length;k++)seg(pts[k-1],pts[k],(pts[k-1][2]+pts[k][2])/2);continue}
         /* built-in font: merge short, gently turning steps (arcs) into one blob; keep the corners */
         let a=pts[0];for(let k=1;k<pts.length;k++){const b=pts[k],len=Math.hypot(b[0]-a[0],b[1]-a[1]);if(k===pts.length-1||len>=L||turnAt(pts,k)>.7){seg(a,b,T0);a=b}}}
       pen+=adv(c);ci++}});
+  /* letter centres follow their moved parts (spin, swing… turn around the right point) */
+  if(useF){const acc={};out.forEach(b=>{const a=acc[b.txt.ci]||(acc[b.txt.ci]=[0,0,0]);a[0]+=b.x-b.txt.g0.x;a[1]+=b.y-b.txt.g0.y;a[2]++});out.forEach(b=>{const a=acc[b.txt.ci];b.txt.lx+=a[0]/a[2];b.txt.ly+=a[1]/a[2]})}
   t._n=n;return out}
 /* read hand edits off the blobs (anything that differs from what the text generated) and file them on the text */
-function txHarvest(t){const fk=t.font||'blob',per={},parts={};t.le=t.le||{};t.pe=t.pe||{};t.loff=t.loff||{};
-  S.blobs.forEach(b=>{if(!b.txt||b.txt.id!==t.id||!b.txt.g)return;const g=b.txt.g,ci=b.txt.ci,e={},r=(a,b2)=>Math.abs(a/b2-1)>1e-4;
-    if(b.col!==g.col)e.col=b.col;if(r(b.rx,g.rx))e.sx=b.rx/g.rx;if(r(b.ry,g.ry))e.sy=b.ry/g.ry;if(r(b.rz,g.rz))e.sz=b.rz/g.rz;
-    if(Math.abs(b.rot-g.rot)>1e-4)e.drot=b.rot-g.rot;if(Math.abs(b.z-g.z)>1e-4)e.dz=b.z-g.z;
-    if(JSON.stringify(b.pulls||[])!==g.pulls)e.pulls=JSON.parse(JSON.stringify(b.pulls||[]));
-    for(const k of['br','gl','ro','disp','dispS','op','tint','shape'])if(b[k]!==g[k])e[k]=b[k];
-    if((b.pat?JSON.stringify(b.pat):'')!==g.pat)e.pat=b.pat?JSON.parse(JSON.stringify(b.pat)):undefined;
-    const d=per[ci]||(per[ci]={dx:0,dy:0,n:0,es:[]});d.dx+=b.x-b.txt.gx;d.dy+=b.y-b.txt.gy;d.n++;d.es.push(e);parts[fk+'|'+ci+'.'+b.txt.pi]=e});
-  for(const ci in per){const d=per[ci],dx=d.dx/d.n,dy=d.dy/d.n;if(Math.hypot(dx,dy)>1e-4){const o=t.loff[ci]||[0,0];t.loff[ci]=[o[0]+dx,o[1]+dy]}
-    /* an edit shared by every part of a letter belongs to the letter, so it survives a change of typeface */
-    const le=Object.assign({},t.le[ci]||{});
-    for(const k of TXP){const v0=d.es[0][k];if(v0===undefined)continue;const same=d.es.every(e=>JSON.stringify(e[k])===JSON.stringify(v0));if(!same)continue;
-      if(k==='sx'||k==='sy'||k==='sz')le[k]=(le[k]||1)*v0;else if(k==='drot'||k==='dz')le[k]=(le[k]||0)+v0;else le[k]=v0;d.es.forEach(e=>delete e[k]);
-      for(const pk in t.pe){const rest=pk.split('|')[1];if(rest&&rest.split('.')[0]===String(ci))delete t.pe[pk][k]}}
-    if(Object.keys(le).length)t.le[ci]=le}
-  for(const k in parts){const e=parts[k];if(!Object.keys(e).length)continue;const o=t.pe[k]||{};
-    for(const p in e){if(p==='sx'||p==='sy'||p==='sz')o[p]=(o[p]||1)*e[p];else if(p==='drot'||p==='dz')o[p]=(o[p]||0)+e[p];else o[p]=e[p]}t.pe[k]=o}}
+function txHarvest(t){t.le=t.le||{};t.pe=t.pe||{};t.loff=t.loff||{};
+  const mine=S.blobs.filter(b=>b.txt&&b.txt.id===t.id&&b.txt.g&&b.txt.g0&&b.txt.u!==undefined);if(!mine.length)return;
+  const legacy=!t.field&&(Object.keys(t.le).length||Object.keys(t.pe).length||Object.keys(t.loff).length||t.parts&&Object.keys(t.parts).length);
+  /* anything touched by hand since the last build? */
+  const dirty=legacy||mine.some(b=>{const g=b.txt.g;return b.col!==g.col||Math.abs(b.rx-g.rx)>1e-7||Math.abs(b.ry-g.ry)>1e-7||Math.abs(b.rz-g.rz)>1e-7||Math.abs(b.rot-g.rot)>1e-6||Math.abs(b.z-g.z)>1e-7||
+    Math.abs(b.x-b.txt.gx)>1e-7||Math.abs(b.y-b.txt.gy)>1e-7||JSON.stringify(b.pulls||[])!==g.pulls||TXK.some(k=>b[k]!==g[k])||(b.pat?JSON.stringify(b.pat):'')!==g.pat});
+  if(!dirty)return;
+  /* snapshot the whole text as a field: each part's full difference from its plain generated self, filed at its place */
+  const cr=Math.cos(t.rot||0),sr=Math.sin(t.rot||0),s=t.size;
+  t.field=mine.map(b=>{const g0=b.txt.g0,e={},r=(a,c)=>Math.abs(a/c-1)>1e-4;
+    if(b.col!==g0.col)e.col=b.col;if(r(b.rx,g0.rx))e.sx=b.rx/g0.rx;if(r(b.ry,g0.ry))e.sy=b.ry/g0.ry;if(r(b.rz,g0.rz))e.sz=b.rz/g0.rz;
+    if(Math.abs(b.rot-g0.rot)>1e-4)e.drot=b.rot-g0.rot;if(Math.abs(b.z-g0.z)>1e-5)e.dz=b.z-g0.z;
+    const dx=b.x-g0.x,dy=b.y-g0.y;if(Math.hypot(dx,dy)>1e-6){e.ox=(dx*cr+dy*sr)/s;e.oy=(-dx*sr+dy*cr)/s}
+    for(const k of TXK)if(b[k]!==g0[k]&&b[k]!==undefined)e[k]=b[k];if(b.pat)e.pat=JSON.parse(JSON.stringify(b.pat));
+    if(b.pulls&&b.pulls.length)e.pulls=txPullsNorm(b);
+    return[b.txt.u,b.txt.v,e]});
+  t.le={};t.pe={};t.loff={};t.parts={}}
 function txBuild(t,keepSel=true){txHarvest(t);const oldKey=keepSel&&sel>=0&&S.blobs[sel]&&S.blobs[sel].txt&&S.blobs[sel].txt.id===t.id?S.blobs[sel].txt.ci+'.'+S.blobs[sel].txt.pi:null;
   let at=S.blobs.findIndex(b=>b.txt&&b.txt.id===t.id);const rest=S.blobs.filter(b=>!(b.txt&&b.txt.id===t.id));if(at<0)at=rest.length;else at=Math.min(at,rest.length);
   let gen=txGen(t);const room=MAXB-rest.filter(b=>!b.m).length-rest.filter(b=>b.m).length*2;if(gen.length>room){gen=gen.slice(0,Math.max(0,room));t._cut=true}else t._cut=false;
@@ -2181,9 +2204,9 @@ $('#txPick').addEventListener('click',e=>{const b=e.target.closest('[data-m]');i
 $('#txAlign').addEventListener('click',e=>{const b=e.target.closest('[data-a]');const t=txById(TX.cur);if(!b||!t)return;t.align=b.dataset.a;txRe(true);txPanel();commitSoon()});
 $('#txCm').addEventListener('change',e=>{const t=txById(TX.cur);if(!t)return;t.cm=e.target.value;txRe(true);commitSoon()});
 ['C1','C2','C3'].forEach(c=>{$('#tx'+c).addEventListener('input',e=>{const t=txById(TX.cur);if(!t)return;t[c.toLowerCase()]=e.target.value;txRe()});$('#tx'+c).addEventListener('change',commitSoon)});
-$('#txResetCol').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;S.blobs.forEach(b=>{if(b.txt&&b.txt.id===t.id){b.col=txLetterCol(t,b.txt.ci,t._n||1);if(b.txt.g)b.txt.g.col=b.col}});t.parts={};for(const k in t.le)delete t.le[k].col;for(const k in t.pe)delete t.pe[k].col;txRe(true);commitSoon()});
+$('#txResetCol').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;S.blobs.forEach(b=>{if(b.txt&&b.txt.id===t.id){b.col=txLetterCol(t,b.txt.ci,t._n||1);if(b.txt.g)b.txt.g.col=b.col}});t.parts={};for(const k in t.le)delete t.le[k].col;for(const k in t.pe)delete t.pe[k].col;(t.field||[]).forEach(f=>delete f[2].col);txRe(true);commitSoon()});
 $('#txResetShape')?.addEventListener('click',()=>{});
-$('#txResetPos').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;S.blobs.forEach(b=>{if(b.txt&&b.txt.id===t.id){b.x=b.txt.gx;b.y=b.txt.gy}});t.loff={};txRe(true);commitSoon()});
+$('#txResetPos').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;txHarvest(t);(t.field||[]).forEach(f=>{delete f[2].ox;delete f[2].oy});t.loff={};S.blobs=S.blobs.filter(b=>!(b.txt&&b.txt.id===t.id));txBuild(t,false);syncBlob();requestRender();commitSoon()});
 $('#txAnim').addEventListener('change',e=>{const t=txById(TX.cur);if(!t)return;t.anim.type=e.target.value;commitSoon();if(t.anim.type!=='none'&&!AN.on)setPlay(true);txPanel();requestRender()});
 $('#txAcol').addEventListener('change',e=>{const t=txById(TX.cur);if(!t)return;t.anim.col=e.target.value;commitSoon();if(t.anim.col!=='none'&&!AN.on)setPlay(true);txPanel()});
 [['amt','Aamt',2],['spd','Aspd',0],['stag','Astag',2]].forEach(([k,id,d])=>{const el=$('#tx'+id);el.addEventListener('input',()=>{const t=txById(TX.cur);if(!t)return;t.anim[k]=+el.value;$('#tx'+id+'o').textContent=(+el.value).toFixed(d)+(k==='spd'?'×':'');requestRender()});el.addEventListener('change',commitSoon)});
@@ -2205,7 +2228,7 @@ $('#txDel').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;S.
   $('#txCustom').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter')$('#txCustomGo').click()});
   $('#txDetail').addEventListener('input',e=>{const t=txById(TX.cur);if(!t)return;t.detail=+e.target.value;$('#txDetailo').textContent=t.detail.toFixed(2);txRe()});$('#txDetail').addEventListener('change',commitSoon)}
 $('#txResetDef').addEventListener('click',()=>{const t=txById(TX.cur);if(!t)return;txHarvest(t);const strip=e=>{for(const k of['sx','sy','sz','drot','dz','pulls','disp','dispS','shape'])delete e[k]};
-  Object.values(t.le).forEach(strip);Object.values(t.pe).forEach(strip);S.blobs=S.blobs.filter(b=>!(b.txt&&b.txt.id===t.id));txBuild(t,false);syncBlob();requestRender();commitSoon()});
+  Object.values(t.le).forEach(strip);Object.values(t.pe).forEach(strip);(t.field||[]).forEach(f=>strip(f[2]));S.blobs=S.blobs.filter(b=>!(b.txt&&b.txt.id===t.id));txBuild(t,false);syncBlob();requestRender();commitSoon()});
 /* web fonts used by a saved scene are fetched again when it opens */
 setInterval(()=>{(S.texts||[]).forEach(t=>{if(t.font&&t.font!=='blob'&&TXFONTS.web.includes(t.font)&&!txWebReady.has(t.font)&&!t._loading){t._loading=1;txLoadWeb(t.font).then(ok=>{t._loading=0;if(ok){TXR.forEach((v,k)=>{if(k.startsWith(t.font+'|'))TXR.delete(k)});txBuild(t);requestRender()}})}})},1500);
 
