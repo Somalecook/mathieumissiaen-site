@@ -27,6 +27,8 @@
     (p.sections || []).forEach(function (s) { (s.images || []).forEach(function (im) { out.push(im); }); });
     return out;
   }
+  function isVid(src) { return /\.(mp4|webm)$/i.test(src || ''); }
+  function vidTag(src, poster, attrs) { return '<video src="' + esc(src) + '"' + (poster ? ' poster="' + esc(poster) + '"' : '') + ' autoplay muted loop playsinline preload="metadata"' + (attrs || '') + '></video>'; }
   function insetHTML(im) {
     var v = im && im.inset; if (!v) return '';
     return '<span class="inset" style="aspect-ratio:' + esc(v.ratio || '4 / 5') + '"><video src="' + esc(v.video) + '" poster="' + esc(v.poster || '') + '" autoplay muted loop playsinline preload="metadata"></video></span>' +
@@ -70,7 +72,7 @@
     var el = document.createElement('div');
     el.className = 'lb'; el.hidden = true; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'Image viewer');
     el.innerHTML = '<div class="bar"><span class="pos"></span><button type="button" class="x">Close ✕</button></div>' +
-      '<div class="stage"><img alt=""></div>' +
+      '<div class="stage"><img alt=""><video muted loop playsinline hidden></video></div>' +
       '<div class="bar"><button type="button" class="prev">← Prev</button><span class="txt" style="text-align:center"></span><button type="button" class="next">Next →</button></div>';
     document.body.appendChild(el);
     LB.el = el;
@@ -86,11 +88,13 @@
     });
   }
   function lbOpen(list, i) { if (!LB.el) lbInit(); LB.list = list; LB.el.hidden = false; lbShow(i); $('.x', LB.el).focus(); }
-  function lbClose() { LB.el.hidden = true; }
+  function lbClose() { LB.el.hidden = true; var v = $('.stage video', LB.el); if (v) v.pause(); }
   function lbShow(i) {
     var n = LB.list.length; LB.i = (i + n) % n;
     var it = LB.list[LB.i];
-    var img = $('.stage img', LB.el); img.src = it.src; img.alt = plain(it.title || '');
+    var img = $('.stage img', LB.el), vid = $('.stage video', LB.el);
+    if (isVid(it.src)) { img.hidden = true; img.removeAttribute('src'); vid.hidden = false; vid.poster = it.poster || ''; vid.src = it.src; vid.play && vid.play().catch(function () {}); }
+    else { vid.hidden = true; vid.pause(); vid.removeAttribute('src'); img.hidden = false; img.src = it.src; img.alt = plain(it.title || ''); }
     $('.pos', LB.el).textContent = (LB.i + 1) + ' / ' + n;
     $('.txt', LB.el).innerHTML = '<span class="serif" style="font-size:18px">' + rich(it.title || '') + '</span>' + (SHOW_CAP && it.caption ? '<span style="color:#B3B0A9"> — ' + rich(it.caption) + '</span>' : '');
   }
@@ -290,7 +294,7 @@
       var box = $('#wallBox');
       if (st.view === 'images') {
         var ims = mixImages(data.projects.filter(function (p) { return !p.tab && (st.kind === 'all' || p.kind === st.kind); }).reduce(function (acc, p) {
-          allImages(p).forEach(function (im) { acc.push({ src: im.src, ratio: im.ratio, bg: im.bg, slug: p.slug, p: p }); }); return acc;
+          allImages(p).forEach(function (im) { acc.push({ src: im.src, poster: im.poster, ratio: im.ratio, bg: im.bg, slug: p.slug, p: p }); }); return acc;
         }, []));
         ((site.home && site.home.wallFirst) || []).slice().reverse().forEach(function (f) {
           var fp = data.projects.filter(function (q) { return q.slug === f.slug; })[0];
@@ -298,7 +302,7 @@
         });
         box.innerHTML = '<div class="wall">' + ims.map(function (x) {
           var p = x.p, tag = p.galleryOnly ? 'div' : 'a';
-          return '<' + tag + ' class="w"' + (p.galleryOnly ? '' : ' href="work/' + p.slug + '/"') + '><div class="ph" style="aspect-ratio:' + (x.ratio || '4 / 5') + ';background:' + (x.bg || '#D2D0CA') + '"><img loading="lazy" src="' + x.src + '" alt="' + esc(p.title) + '">' + insetHTML(x) + '</div>' +
+          return '<' + tag + ' class="w"' + (p.galleryOnly ? '' : ' href="work/' + p.slug + '/"') + '><div class="ph" style="aspect-ratio:' + (x.ratio || '4 / 5') + ';background:' + (x.bg || '#D2D0CA') + '">' + (isVid(x.src) ? vidTag(x.src, x.poster, ' aria-label="' + esc(p.title) + '"') : '<img loading="lazy" src="' + x.src + '" alt="' + esc(p.title) + '">') + insetHTML(x) + '</div>' +
             '<span class="w-cap"><span>' + esc(p.title) + '</span>' + (p.client && p.kind === 'commission' ? '<span class="serif it">' + esc(p.client) + '</span>' : '') + '</span></' + tag + '>';
         }).join('') + '</div>';
       } else {
@@ -473,7 +477,7 @@
   // ---------- GALLERY ----------
   function renderGallery(site, data) {
     var items = [];
-    data.projects.filter(function (p) { return !p.tab; }).forEach(function (p) { allImages(p).forEach(function (im) { items.push({ only: !!p.galleryOnly, src: im.src, title: p.title, sub: plain(im.title), caption: im.caption, kind: p.kind, slug: p.slug, year: p.year }); }); });
+    data.projects.filter(function (p) { return !p.tab; }).forEach(function (p) { allImages(p).forEach(function (im) { items.push({ only: !!p.galleryOnly, src: im.src, poster: im.poster, ratio: im.ratio, title: p.title, sub: plain(im.title), caption: im.caption, kind: p.kind, slug: p.slug, year: p.year }); }); });
     items = mixImages(items);
     var st = { k: 'all' };
     function draw() {
@@ -485,11 +489,11 @@
         ['all', 'research', 'commission'].map(function (k) { return '<button type="button" class="tog" data-k="' + k + '" aria-pressed="' + (st.k === k) + '">' + (k === 'all' ? 'All' : k === 'research' ? 'Research' : 'Commissions') + '</button>'; }).join('') +
         '</span></div></section>' +
         '<section class="wrap" style="padding-bottom:120px"><div class="masonry">' + list.map(function (x, i) {
-          return '<figure class="tile"><button type="button" data-zoom="' + i + '" aria-label="Open ' + esc(x.title) + '"><img loading="lazy" src="' + x.src + '" alt="' + esc(x.title + ' — ' + x.sub) + '"></button>' +
+          return '<figure class="tile"><button type="button" data-zoom="' + i + '" aria-label="Open ' + esc(x.title) + '">' + (isVid(x.src) ? vidTag(x.src, x.poster, ' aria-label="' + esc(x.title) + '" style="aspect-ratio:' + esc(x.ratio || '4 / 5') + '"') : '<img loading="lazy" src="' + x.src + '" alt="' + esc(x.title + ' — ' + x.sub) + '">') + '</button>' +
             '<figcaption class="w-cap">' + (x.only ? '<span>' + esc(x.title) + '</span>' : '<a href="work/' + x.slug + '/">' + esc(x.title) + '</a>') + '</figcaption></figure>';
         }).join('') + '</div></section>' + footer(site);
       $$('.tog[data-k]').forEach(function (b) { b.onclick = function () { st.k = b.dataset.k; draw(); }; });
-      bindZoom(document.getElementById('app'), list.map(function (x) { return { src: x.src, title: x.title + ' — ' + x.sub, caption: x.caption }; }));
+      bindZoom(document.getElementById('app'), list.map(function (x) { return { src: x.src, poster: x.poster, title: x.title + ' — ' + x.sub, caption: x.caption }; }));
     }
     loadFont('Unbounded:wght@300');
     draw();

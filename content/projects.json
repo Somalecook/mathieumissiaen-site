@@ -2848,7 +2848,7 @@
       "tagline": "",
       "intro": "",
       "medium": "",
-      "cover": "images/loewe/love-is-real.webp",
+      "cover": "images/loewe/stairs.jpg",
       "theme": {
         "bg": "#E9E8E4",
         "fg": "#161513",
@@ -2866,19 +2866,57 @@
           "columns": 1,
           "images": [
             {
-              "src": "images/loewe/love-is-real.webp",
+              "src": "images/loewe/oyster.mp4",
+              "poster": "images/loewe/oyster.jpg",
               "title": "",
               "caption": "",
               "tag": "",
-              "ratio": "480 / 600",
+              "ratio": "9 / 16",
               "bg": "#111"
             },
             {
-              "src": "images/loewe/s22-invitation.webp",
+              "src": "images/loewe/stairs.mp4",
+              "poster": "images/loewe/stairs.jpg",
               "title": "",
               "caption": "",
               "tag": "",
-              "ratio": "480 / 600",
+              "ratio": "9 / 16",
+              "bg": "#111"
+            },
+            {
+              "src": "images/loewe/swan.mp4",
+              "poster": "images/loewe/swan.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "9 / 16",
+              "bg": "#111"
+            },
+            {
+              "src": "images/loewe/rose.mp4",
+              "poster": "images/loewe/rose.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#111"
+            },
+            {
+              "src": "images/loewe/nail.mp4",
+              "poster": "images/loewe/nail.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
+              "bg": "#111"
+            },
+            {
+              "src": "images/loewe/soap.mp4",
+              "poster": "images/loewe/soap.jpg",
+              "title": "",
+              "caption": "",
+              "tag": "",
+              "ratio": "4 / 5",
               "bg": "#111"
             }
           ]
