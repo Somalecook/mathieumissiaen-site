@@ -2864,6 +2864,12 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     // a dead bouquet is cleared out with a tap so the pot can be used again
     if (!garden.bouquet && !garden.hand.length) {
       if (garden.pots[i] && garden.care[i].wilt >= 1) { garden.pots[i] = null; save(); updateHud(); }
+      else if (PORT && garden.pots[i]) {
+        const b = garden.pots[i]; garden.pots[i] = null;
+        if (Array.isArray(b)) garden.hand = b.slice(0, HAND_MAX); else garden.bouquet = b;
+        const [x, y] = potPos(i); puff('dust', x, y - 50, { size: 3 }); sfx('objet-pose', 0.4);
+        save(); updateHud();
+      }
       return;
     }
     // holding flowers (one to eight) or a bouquet: they go in, replacing whatever was in that vase
@@ -3379,7 +3385,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       if (!dragging.moved) return;
       const o = dragging.o;
       const wasInBed = o === bed && dragon.state === 'sleep' && nearBed();
-      const vx = px + dragging.dx, vy = py + dragging.dy;
+      const vx = px + dragging.dx, vy = py + dragging.dy; dragging.vx = vx; dragging.vy = vy;
       const ox0 = o.x, oy0 = o.y;
       const si = SMALL().includes(o) ? shelfSlotAt(vx, vy + 14, o, px, py) : -1;
       if (si >= 0) { [o.x, o.y, o.rest] = SLOTS[si]; o.stored = si; o.on = null; o.lift = 0; }
@@ -3455,6 +3461,9 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
         const [x, y] = iso(o.x, o.y, zOf(o));
         for (let i = 0; i < 3; i++) setTimeout(() => puff('heart', x + rand(-14, 14), y - 70), i * 120);
         save(); updateHud();
+      }
+      if (PORT && !dragging.moved && !dragging.giveFlower && SOLIS.some(S => S.o === o) && o.flower != null && !garden.bouquet && garden.hand.length < HAND_MAX) {
+        garden.hand.push(o.flower); o.flower = null; o.wob = 0.6; sfx('objet-pose', 0.4); save(); updateHud();
       }
       if (TABLES.some(T => T.o === o)) for (const it of SMALL()) if (it.rest && !isStored(it)) it.lift = 0;
       if (dragging.moved) o.settle = 1;   // soft squash as it lands
@@ -3618,9 +3627,14 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       else if (c.wilt < 1) c.wilt = Math.max(0, c.wilt - dt / 20);
     });
     // watering a pot: drag the bottle up to it
-    bottle.potPour = -1;
+    const prevPot = bottle.potPour; bottle.potPour = -1;
     if (dragging && dragging.o === bottle && dragging.moved && dragging.px != null && !bottle.flowers) {
-      const i = garden.jars.findIndex((g, k) => { const [x, y] = potPos(k); return Math.hypot(dragging.px - x, dragging.py - (y - 30)) < 55; });
+      let i = -1;
+      if (PORT && dragging.vx != null) {
+        // the carafe's body against the jar's mouth; the closest jar with flowers wins
+        let best = 95;
+        garden.jars.forEach((g, k) => { if (!garden.pots[k]) return; const [x, y] = potPos(k), JH = 70 * JAR_W[k] / 40; const dd = Math.hypot(dragging.vx - x, (dragging.vy - 45) - (y - JH * 0.8)) - (k === prevPot ? 45 : 0); if (dd < best) { best = dd; i = k; } });
+      } else i = garden.jars.findIndex((g, k) => { const [x, y] = potPos(k); return Math.hypot(dragging.px - x, dragging.py - (y - 30)) < 55; });
       if (i >= 0 && garden.pots[i]) {
         bottle.potPour = i;
         const c = garden.care[i];
