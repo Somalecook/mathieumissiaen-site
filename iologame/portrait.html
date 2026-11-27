@@ -311,7 +311,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
 (() => {
   // ---------- portrait (a phone held upright): a full-screen lawn, a rack of pieces at the top ----------
   const PHONE0 = matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 600;
-  const PORT = /[?&]portrait\b/.test(location.search) || (innerHeight > innerWidth && (PHONE0 || innerWidth <= 520));
+  const PORT = /[?&]portrait\b/.test(location.search) || PHONE0 || ((innerHeight && innerWidth ? innerHeight > innerWidth : matchMedia('(orientation: portrait)').matches || screen.height > screen.width) && (PHONE0 || innerWidth <= 520));
   const PK = 1.5;   // scene px per screen px in portrait
   let SAFE_T = 0, SAFE_B = 0;
   { const d = document.createElement('div'); d.style.cssText = 'position:fixed;left:0;top:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);visibility:hidden';
@@ -4007,7 +4007,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   }
 
   window.addEventListener('resize', () => {
-    const want = /[?&]portrait\b/.test(location.search) || (innerHeight > innerWidth && (PHONE0 || innerWidth <= 520));
+    const want = /[?&]portrait\b/.test(location.search) || PHONE0 || ((innerHeight && innerWidth ? innerHeight > innerWidth : matchMedia('(orientation: portrait)').matches || screen.height > screen.width) && (PHONE0 || innerWidth <= 520));
     if (want !== PORT && (PHONE0 || PORT)) { save(); location.reload(); return; }
     fitPhone(); resize();
   });
