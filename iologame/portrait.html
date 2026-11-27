@@ -259,6 +259,11 @@ html.port .frame::after { content: ""; position: absolute; left: 0; right: 0; bo
   background: linear-gradient(rgba(243,238,228,0), rgba(243,238,228,.9) 30%, #f3eee4); }
 html.port .frame.night::after { background: linear-gradient(rgba(30,28,46,0), rgba(30,28,46,.85) 30%, #1e1c2e); }
 html.port .panel { z-index: 2; }
+html.port .actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+html.port .actions button { flex: none; }
+html.port #albumN { display: none; }
+html.port #bSound.off { text-decoration: line-through; text-decoration-thickness: 1.5px; }
+html.port #bBall svg { display: block; width: 26px; height: 26px; }
 html.port #album { font-size: 11px; background: rgba(243, 238, 228, .98); }
 html.port .alb { width: 92%; max-height: 90%; }
 html.port .alb-row img, html.port .alb-row .slot { width: 38px; height: 38px; }
@@ -3662,7 +3667,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
         const f = seg[j] ? d / seg[j] : 0, bx = x + pts[j][0] + (pts[j + 1][0] - pts[j][0]) * f, by = y + pts[j][1] + (pts[j + 1][1] - pts[j][1]) * f;
         const im = PTUFTS[Math.floor(hash(i, seed + 3) * PTUFTS.length)]; if (!im.naturalWidth) continue;
         const tw = (30 + hash(i, seed + 7) * 16) * (tf.k || 1), th = tw * im.naturalHeight / im.naturalWidth;
-        ctx.drawImage(im, bx - tw / 2, by + 2 - th, tw, th);
+        ctx.drawImage(im, bx - tw / 2, by + 9 - th, tw, th);   // the tuft's roots a little below the foot line, so the contact never shows
       }
     }
   }
@@ -3826,7 +3831,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   function setSound(on) {
     soundOn = on; try { localStorage.setItem('yongi-sound', on ? 'on' : 'off'); } catch (e) {}
     if (MASTER) MASTER.gain.setTargetAtTime(on ? VOL : 0, AC.currentTime, 0.05);
-    const b = document.getElementById('bSound'); if (b) b.firstChild.textContent = on ? 'Sound on ' : 'Sound off ';
+    const b = document.getElementById('bSound'); if (b) { b.firstChild.textContent = PORT ? 'Sound ' : on ? 'Sound on ' : 'Sound off '; b.classList.toggle('off', !on); }
   }
   { const b = document.getElementById('bSound'); if (b) { b.onclick = () => { audioInit(); setSound(!soundOn); }; setSound(soundOn); } }
 
@@ -3969,7 +3974,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       { d: dOf(mirror), draw: sunk(mirror, drawMirror, 34) },
       { d: crate.x + crate.y, draw: sunk(crate, drawCrate, [{ path: PORT ? [[-55, 5], [0, 35], [54, 0]] : [[-61, 4], [-1, 36], [56, 0]], step: 11, k: 0.8 }]) },
       ...garden.jars.map((j, i) => ({ d: dragging && dragging.jar === i ? 998 : dOf(j), draw: sunk(j, () => drawJarItem(i), JAR_W[i]) })),
-      ...TABLES.map(T => ({ d: T.o.x + T.o.y, draw: sunk(T.o, () => drawTable(T), PORT ? [{ path: [...T.legs].sort((a, b) => a[0] - b[0]).map(l => [l[0], l[1]]) }] : T.legs) })),
+      ...TABLES.map(T => ({ d: T.o.x + T.o.y, draw: sunk(T.o, () => drawTable(T), PORT ? [{ path: [...T.legs].sort((a, b) => a[0] - b[0]).map(l => [l[0], l[1]]), step: 10 }] : T.legs) })),
       { d: TAP.x + TAP.y, draw: sunk(TAP, drawTap, 22) },
       { d: SHELF_DEPTH, draw: PORT ? () => {} : sunk(SHELF_O, drawShelf, [{ path: SHELF_FOOT.map(([px, py]) => [px * SH.s, py * SH.s]) }, [274 * SH.s, 141 * SH.s + 1, 30], [270 * SH.s, 139 * SH.s - 1, 18]]) },
       { d: LAMP.x + LAMP.y, draw: drawLamp },
@@ -4031,6 +4036,11 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   const PORT_AT = PORT ? [[soban2, 0.6, 0.12], [soban, 0.25, 0.2], [crate, 0.82, 0.3], [bed, 0.2, 0.55], [TAP, 0.9, 0.52], [bin, 0.6, 0.72],
     [LAMP, 0.5, 0.63], [PED, 0.85, 1.06], [GIFT, 0.3, 0.95], [FRONT, 0.5, 1.02], [dragon, 0.5, 0.62], [ball, 0.36, 0.8]] : [];
   const PED_SPOT = () => { const L = lawnRect(); return toWorld(L.x0 + 0.85 * (L.x1 - L.x0), L.y0 + 1.06 * (L.y1 - L.y0)); };   // the bubble always floats bottom right
+  if (PORT) {
+    const bb = document.getElementById('bBall');
+    bb.setAttribute('aria-label', 'Throw the ball');
+    bb.innerHTML = '<svg viewBox="0 0 26 26" aria-hidden="true"><defs><clipPath id="pbc"><circle cx="13" cy="13" r="11.5"/></clipPath></defs><circle cx="13" cy="13" r="11.5" fill="#fff"/><g clip-path="url(#pbc)" fill="#d8342c" transform="rotate(-35 13 13)"><path d="M8.5 0q-4 13 0 26h-9V0z"/><path d="M11 0q-2.5 13 0 26h4q2.5-13 0-26z"/><path d="M17.5 0q4 13 0 26h9V0z"/></g><circle cx="13" cy="13" r="11.5" fill="none" stroke="#111" stroke-width="1.4"/></svg>';
+  }
   function portLayout() {
     if (!PORT) return;
     const L = lawnRect();
