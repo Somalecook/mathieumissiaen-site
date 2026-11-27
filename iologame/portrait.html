@@ -750,7 +750,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
       stats.energy = clamp(stats.energy + away * 0.1, 0, 100);
     }
   } catch (e) {}
-  const save = () => { try { localStorage.setItem(PORT ? 'bebe-dragon-p2' : 'bebe-dragon-v1', JSON.stringify({ port: PORT ? { ped: [PED.x, PED.y], gift: [GIFT.x, GIFT.y], lamp: [LAMP.x, LAMP.y] } : undefined, at: Date.now(), ped: ped.o ? SMALL().indexOf(ped.o) : null, basket: { x: basket.x, y: basket.y }, bowl4, mirror, stats, bowl, plate, box2, box3, signpost, sock, soban, tap: TAP, lamp: LAMP.on, puddle, bowl2, bowl3, plate2, soli, soli2, soli3, soban2, stump, bed, garden, bottle, box, bin, crate, stage })); } catch (e) {} };
+  const save = () => { try { localStorage.setItem(PORT ? 'bebe-dragon-p2' : 'bebe-dragon-v1', JSON.stringify({ port: PORT ? { v: 2, ped: [PED.x, PED.y], gift: [GIFT.x, GIFT.y], lamp: [LAMP.x, LAMP.y] } : undefined, at: Date.now(), ped: ped.o ? SMALL().indexOf(ped.o) : null, basket: { x: basket.x, y: basket.y }, bowl4, mirror, stats, bowl, plate, box2, box3, signpost, sock, soban, tap: TAP, lamp: LAMP.on, puddle, bowl2, bowl3, plate2, soli, soli2, soli3, soban2, stump, bed, garden, bottle, box, bin, crate, stage })); } catch (e) {} };
 
   // ---------- canvas sizing ----------
   let terrain = null;
@@ -4028,8 +4028,8 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     put(soli2, 1); put(bowl4, 2); put(mirror, 11);
   }
   // portrait: where the furniture stands, as fractions of the lawn (x from the left, y from the top)
-  const PORT_AT = PORT ? [[soban2, 0.14, 0.2], [soban, 0.47, 0.2], [crate, 0.82, 0.3], [bed, 0.2, 0.55], [TAP, 0.9, 0.52], [bin, 0.6, 0.72],
-    [LAMP, 0.45, 0.8], [PED, 0.85, 1.06], [GIFT, 0.3, 0.95], [FRONT, 0.5, 1.02], [dragon, 0.5, 0.62], [ball, 0.36, 0.8]] : [];
+  const PORT_AT = PORT ? [[soban2, 0.6, 0.12], [soban, 0.25, 0.2], [crate, 0.82, 0.3], [bed, 0.2, 0.55], [TAP, 0.9, 0.52], [bin, 0.6, 0.72],
+    [LAMP, 0.5, 0.63], [PED, 0.85, 1.06], [GIFT, 0.3, 0.95], [FRONT, 0.5, 1.02], [dragon, 0.5, 0.62], [ball, 0.36, 0.8]] : [];
   const PED_SPOT = () => { const L = lawnRect(); return toWorld(L.x0 + 0.85 * (L.x1 - L.x0), L.y0 + 1.06 * (L.y1 - L.y0)); };   // the bubble always floats bottom right
   function portLayout() {
     if (!PORT) return;
@@ -4045,7 +4045,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   // a portrait save whose furniture is off the lawn (an older test version) is laid out again
   else if (PORT && [soban, crate, bed, bin, TAP].some(o => { const [sx, sy] = iso(o.x, o.y), L = lawnRect(); return sx < L.x0 - 20 || sx > L.x1 + 20 || sy < L.y0 - 20 || sy > L.y1 + 40; })) { portLayout(); portSpots = null; }
   // the bubble, the gift and the lamp are declared after the save is read: their portrait spots are put back here
-  if (!fresh && portSpots) try { [PED.x, PED.y] = PED_SPOT(); [GIFT.x, GIFT.y] = portSpots.gift; [LAMP.x, LAMP.y] = portSpots.lamp; } catch (e) {}
+  if (!fresh && portSpots) try { [PED.x, PED.y] = PED_SPOT(); [GIFT.x, GIFT.y] = portSpots.gift; [LAMP.x, LAMP.y] = portSpots.v >= 2 ? portSpots.lamp : toWorld(...(L => [L.x0 + 0.5 * (L.x1 - L.x0), L.y0 + 0.63 * (L.y1 - L.y0)])(lawnRect())); } catch (e) {}
   // "Tidy up": everything back in its place in the shelf, the bowls and the vases emptied (stickers and growth stay)
   function tidyUp() {
     if (dragging) return;
