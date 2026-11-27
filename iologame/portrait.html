@@ -92,6 +92,9 @@ h1 { position: absolute; left: 26px; top: 16px; z-index: 1; margin: 0; pointer-e
   font: 500 .72rem/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #111;
   opacity: 0; transform: translateY(4px); transition: opacity .25s, transform .25s, color .6s; }
 #product.on { opacity: 1; transform: none; }
+#pieceGo { position: absolute; left: 50%; top: 42%; z-index: 5; transform: translate(-50%, 8px); opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s;
+  background: #111; color: #fff; text-decoration: none; font-size: 15px; letter-spacing: .1em; text-transform: uppercase; padding: 16px 24px; border-radius: 999px; white-space: nowrap; }
+#pieceGo.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
 #product b { display: block; font-weight: 500; }
 #product span { display: block; opacity: .55; margin-top: .3em; }
 #product span:empty { display: none; }
@@ -2843,7 +2846,16 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   const pedTop = () => iso(PED.x, PED.y, PED.z + Math.sin(t * 1.3) * 2.5);
   function pedAt(px, py, k = 1) { const [x, y] = pedTop(); return Math.hypot(px - x, py - (y - 26)) < 70 * k; }
   // the piece's page on iolo.paris (the shop sends a variant link on to its product page)
-  function openPiece(o) { quest('bubble'); const P = PRODUCTS.get(prodKey(o)); if (P && P[3]) window.open('https://iolo.paris/variants/' + P[3], '_blank', 'noopener'); }
+  // iPhone Safari can refuse a new tab opened on a drop: if it is refused, a big link to tap shows instead
+  function openPiece(o) {
+    quest('bubble'); const P = PRODUCTS.get(prodKey(o)); if (!(P && P[3])) return;
+    const url = 'https://iolo.paris/variants/' + P[3];
+    let w = null; try { w = window.open(url, '_blank'); } catch (e) {}
+    if (w) { try { w.opener = null; } catch (e) {} return; }
+    let a = document.getElementById('pieceGo');
+    if (!a) { a = document.createElement('a'); a.id = 'pieceGo'; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'See it on iolo.paris'; frameEl.appendChild(a); a.addEventListener('click', () => a.classList.remove('on')); }
+    a.href = url; a.classList.add('on'); clearTimeout(a._t); a._t = setTimeout(() => a.classList.remove('on'), 8000);
+  }
   function pedTick(dt) {
     if (ped.idx != null) { ped.o = SMALL()[ped.idx] || null; ped.idx = null; }
     if (ped.o && !(dragging && dragging.o === ped.o)) { ped.o.x = PED.x; ped.o.y = PED.y; ped.o.rest = 0; ped.o.stored = null; ped.o.lift = PED.z + Math.sin(t * 1.3) * 2.5; }
