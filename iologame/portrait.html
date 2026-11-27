@@ -680,7 +680,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
   let t = 0;
 
   // load saved state
-  let portSaved = false;
+  let portSaved = false, portSpots = null;
   let fresh = true;   // no saved game: the first-game setup is applied once everything exists
   try {
     const sp = PORT ? JSON.parse(localStorage.getItem('bebe-dragon-port') || 'null') : null; portSaved = !!sp;
@@ -690,7 +690,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
       const away = clamp((Date.now() - s.at) / 1000, 0, 900);
       Object.assign(stats, s.stats); Object.assign(bowl, s.bowl);
       if (s.stump) Object.assign(stump, s.stump);
-      if (PORT && sp && s.port) { [PED.x, PED.y] = s.port.ped; [GIFT.x, GIFT.y] = s.port.gift; [LAMP.x, LAMP.y] = s.port.lamp; }
+      if (PORT && sp && sp.port) portSpots = sp.port;
       if (s.signpost) Object.assign(signpost, s.signpost);
       if (s.sock) Object.assign(sock, s.sock);
       sock.held = false;
@@ -3080,6 +3080,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       ctx.drawImage(GIFT_IMG, -GIFT_W * GIFT_FOOT, -h + 2, GIFT_W, h);
       ctx.restore();
     };
+    if (PORT) { body(); tuftsAlong(x, y + 2, [{ path: [[-44, -22], [-0.5, 0], [48, -24]] }]); return; }
     masked(x, y, body, () => { grassTufts(x - 30, y - 9, 36, 11, 0, 1.3); grassTufts(x - 12, y - 3, 32, 12, 0, 1.3); grassTufts(x + 14, y - 4, 32, 13, 0, 1.3); grassTufts(x + 34, y - 12, 34, 14, 0, 1.3); grassTufts(x + 1, y + 1, 28, 15, 0, 1.2); }, 140, 220, y - 34);
   }
   // the floating soap bubble (the user's painting): drop an iOLO piece into it and its page opens
@@ -3654,13 +3655,13 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     for (const tf of shapes) {
       const pts = tf.path ? tf.path : frontArc(tf[0], tf[1], tf[2] * 0.5, tf[2] * 0.17, 10);
       const seg = pts.slice(1).map((p, i) => Math.hypot(p[0] - pts[i][0], p[1] - pts[i][1])), Lg = seg.reduce((a, b) => a + b, 0);
-      const n = Math.max(2, Math.round(Lg / 17)), seed = Math.round(x * 3 + y * 5) + Math.round(Lg);
+      const n = Math.max(2, Math.round(Lg / (tf.step || 17))), seed = Math.round(x * 3 + y * 5) + Math.round(Lg);
       for (let i = 0; i < n; i++) {
         let d = Lg * (i + 0.25 + hash(i, seed) * 0.5) / n, j = 0;
         while (j < seg.length - 1 && d > seg[j]) d -= seg[j++];
         const f = seg[j] ? d / seg[j] : 0, bx = x + pts[j][0] + (pts[j + 1][0] - pts[j][0]) * f, by = y + pts[j][1] + (pts[j + 1][1] - pts[j][1]) * f;
         const im = PTUFTS[Math.floor(hash(i, seed + 3) * PTUFTS.length)]; if (!im.naturalWidth) continue;
-        const tw = 30 + hash(i, seed + 7) * 16, th = tw * im.naturalHeight / im.naturalWidth;
+        const tw = (30 + hash(i, seed + 7) * 16) * (tf.k || 1), th = tw * im.naturalHeight / im.naturalWidth;
         ctx.drawImage(im, bx - tw / 2, by + 2 - th, tw, th);
       }
     }
@@ -3966,7 +3967,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       ...BAGS.map(b => ({ d: b.pour ? 999 : dOf(b), draw: b.present ? sunk(b, () => drawBox(b), 30) : () => {} })),
       { d: bin.x + bin.y, draw: sunk(bin, drawBin, [[0, 0, 40], [30, 5, 30]]) },
       { d: dOf(mirror), draw: sunk(mirror, drawMirror, 34) },
-      { d: crate.x + crate.y, draw: sunk(crate, drawCrate, [{ path: [[-61, 4], [-1, 36], [56, 0]] }]) },
+      { d: crate.x + crate.y, draw: sunk(crate, drawCrate, [{ path: PORT ? [[-55, 5], [0, 35], [54, 0]] : [[-61, 4], [-1, 36], [56, 0]], step: 11, k: 0.8 }]) },
       ...garden.jars.map((j, i) => ({ d: dragging && dragging.jar === i ? 998 : dOf(j), draw: sunk(j, () => drawJarItem(i), JAR_W[i]) })),
       ...TABLES.map(T => ({ d: T.o.x + T.o.y, draw: sunk(T.o, () => drawTable(T), PORT ? [{ path: [...T.legs].sort((a, b) => a[0] - b[0]).map(l => [l[0], l[1]]) }] : T.legs) })),
       { d: TAP.x + TAP.y, draw: sunk(TAP, drawTap, 22) },
@@ -4040,6 +4041,8 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   }
   if (fresh) firstSetup();
   else if (PORT && !portSaved) portLayout();
+  // the bubble, the gift and the lamp are declared after the save is read: their portrait spots are put back here
+  if (!fresh && portSpots) try { [PED.x, PED.y] = portSpots.ped; [GIFT.x, GIFT.y] = portSpots.gift; [LAMP.x, LAMP.y] = portSpots.lamp; } catch (e) {}
   // "Tidy up": everything back in its place in the shelf, the bowls and the vases emptied (stickers and growth stay)
   function tidyUp() {
     if (dragging) return;
