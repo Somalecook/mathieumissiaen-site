@@ -2893,7 +2893,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   if (!(grow.pend >= 0)) grow.pend = null;
   if (grow.welcome) {
     delete grow.welcome; saveGrow();
-    setTimeout(() => { autoStick(22); gotSticker(22); toast(PORT ? 'Welcome! Tap the rack to stick your first sticker' : 'Welcome! Your first sticker is in the sky, tap it to move it', '환영해요! 첫 스티커가 하늘에 붙었어요, 눌러서 옮길 수 있어요', 7); }, 1200);   // the first sticker is always the corn dog
+    setTimeout(() => { autoStick(22); gotSticker(22); toast(PORT ? 'Welcome! Your first sticker is on the rack' : 'Welcome! Your first sticker is in the sky, tap it to move it', '환영해요! 첫 스티커가 하늘에 붙었어요, 눌러서 옮길 수 있어요', 7); }, 1200);   // the first sticker is always the corn dog
   }
   const STW = 50;   // a sticker's width in the scene (75% of the first size)
   const stickerSize = i => { const im = STICKERS[i]; return im.naturalWidth ? [STW, STW * im.naturalHeight / im.naturalWidth] : [STW, STW]; };
@@ -2947,9 +2947,13 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   }
   // a sticker goes straight into the sky, in an empty spot (off the lawn, clear of the type and of the other stickers); it can be moved after
   function autoStick(i) {
-    if (PORT) {   // portrait: nothing sticks by itself; the sticker waits in hand (the others queue) until the rack is tapped
-      if (grow.pend == null) grow.pend = i; else { (grow.pq || (grow.pq = [])).push(i); }
-      saveGrow(); return;
+    if (PORT) {   // portrait: it sticks by itself on the back of the rack, in an empty spot (it can be moved after)
+      const R = rackGeom(), [x0, y0] = cssToScene(R.left + 30 * UK, R.top + 20 * UK), [x1, y1] = cssToScene(R.right - 30 * UK, R.bottom - 20 * UK);
+      let best = null;
+      for (let k = 0; k < 200; k++) { const x = rand(x0, x1), y = rand(y0, y1), d = Math.min(999, ...STL().map(q => Math.hypot(q.x - x, q.y - y))); if (!best || d > best[2]) best = [x, y, d]; if (d > 90) break; }
+      STL().push({ i, x: Math.round(best[0]), y: Math.round(best[1]), r: +(rand(-0.22, 0.22)).toFixed(3) }); saveGrow();
+      for (let k = 0; k < 6; k++) setTimeout(() => puff('heart', best[0] + rand(-24, 24), best[1] - 20), k * 90);
+      return;
     }
     const x0 = (-VX - 800) / ZOOM + 800, x1 = (VW - VX - 800) / ZOOM + 800;   // the canvas edges, in scene px
     let best = null;
@@ -4055,6 +4059,8 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   const PORT_AT = PORT ? [[soban2, 0.6, 0.12], [soban, 0.25, 0.2], [crate, 0.82, 0.3], [bed, 0.2, 0.55], [TAP, 0.9, 0.52], [bin, 0.6, 0.72],
     [LAMP, 0.5, 0.63], [PED, 0.85, 1.06], [GIFT, 0.3, 0.95], [FRONT, 0.5, 1.02], [dragon, 0.5, 0.62], [ball, 0.36, 0.8]] : [];
   const PED_SPOT = () => { const L = lawnRect(); return toWorld(L.x0 + 0.85 * (L.x1 - L.x0), L.y0 + 1.06 * (L.y1 - L.y0)); };   // the bubble always floats bottom right
+  // a sticker left in hand (or waiting) when the game was closed goes onto the rack by itself
+  if (PORT) setTimeout(() => { const w = [...(grow.pend != null ? [grow.pend] : []), ...(grow.pq || [])]; grow.pend = null; grow.pq = []; w.forEach((i, k) => setTimeout(() => autoStick(i), k * 300)); if (w.length) saveGrow(); }, 1500);
   if (PORT) {
     const bb = document.getElementById('bBall');
     bb.setAttribute('aria-label', 'Throw the ball');
