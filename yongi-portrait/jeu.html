@@ -4063,7 +4063,14 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     [LAMP, 0.5, 0.63], [PED, 0.85, 1.06], [GIFT, 0.3, 0.95], [FRONT, 0.5, 0.98], [dragon, 0.5, 0.62], [ball, 0.36, 0.8]] : [];
   const PED_SPOT = () => { const L = lawnRect(); return toWorld(L.x0 + 0.85 * (L.x1 - L.x0), L.y0 + 1.06 * (L.y1 - L.y0)); };   // the bubble always floats bottom right
   // a sticker left in hand (or waiting) when the game was closed goes onto the rack by itself
-  if (PORT) setTimeout(() => { const w = [...(grow.pend != null ? [grow.pend] : []), ...(grow.pq || [])]; grow.pend = null; grow.pq = []; w.forEach((i, k) => setTimeout(() => autoStick(i), k * 300)); if (w.length) saveGrow(); }, 1500);
+  if (PORT) setTimeout(() => {
+    // stickers of an older save that are not on the back boards of the rack are put back on it
+    const R = rackGeom(), RW = R.right - R.left, [x0, y0] = cssToScene(R.left + RW * 0.16, R.top + 34 * UK), [x1, y1] = cssToScene(R.right - RW * 0.16, R.top + 118 * UK);
+    const off = STL().filter(q => q.x < x0 || q.x > x1 || q.y < y0 || q.y > y1);
+    for (const q of off) STL().splice(STL().indexOf(q), 1);
+    const w = [...(grow.pend != null ? [grow.pend] : []), ...(grow.pq || []), ...off.map(q => q.i)]; grow.pend = null; grow.pq = [];
+    w.forEach((i, k) => setTimeout(() => autoStick(i), k * 300)); if (w.length) saveGrow();
+  }, 1500);
   if (PORT) {
     const bb = document.getElementById('bBall');
     bb.setAttribute('aria-label', 'Throw the ball');
