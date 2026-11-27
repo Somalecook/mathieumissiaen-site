@@ -2995,7 +2995,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     toast(won ? `Secret found · 3 stickers · ${PERFECT_GOAL} perfect days · ${SHOP_OFF}% off the iOLO shop · code ${SHOP_CODE}` : 'Secret found · 3 gifts · 3 stickers · +3 perfect days',
           won ? `비밀 발견 · 스티커 3개 · 완벽한 하루 ${PERFECT_GOAL}일 · iOLO 숍 ${SHOP_OFF}% 할인 · 코드 ${SHOP_CODE}` : '비밀 발견 · 선물 3개 · 스티커 3개 · 완벽한 하루 +3', won ? 10 : 7);
     renderQuests(); updateHud(); tttButton();
-    setTimeout(() => toast('Tic-tac-toe is open in the shelf · play against Yongi', '선반에서 틱택토를 할 수 있어요 · 용이와 대결해요', 6), 7500);
+    if (!PORT) setTimeout(() => toast('Tic-tac-toe is open in the shelf · play against Yongi', '선반에서 틱택토를 할 수 있어요 · 용이와 대결해요', 6), 7500);
   }
   // ---------- tic-tac-toe in the shelf's nine cells, against Yongi (unlocked by the secret) ----------
   const ttt = { on: false, b: Array(9).fill(0), pop: Array(9).fill(0), over: 0, wait: 0, line: null };   // b: 0 empty, 1 the player (white balls), 2 Yongi (black balls)
@@ -3016,7 +3016,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   }
   // a cell's middle on screen (scene px): the floor point of its slot, raised half a cell
   const tttCell = i => { const [x, y, rest] = SLOTS[i]; const [sx, sy] = iso(x, y, rest); return [sx, sy - 13]; };   // the ball rests where the bags stand (the cell's own board)
-  function tttStart() { Object.assign(ttt, { on: true, b: Array(9).fill(0), pop: Array(9).fill(0), over: 0, wait: 0, line: null }); tttButton(); }
+  function tttStart() { if (PORT) return; Object.assign(ttt, { on: true, b: Array(9).fill(0), pop: Array(9).fill(0), over: 0, wait: 0, line: null }); tttButton(); }
   function tttStop() { ttt.on = false; tttButton(); }
   function tttEnd(w) {
     ttt.over = w[0]; ttt.line = w[1];
@@ -3070,7 +3070,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   }
   function tttButton() {
     const b = document.getElementById('bTtt'); if (!b) return;
-    b.hidden = !grow.secret;
+    b.hidden = PORT || !grow.secret;
     b.firstChild.textContent = ttt.on ? 'Stop the game ' : 'Tic-tac-toe ';
     b.querySelector('i').textContent = ttt.on ? '그만하기' : '틱택토';
   }
