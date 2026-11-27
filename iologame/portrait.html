@@ -258,7 +258,7 @@ html.port #product { left: 18px; right: 18px; max-width: none; text-align: cente
 html.port .frame::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: calc(env(safe-area-inset-bottom, 0px) + 150px); pointer-events: none;
   background: linear-gradient(rgba(243,238,228,0), rgba(243,238,228,.9) 30%, #f3eee4); }
 html.port .frame.night::after { background: linear-gradient(rgba(30,28,46,0), rgba(30,28,46,.85) 30%, #1e1c2e); }
-html.port .panel { z-index: 2; }
+html.port .panel, html.port .frame.night .panel { z-index: 2; align-items: stretch; flex-direction: column; flex-wrap: nowrap; }   /* the same layout at night */
 html.port .actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 html.port .actions button { flex: none; }
 html.port #albumN { display: none; }
