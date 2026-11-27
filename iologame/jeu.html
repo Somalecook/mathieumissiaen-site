@@ -2921,7 +2921,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     ['jar', ['Korean Moon Jar', 210, '', 54856492417363]],
   ]);
   const prodKey = o => garden.jars.includes(o) ? 'jar' : o;
-  const pedOK = o => SMALL().includes(o) && !!PRODUCTS.get(prodKey(o)) && !covered(o);
+  const pedOK = o => (SMALL().includes(o) || (PORT && TABLES.some(T => T.o === o))) && !!PRODUCTS.get(prodKey(o)) && !covered(o);
   const pedTop = () => iso(PED.x, PED.y, PED.z + Math.sin(t * 1.3) * 2.5);
   function pedAt(px, py, k = 1) { const [x, y] = pedTop(); return Math.hypot(px - x, py - (y - 26)) < 70 * k; }
   // the piece's page on iolo.paris (the shop sends a variant link on to its product page)
@@ -3484,7 +3484,13 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
         if (!ped.hot && o.stored == null && !o.rest && SMALL().includes(o)) { o.x = clamp(o.x, 0.7, NX - 0.7); o.y = clamp(o.y, 0.7, NY - 0.7); }   // let go off the lawn: back on the grass
         if (PORT && !ped.hot && o.stored == null && !o.rest) { const ox = o.x, oy = o.y; [o.x, o.y] = fitLawn(o.x, o.y, 16);
           const ti = TABLES.findIndex(T => T.o === o); if (ti >= 0) for (const it of SMALL()) if (it.rest && !isStored(it) && !it.on && (it.tbl || 0) === ti) { it.x += o.x - ox; it.y += o.y - oy; } }
-        if (ped.hot) {
+        if (ped.hot && TABLES.some(T => T.o === o)) {
+          const f = dragging.from, ti = TABLES.findIndex(T => T.o === o), dx = f.x - o.x, dy = f.y - o.y;
+          for (const it of SMALL()) if (it.rest && !isStored(it) && !it.on && (it.tbl || 0) === ti) { it.x += dx; it.y += dy; }
+          Object.assign(o, { x: f.x, y: f.y, lift: 0 }); o.settle = 1; ped.pop = 1;
+          const [x, y] = iso(PED.x, PED.y, PED.z); for (let i = 0; i < 4; i++) setTimeout(() => puff('heart', x + rand(-16, 16), y - 50), i * 110);
+          openPiece(o);
+        } else if (ped.hot) {
           // the piece already on it goes back on the lawn, in front of the shelf
           if (ped.o && ped.o !== o) { Object.assign(ped.o, { x: 8.4, y: 3.6, lift: 0, rest: 0, stored: null, on: null }); ped.o.settle = 1; }
           ped.o = o; ped.pop = 1; Object.assign(o, { x: PED.x, y: PED.y, rest: 0, stored: null, on: null, tbl: 0, pour: false });
