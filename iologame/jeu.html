@@ -2044,7 +2044,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       };
       // grass blades in front of the paws, rustling as he walks (only over his own paws)
       if (inBed || d.hop >= 4) body();
-      else if (PORT) masked(x, y, body, () => { const sw = d.moving ? Math.sin(t * (d.run ? 22 : 13)) * 1.5 : 0; tuftsAlong(sx + sw, sy + 1 * K(), [{ path: [[-rx * 1.05, -rx * 0.12], [0, rx * 0.1], [rx * 1.05, -rx * 0.12]], step: 11 * K(), k: 0.72 * K(), seed: 77 }]); }, 130 * K() + 20, 190 * K() + 20, sy - 30 * K());
+      else if (PORT) masked(x, y, body, () => { const sw = d.moving ? Math.sin(t * (d.run ? 22 : 13)) * 1.5 : 0; tuftsAlong(sx + sw, sy + 1 * K(), [{ path: [[-rx * 1.05, -rx * 0.12], [0, rx * 0.1], [rx * 1.05, -rx * 0.12]], step: 11 * K(), k: 0.72 * K(), seed: 77, only: [0, 2, 3, 8, 9, 15] }]); }, 130 * K() + 20, 190 * K() + 20, sy - 30 * K());
       else masked(x, y, body, () => grassTufts(sx, sy + 4 * K(), rx * 1.9, 77, d.moving ? Math.sin(t * (d.run ? 22 : 13)) * 2.2 : Math.sin(t * 2) * 0.5, 1.15 * K()), 130 * K() + 20, 190 * K() + 20, sy - 18 * K());
       // happy face bubble while being petted or after bringing the ball back
       if (ds2Ready && !ds4Ready && (d.state === 'pet' || d.state === 'happy')) {
@@ -3760,7 +3760,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
         let d = Lg * (i + 0.25 + hash(i, seed) * 0.5) / n, j = 0;
         while (j < seg.length - 1 && d > seg[j]) d -= seg[j++];
         const f = seg[j] ? d / seg[j] : 0, bx = x + pts[j][0] + (pts[j + 1][0] - pts[j][0]) * f, by = y + pts[j][1] + (pts[j + 1][1] - pts[j][1]) * f;
-        const im = PTUFTS[Math.floor(hash(i, seed + 3) * PTUFTS.length)]; if (!im.naturalWidth) continue;
+        const im = tf.only ? PTUFTS[tf.only[Math.floor(hash(i, seed + 3) * tf.only.length)]] : PTUFTS[Math.floor(hash(i, seed + 3) * PTUFTS.length)]; if (!im.naturalWidth) continue;
         const tw = (30 + hash(i, seed + 7) * 16) * (tf.k || 1), th = tw * im.naturalHeight / im.naturalWidth;
         ctx.drawImage(im, bx - tw / 2, by + 9 - th, tw, th);   // the tuft's roots a little below the foot line, so the contact never shows
       }
