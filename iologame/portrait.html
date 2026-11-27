@@ -338,7 +338,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
   const dayKey = d => d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
   // ?new in the address starts over: a first game, as a new player sees it
   if (/[?&]new\b/.test(location.search)) {
-    try { ['bebe-dragon-v1', 'bebe-dragon-port', 'yongi-grow', 'yongi-cart'].forEach(k => localStorage.removeItem(k)); } catch (e) {}
+    try { ['bebe-dragon-v1', 'bebe-dragon-p2', 'yongi-grow', 'yongi-cart'].forEach(k => localStorage.removeItem(k)); } catch (e) {}
     try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
   }
   let grow = { xp: 0, day: '', today: 0, streak: 0, gift: false, capped: false };
@@ -683,7 +683,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
   let portSaved = false, portSpots = null;
   let fresh = true;   // no saved game: the first-game setup is applied once everything exists
   try {
-    const sp = PORT ? JSON.parse(localStorage.getItem('bebe-dragon-port') || 'null') : null; portSaved = !!sp;
+    const sp = PORT ? JSON.parse(localStorage.getItem('bebe-dragon-p2') || 'null') : null; portSaved = !!sp;
     const s = sp || JSON.parse(localStorage.getItem('bebe-dragon-v1') || 'null');
     if (s) {
       fresh = false;
@@ -750,7 +750,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
       stats.energy = clamp(stats.energy + away * 0.1, 0, 100);
     }
   } catch (e) {}
-  const save = () => { try { localStorage.setItem(PORT ? 'bebe-dragon-port' : 'bebe-dragon-v1', JSON.stringify({ port: PORT ? { ped: [PED.x, PED.y], gift: [GIFT.x, GIFT.y], lamp: [LAMP.x, LAMP.y] } : undefined, at: Date.now(), ped: ped.o ? SMALL().indexOf(ped.o) : null, basket: { x: basket.x, y: basket.y }, bowl4, mirror, stats, bowl, plate, box2, box3, signpost, sock, soban, tap: TAP, lamp: LAMP.on, puddle, bowl2, bowl3, plate2, soli, soli2, soli3, soban2, stump, bed, garden, bottle, box, bin, crate, stage })); } catch (e) {} };
+  const save = () => { try { localStorage.setItem(PORT ? 'bebe-dragon-p2' : 'bebe-dragon-v1', JSON.stringify({ port: PORT ? { ped: [PED.x, PED.y], gift: [GIFT.x, GIFT.y], lamp: [LAMP.x, LAMP.y] } : undefined, at: Date.now(), ped: ped.o ? SMALL().indexOf(ped.o) : null, basket: { x: basket.x, y: basket.y }, bowl4, mirror, stats, bowl, plate, box2, box3, signpost, sock, soban, tap: TAP, lamp: LAMP.on, puddle, bowl2, bowl3, plate2, soli, soli2, soli3, soban2, stump, bed, garden, bottle, box, bin, crate, stage })); } catch (e) {} };
 
   // ---------- canvas sizing ----------
   let terrain = null;
@@ -4041,6 +4041,8 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   }
   if (fresh) firstSetup();
   else if (PORT && !portSaved) portLayout();
+  // a portrait save whose furniture is off the lawn (an older test version) is laid out again
+  else if (PORT && [soban, crate, bed, bin, TAP].some(o => { const [sx, sy] = iso(o.x, o.y), L = lawnRect(); return sx < L.x0 - 20 || sx > L.x1 + 20 || sy < L.y0 - 20 || sy > L.y1 + 40; })) { portLayout(); portSpots = null; }
   // the bubble, the gift and the lamp are declared after the save is read: their portrait spots are put back here
   if (!fresh && portSpots) try { [PED.x, PED.y] = portSpots.ped; [GIFT.x, GIFT.y] = portSpots.gift; [LAMP.x, LAMP.y] = portSpots.lamp; } catch (e) {}
   // "Tidy up": everything back in its place in the shelf, the bowls and the vases emptied (stickers and growth stay)
