@@ -328,17 +328,19 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
   const PHONE0 = matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 600;
   const PORT = /[?&]portrait\b/.test(location.search) || PHONE0 || ((innerHeight && innerWidth ? innerHeight > innerWidth : matchMedia('(orientation: portrait)').matches || screen.height > screen.width) && (PHONE0 || innerWidth <= 520));
   // a phone browser in "desktop site" mode lays the page out ~980px wide: UK brings the sizes back to the phone's own
-  const UK = PHONE0 && innerWidth > Math.min(screen.width, screen.height) * 1.25 && innerHeight > innerWidth ? innerWidth / Math.min(screen.width, screen.height) : 1;
-  const PK = 1.5 / UK;   // scene px per screen px in portrait
+  // (recomputed on every resize: going full screen gives the phone's own width back)
+  const ukNow = () => PHONE0 && innerWidth > Math.min(screen.width, screen.height) * 1.25 && innerHeight > innerWidth ? innerWidth / Math.min(screen.width, screen.height) : 1;
+  let UK = ukNow();
+  let PK = 1.5 / UK;   // scene px per screen px in portrait
   let SAFE_T = 0, SAFE_B = 0;
   { const d = document.createElement('div'); d.style.cssText = 'position:fixed;left:0;top:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);visibility:hidden';
     document.body.appendChild(d); const cs = getComputedStyle(d); SAFE_T = parseFloat(cs.paddingTop) || 0; SAFE_B = parseFloat(cs.paddingBottom) || 0; d.remove(); }
   const cssToScene = (cx, cy) => [800 + (cx - innerWidth / 2) * PK, 450 + (cy - innerHeight / 2) * PK];
   // the rack, in screen px: two shelves (tops), six spots on each
   const rackGeom = () => { const top = (Math.max(6, SAFE_T) + 2) * UK; return { top, left: 0, right: innerWidth, rows: [top + 60 * UK, top + 128 * UK], bottom: top + 156 * UK }; };
-  const BAR_H = 150 * UK;
+  const BARH = () => 150 * UK;
   // the lawn where things stand, in scene px
-  const lawnRect = () => { const r = rackGeom(), [x0, y0] = cssToScene(16 * UK, r.bottom + 16 * UK), [x1, y1] = cssToScene(innerWidth - 16 * UK, innerHeight - BAR_H - SAFE_B * UK); return { x0, y0, x1, y1 }; };
+  const lawnRect = () => { const r = rackGeom(), [x0, y0] = cssToScene(16 * UK, r.bottom + 16 * UK), [x1, y1] = cssToScene(innerWidth - 16 * UK, innerHeight - BARH() - SAFE_B * UK); return { x0, y0, x1, y1 }; };
   if (PORT) { document.documentElement.classList.add('port'); document.documentElement.style.setProperty('--uk', UK); }
   // ---------- world constants ----------
   const W = 1600, H = 900;
@@ -703,6 +705,24 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
 
   // load saved state
   let portSaved = false, portSpots = null;
+  function portRemap(g0, g1) {
+    try {
+      const L0 = g0.L, L1 = g1.L;
+      if (Math.abs(L0.x1 - L1.x1) + Math.abs(L0.y1 - L1.y1) + Math.abs(L0.y0 - L1.y0) < 1) return;
+      const map = o => { if (!o || o.x < -10) return; const [sx, sy] = iso(o.x, o.y); const fx = (sx - L0.x0) / (L0.x1 - L0.x0), fy = (sy - L0.y0) / (L0.y1 - L0.y0);
+        [o.x, o.y] = toWorld(L1.x0 + fx * (L1.x1 - L1.x0), L1.y0 + fy * (L1.y1 - L1.y0)); };
+      const all = new Set([soban, soban2, crate, bed, bin, TAP, LAMP, PED, GIFT, FRONT, ball, sock, ...SMALL(), ...BAGS, ...garden.jars]);
+      for (const o of all) if (o.stored == null) map(o);
+      map(dragon); dragon.tx = dragon.x; dragon.ty = dragon.y;
+      portSlots();
+      for (const o of all) if (o.stored != null && SLOTS[o.stored]) [o.x, o.y, o.rest] = SLOTS[o.stored];
+      const [[a0, b0], [a1, b1]] = g0.R, [[c0, d0], [c1, d1]] = g1.R;
+      for (const q of STL()) { q.x = Math.round(c0 + (q.x - a0) / (a1 - a0) * (c1 - c0)); q.y = Math.round(d0 + (q.y - b0) / (b1 - b0) * (d1 - d0)); }
+      if (typeof syncStack === 'function') syncStack();
+      terrain = buildTerrain();
+    } catch (e) {}
+  }
+  let portGeom = null, portReady = false;
   let fresh = true;   // no saved game: the first-game setup is applied once everything exists
   try {
     const sp = PORT ? JSON.parse(localStorage.getItem('bebe-dragon-p2') || 'null') : null; portSaved = !!sp;
@@ -810,6 +830,8 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
   function fitPhone() {
     if (PORT) {
       const W = innerWidth, H = innerHeight, root = document.documentElement;
+      const g0 = portGeom; UK = ukNow(); PK = 1.5 / UK; root.style.setProperty('--uk', UK); portGeom = { L: lawnRect(), R: (r => [cssToScene(r.left, r.top), cssToScene(r.right, r.bottom)])(rackGeom()) };
+      if (g0 && portReady) setTimeout(() => portRemap(g0, portGeom), 0);
       root.classList.add('phone');
       VW = W * PK * 0.9; VH = H * PK * 0.9; VX = VW / 2 - 800; VY = VH / 2 - 450;
       root.style.setProperty('--cw', W + 'px'); root.style.setProperty('--cx', '0px'); root.style.setProperty('--ch', H + 'px');
@@ -1371,7 +1393,7 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
   function drawHand() {
     const n = garden.hand.length;
     if (!n && !garden.bouquet) return;
-    const [phx, phy] = PORT ? cssToScene(44 * UK, innerHeight - BAR_H - (SAFE_B - 10) * UK) : [0, 0];
+    const [phx, phy] = PORT ? cssToScene(44 * UK, innerHeight - BARH() - (SAFE_B - 10) * UK) : [0, 0];
     const hx = PORT ? phx : PHONE ? (-VX - 800) / ZOOM + 800 + 95 : 96, hy = PORT ? phy : PHONE ? 600 : 740, sway = Math.sin(t * 1.6) * 0.03;
     ctx.save(); ctx.translate(hx, hy - 40); ctx.rotate(sway); ctx.translate(-hx, -(hy - 40));
     if (garden.bouquet) drawBouquet(hx, hy, garden.bouquet, 130);
@@ -1778,7 +1800,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     SLOTS.push([SH.X0 + SH.s * (t - side), SH.FY - SH.s * back, SH.s * (SH.H - h)]);
   }
   // portrait: the twelve spots on the rack, six on each shelf
-  if (PORT) {
+  function portSlots() {
     const R = rackGeom(), col = c => R.left + 16 * UK + (R.right - R.left - 32 * UK) * (c + 0.5) / 6;
     SLOTS.length = 0;
     for (let i = 0; i < 12; i++) {
@@ -1787,6 +1809,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       SLOTS.push([gx, gy, 1]);
     }
   }
+  if (PORT) portSlots();
   function drawRack() {
     if (!PRACK.complete || !PRACK.naturalWidth) return;
     const R = rackGeom(), [x0, y0] = cssToScene(R.left, R.top), [x1, y1] = cssToScene(R.right, R.bottom + 12);
@@ -4086,6 +4109,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   // a portrait save whose furniture is off the lawn (an older test version) is laid out again
   else if (PORT && [soban, crate, bed, bin, TAP].some(o => { const [sx, sy] = iso(o.x, o.y), L = lawnRect(); return sx < L.x0 - 20 || sx > L.x1 + 20 || sy < L.y0 - 20 || sy > L.y1 + 40; })) { portLayout(); portSpots = null; }
   // the bubble, the gift and the lamp are declared after the save is read: their portrait spots are put back here
+  portReady = true;
   if (!fresh && portSpots) try { [PED.x, PED.y] = PED_SPOT(); [GIFT.x, GIFT.y] = portSpots.gift; [LAMP.x, LAMP.y] = portSpots.v >= 2 ? portSpots.lamp : toWorld(...(L => [L.x0 + 0.5 * (L.x1 - L.x0), L.y0 + 0.63 * (L.y1 - L.y0)])(lawnRect())); } catch (e) {}
   // "Tidy up": everything back in its place in the shelf, the bowls and the vases emptied (stickers and growth stay)
   function tidyUp() {
