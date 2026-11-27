@@ -268,6 +268,9 @@ html.port .actions button { flex: none; }
 html.port #albumN { display: none; }
 html.port #bSound.off { text-decoration: line-through; text-decoration-thickness: 1.5px; }
 html.port #bBall svg { display: block; width: 26px; height: 26px; }
+html.port .alb-today { flex-direction: column; align-items: flex-start; gap: 6px; }
+html.port .alb-today .tq { display: flex; flex-direction: column; gap: 4px; }
+html.port .alb-today .tq .done { opacity: .45; text-decoration: line-through; }
 html.port #album { font-size: 11px; background: rgba(243, 238, 228, .98); }
 html.port .alb { width: 92%; max-height: 90%; }
 html.port .alb-row img, html.port .alb-row .slot { width: 38px; height: 38px; }
@@ -3279,6 +3282,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     if (o && o !== dragon && depthOf(o) > dd) return false;
     return true;
   }
+  let petTapAt = 0;
   function startPet(e, px, py) {
     petting = true; petLast = [px, py]; petAcc = 0;
     cv.setPointerCapture(e.pointerId);
@@ -3289,6 +3293,8 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     }
     if (ds4Ready && dragon.state === 'pet') cv.style.cursor = 'none';   // the painted hand takes over
     petHeart();
+    // a tap on him counts as a pet too (on a phone most people tap rather than rub)
+    const now = performance.now(); if (now - petTapAt > 500) { petTapAt = now; quest('pet'); }
   }
   function petHeart() {
     const [x, y] = iso(dragon.x, dragon.y);
@@ -4281,6 +4287,12 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       h += won ? `<span class="ms"><b class="code">${SHOP_CODE}</b><button type="button" id="albCopy">Copy <i lang="ko">복사</i></button><a href="${SHOP_URL}" target="_blank" rel="noopener">Shop <i lang="ko">숍</i> →</a></span>`
                : `<span class="ms">${Array.from({ length: PERFECT_GOAL }, (_, i) => `<span class="${i < pf ? 'on' : ''}">${i < pf ? '●' : '○'}</span>`).join('')}</span>`;
       h += `</div>`;
+    }
+    if (PORT) {
+      const q = todayQuests();
+      h += `<div class="alb-streak alb-today"><span>Today</span><span class="tq">`;
+      for (const id of q.ids) { const Q = QUESTS[id], n = q.n[id] || 0, done = n >= Q[2]; h += `<span class="${done ? 'done' : ''}">${done ? '✓' : '○'} ${Q[0]}${Q[2] > 1 ? ` ${n}/${Q[2]}` : ''}</span>`; }
+      h += `</span></div>`;
     }
     for (const [en, ko, ids] of SERIES) {
       const n = ids.filter(i => grow.got.includes(i)).length;

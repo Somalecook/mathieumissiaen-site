@@ -3169,6 +3169,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     if (o && o !== dragon && depthOf(o) > dd) return false;
     return true;
   }
+  let petTapAt = 0;
   function startPet(e, px, py) {
     petting = true; petLast = [px, py]; petAcc = 0;
     cv.setPointerCapture(e.pointerId);
@@ -3179,6 +3180,8 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     }
     if (ds4Ready && dragon.state === 'pet') cv.style.cursor = 'none';   // the painted hand takes over
     petHeart();
+    // a tap on him counts as a pet too (on a phone most people tap rather than rub)
+    const now = performance.now(); if (now - petTapAt > 500) { petTapAt = now; quest('pet'); }
   }
   function petHeart() {
     const [x, y] = iso(dragon.x, dragon.y);
