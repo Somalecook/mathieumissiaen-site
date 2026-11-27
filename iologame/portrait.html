@@ -3968,7 +3968,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       { d: dOf(mirror), draw: sunk(mirror, drawMirror, 34) },
       { d: crate.x + crate.y, draw: sunk(crate, drawCrate, [{ path: [[-61, 4], [-1, 36], [56, 0]] }]) },
       ...garden.jars.map((j, i) => ({ d: dragging && dragging.jar === i ? 998 : dOf(j), draw: sunk(j, () => drawJarItem(i), JAR_W[i]) })),
-      ...TABLES.map(T => ({ d: T.o.x + T.o.y, draw: sunk(T.o, () => drawTable(T), T.legs) })),
+      ...TABLES.map(T => ({ d: T.o.x + T.o.y, draw: sunk(T.o, () => drawTable(T), PORT ? [{ path: [...T.legs].sort((a, b) => a[0] - b[0]).map(l => [l[0], l[1]]) }] : T.legs) })),
       { d: TAP.x + TAP.y, draw: sunk(TAP, drawTap, 22) },
       { d: SHELF_DEPTH, draw: PORT ? () => {} : sunk(SHELF_O, drawShelf, [{ path: SHELF_FOOT.map(([px, py]) => [px * SH.s, py * SH.s]) }, [274 * SH.s, 141 * SH.s + 1, 30], [270 * SH.s, 139 * SH.s - 1, 18]]) },
       { d: LAMP.x + LAMP.y, draw: drawLamp },
@@ -4294,7 +4294,6 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   requestAnimationFrame(frame);
 })();
 </script>
-
 
 <section class="about" aria-labelledby="about-t">
 <style>
