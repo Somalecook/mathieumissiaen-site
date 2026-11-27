@@ -3640,6 +3640,15 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       b.of = clamp((b.of || 0) + (b.open ? 1 : -1) * dt / 0.35, 0, 1);
       b.pop = Math.max(0, (b.pop || 0) - dt * 2.5);
     }
+    if (PORT) for (const o of SMALL()) {
+      if (!o.rest || isStored(o) || o.on || (dragging && (dragging.o === o))) continue;
+      const T = TABLES[o.tbl || 0]; if (!T || (dragging && dragging.o === T.o)) continue;
+      if (T.o.x < -10) { o.rest = 0; o.tbl = 0; continue; }
+      if (Math.abs(o.rest - T.z) > 0.5) o.rest = T.z;
+      const [tx, ty] = iso(T.o.x, T.o.y), [ix, iy] = iso(o.x, o.y), dx = ix - tx, dy = iy - ty;
+      const ax = T.rx * 0.35, ay = T.ry * 0.22, e = (dx / ax) ** 2 + (dy / ay) ** 2;
+      if (e > 1) { const k = 1 / Math.sqrt(e); [o.x, o.y] = toWorld(tx + dx * k, ty + dy * k); }
+    }
     // pots drain and bouquets wilt when dry
     garden.care.forEach((c, i) => {
       if (!garden.pots[i]) return;
