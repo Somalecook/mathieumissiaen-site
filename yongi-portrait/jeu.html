@@ -377,9 +377,42 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
 
   // the user's animation sheet (all frames face right; we mirror for left)
   // the dragon is drawn a bit softer than painted: less saturated and brighter
+  // canvases built once and kept: if the browser wipes one, it is painted again (see checkKept)
+  const KEPT = [];
+  function keep(c, paint) {
+    const r = { c, paint, probe: null };
+    try {
+      const W = c.width, H = c.height, d = c.getContext('2d').getImageData(0, 0, W, H).data;
+      for (let y = Math.floor(H / 7); y < H && !r.probe; y += Math.max(1, Math.floor(H / 23))) for (let x = Math.floor(W / 9); x < W; x += Math.max(1, Math.floor(W / 31))) if (d[(y * W + x) * 4 + 3] > 200) { r.probe = [x, y]; break; }
+    } catch (e) {}
+    c.addEventListener('contextrestored', () => { try { paint(); } catch (e) {} afterWipe(); });
+    c.addEventListener('contextlost', e => e.preventDefault && e.preventDefault());
+    KEPT.push(r); return c;
+  }
+  function afterWipe() {
+    try { FILT.clear(); BQC.clear(); JM_C = null; drawLampGlow.c = null; drawLampGlow.k = null; if (cv.width) terrain = buildTerrain(); } catch (e) {}
+  }
+  function checkKept() {
+    let wiped = false;
+    for (const r of KEPT) {
+      if (!r.probe) continue;
+      try { const g = r.c.getContext('2d'); if ((g.isContextLost && g.isContextLost()) || g.getImageData(r.probe[0], r.probe[1], 1, 1).data[3] === 0) { r.paint(); wiped = true; } } catch (e) {}
+    }
+    if (wiped) afterWipe();
+  }
+  addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(checkKept, 300); });
+  addEventListener('pageshow', () => setTimeout(checkKept, 300));
+  document.addEventListener('fullscreenchange', () => { setTimeout(checkKept, 400); setTimeout(checkKept, 1500); });
+  document.addEventListener('webkitfullscreenchange', () => setTimeout(checkKept, 400));
+  addEventListener('resize', () => setTimeout(checkKept, 500));
+  setInterval(checkKept, 4000);
   function softDragon(img) {
     const c = document.createElement('canvas'); c.width = img.naturalWidth; c.height = img.naturalHeight;
-    const g = c.getContext('2d'); g.drawImage(img, 0, 0);
+    if (!softPaint(c, img)) return img;
+    return keep(c, () => softPaint(c, img));
+  }
+  function softPaint(c, img) {
+    const g = c.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0);
     try {
       const d = g.getImageData(0, 0, c.width, c.height), a = d.data;
       for (let i = 0; i < a.length; i += 4) {
@@ -387,8 +420,8 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
         for (let k = 0; k < 3; k++) a[i + k] = (l + (a[i + k] - l) * 0.72) * 1.05 + 14;
       }
       g.putImageData(d, 0, 0);
-    } catch (e) { return img; }
-    return c;
+    } catch (e) { return false; }
+    return true;
   }
   let DSHEET = new Image(); let dsReady = false;
   DSHEET.onload = () => { DSHEET = softDragon(DSHEET); dsReady = true; };
@@ -1333,8 +1366,8 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
     if (JM_C) return JM_C;
     if (!JM_IMG.complete || !JM_IMG.naturalWidth) return null;
     const c = document.createElement('canvas'); c.width = 89 + JM_PX * 2; c.height = 98 + JM_PY;
-    const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.drawImage(JM_IMG, JM_PX, JM_PY); g.fillStyle = '#000'; g.fillRect(0, 0, c.width, JM_PY + 2);
-    return (JM_C = c);
+    const paint = () => { const g = c.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, c.width, c.height); g.imageSmoothingEnabled = false; g.drawImage(JM_IMG, JM_PX, JM_PY); g.fillStyle = '#000'; g.fillRect(0, 0, c.width, JM_PY + 2); };
+    paint(); return (JM_C = keep(c, paint));
   }
   function drawVase(i, px, py) {
     const JW = JAR_W[i], k = JW / 40, [x0, y0, x1, y1] = OB.jar, JH = (y1 - y0) * JW / (x1 - x0);
@@ -1961,7 +1994,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       const rx = Math.max(fs * w * 0.62, 18 * K());
       const breathe = d.moving ? 1 : 1 + Math.sin(t * (sleeping ? 1.3 : 2.2)) * 0.012;
       const body = () => {
-        if (!inBed) ell(sx, sy, rx, rx * 0.32, 'rgba(50,40,50,.28)');
+        if (!inBed && !PORT) ell(sx, sy, rx, rx * 0.32, 'rgba(50,40,50,.28)');
         ctx.save();
         ctx.translate(x, y + 4 - d.hop - (inBed ? 7 + (bed.lift || 0) : 0));
         ctx.scale(dir, breathe);
