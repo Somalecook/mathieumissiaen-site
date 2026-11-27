@@ -2245,6 +2245,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     return pts.reverse();
   }
   function moveToward(dt, tx, ty, speed) {
+    if (PORT) [tx, ty] = fitLawn(tx, ty, 26);
     const d = dragon;
     // an obstacle around the goal (bed, eating spot) or around the dragon himself does not block
     const obs = obstacles().filter(([x, y, r]) => (tx - x) ** 2 + (ty - y) ** 2 >= r * r && (d.x - x) ** 2 + (d.y - y) ** 2 >= r * r);
@@ -4087,7 +4088,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
   }
   // portrait: where the furniture stands, as fractions of the lawn (x from the left, y from the top)
   const PORT_AT = PORT ? [[soban2, 0.6, 0.12], [soban, 0.25, 0.2], [crate, 0.82, 0.3], [bed, 0.2, 0.55], [TAP, 0.9, 0.52], [bin, 0.6, 0.72],
-    [LAMP, 0.5, 0.63], [PED, 0.85, 1.06], [GIFT, 0.3, 0.95], [FRONT, 0.5, 1.02], [dragon, 0.5, 0.62], [ball, 0.36, 0.8]] : [];
+    [LAMP, 0.5, 0.63], [PED, 0.85, 1.06], [GIFT, 0.3, 0.95], [FRONT, 0.5, 0.55], [dragon, 0.5, 0.62], [ball, 0.36, 0.8]] : [];
   const PED_SPOT = () => { const L = lawnRect(); return toWorld(L.x0 + 0.85 * (L.x1 - L.x0), L.y0 + 1.06 * (L.y1 - L.y0)); };   // the bubble always floats bottom right
   // a sticker left in hand (or waiting) when the game was closed goes onto the rack by itself
   if (PORT) setTimeout(() => { const w = [...(grow.pend != null ? [grow.pend] : []), ...(grow.pq || [])]; grow.pend = null; grow.pq = []; w.forEach((i, k) => setTimeout(() => autoStick(i), k * 300)); if (w.length) saveGrow(); }, 1500);
