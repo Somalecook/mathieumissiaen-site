@@ -1426,10 +1426,12 @@ html.phone.portrait #turn { display: flex; position: fixed; inset: 0; z-index: 2
     if (garden.pots[i] && care.wilt < 1 && care.water < 0.25 && Math.sin(t * 5) > -0.3) drop(px + JAR_W[i] * 0.55, py - 66 * JAR_W[i] / 40, 1.4, '#3fb2f0');
   }
   // what the player holds, bottom-left: a fan of sprigs, or the finished bouquet
+  let handDrag = null;
+  const handAnchor = () => cssToScene(44 * UK, innerHeight - BARH() - (SAFE_B - 10) * UK);
   function drawHand() {
     const n = garden.hand.length;
     if (!n && !garden.bouquet) return;
-    const [phx, phy] = PORT ? cssToScene(44 * UK, innerHeight - BARH() - (SAFE_B - 10) * UK) : [0, 0];
+    const [phx, phy] = PORT ? (handDrag ? [handDrag.px, handDrag.py - 50] : handAnchor()) : [0, 0];
     const hx = PORT ? phx : PHONE ? (-VX - 800) / ZOOM + 800 + 95 : 96, hy = PORT ? phy : PHONE ? 600 : 740, sway = Math.sin(t * 1.6) * 0.03;
     ctx.save(); ctx.translate(hx, hy - 40); ctx.rotate(sway); ctx.translate(-hx, -(hy - 40));
     if (garden.bouquet) drawBouquet(hx, hy, garden.bouquet, 130);
@@ -2782,6 +2784,10 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     const [px, py] = pointerPos(e);
     // the logo: clicked through the canvas, so the hand cursor keeps its look over it
     { const r = LOGO_EL && LOGO_EL.getBoundingClientRect(); if (r && r.width && e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) { window.open('https://iolo.paris', '_blank', 'noopener'); return; } }
+    if (PORT && (garden.hand.length || garden.bouquet)) {
+      const [hx, hy] = handAnchor();
+      if (Math.hypot(px - hx, py - (hy - 70)) < 80) { handDrag = { px, py }; cv.setPointerCapture(e.pointerId); return; }
+    }
     if (ttt.on) { tttTap(px, py); return; }   // a game of tic-tac-toe in the shelf: the taps go to the board
     if (giftAt(px, py)) { openGift(); return; }
     if (stickerTap(px, py)) return;
@@ -3377,6 +3383,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     ball.x = lawnX(gx, gy); ball.y = lawnY(); ball.z = 50;
   }
   cv.addEventListener('pointermove', e => {
+    if (handDrag) { const [px, py] = pointerPos(e); handDrag.px = px; handDrag.py = py; return; }
     if (dragging) {
       const [px, py] = pointerPos(e);
       dragging.px = px; dragging.py = py;
@@ -3452,6 +3459,20 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     while (samples.length > 2 && now - samples[0].t > 110) samples.shift();
   });
   const release = e => {
+    if (handDrag) {
+      // where the stems are: a little above the finger (the flowers are drawn above it)
+      const x = handDrag.px, y = handDrag.py - 50; handDrag = null;
+      const ji = [0, -30, 30].map(d => potAt(x, y + d)).find(i => i >= 0);
+      const S = SOLIS.find(S => soliAt(x, y, S.o) || soliAt(x, y + 30, S.o));
+      const [bx, by] = iso(bottle.x, bottle.y, zOf(bottle));
+      if (ji != null && ji >= 0) placeBouquet(ji);
+      else if (S && garden.hand.length) {
+        S.o.flower = garden.hand.pop(); quest('vase'); S.o.wob = 0.6;
+        const [sx, sy] = iso(S.o.x, S.o.y, zOf(S.o)); for (let i = 0; i < 3; i++) setTimeout(() => puff('heart', sx + rand(-14, 14), sy - 70), i * 120);
+        save(); updateHud();
+      } else if (!LOCKED.has(bottle) && Math.abs(x - bx) < 40 && y > by - 140 && y < by + 20) carafeFlowers();
+      return;
+    }
     if (dragging) {
       const o = dragging.o; o.lift = 0;
       if (dragging.toggleTap && !dragging.moved) { TAP.on = !TAP.on; save(); }
