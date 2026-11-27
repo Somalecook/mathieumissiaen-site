@@ -1973,6 +1973,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
       };
       // grass blades in front of the paws, rustling as he walks (only over his own paws)
       if (inBed || d.hop >= 4) body();
+      else if (PORT) masked(x, y, body, () => { const sw = d.moving ? Math.sin(t * (d.run ? 22 : 13)) * 1.5 : 0; tuftsAlong(sx + sw, sy + 1 * K(), [{ path: [[-rx * 1.05, -rx * 0.12], [0, rx * 0.1], [rx * 1.05, -rx * 0.12]], step: 11 * K(), k: 0.72 * K(), seed: 77 }]); }, 130 * K() + 20, 190 * K() + 20, sy - 30 * K());
       else masked(x, y, body, () => grassTufts(sx, sy + 4 * K(), rx * 1.9, 77, d.moving ? Math.sin(t * (d.run ? 22 : 13)) * 2.2 : Math.sin(t * 2) * 0.5, 1.15 * K()), 130 * K() + 20, 190 * K() + 20, sy - 18 * K());
       // happy face bubble while being petted or after bringing the ball back
       if (ds2Ready && !ds4Ready && (d.state === 'pet' || d.state === 'happy')) {
@@ -3683,7 +3684,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     for (const tf of shapes) {
       const pts = tf.path ? tf.path : frontArc(tf[0], tf[1], tf[2] * 0.5, tf[2] * 0.17, 10);
       const seg = pts.slice(1).map((p, i) => Math.hypot(p[0] - pts[i][0], p[1] - pts[i][1])), Lg = seg.reduce((a, b) => a + b, 0);
-      const n = Math.max(2, Math.round(Lg / (tf.step || 17))), seed = Math.round(x * 3 + y * 5) + Math.round(Lg);
+      const n = Math.max(2, Math.round(Lg / (tf.step || 17))), seed = tf.seed != null ? tf.seed : Math.round(x * 3 + y * 5) + Math.round(Lg);
       for (let i = 0; i < n; i++) {
         let d = Lg * (i + 0.25 + hash(i, seed) * 0.5) / n, j = 0;
         while (j < seg.length - 1 && d > seg[j]) d -= seg[j++];
