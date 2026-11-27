@@ -2309,6 +2309,7 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     const C = [soli, soli2, soli3, ...garden.jars].filter(free).map(o => ['knock', o]);
     for (const T of TABLES) if (!(dragging && dragging.o === T.o) && !LOCKED.has(T.o)) C.push(['knock', T.o]);
     if (ds5Ready && free(sock) && !sockHidden()) C.push(['sock', sock], ['sock', sock]);
+    if (PORT) for (let k = C.length - 1; k >= 0; k--) { const o = C[k][1], p = fitLawn(o.x, o.y, 20); if (LOCKED.has(o) || Math.abs(p[0] - o.x) + Math.abs(p[1] - o.y) > 0.3) C.splice(k, 1); }
     if (!C.length) return false;
     const [kind, o] = C[(Math.random() * C.length) | 0];
     d.mischiefAt = t + rand(14, 24);
@@ -3914,7 +3915,10 @@ const FP_SRC = ["data:image/webp;base64,UklGRrAEAABXRUJQVlA4WAoAAAAQAAAALwAAIAAA
     const dt = clamp((now - last) / 1000, 0, 0.05); last = now; t += dt;   // never backwards (the first frame can be stamped early)
     updateStats(dt);
     updateDragon(dt);
-    if (PORT) { [dragon.tx, dragon.ty] = fitLawn(dragon.tx, dragon.ty, 26); if (dragon.state !== 'evolve') [dragon.x, dragon.y] = fitLawn(dragon.x, dragon.y, 24); }
+    if (PORT) { const sk = dragon._sk || (dragon._sk = { x: dragon.x, y: dragon.y, t: 0 });
+      if (Math.hypot(dragon.x - sk.x, dragon.y - sk.y) > 0.03 || ['idle', 'sleep', 'eat', 'drink', 'pet', 'happy', 'wait', 'fire', 'cough', 'evolve', 'wake'].includes(dragon.state)) { sk.x = dragon.x; sk.y = dragon.y; sk.t = 0; }
+      else if ((sk.t += dt) > 2.5) { sk.t = 0; if (ball.carried) { ball.carried = false; ball.fetchable = false; ball.x = dragon.x + 0.3; ball.y = dragon.y + 0.3; ball.z = 0; } else if (ball.fetchable) { ball.fetchable = false; } setState('idle', 1); }
+      [dragon.tx, dragon.ty] = fitLawn(dragon.tx, dragon.ty, 26); if (dragon.state !== 'evolve') [dragon.x, dragon.y] = fitLawn(dragon.x, dragon.y, 24); }
     updateBall(dt);
     updateSupplies(dt);
     for (const f of flowers) {
