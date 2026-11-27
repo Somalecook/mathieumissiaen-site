@@ -5,7 +5,7 @@
   "start_url": "/iologame/",
   "scope": "/iologame/",
   "display": "fullscreen",
-  "orientation": "landscape",
+  "orientation": "portrait",
   "background_color": "#F3EEE4",
   "theme_color": "#8ecdf2",
   "lang": "en",
